@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # פועלים Iroha על מתכת עירומה {#running-iroha-on-bare-metal}
 
 השתמש בזרם העבודה הזה כאשר אתה רוצה להפעיל צמתים ישירות במארחים במקום דרך Docker Compose. עץ המקור הנוכחי מספק Kagami גנרטורים שכתבים תואמת בראשית, קונפיגיות צמתים, הקונפיגית לקלינט, ו- start/stop סקרפטים.
@@ -32,10 +31,10 @@ cargo build --release \
 ליצור רשת מקומית של ארבעה צמתים Iroha 3:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-קובץ ההוצא מכיל את הקבצים המופעלים `genesis.json`, `genesis.signed.nrt`, קבצים צמתים `config.toml`, `client.toml`, תסריטים עוזרים, ו- `README.md` עם פקודות מדויקות עבור חבורת זו.
+ספריית הפלט מכילה את הקבצים שנוצרו `genesis.json`, ‏`genesis.signed.nrt`, ‏`genesis.expected_hash`, קובץ `peerN.toml` אחד לכל מאמת, `client.toml`, את התסריטים `start.sh` ו־`stop.sh`, וכן `README.md` שנוצר ובו פקודות מדויקות עבור חבילה זו.
 
 ## 3. התחילו לצוותים {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-אם צריך לחבר כל צומת למנהל תהליכים כגון systemd, השתמשו עבור כל צומת בפקודת ההפעלה המתועדת ב-`./localnet/README.md`. שמרו בנפרד את `config.toml`, המפתח הפרטי, ספריית האחסון והיציאות של כל צומת.
+אם צריך לחבר כל צומת למנהל תהליכים כגון systemd, פעלו לפי הפקודה לכל צומת שב־`./localnet/start.sh`: הריצו את `iroha3d --config <bundle>/peerN.toml` מתוך `<bundle>/state/peerN`, והעבירו את `--sumeragi-assert-fresh-key` רק בהפעלה הראשונה של אותו צומת. שמרו בנפרד את `peerN.toml`, המפתח הפרטי, ספריית האחסון והיציאות של כל צומת.
 
 ## 4. לנהל את הרשת {#_4-operate-the-network}
 
 השתמשו בהגדרת הלקוח המוצא:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

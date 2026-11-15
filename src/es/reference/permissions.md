@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Tokens de Permiso {#permission-tokens}
 
 Esta página enumera los tipos de token de permisos predeterminados expuestos por el modelo de datos del ejecutor actual Iroha. Para la guía conceptual sobre roles y permisos, consulte [Permisos](/es/blockchain/permissions.md).
@@ -17,7 +16,6 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 |Token de permiso|Categoría|Operación|
 | --- | --- | --- |
 | `CanManagePeers` |par de red|Registrar, cancelar el registro o gestionar de otra manera los pares de red.|
-| `CanManageLaneRelayEmergency` |par de red|Gestionar los controles de relevo de carril de emergencia.|
 | `CanRegisterDomain` |Dominio|Registrar un dominio.|
 | `CanUnregisterDomain` |Dominio|Cancelar el registro de un dominio.|
 | `CanModifyDomainMetadata` |Dominio|Modificar los metadatos del dominio.|
@@ -29,7 +27,7 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 | `CanMintAssetWithDefinition` |Activo|emitir activos para una definición específica.|
 | `CanBurnAssetWithDefinition` |Activo| Quemar activos para una definición específica. |
 | `CanTransferAssetWithDefinition` |Activo|Transferir activos para una definición específica.|
-| `CanMintAsset` |Activo|emitir un saldo de activo específico.|
+| `CanMintAssetToAccount` |Activo|emitir un saldo de activo específico.|
 | `CanBurnAsset` |Activo| Quemar un saldo de un activo específico. |
 | `CanTransferAsset` |Activo|Transferir un saldo de activo específico.|
 | `CanRegisterNft` | NFT |Registrar un NFT.|
@@ -44,8 +42,9 @@ Las comprobaciones de permisos son aplicadas por el validador de tiempo de ejecu
 | `CanModifyTrigger` |Disparador|Modificar la configuración del disparador.|
 | `CanModifyTriggerMetadata` |Disparador|Modificar los metadatos del activador.|
 | `CanUpgradeExecutor` |ejecutora|Actualice el ejecutor de tiempo de ejecución del software.|
-| `CanRegisterSmartContractCode` |Contrato inteligente|Registrar código de contrato inteligente.|
-| `CanUseFeeSponsor` | Nexus |Cargar Nexus tarifas a una cuenta de patrocinador especificada.|
+| `CanManageSmartContractCode` |Contrato inteligente|Eliminar artefactos de código no referenciados y delegar puntos de entrada de contratos. Las cuentas registradas pueden crear artefactos verificados sin él.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Administrar programas pertenecientes a la cuenta exacta del patrocinador. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Gestionar los beneficiarios de un programa de patrocinio concreto. |
 
 ## Propiedad {#ownership}
 

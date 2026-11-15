@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
+translation_source_hash: 846370e45fe0e0d605016d6722b1d50c39981f954c7d9040b87fc385eb12ac68
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # `iroha3d` CLI {#iroha3d-cli}
 
 `iroha3d` הוא הדיימון הסטנדרטי Iroha 3 של הצמתים. חבילת המטען נקראת `irohad`, אז הזמינו את הבינרי ממבחר מקור עם:
@@ -22,14 +21,14 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-על המפעיל ליצור את פרופיל Taira הקנוני לפני השימוש. התבנית השמורה במאגר כוללת הגדרות לדוגמה, ועל המפעיל להחליף כל אחת מהן. אל תשתמשו בהגדרות כלליות של Nexus או בהגדרות ייצור של SoraFS בעת בדיקה מול Taira.
+השתמשו בגרסת פרופיל Taira הקנוני שהמפעיל הכין לפריסה; התבנית שבמאגר עדיין מכילה מצייני מקום לפריסה. אל תחליפו אותה בהגדרות כלליות של SORA Nexus או בהגדרות SoraFS לסביבת ייצור בעת בדיקה מול Taira.
 
 ## `--config` {#arg-config}
 
 - סוג: מסלול הקובץ
 - פרופיל: `-c`
 
-נתיב לקונפיגוריית הצמתים [ ](/he/reference/peer-config/index.md).
+הנתיב ל[קובץ התצורה של הצומת](/he/reference/peer-config/index.md).
 
 ## `--genesis-manifest-json` {#arg-genesis-manifest-json}
 
@@ -41,14 +40,39 @@ iroha3d_taira --sora \
 
 תאמינו את ההסדרת המפתחת ואת חומר הגנזיה הזמין, ולאחר מכן תוצאו ללא קישורים של רשת.
 
-## סימני אישור Kagemusha {#kagemusha-qualification-seals}
+## `--json` {#arg-json}
 
-אפשרויות נתיב הקובץ האלה דורשות `--check-config` ומבצעות הסמכת Kagemusha מלאה לפני כתיבת חותם קנוני:
+- **טיפוס:** דגל
+- **מחייב:** `--check-config`
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` מספקת את ההסדר.
-- `--write-kagemusha-validator-qualification-seal <PATH>` מספקת אישור לאישור מקומי על ההזמנה של קידום חתומה המוגדרת.
+הדפסת ערכי התאימות של הבנייה והתצורה האלה כאובייקט Norito JSON אחד במקום שורת `Ready` או `Pending`.
 
-שתי אפשרויות הסיסום מתנגדות זה לזה.
+## `--check-storage` {#arg-check-storage}
+
+- **טיפוס:** דגל
+- **מתנגש עם:** `--check-config`
+
+בדיקת מאגר Kura ותמונת המצב העדכנית ביותר של הצומת העצור בקריאה בלבד, באמצעות המפענחים של הבנייה הזאת; הדפסת התוצאה כאובייקט Norito JSON אחד ויציאה בקוד שאינו אפס במקרה כשל. הבדיקה נוטלת את נעילת שורש מאגר Kura, ולכן מסרבת למאגר שבבעלות צומת פועל. היא לעולם אינה משנה את המאגר ואינה פותחת סודות המיועדים לזמן ריצה בלבד.
+
+## `--check-replay` {#arg-check-replay}
+
+- **טיפוס:** דגל
+- **מתנגש עם:** `--check-config`, `--check-storage`
+
+הרצה חוזרת של עותק מאגר הצומת העצור באמצעות הבנייה הזאת והדפסת התוצאה כאובייקט Norito JSON אחד. הפקודה מעתיקה את הבלוקים לתיקייה זמנית, משחזרת שם את תמונת המצב העדכנית ביותר או מבצעת מחדש את ה־genesis החתום, ומבצעת מחדש כל בלוק מאוחר יותר. היא יוצאת בקוד שאינו אפס כאשר בלוק אינו משחזר את התוצאה המאושרת שלו או כשגוף בלוק נדרש חסר, ולעולם אינה כותבת למאגר או פותחת סודות המיועדים לזמן ריצה בלבד.
+
+## `--require-genesis-inrou-deployment-authority` {#arg-require-genesis-inrou-deployment-authority}
+
+- **טיפוס:** מזהה חשבון
+- **מחייב:** `--check-config`
+
+במהלך אימות לא מקוון, דרישה שהחשבון הרשום הזה ישמור על סמכות הפריסה של SoraCloud לאחר ביצוע ה־genesis החתום המדויק.
+
+## `--sumeragi-assert-fresh-key` {#arg-sumeragi-assert-fresh-key}
+
+- **טיפוס:** דגל
+
+הצהרה, באתחול הזה בלבד, שמפתחות הקונצנזוס של הצומת מעולם לא חתמו עבור השרשרת הזאת. Sumeragi שומר רשומת בטיחות לכל מפתח ואינו חותם על דבר בלעדיה עד שיש לו הוכחה שהרשומה לא אבדה. העבירו את הדגל פעם אחת, באתחול הראשון של מפתח חדש, ולעולם לא לאחר אובדן נתונים.
 
 ## `--trace-config` {#arg-trace-config}
 
@@ -83,7 +107,7 @@ iroha3d_taira --sora \
 - סוג: דגל
 - סביבה: `IROHA_SORA_PROFILE`
 
-תפעיל את הפרופיל של Sora Nexus. הפרופיל הזה מסדר את SoraFS, את מחיצת הידיים של SoraNet, והסכמה בין שוליים. תמיד להזכיר את המוצא Taira עם דגל זה.
+הפעלת פרופיל SORA Nexus המשמש את SoraFS, את לחיצת היד של SoraNet ואת הקונצנזוס מרובה הנתיבים. משגר Taira מופעל תמיד עם הדגל הזה.
 
 ## FastPQ פוטנציאל {#fastpq-overrides}
 
@@ -105,7 +129,7 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## עזרה שנוצרה {#generated-help}
 
-סיכום האפשרויות שלעיל מאומת מול הגדרות הארגומנטים הנוכחיות של `iroha3d`. תמונת המצב של העזרה שנוצרה ונשמרה במאגר אינה מוצגת בכוונה כל עוד מצב המקור שלה ממתין. כדי להציג את העזרה המדויקת עבור עותק קוד המקור שלך, הריצו:
+סיכום האפשרויות לעיל תואם להגדרות הארגומנטים של `iroha3d` ב־commit המקובע של Iroha. כדי לבדוק את העזרה המדויקת של העותק המקומי שלכם, הריצו:
 
 ```shell
 cargo run --locked -p irohad --bin iroha3d -- --help

@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # トラブルシューティング {#troubleshooting}
 
 このセクションは、Iroha を使用中に問題が発生した場合に役立つことを目的としています。何か問題が発生した場合は、まず [鍵を確認する](#check-the-keys) を行ってください。それでも解決しない場合は、各ステージのトラブルシューティング手順を確認してください。

@@ -1,16 +1,15 @@
 ---
 translation_locale: ar
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# التطوير على SORA Nexus باستخدام Taira وMinamoto {#build-on-sora-3-taira-and-minamoto}
 
-# البناء على SORA 3: Taira و Minamoto {#build-on-sora-3-taira-and-minamoto}
+تعمل SORA Nexus على Iroha 3. طوّر تطبيقك واختبره أولاً على Taira. لا تنقل إعدادات العميل نفسها إلى Minamoto إلا بعد أن تحصل على مفاتيح مستقلة للشبكة الرئيسية، ورصيد حقيقي من XOR لدفع الرسوم، وموافقة على التشغيل في بيئة الإنتاج.
 
-SORA 3 هو مسار النشر العام المواجه للتطبيق المبني على Iroha 3 و SORA Nexus. قم بالبناء والتدريب على Taira أولاً، ثم انقل نفس شكل العميل إلى Minamoto فقط عندما يكون لديك مفاتيح رئيسية منفصلة للشبكة الرئيسية، و XOR حقيقية للرسوم، والموافقة على الإنتاج.
-
-يُوضح هذا الدليل كيفية تكوين عميل Iroha لشبكات SORA العامة 3:
+يوضح هذا الدليل كيفية إعداد عميل Iroha للعمل على الشبكتين العامتين لمنصة SORA Nexus.
 
 - Taira الشبكة التجريبية في `https://taira.sora.org`
 - Minamoto الشبكة الرئيسية على `https://minamoto.sora.org`
@@ -24,15 +23,15 @@ SORA 3 هو مسار النشر العام المواجه للتطبيق الم�
 
 |خطوة| Taira الشبكة التجريبية| Minamoto الشبكة الرئيسية |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح|استعلام `/status` بدون مفاتيح|
-|اختر فضاء البيانات|استخدم `universal` العام ما لم يكن تطبيقك بحاجة إلى مسار تنفيذ مُدار|استخدم نفس مساحة البيانات فقط بعد الموافقة على الشبكة الرئيسية|
+|ابدأ في قراءة حالة الشبكة|استعلام `/status` بدون مفاتيح| تحقّق أولاً من عنوان الخدمة وشهادة TLS |
+| اختر مساحة البيانات | استخدم `universal` العامة ما لم يكن تطبيقك بحاجة إلى مساحة بيانات خاصة به خاضعة للحوكمة | استخدم مساحة البيانات نفسها فقط بعد الموافقة على الشبكة الرئيسية |
 |الحصول على أصل الرسوم|استخدم خدمة تمويل شبكة الاختبار العامة Taira|استلام XOR من حساب Minamoto ممول أو تدفق خزينة معتمد|
 | عمليات كتابة اختبارية | استخدم XOR اختباريًا ممولًا من خدمة التمويل | لا تستخدم أدوات الاختبار؛ فعمليات الكتابة تنفق XOR حقيقيًا |
 |روّج|احتفظ بمنطق إعادة المحاولة والمراقبة ومعالجة الموقّع التشفيري|استخدم مفاتيح وتمويلات وعناصر تحكم إصدار منفصلة|
 
 التدفق العملي هو:
 
-1. قم ببناء العميل ضد Taira واستخدم مساحة البيانات العامة `universal`.
+1. طوّر العميل باستخدام Taira ومساحة البيانات العامة `universal`.
 2. أضف موقع توقيع تشفير وقم بتمويله بخدمة تمويل شبكة الاختبار Taira.
 3. اختبر منطق تطبيقك ضد Taira حتى تصبح الإخفاقات مملة وملحوظة.
 4. إنشاء موقع تشفير منفصل Minamoto، وتمويله بـ XOR حقيقي، ونقل العمليات المثبتة فقط إلى الشبكة الرئيسية.
@@ -53,24 +52,22 @@ SORA 3 هو مسار النشر العام المواجه للتطبيق الم�
 
 ## 1. افهم ما الذي تقوم بإعداده {#_1-understand-what-you-are-setting-up}
 
-في SORA Nexus، يُعد فضاء البيانات جزءًا من مسار تنفيذ الشبكة وفهرس التوجيه. لا يقوم العميل بإنشاء فضاء بيانات عام جديد بمجرد تغيير `client.toml`. يقوم إعداد العميل بعمل شيئين:
+في SORA Nexus، يحدد كتالوج مساحات البيانات مساحات البيانات. ويحدد كتالوج مسارات التنفيذ المسارات بصورة منفصلة: يشير كل مسار إلى مساحة بيانات واحدة، ويمكن أن تحتوي مساحة البيانات على عدة مسارات. لا ينشئ العميل مساحة بيانات عامة جديدة بمجرد تغيير `client.toml`. يؤدي إعداد العميل وظيفتين:
 
-1. يوجه العميل إلى نقطة النهاية الصحيحة Torii API
-2. يختار سياق توجيه المجال وفضاء البيانات لحسابه الموحد وفقًا لمعيار البروتوكول
+1. يوجّه العميل إلى نقطة نهاية Torii الصحيحة
+2. يختار سياق الشبكة ومفتاح التوقيع لحسابه المعياري
 
-`AccountId` دائمًا بروتوكول واحد فقط وخالٍ من النطاق. قيمة `[account].domain` في `client.toml` توفر سياق التوجيه والاسم المستعار؛ ولا تصبح جزءًا من هوية الحساب. بالنسبة لمعظم التطبيقات، ابدأ بمساحة البيانات العامة `universal`. يستخدم سياق النطاق شكل `domain.dataspace`، على سبيل المثال:
+يكون `AccountId` دائمًا معياريًا ولا يتضمن نطاقًا، ولا يحتوي `client.toml` على إعداد للنطاق: يحدد `[account].profile` فقط بادئة I105 للشبكة. ينتمي سياق النطاق إلى الأسماء المستعارة والكائنات المملوكة للنطاق. ابدأ بمساحة البيانات العامة `universal` لمعظم التطبيقات. يستخدم سياق النطاق الصيغة `domain.dataspace`، مثل:
 
 ```text
 wonderland.universal
 ```
 
-إذا كنت بحاجة إلى مساحة بيانات تنظيمية جديدة، فقم بإعداد كتالوج واقتراح توجيه بدلاً من محاولة تسجيلها من حساب عميل عادي. انظر [توفير فضاء بيانات جديد](#_8-provision-a-new-dataspace) أدناه.
+إذا احتجت إلى مساحة بيانات مؤسسية جديدة، فأعد اقتراحًا للكتالوج والتوجيه بدلًا من محاولة تسجيلها من حساب عميل عادي. راجع [إنشاء مساحة بيانات جديدة](#_8-provision-a-new-dataspace) أدناه.
 
-## 2. تحقق من نقطة النهاية العامة Torii API {#_2-check-the-public-torii-endpoint}
+## 2. فحص نقطة نهاية Torii العامة {#_2-check-the-public-torii-endpoint}
 
-تحقق من أن نقطة النهاية المستهدفة API تعمل قبل تكوين موقع التوقيع التشفيري.
-
-لـ Taira:
+استعلم عن حالة شبكة Taira التجريبية باستخدام `curl` و`jq`. يمكنك إجراء هذا الفحص من دون مفاتيح أو عقدة محلية.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -78,15 +75,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-لـ Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-افحص مساحة البيانات وعرض مسار التنفيذ التي يكشفها العقدة:
+افحص عرض مساحات البيانات ومسارات التنفيذ الذي تتيحه العقدة:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-استخدم نفس الأمر مع `https://minamoto.sora.org/status` للشبكة الرئيسية.
+قبل استخدام Minamoto، تأكّد من عنوان خدمة الشبكة الرئيسية لدى المشغّل، وتحقّق من أن شهادة TLS تطابق اسم المضيف.
 
 ## Taira MCP للوكلاء {#taira-mcp-for-agents}
 
@@ -102,17 +91,21 @@ Taira يكشف أيضًا عن جسر بروتوكول سياق النموذج �
 
 |إعداد|قيمة|
 | --- | --- |
-| MCP API نقطة النهاية | `https://taira.sora.org/v1/mcp` |
+| نقطة نهاية MCP | `https://taira.sora.org/v1/mcp` |
 |جذر الشبكة| `https://taira.sora.org` |
 |الاستخدام المقصود|Taira قراءات الشبكة التجريبية وبروفات الكتابة الممولة من الشبكة التجريبية|
-|ما يعادل الإنتاج|لا توجه هذا الإدخال إلى Minamoto ما لم يتم الموافقة صراحةً على نقطة نهاية MCP API على الشبكة الرئيسية وعناصر التحكم في الإصدار|
+| المقابل الإنتاجي | لا توجّه هذا الإدخال إلى Minamoto إلا بعد الموافقة الصريحة على نقطة نهاية MCP للشبكة الرئيسية وضوابط الإصدار |
 
-تحقق من بيانات تعريف الجسر قبل إضافة مواد التوقيع:
+لا يقبل الجسر إلا طلبات JSON-RPC `POST` عديمة الحالة. افحص بيانات الاكتشاف الوصفية قبل إضافة مواد التوقيع:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 قم بتكوين URL كخادم MCP محلي للمستخدم في بيئة تنفيذ برنامج الوكيل. لا تخزن في نظام التحكم بالمصدر إعدادات MCP الخاصة بالوكيل، أو رموز API، أو رؤوس المصادقة المحوّلة، أو قيم `authority`، أو `private_key` في مستودع المستندات هذا أو في مستودع التطبيق.
@@ -133,7 +126,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 
 1. اطلب من الوكيل فحص المستندات ذات الصلة، رمز SDK، الأمر CLI، أو مخطط الأداة MCP قبل أن يكتب الشيفرة.
 2. اجعل الوكيل يكتب أصغر مسار للعميل أولاً: فحص الحالة، البحث في الحساب، حل الأسماء المستعارة، أو البحث عن الرصيد.
-3. أضف كود بناء المعاملات فقط بعد أن تعمل الطلبات للقراءة فقط API مقابل Taira.
+3. لا تضف كود بناء المعاملات إلا بعد نجاح الاستدعاءات المخصصة للقراءة فقط على Taira.
 4. احتفظ باختبارات الشبكة الحية اختيارية، على سبيل المثال خلف `TAIRA_LIVE=1`، بحيث لا تنفق عملية تشغيل اختبار الوحدة العادية أموال شبكة الاختبار أو تعتمد على توفر الشبكة.
 5. يتعين على الوكيل الإبلاغ عن جذر الشبكة، السلسلة، حساب المبدأ التفويض، ملخص التعليمات، أصل الرسوم، والتغير المتوقع في الحالة قبل تقديم أي معاملة.
 6. راجع الكود الذي تم إنشاؤه للتعامل مع الأسرار، وسلوك إعادة المحاولة، وعدم التأثير المتكرر، والتعامل مع الرفض قبل رفعه إلى CI أو سير العمل على الشبكة الرئيسية.
@@ -171,7 +164,7 @@ say "submit this transaction".
 - حالة المحطة مثل `Committed`، `Applied`، `Rejected`، أو `Expired`
 - الكتلة أو تفاصيل المستكشف عند توفرها
 - نتائج قراءة التحقق
-- رسالة الرفض وما إذا كان الفشل يبدو وكأنه متعلق بالأذونات، الرسوم، التحقق، الحالة القديمة، أو توفر نقطة النهاية API
+- رسالة الرفض وما إذا كان الفشل يبدو مرتبطًا بالأذونات أو الرسوم أو التحقق أو حالة قديمة أو إتاحة نقطة النهاية
 
 مثال على موجه محمي:
 
@@ -197,36 +190,15 @@ verification result.
 
 ## أمثلة توضيحية يمكنك تجربتها الآن {#toy-examples-you-can-try-now}
 
-هذه الأمثلة للقراءة فقط ما لم يُذكر خلاف ذلك. تعمل قبل أن تقوم بتوليد المفاتيح وهي آمنة للتشغيل على كل من الشبكات العامة.
+تستعلم هذه الأمثلة عن بيانات Taira للقراءة فقط من دون استخدام مفاتيح الحساب.
 
-قارن بين صحة testnet Taira و mainnet Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
-
-سرد مسارات تنفيذ فضاء البيانات العامة المعروضة بواسطة Taira:
+اعرض كل مسار تنفيذ في Taira مع مساحة بياناته ونطاق رؤيته:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-قم بتشغيل نفس الأمر ضد Minamoto عندما تحتاج إلى عرض الشبكة الرئيسية:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -270,10 +234,11 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+# The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -284,12 +249,12 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-المستوى الأعلى `chain` هو بالضبط معرف سلسلة المعاملات Taira. إعداد `[account].profile = "taira"` يختار بشكل مستقل مميز سلسلة Taira I105. معرف السلسلة لا يختار ملف تعريف الحساب.
+يمثل `chain` في المستوى الأعلى معرّف سلسلة معاملات Taira المحدد بدقة، ويمثل `network_id` هوية الشبكة الدقيقة التي يرتبط بها كل توقيع. اضبط واحدًا بالضبط من `network_id` أو `network_id_file`. يحدد `[account].profile = "taira"` مميّز سلسلة I105 الخاص بـTaira بصورة مستقلة. لا يحدد معرّف السلسلة ملف الحساب.
 
 قم بإجراء فحص للقراءة فقط:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 قم بتشغيل التشخيصات العامة Taira قبل كتابة الاختبارات:
@@ -298,28 +263,24 @@ iroha --config ./taira.client.toml --output-format text ops sumeragi status
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-موّل حساب Taira من خلال خدمة تمويل الشبكة التجريبية قبل أن تقوم بعمليات الكتابة التي تتطلب رسوماً. تدفق خدمة التمويل المباشر للشبكة التجريبية موجود في [احصل على Testnet XOR على Taira](#_4-get-testnet-xor-on-taira).
+موّل حساب Taira من خدمة التمويل التجريبي قبل تنفيذ كتابات تدفع رسومًا. يرد تدفق الخدمة ذو مرحلة الإعداد في [الحصول على XOR التجريبي على Taira](#_4-get-testnet-xor-on-taira).
 
-بعد قبول طلب خدمة تمويل الشبكة التجريبية وتمويل الحساب، يمكن اعتبار Taira الكاناري اختبار كتابة خفيف اختياري:
+بعد تمويل الحساب، يمكن استخدام تعليمة تسجيل موقّعة كاختبار كتابة أساسي اختياري. تحدد كل معاملة مرسلة دافع رسومها، وتعرض CLI الرسوم الدقيقة قبل التوقيع:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-يقدّم الكناري رسالة تحقق موقعة، وينتظر التأكيد، ويكتب إعدادات المفتاح التشفيري لبيئة تنفيذ البرمجيات عند توفير `--write-config`. يعد Taira شبكة اختبار عامة، لذا يمكن أن يؤدي تشبع الطابور إلى فشل إشارة الإشارة الموقعة حتى عندما تعمل خدمة تمويل شبكة الاختبار نفسها. إذا أبلغ `taira doctor` عن طابور مشبع أو أعاد المراقب `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`، فانتظر وحاول مرة أخرى قبل التعامل معه كخطأ في تكوين العميل.
+ينتظر الأمر التأكيد. Taira شبكة تجريبية عامة، ولذلك قد يؤدي تشبع الطابور إلى فشل ping حتى عندما تعمل خدمة التمويل التجريبي نفسها. إذا أبلغ `taira doctor` عن تشبع الطابور أو أعاد ping الرمز `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`، فانتظر وأعد المحاولة قبل اعتبار ذلك خطأ في إعداد العميل.
 
-للاختبارات الأولية غير المراقبة، قم بلف الكناري في حلقة إعادة محاولة محدودة:
+لاختبارات التشغيل الأساسية دون إشراف، شغّل ping داخل حلقة محدودة لإعادة المحاولة:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -331,7 +292,7 @@ test "$ok" = true
 
 ## إنشاء معرف حساب SORA Nexus {#generate-a-sora-nexus-account-id}
 
-معرّف حساب SORA Nexus هو عنوان واحد بمعيار البروتوكول I105 مشتق من المفتاح العام للحساب وبادئة الشبكة المستهدفة. إنه ليس قيمة `[account].domain` في العميل TOML. نفس المفتاح العمومي يُشفر إلى معرفات مختلفة على Taira و Minamoto، ويجب على مستخدمي الإنتاج إنشاء زوج مفاتيح منفصل لـ Minamoto.
+معرّف حساب SORA Nexus هو عنوان I105 معياري مشتق من المفتاح العام للحساب وبادئة الشبكة المستهدفة. يُرمّز المفتاح العام نفسه إلى معرّفات مختلفة على Taira وMinamoto، وينبغي لمستخدمي الإنتاج توليد زوج مفاتيح منفصل لـMinamoto.
 
 قم بإنشاء أو تحميل زوج مفاتيح Ed25519 الذي سيتحكم بالحساب:
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-استخدم معرف الحساب الناتج أينما طلبت أي من الأوامر Nexus أو API أو CLI معرف حساب قياسي واحد للبروتوكول، على سبيل المثال خدمة تمويل اختبار الشبكة Taira `account_id`، استعلامات الرصيد، حقول الحساب الصارمة، أو ربط الأسماء المستعارة. احتفظ بالمفتاح الخاص المطابق في إعدادات العميل الخاصة بك، واختر نفس الشبكة العامة مع `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
+استخدم معرّف الحساب الناتج كلما طلبت API أو CLI في SORA Nexus معرّف حساب معياريًا، مثل استعلامات الأرصدة أو حقول الحسابات الصارمة أو روابط الأسماء المستعارة. احتفظ بالمفتاح الخاص المطابق في إعداد العميل، واختر الشبكة العامة نفسها باستخدام `[account].profile = "taira"` أو `[account].profile = "minamoto"`.
 
 إن توليد المعرف بحد ذاته لا ينشئ حسابًا ممولًا على السلسلة. على Taira، يمكن لخدمة تمويل الشبكة التجريبية إنشاء الحساب وتمويله من أجل الكتابات على الشبكة التجريبية. على Minamoto، استخدم تدفق الانضمام أو الخزينة المعتمد على الشبكة الرئيسية.
 
@@ -372,188 +333,72 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 
 ## ٤. الحصول على Testnet XOR على Taira {#_4-get-testnet-xor-on-taira}
 
-استخدم خدمة تمويل شبكة الاختبار العامة مباشرة. التدفق هو:
+اطلب XOR التجريبية باستخدام تدفق خدمة التمويل التجريبي ذي مرحلة الإعداد في CLI. تموّل الخدمة الحساب المضبوط في `taira.client.toml` وتسجّله أولًا إذا لم يكن موجودًا. يتألف التدفق من:
 
-1. إنشاء أو تحميل موقع تشفير وحساب معرف الحساب الواحد حسب معيار البروتوكول Taira.
-2. احصل على لغز خدمة تمويل الشبكة التجريبية الحالية.
-3. حل اللغز إذا كان `difficulty_bits` أكبر من `0`.
-4. قدّم طلب خدمة تمويل الشبكة التجريبية.
-5. انتظر حتى يصبح رصيد الحساب أو الأصل مرئيًا قبل إرسال الكتابات التي تتطلب دفع رسوم.
+1. اقرأ سياسة خدمة التمويل التجريبي العامة: جهة التفويض وأصل الرسوم والمبلغ.
+2. أعدّ المطالبة. تحل CLI إثبات العمل، وتتحقق من المعاملة الدقيقة التي يعدّها Torii ويوقّعها، وتحفظها في دليل يوميات خاص دون إرسالها.
+3. أرسل المعاملة المحفوظة مرة واحدة.
+4. انتظر حتى يصبح رصيد الأصل مرئياً قبل إرسال عمليات الكتابة التي تتطلب دفع رسوم.
 
-حوّل المفتاح العام إلى معرف الحساب Taira I105 المتوقع من خدمة تمويل الشبكة الاختبارية:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-احضر اللغز:
+اقرأ السياسة:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-خدمة تمويل الشبكة التجريبية هي خدمة شبكة تجريبية عامة. إذا أعاد نقطة النهاية للغز أو المطالبة API `502`، أو نفاد الوقت، أو خطأ على مستوى البوابة، فانتظر وحاول مرة أخرى قبل تغيير مفاتيحك أو إعدادات العميل.
 
 الاستجابة لها هذا الشكل:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-عندما يكون `difficulty_bits` `0`، قم بإرسال معرف الحساب فقط:
+السياسة هي بيانات اكتشاف غير موقعة. يجب على الأتمتة تثبيت صاحب الصلاحية وتعريف الأصل والمبلغ المتوقع بدلاً من الثقة في كل رد. `prepare` يرفض معاملة مُعدة تختلف عن القيم التي تمررها.
+
+قم بإعداد وتقديم المطالبة:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-عندما يكون `difficulty_bits` أكبر من `0`، قم بحل اللغز وضمّن ارتفاع المِرساة بالإضافة إلى قيمة الرقم العشوائي التشفيري:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-خوارزمية اللغز هي:
-
-1. ابنِ التحدي كـ SHA-256 على:
-   - بايتات `iroha:accounts:faucet:pow:v2`
-   - معرّف حساب UTF-8
-   - `anchor_height` بالشكل الكبير النهاية `u64`
-   - `anchor_block_hash_hex` تم فك ترميزه كبايتات
-   - `challenge_salt_hex` مفكك كبيانات بايت، عند وجوده
-2. جرّب قيم nonce التشفيرية `u64` المشفرة كقيم بترتيب كبير الحجم 8 بايت.
-3. لكل قيمة رقمية مشفرة مميزة، شغّل scrypt مع:
-   - كلمة المرور: قيمة التشفير ذات الثمانية بايت nonce
-   - الملح: التحدي ذي 32 بايت
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - طول الإخراج: 32 بايت
-4. قيمة الرقم العشوائي التشفيري الفائز هي أول قيمة هضم تشفيرية تحتوي على الأقل على `difficulty_bits` بت صفري في البداية.
-
-تتضمن استجابة خدمة تمويل شبكة الاختبار الأصل الممول وهاش التشفير للمعاملة المعلقة:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-يتم إرجاع الاستجابة حاليًا مع HTTP `202 Accepted`. ويتم تمويل `asset_definition_id` الخاص به حاليًا بأصل الرسوم Taira الممول من قبل خدمة تمويل الشبكة التجريبية العامة؛ استخلصه من الاستجابة بدلاً من نسخ معرف مثال. لقد قبلت خدمة تمويل شبكة الاختبار الطلب عندما تعيد `tx_hash_hex` و `status: "QUEUED"`.
+ينشئ `prepare` دليل اليوميات بصورة خاصة ويرفض استبدال دليل موجود، لذا استخدم دليلًا جديدًا لكل مطالبة. خدمة التمويل التجريبي خدمة عامة للشبكة التجريبية. إذا أبلغ `submit` عن `Pending` أو انتهت مهلته أو تلقى `502`، فشغّل `taira account faucet resume` بالإعدادات واليوميات نفسيهما بدلًا من إعداد مطالبة أخرى. تجعل مرساة إثبات العمل القديمة `prepare` يفشل؛ وفي هذه الحالة أعد الإعداد في دليل يوميات جديد.
 
 ثم قم بالاستطلاع عن الأصل الممول قبل تقديم معاملاتك الخاصة التي تدفع رسوماً:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-إذا تم قبول طلب خدمة تمويل الشبكة الاختبارية ولكن الحساب أو الأصل غير مرئي بعد، فإن المعاملة لا تزال قيد معالجة قائمة الانتظار العامة للشبكة الاختبارية. انتظر وأعد محاولة القراءة قبل إرسال الكتابات.
-
-لإجراء فحص مباشر جاهز للتشغيل API، احفظ هذا كـ `taira_faucet_claim.py` ومرّر معرف حساب Taira I105:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+إذا تم تطبيق المطالبة ولكن الأصل غير مرئي بعد، انتظر وأعد محاولة القراءة قبل إرسال عمليات الكتابة.
 
 خدمة التمويل مخصّصة لأموال شبكة Taira التجريبية فقط. لا تستخدم XOR التجريبي أو حسابات خدمة التمويل أو موقّعي اختبار Taira في تدفقات Minamoto.
 
 ## 5. إنشاء إعدادات عميل Minamoto {#_5-create-a-minamoto-client-config}
+
+قبل استخدام Minamoto، تأكّد من عنوان خدمة الشبكة الرئيسية لدى المشغّل، وتحقّق من أن شهادة TLS تطابق اسم المضيف.
 
 استخدم زوج مفاتيح منفصل لـ Minamoto. لا تعيد استخدام مفاتيح Taira للشبكة الرئيسية.
 
@@ -561,10 +406,11 @@ with urllib.request.urlopen(request) as res:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -575,7 +421,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-المستوى الأعلى `chain` هو معرف سلسلة الشبكة الرئيسية الحالي Nexus. يختار `[account].profile = "minamoto"` مميز سلسلة Minamoto I105؛ نقطة النهاية API واسم المضيف ومعرّف السلسلة لا يختارانه ضمنيًا.
+يمثل `chain` في المستوى الأعلى معرّف سلسلة شبكة SORA Nexus الرئيسية الحالي، ويمثل `network_id` هوية شبكة Minamoto الدقيقة؛ اقرأها من مسار القدرات قبل أول عملية موقّعة. يحدد `[account].profile = "minamoto"` مميّز سلسلة I105 الخاص بـMinamoto؛ ولا يحدده اسم مضيف نقطة النهاية أو معرّف السلسلة ضمنيًا.
 
 حوّل مفتاح عام Minamoto إلى معرف حساب I105 القياسي لبروتوكول واحد مع بادئة الشبكة الرئيسية:
 
@@ -586,10 +432,10 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 قم بتشغيل فحوصات جانب القراءة فقط حتى يتم تجهيز الحساب وتمويله من خلال الانضمام إلى الشبكة الرئيسية أو تدفق الحوكمة:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
-لا تشغّل خدمة تمويل شبكة الاختبار Taira أو مساعد الكتابة-الإنذار ضد Minamoto.
+لا تشغّل أوامر خدمة التمويل التجريبي أو اختبارات التشغيل الأساسية الخاصة بـTaira على Minamoto.
 
 ## ٦. تمويل حساب Minamoto بمبلغ XOR {#_6-fund-a-minamoto-account-with-xor}
 
@@ -601,7 +447,7 @@ Taira XOR لا يمكنه دفع رسوم Minamoto. أرصدة شبكة الاخ
 
 ## 7. العمل داخل مساحة بيانات موجودة {#_7-work-inside-an-existing-dataspace}
 
-استخدم أسماء النطاقات المؤهلة بالكامل لأغراض دفتر السجلات الخاصة بالبلوك تشين التي تعيش داخل مساحة البيانات. على سبيل المثال، يجب أن يستخدم نطاق المشروع في مساحة البيانات العامة:
+استخدم أسماء نطاقات مؤهّلة بالكامل لكائنات دفتر السجل الموجودة داخل مساحة بيانات. مثلًا، ينبغي أن يستخدم نطاق مشروع في مساحة البيانات العامة ما يلي:
 
 ```text
 apps.universal
@@ -615,8 +461,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -628,7 +473,7 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
@@ -641,9 +486,9 @@ alice@universal
 
 تظل حقول الحساب الصارمة تستخدم معرّفات حساب I105 المعيارية. تعامل مع الأسماء المستعارة بوصفها روابط مقروءة للبشر تُحل إلى معرّفات الحساب المعيارية.
 
-## 8. توفير مساحة بيانات جديدة {#_8-provision-a-new-dataspace}
+## 8. إنشاء مساحة بيانات جديدة {#_8-provision-a-new-dataspace}
 
-مساحة البيانات الجديدة هي تغيير في المشغّل والحوكمة. يمكن لنقطة النهاية العامة Torii API توجيه الحركة إلى مساحات البيانات المُكوّنة، لكنها سترفض الأسماء المستعارة لمساحات البيانات غير المعروفة.
+تتطلب مساحة بيانات جديدة تغييرًا من المشغّلين والحوكمة. يمكن لنقطة نهاية Torii العامة توجيه الحركة إلى مساحات البيانات المضبوطة، لكنها ترفض الأسماء المستعارة المجهولة لمساحات البيانات.
 
 قبل إعداد أي تغيير، قم بالتقاط الكتالوج الحالي المباشر:
 
@@ -659,15 +504,15 @@ curl -fsS https://taira.sora.org/status \
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-لا تقم بالترويج لاسم مستعار جديد ما لم تتم مراجعة معرف مسار التنفيذ، ومعرف مساحة البيانات، ومجموعة المحققين، والتسامح مع الأخطاء، والبيان الفني، وقواعد التوجيه، ومالك العمليات معًا. يمكن لحساب مستخدم عادي يملك الأذونات المطلوبة الحصول على نطاق وتأجيره SNS داخل مساحة بيانات موجودة من خلال مخطط الأسماء المستعار؛ ولا يمكنه إضافة مساحة بيانات عامة جديدة بأمان.
+لا تعتمد اسمًا مستعارًا جديدًا قبل مراجعة معرّف مسار التنفيذ ومعرّف مساحة البيانات ومجموعة المدققين وتحمل الأعطال والبيان وقواعد التوجيه والمسؤول التشغيلي معًا. يمكن لحساب مستخدم عادي ذي الأذونات المطلوبة الحصول على نطاق وإيجاره SNS داخل مساحة بيانات قائمة عبر مخطط الأسماء المستعارة؛ لكنه لا يستطيع إضافة مساحة بيانات عامة جديدة بأمان.
 
-للمساحة الخاصة أو المساحة التنظيمية للبيانات، قم بإعداد تغيير في الكتالوج مع:
+لمساحة بيانات خاصة أو مؤسسية، أعد تغييرًا في الكتالوج يتضمن:
 
-- اسم مستعار فريد لمساحة البيانات ورقم `id`
+- اسمًا مستعارًا فريدًا لمساحة البيانات ومعرّفًا رقميًا `id`
 - إدخال مسار تنفيذ مطابق أو تعيين مسار تنفيذ موجود
-- فضاء البيانات `fault_tolerance`
+- قيمة `fault_tolerance` لمساحة البيانات
 - قواعد التوجيه للتعليمات أو نطاقات الحساب التي يجب أن تصل إلى هناك
-- مستند فني لدليل الفضاء أو دليل تقني مكافئ أو دليل إطلاق، عندما يكشف فضاء البيانات عن قدرات UAID
+- بيانًا من دليل المساحات أو أدلة نشر مكافئة عندما تتيح مساحة البيانات قدرات UAID
 - الموافقة على الحوكمة للمصادق، والامتثال، وتسوية المعاملات المالية، وسياسة المراقبة
 
 يبدو جزء الإعدادات القابل للمراجعة هكذا:
@@ -684,23 +529,23 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments data space"
 ```
 
 يجب أن تشمل قبول المشغل هذه البوابات:
 
-- `iroha3d --sora --config <config.toml> --trace-config` يمرر تكوين العقدة المحلولة
+- `iroha3d --sora --config <config.toml> --check-config` يمرر تكوين العقدة المحلولة
 - يتم أرشفة البيان الفني المولَّد أو المراجع مع تجزئات وتواقيع تشفيرية
 - اختبارات الدخان تجتاز على Taira قبل أي ترقية لـ Minamoto
-- يعرض الكتالوج بعد التغيير `/status` مسار التنفيذ المقصود ومساحة البيانات
+- أن يُظهر كتالوج `/status` بعد التغيير مسار التنفيذ ومساحة البيانات المقصودين
 - `iroha app nexus lane-report --summary` لا يبلغ عن فقدان المستندات الفنية المطلوبة
 
 ```bash
@@ -709,12 +554,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-قم بترقية نفس مساحة البيانات إلى Minamoto فقط بعد اكتمال نشر Taira، واختبارات الدخان، والمراقبة، وأدلة الحوكمة.
+لا تنقل مساحة البيانات نفسها إلى Minamoto إلا بعد اكتمال النشر على Taira واختبارات التشغيل الأساسية والمراقبة وأدلة الحوكمة.
 
 ## صفحات ذات صلة {#related-pages}
 
 - [تثبيت Iroha 3](/ar/get-started/install-iroha.md)
 - [شغّل Iroha 3 عبر CLI](/ar/get-started/operate-iroha-via-cli.md)
-- [رسوم الراعي لمساحة بيانات خاصة](/ar/get-started/private-dataspace-fee-sponsor.md)
-- [Torii API نقاط النهاية](/ar/reference/torii-endpoints.md)
+- [رعاية رسوم مساحة بيانات خاصة](/ar/get-started/private-dataspace-fee-sponsor.md)
+- [نقاط نهاية Torii](/ar/reference/torii-endpoints.md)
 - [مرجع بدء البلوكشين](/ar/reference/genesis.md)

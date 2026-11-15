@@ -1,9 +1,9 @@
 ---
 translation_locale: az
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: 59147443b612bef0cdd1b7cf2124d168c692a9488d8c38f723187e5ae8d3ba65
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 
 outline: [2, 3]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-Şəbəkə həmkarının şəxsi açarı. O, `public_key`-a uyğun olmalıdır; konsensus doğrulayıcı şəbəkə həmkarları BLS-Normal açarlardan istifadə etməlidir.
+Qovşağın şəxsi açarı. `private_key` və yalnız sahibin girişinə açıq açar faylının yolu olan `private_key_file` seçimlərindən dəqiq birini konfiqurasiya edin. Açar `public_key` ilə uyğun gəlməlidir; konsensus təsdiqləyicisi olan qovşaqlar BLS-Normal açarlarından istifadə edir.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## blokçeyn genesis {#genesis}
+
+İlk və təkrar işə salınma dəqiq bir genezis etibar kökü mənbəyi tələb edir: `genesis.expected_hash` və ya `genesis.expected_hash_file`. Yaradılmış qovşaq konfiqurasiyaları ikinci variantdan istifadə edərək imzalanmış blokun yanındakı `genesis.expected_hash` faylını göstərir. Yaradılmış profili köçürərkən bu bağlanmanı qoruyun.
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-Tək sinxronizasiya mesajında göndərilə biləcək blokların sayı.
+Blok sinxronizasiyası yayımında paylanma sayı həddi: həmyaşıd qovşaq nümunələri və blok sinxronizasiyası yeniləmələri.
 
 <param-table type=number default-value=4 />
 
@@ -324,7 +326,7 @@ API_ADDRESS=0.0.0.0:8080
 
 ### `torii.max_content_len` {#param-torii-max-content-len}
 
-[Torii API son nöqtələr](/az/reference/torii-endpoints.md) tərəfindən qəbul edilən xam sorğu bədənindəki maksimum bayt sayı.
+[Torii son nöqtələrinin](/az/reference/torii-endpoints.md) qəbul etdiyi xam sorğu gövdəsində maksimum bayt sayı.
 
 Bu limit DOS hücumlarının qarşısını almaq üçün istifadə olunur.
 
@@ -430,12 +432,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip proqram təminatı icra mühiti yeniləməsi
-
-Bu parametr Torii operatorunun API son nöqtələri vasitəsilə proqram təminatı icra mühiti konfiqurasiyasının yenilənməsinə tabedir.
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 Əlavə olaraq təkmilləşdirilmiş qeyd filtrləri [`logger.level`](#param-logger-level). Hər bir hədəf üçün qeydiyyatın təfərrüat səviyyəsini fərdiləşdirməyə imkan verir.
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter` birlikdə işləyir [`logger.level`](#param-logger-level) və heç biri digərini üstələməz.
 
 Məsələn, əgər `logger.level` `INFO` olaraq təyin olunubsa və `logger.filter` `iroha_core=debug` olaraq təyin olunubsa, nəticədə yaranan filtr dəsti `info,iroha_core=debug` olacaq (yəni bütün modullar üçün `info`, `iroha_core` üçün `debug`).
-
-:::
-
-::: tip proqram təminatı icra mühiti yeniləməsi
-
-Bu parametr Torii operatorunun API son nöqtələri vasitəsilə proqram təminatı icra mühiti konfiqurasiyasının yenilənməsinə tabedir.
 
 :::
 
@@ -547,7 +537,7 @@ Kura ilkinləşdirmə rejimi. `strict` normal və standart rejimdir: node aktiv 
 
 `fast` tam başlanğıc auditi işin dayandırılma riskini yaratdıqda əməliyyat görünürlüğünü bərpa etmək üçün fövqəladə azalmış xidmət rejimidir. Bu, əvvəlcə `strict` tərəfindən ilkinləşdirilmiş yaddaş və dəqiq beş artefaktı ehtiva edən cari zaman nöqtəsində verilənlər baxışı istehsalı tələb edir: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito` və `snapshot.merkle.json`. Domenlə ayrılmış operator imzası elan edilmiş yükün kriptoqrafik xülasə dəyərini və məhdudlaşdırılmış texniki bəyannaməni bağlayır; Texniki manifest yükləmə uzunluğunu, zəncir/şəbəkə kimliyini, terminalın hündürlüyünü/həşini, SCCP siyasət kriptoqrafik həşini və başlanğıc-nəsil mövcudluğunu müəyyən edir. Fast, bootstrap soyunu rədd edir və davamlı Kura tərəfindən eyni dəqiq marker/say/uç sərhədini tələb edir. İlk buraxılış nodları məhz həmin beş artefakti qəbul edir və digər bütün artefakt sayı və ya fayl adı dəstlərini rədd edir.
 
-Fast həmin beş adı və metadata-nı siyahıya alır, yük və Merkle fayllarına bağlayır, lakin onların məzmununu oxumur, kriptoqrafik xəşləmir, ayırmır və ya deşifrə etmir. O, imzalanmış texniki manifestdən minimal World/Nexus yaradır, dəqiq Kura kriptoqrafik hash prefiksini yalnız-oxunur şəklində xəritələşdirir və zaman nöqtəsi məlumat baxışı World, blok-hash massivi, əməliyyat tarixi, törədilmiş indekslər və davamlı bərpa jurnallarını açmadan saxlayır. Merkle, tək protokol-standart və semantik zaman nöqtəsi verilənlər baxışı auditi, tarixi blok/sonluq/SCCP uzlaşdırması, Sumeragi aktiv-hündürlük bərpası, jurnalların birləşdirilməsi və sorğulanması, icra zolağı manifesti/uyğunluq mənbələri, Kura-sponsorlu SoraFS arxivlər, rekursiv saxlama uçotu və könüllü xidmət uyğunlaşdırıcıları təxirə salınmış qalır. Yerli əməliyyat qəbulu, təkliflər, səsvermə, tək protokol-standart yazılar və köməkçi istehsalçılar deaktiv edilmiş qalır. Kura özü yazıçı başlatma və davamlı mutasiyaları rədd edir; proqram təminatının emal iş axını və FASTPQ davamlılıq növbələri işi saxlamaq və ya kodlamaq əvəzinə dərhal rədd edir. Kura oxu APIs həmçinin təmir və davamlılıq-sinxronizasiyası davranışını deaktiv edir: müvəqqəti köməkçi qeydlər irəli deyil, çatışmayan icra zolağı artefaktları nəşr edilmir və irəliləyiş baryerləri fsynclanmır. Sumeragi və tranzaksiya şayiəsi işə salınmır. Torii yalnız sağlamlıq, canlılıq, hazırlıq, şəbəkə yoldaşı və konfiqurasiya əməliyyatlarını açır; API-versiya, vəziyyət, göstəricilər və bütün adi vəziyyət/tarix marşrutları mövcud deyil. Hazırlıq Strict restart edilənə qədər mövcud olmur.
+Fast həmin beş adı siyahıya alır və yük ilə Merkle fayllarını metaməlumat vasitəsilə bağlayır, lakin onların məzmununu oxumur, həşləmir, təhlil və ya dekodlaşdırmır. İmzalanmış manifestdən minimal World və SORA Nexus vəziyyəti qurur, dəqiq Kura həş prefiksini yalnız oxuma rejimində xəritələyir və anlıq görüntünün World hissəsini, blok həşləri massivini, əməliyyat tarixçəsini, törəmə indeksləri və davamlı bərpa jurnallarını açmır. Merkle, kanonik və semantik anlıq görüntü auditləri, tarixi blok/yekunluq/SCCP uzlaşdırması, Sumeragi aktiv hündürlük bərpası, birləşmə və sorğu jurnalları, zolaq manifesti və uyğunluq mənbələri, Kura əsaslı SoraFS arxivləri, rekursiv saxlama uçotu və məcburi olmayan xidmət uzlaşdırıcıları təxirə salınmış qalır. Yerli əməliyyat qəbulu, təkliflər, səsvermə, kanonik yazmalar və köməkçi istehsalçılar qeyri-aktiv qalır. Kura özü yazan prosesin başlamasını və davamlı dəyişiklikləri rədd edir; emal konveyeri və FASTPQ davamlı saxlama növbələri işi saxlamaq və ya kodlamaq əvəzinə dərhal rədd edir. Kura oxuma APIs interfeysləri də təmir və davamlı sinxronizasiya davranışını söndürür: müvəqqəti köməkçi fayllar əsas fayla çevrilmir, çatışmayan zolaq artefaktları yayımlanmır və irəliləyiş baryerlərində fsync icra olunmur. Sumeragi və əməliyyat yayımı başladılmır. Torii yalnız sağlamlıq, canlılıq, hazırlıq, həmyaşıd qovşaq və konfiqurasiya əməliyyatlarını təqdim edir; API versiyası, vəziyyət, metriklər və bütün adi vəziyyət/tarixçə marşrutları əlçatmaz qalır. Strict rejimində yenidən başladılanadək hazırlıq əlçatmaz qalır.
 
 `fast`-dan yalnız bir hadisə üçün istifadə edin. Xidmət sabit olduqda, node-u dayandırın, `strict`-i bərpa edin və yenidən başladın ki, bütün gecikdirilmiş yoxlamalar və indeks yenidənqurmaları istehsal davam etməzdən əvvəl işləsin. Sürətli rejim təxirə salınmış birləşdirmə jurnalını tələb etmir və tək protokol-standart saxlama yaratmır, təmir etmir, qısaldmır və ya idxal etmir; nəşr olunmamış sonluqlar və gözləyən əlavə bərpa mərhələləri oxunmadan və ya dəyişdirilmədən nəzərə alınmır, sonra isə Sərt bərpaya buraxılır. İdxal edilmiş yalnız hash-əsaslı zaman nöqtəsi məlumat baxışı xətləri hələ mövcud deyil. Əksik və ya etibarsız mövcud zaman nöqtəsi məlumat baxışı dərhal çatışmazlıq verir; Fast heç vaxt boş-dünya və ya tarixi təkrar qurmağa qayıtmır.
 
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` qovşağa məxsus yerli iştirak parametrlərini, imzalama materiallarının mühafizəsini, təhlükəsizlik qeydlərinin yollarını və sənədləşdirilmiş vaxt aşımı və sinxronizasiya əvəzləmələrini ehtiva edir. Konsensus rejimi, komitə quruluşu, kvorum, blok ölçüsü və əməliyyat hədləri imzalanmış genezisdən və təsdiqlənmiş vəziyyətdən gəlir. Nasazlıq yeritmə deterministik simulyatora aiddir.
 
-Yalnız təhlil rejimi üçün Sumeragi soft-fork işləmə yollarını sınamaq üçün keçid. Bu keçidi nəzarət olunan testlərdən kənarda söndürülmüş halda buraxın; işləyən istehsal şəbəkəsində onu dəyişmək şəbəkə iştirakçılarının konsensus davranışı barədə razılaşmamasına səbəb ola bilər.
+Dəstəklənən sahələr üçün [konfiqurasiya](/az/guide/configure/overview.md) və sabitlənmiş [konfiqurasiya arayışına](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md) baxın.
 
-<param-table type=bool default-value=false />
+## SORA Nexus atomik özəl hesablaşması {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` bir qovşaqda şifrələnmiş köməkçi məlumatın mühafizəsini konfiqurasiya edir. O, dəqiq iki yerli saxlama həddi ehtiva edir:
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`: saxlanılan şifrələnmiş hesablaşma qeydlərinin maksimum sayı.
+- `sidecar_max_total_bytes`: saxlanılan kanonik baytların maksimum sayı.
 
-:::
+Aktivləşmə, sübut profilləri, ödəniş hədləri, bitmə vaxtı və auditor siyasəti təsdiqlənmiş məxfilik siyasətindən gəlir. Qovşaq konfiqurasiyası həmin etibarlılıq qaydalarını aktivləşdirə və ya dəyişə bilməz.
 
-## Nexus Atomic Private maliyyə əməliyyatının hesablaşması {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` ayrıca `AtomicPrivateSettlementV1` yolunu idarə edir. O, standart olaraq söndürülüb. `enabled = true` təyin edildikdə `activation_height` də tələb olunur; zəncirdaxili imkan, bildiriş müddəti, sabit sübut profili və protokol qrupu/audit idarəetməsi aktiv deyilsə, qəbul prosesi təhlükəsiz şəkildə bağlı qalır.
-
-Əsas sərhədlər `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records` və `sidecar_max_total_bytes`-dir. `capsule_padding_classes_bytes` V1 dolğu siniflərinin sıx artan alt dəsti olmalıdır. `permitted_policy_versions` yalnız V1-ü qəbul edir.
-
-`max_capsule_bytes` tam `PrivateSettlementAuditCapsuleV1`-in tək protokol-standart Norito baytlarını ölçür, o cümlədən AAD, kriptoqrafik nonce dəyəri, şifrələnmiş mətn, vektor çərçivəsi və hər bir auditor tərəfindən qablaşdırılmış DEK sətri; bu yalnız şifrələnmiş mətn limiti deyil. Hər aktiv edilən kənar boşluğu sinfi ən azı `default_min_auditor_approvals` auditor üçün konservativ tam kapsul məlumat konteynerinə uyğun olmalıdır. Bu təsdiq parametri həmçinin tənzimlənən bir minimum səviyyədir: Torii daha aşağı `min_approvals` dəyərinə malik yeni qəbul edilmiş polisi rədd edir və tək protokol-standart bayt həddini aşan hər hansı faktiki kapsulu rədd edir.
-
-Bu parametrlərin istehsal mühitinin dəyişənini aktivləşdirməyi keçmək imkanı yoxdur. Tam konfiqurasiya nümunəsi və əməliyyat tələbləri üçün [Atomik Şəxsi Çarpaz Məlumatlar Məkanında maliyyə əməliyyatı hesablaşmasını icra et](/az/get-started/atomic-private-settlement) baxın. Sənədləşdirilmiş xarici buraxılış qapıları keçilməyincə yol istehsal üçün uyğun sayılmır.
+Mühafizə konfiqurasiyası və istismar tələbləri üçün [Məlumat məkanları arasında atomik özəl hesablaşmanı icra edin](/az/get-started/atomic-private-settlement.md) bölməsinə baxın. Komponentin tətbiq edilməsi istehsal mühitinə uyğunluğun təsdiqlənməsi demək deyil.
 
 ## nöqtə-vaxt məlumat baxışı {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Telemetriya {#telemetry}
 
-Telemetriya şəbəkə həmkarının diaqnostikasını xarici telemetriya yığıcısına ixrac edir. Bir şəbəkə həmkarının yığıcıya hesabat verməsi lazım olduqda həm `telemetry.name`, həm də `telemetry.url` qurun; telemetriya istifadə edilmədikdə bu bölməni buraxın.
-
-`name` və `url` cütləşdirilməlidir.
-
-Bütün `telemetry` bölməsi məcburi deyil.
-
-### `telemetry.name` {#param-telemetry-name}
-
-Telemetryada göstəriləcək düyünün adı.
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+Telemetriya həmyaşıd qovşağın diaqnostikasını xarici telemetriya toplayıcısına ixrac edir. Qovşaq toplayıcıya hesabat göndərməlidirsə, `telemetry.url` konfiqurasiya edin; toplayıcı istifadə olunmursa, bölməni buraxın. Təkrar cəhd vaxtları eyni məcburi olmayan cədvəldə konfiqurasiya olunur.
 
 ### `telemetry.url` {#param-telemetry-url}
 

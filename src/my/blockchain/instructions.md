@@ -1,14 +1,13 @@
 ---
 translation_locale: my
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha ညွှန်ကြားမှု လုပ်ငန်းများ {#iroha-special-instructions}
 
-[Iroha အလုပ်လုပ်ပုံ](/my/blockchain/iroha-explained) အကြောင်းပြောတဲ့အခါ ပြောခဲ့တာက Iroha ညွှန်ကြားမှု လုပ်ဆောင်ချက်တွေဟာ ကမ္ဘာ့အခြေအနေကို ပြောင်းလဲဖို့ တစ်ခုတည်းသောနည်းလမ်းပါ။ ဒီတော့ ဘယ်လို ညွှန်ပြချက်မျိုးလဲ။ `Register<Account>` နဲ့ `Mint<Numeric>` ဆိုတဲ့ ညွှန်ကြားချက်တွေကို ခင်ဗျားတို့ မြင်နိုင်ကြမှာပါ။
+[Iroha အလုပ်လုပ်ပုံ](/my/blockchain/iroha-explained) ကို ရှင်းပြစဉ် Iroha Special Instructions သည် world state ကို ပြင်ဆင်ရန် တစ်ခုတည်းသော နည်းလမ်းဖြစ်ကြောင်း ပြောခဲ့သည်။ ထို့ကြောင့် မည်သည့် အထူးညွှန်ကြားချက်များ ရှိသနည်း။ ဤသင်ခန်းစာရှိ ဘာသာစကားတစ်ခုစီအတွက် လမ်းညွှန်များကို ဖတ်ပြီးလျှင် `Register<Account>` နှင့် `Mint<Numeric>` ဟူသော ညွှန်ကြားချက်နှစ်ခုကို တွေ့ပြီးဖြစ်မည်။
 
 Iroha သင်ကြားမှု လုပ်ငန်းများ၏ အပြည့်အစုံစာရင်းကို ဖော်ပြပါသည်-
 
@@ -18,10 +17,10 @@ Iroha သင်ကြားမှု လုပ်ငန်းများ၏ အ
 |[Mint/Burn](#mint-burn) |Mint/burn ကိန်းဂဏန်းအရင်းအမြစ်များ (သို့) trigger ထပ်ကျော့ခြင်း။ |
 |[SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |blockchain object metadata ကို update လုပ်ပါ။ |
 |[SetParameter](#setparameter) |Chainwide parameter ကို သတ်မှတ်ပါ။ |
-|[ထောက်ပံ့မှု / ပြန်လည်သိမ်းဆည်းခြင်း](#grant-revoke) |ခွင့်ပြုချက်များနှင့် အခန်းကဏ္ဍများကို ပေးပါ (သို့) ဖယ်ရှားပါ|
+| [Grant/Revoke](#grant-revoke) | ခွင့်ပြုချက်များနှင့် role များကို ပေးအပ်ခြင်း သို့မဟုတ် ဖယ်ရှားခြင်း။ |
 |[လွှဲပြောင်းခြင်း](#transfer) |ပိုင်ဆိုင်မှု သို့မဟုတ် အရင်းအမြစ်တန်ဖိုး လွှဲပြောင်းခြင်း။ |
 |[ရင်းနှီးမြှုပ်နှံမှု (native escrow) နှင့် အရင်းအမြစ်ပိတ်ခြင်း](#native-escrow-and-asset-locks) |ပရိုတိုကောလစ် ထိန်းသိမ်းမှုမှာ ကိန်းဂဏန်းအရင်းအမြစ်တွေကို Lock လုပ်ပါ။|
-|[အက်တမ် ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း](#atomic-private-settlement) |Confidential protocol data groups နဲ့ atomic bundles တွေကို ထိန်းချုပ်ပါ။|
+| [အက်တမ်နည်းဖြင့် လျှို့ဝှက်ငွေရှင်းခြင်း](#atomic-private-settlement) | လျှို့ဝှက် pool များနှင့် အက်တမ် bundle များကို အုပ်ချုပ်စီမံသည်။ |
 |[ExecuteTrigger](#executetrigger) |trigger တွေကို လုပ်ဆောင်ပါ။ |
 |[Log/Custom/Upgrade](#other-instructions) |ဆော့ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင် အပြုအမူကို မှတ်တမ်းတင်ခြင်း၊ တိုးချဲ့ခြင်း သို့မဟုတ် အဆင့်မြှင့်ခြင်း။ |
 
@@ -31,18 +30,18 @@ Iroha ညွှန်ကြားမှု လုပ်ဆောင်ချက�
 
 ညွှန်ကြားချက်တစ်ခုစီအတွက် ဤညွှန်ကြားချက်ကို လုပ်ဆောင်နိုင်သော အရာဝတ္ထုစာရင်းရှိသည်။ ဥပမာ၊ လွှဲပြောင်းမှုဗားရှင်းများသည် ပိုင်ဆိုင်နိုင်သော blockchain လက်မှတ်ကြီးအရာဝတ္ထုများနှင့် နံပါတ်အရင်းအမြစ်များကို ဖုံးအုပ်ထားပြီး ထုတ်ဝေခြင်းသည် နံပါတ် အရင်းအမြစ်ကိုဖုံးအုပ်ထားကာ အကြိမ်ကြိမ်ဖြစ်ပေါ်စေသည်။
 
-တစ်ချို့ ညွှန်ကြားချက်တွေမှာ ရည်မှန်းချက်တစ်ခု သတ်မှတ်ဖို့ လိုအပ်ပါတယ်။ ဥပမာ၊ ပိုင်ဆိုင်မှုတွေကို လွှဲပြောင်းရင် ဘယ်အကောင့်ကို လွှဲပြောင်းနေလဲဆိုတာ အမြဲသတိပေးဖို့လိုတယ်။ အခြားတစ်ဖက်မှာ တစ်ခုခု မှတ်ပုံတင်တဲ့အခါ သင်လိုအပ်တာက မှတ်ပုံတင်ချင်တဲ့ အရာဝတ္ထုပါ။
+အချို့ ညွှန်ကြားချက်များအတွက် ဦးတည်ရာကို သတ်မှတ်ရသည်။ ဥပမာ ပိုင်ဆိုင်မှုများကို လွှဲပြောင်းလျှင် မည်သည့်အကောင့်သို့ လွှဲပြောင်းမည်ကို အမြဲသတ်မှတ်ရသည်။ တစ်ဖက်တွင် တစ်စုံတစ်ရာကို မှတ်ပုံတင်လျှင် မှတ်ပုံတင်လိုသော အရာဝတ္ထုသာ လိုအပ်သည်။
 
 |ညွှန်ကြားချက်|ပစ္စည်းများ |ရည်မှန်းချက် |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-|[EnsureAlias](#ensurealias) |သာမန်ဒိုမင်၊ ဒေတာနေရာ-အမည်များနှင့် အကောင့်-အမည်တပ်ဆင်ခြင်း |                      |
+| [EnsureAlias](#ensurealias) | ပုံမှန် domain၊ data space alias နှင့် အကောင့် alias ပြင်ဆင်တည်ဆောက်ခြင်း | |
 |[မှတ်ပုံတင်/မမှတ်ပုံတင်ခြင်း](#un-register) |အကောင့်များ၊ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ NFTs, အခန်းကဏ္ဍများ, trigger များ, ကွန်ရက်တူညီသူများ; ဒိုမင်ပယ်ဖျက်ခြင်း |                      |
 |[Mint/Burn](#mint-burn) |ကိန်းဂဏန်းအရင်းအမြစ်တွေ၊ အစပျိုးမှု ထပ်ခါထပ်ခါ |အကောင့်များ (သို့) trigger များ|
 |[SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[metadata များ](./metadata.md) ရှိသော အရာဝတ္ထုများ: ဒိုမင်များ၊ အကောင့်များ၊ အရင်းအမြစ်ဆိုင်ရာ အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ NFTs၊ RWAs၊ trigger များ |                      |
 |[SetParameter](#setparameter) |ကွင်းဆက် parameters |                      |
-|[ထောက်ပံ့မှု / ပြန်လည်သိမ်းဆည်းခြင်း](#grant-revoke) |[ကဏ္ဍများ၊ ခွင့်ပြုချက် လက်မှတ်များ](/my/blockchain/permissions.md) |အကောင့်များ သို့မဟုတ် အခန်းကဏ္ဍများ |
+| [Grant/Revoke](#grant-revoke) | [role များ၊ ခွင့်ပြုချက် token များ](/my/blockchain/permissions.md) | အကောင့်များ သို့မဟုတ် role များ |
 |[လွှဲပြောင်းခြင်း](#transfer) |ဒိုမင်များ၊ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်များ, ကိန်းဂဏန်းအရင်းအမြစ်များ NFTs |အကောင့်များ|
-|[ရင်းနှီးမြှုပ်နှံမှု (native escrow) နှင့် အရင်းအမြစ်ပိတ်ခြင်း](#native-escrow-and-asset-locks) |ကိန်းဂဏန်းအရ အရင်းအမြစ် အချုပ်အခြာများ၊ ရင်းနှီးမြှုပ်နှံမှု ပိတ်သိမ်းချက်များ၊ အမည်မသိ အချုပ်အခမဲ့ cryptographic commitment values များ |ဝယ်ယူသူတွေ၊ ခရီးသွားနေရာတွေ (သို့) အငြင်းပွားမှု ကွဲပြားမှု |
+| [မူလပံ့ပိုးထားသော escrow နှင့် ပိုင်ဆိုင်မှု lock များ](#native-escrow-and-asset-locks) | ကိန်းဂဏန်းပိုင်ဆိုင်မှု escrow များ၊ ပိုင်ဆိုင်မှု lock များ၊ အခြေအနေအလိုက် escrow များ | ဝယ်သူများ၊ ဦးတည်ရာများ သို့မဟုတ် အငြင်းပွားမှု ဖြေရှင်းရာတွင် ခွဲဝေပမာဏများ |
 |[အက်တမ် ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း](#atomic-private-settlement) |လမ်းကြောင်းကန့်သတ်ထားတဲ့ လျှို့ဝှက် ပရိုတိုကော ဒေတာအုပ်စုတွေ၊ မူဝါဒလည်ပတ်မှု၊ ပြီးဆုံးတဲ့ ဘက်လ်များနဲ့ ဖျက်သိမ်းရေး အမှတ်တံဆိပ်တွေပါ။|                      |
 |[ExecuteTrigger](#executetrigger) |trigger များ|                      |
 |[Log/Custom/Upgrade](#other-instructions) |မှတ်တမ်းများ၊ အကောင်အထည်ဖော်သူဆိုင်ရာ အသုံးဝင်ဝန်ဆောင်မှုများ၊ အကောင် အထည်ဖော်မှု အဆင့်မြှင့်တင်ခြင်းများ |                      |
@@ -53,23 +52,23 @@ ISI ကို ကြည့်ဖို့ အခြားနည်းလမ်�
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
 |အကောင့်|မှတ်ပုံတင်/မမှတ်ပုံတင်စာရင်းများ၊ လက်ခံရရှိမှုအရင်းအမြစ်များ၊ စာရင်း မီတာဒေတာများကို update လုပ်ခြင်း၊ ခွင့်ပြုချက်များ ပေးအပ်/ငြိမ်းသိမ်းခြင်းနှင့် အခန်းကဏ္ဍများ |
 | ဒိုမိန်း | ဒိုမိန်းဖွဲ့စည်းမှုကို သေချာစေခြင်း၊ ဒိုမိန်းများကို မှတ်ပုံတင်မှ ပယ်ဖျက်ခြင်း၊ ဒိုမိန်းပိုင်ဆိုင်မှုကို လွှဲပြောင်းခြင်း၊ ဒိုမိန်း မက်တာဒေတာကို ပြင်ဆင်ခြင်း |
-|အရင်းအမြစ် သတ်မှတ်ချက် |Register/unregister definitions, transfer ownership, update metadata  မှတ်ပုံတင်ခြင်း / မှတ်ပုံတင်မလုပ်ခြင်း|
+| ပိုင်ဆိုင်မှု သတ်မှတ်ချက် | သတ်မှတ်ချက်များကို မှတ်ပုံတင်ခြင်း/မှတ်ပုံတင်ပယ်ဖျက်ခြင်း၊ ပိုင်ဆိုင်မှု လွှဲပြောင်းခြင်း၊ metadata ပြင်ဆင်ခြင်း |
 |အရင်းအမြစ်များ|သံပုရာသီး / မီးရှို့မှု ကိန်းဂဏန်းအရေအတွက်၊ လွှဲပြောင်းမှု ကိန်း ဂဏန်း အရေအတွက် |
 |ဘဏ္ဍာရေး |ပေးပို့တဲ့ ငွေပေးချေမှုကို ဖွင့်၊ လက်ခံ၊ မှတ်သား၊ ထုတ်လွှတ်၊ ဖျက်သိမ်း၊ အငြင်းပွား၊ ဖြေရှင်း၊ ဆွဲထုတ်၊ ဒါမှမဟုတ် သက်တမ်းကုန်ဆုံးစေတဲ့ မူရင်း ထိန်းသိမ်းမှု မှတ်တမ်းများ|
 |NFT |register/unregister NFTs, transfer ownership, update metadata  မှတ်ပုံတင်ခြင်းမရှိ|
 |RWA |စာရင်းအင်း၊ လွှဲပြောင်းမှုအရေအတွက်၊ ထိန်းသိမ်း/လွှတ်တင်ခြင်း၊ အေးခဲခြင်း/အေးဆေးခြင်း၊ ပြန်လည်ဖြည့်ဆည်းခြင်း၊ ပေါင်းစပ်ခြင်း၊ မီတာဒေတာများနှင့် ထိန်းချုပ်ချက်များကို ပြင်ဆင်ခြင်း |
-|Trigger ကို|register/unregister, mint/burn trigger repetitions, execute trigger, update trigger metadata များကို မှတ်ပုံတင်ရန်|
-|ကမ္ဘာကြီး|Register/unregister network peers and roles, parameters set, executor ကို upgrade လုပ်ပေး |
+| Trigger | မှတ်ပုံတင်ခြင်း/မှတ်ပုံတင်ပယ်ဖျက်ခြင်း၊ trigger ထပ်ခါလုပ်ဆောင်နိုင်မှု အရေအတွက် တိုးခြင်း/လျှော့ခြင်း၊ trigger လုပ်ဆောင်ခြင်း၊ trigger metadata ပြင်ဆင်ခြင်း |
+| ကမ္ဘာလုံးဆိုင်ရာ | Peer များနှင့် role များကို မှတ်ပုံတင်ခြင်း/ပယ်ဖျက်ခြင်း၊ ပါရာမီတာများ သတ်မှတ်ခြင်း၊ executor ကို အဆင့်မြှင့်ခြင်း |
 
 ## CLI ဥပမာများ {#cli-examples}
 
-ဤစာမျက်နှာတွင်ပြထားသောဥပမာများသည် သင်သည် upstream Iroha လုပ်ငန်းခွင်မှ command များကို default ဒေသခံ client ဖွဲ့စည်းမှုနှင့်ဆန့်ကျင်၍ run လုပ်နေသည်ဟု ယူဆပါ
+ဤစာမျက်နှာရှိ ဥပမာများသည် upstream Iroha workspace မှ command များကို မူလ ဒေသတွင်း client ပြင်ဆင်သတ်မှတ်မှုဖြင့် လုပ်ဆောင်နေသည်ဟု ယူဆသည်။
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-`iroha` ဘိုင်နရီကို တပ်ဆင်ထားပါက `iroha --config ./defaults/client.toml` ကို အသုံးပြုပါ။ အောက်ပါ နေရာထိန်းကိရိယာတွေကို ကွန်ရက်ထဲက တန်ဖိုးတွေနဲ့ အစားထိုးပါ။
+`iroha` binary ကို ထည့်သွင်းထားပါက ၎င်းအစား `iroha --config ./defaults/client.toml` ကို သုံးပါ။ Transaction တင်သွင်းသော command များတွင် လက်မှတ်ထိုးသည့် အကောင့်ထံမှ အခကြေးငွေကောက်ခံသည့် `--fee-payer authority` ကိုလည်း ထည့်ပါ။ CLI သည် လက်မှတ်မထိုးမီ အခကြေးငွေအတိအကျကို တွက်ချက်ဖော်ပြသည်။ အောက်ပါ နေရာလွတ်အစားထိုးတန်ဖိုးများကို သင့်ကွန်ရက်၏ တန်ဖိုးများဖြင့် အစားထိုးပါ:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-အများပြည်သူ Taira testnet ကို ပစ်မှတ်ထားတဲ့အခါ Taira client configuration ကိုသုံးပါ။ အခွန်ပေးတဲ့ နမူနာတွေကို မလုပ်ခင် testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` အဖြစ် သိမ်းဆည်းပြီး testnet ဘ႑ာရေးဝန်ဆောင်မှုကနေ testnet XOR ကို တောင်းဆိုလိုက်ပါ။
+အများသုံး Taira testnet ကို အသုံးပြုသောအခါ Taira client ပြင်ဆင်သတ်မှတ်မှုကို သုံးပြီး [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ရှိ ကြိုတင်ပြင်ဆင်သည့် faucet လုပ်ငန်းစဉ်ဖြင့် ၎င်း၏ အကောင့်ကို ငွေဖြည့်ပါ။ အခကြေးငွေပေးရသော နမူနာများ မလုပ်ဆောင်မီ အခကြေးငွေသုံး ပိုင်ဆိုင်မှု၏ လက်ကျန်ကို မြင်ရကြောင်း စစ်ဆေးပါ:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-testnet မှ ရင်းနှီးမြှုပ်နှံထားသော အရင်းအမြစ်ကို မြင်နိုင်ပြီးနောက်၊ လိုအပ်တဲ့ ငွေကြေးဆိုင်ရာ ကုန်ကျစရိတ်အရင်းအမြစ် metadata ကို ချိတ်ဆက်၍ ငွေကြေးရေးဆွဲမှုများကို ရေးသားပါ။
+Taira ရေးသားမှုများတွင်လည်း `--fee-payer authority` ကို ရွေးချယ်ပြီး CLI သည် Taira ၏ အခကြေးငွေသုံး ပိုင်ဆိုင်မှုဖြင့် အခကြေးငွေကို တွက်ချက်ဖော်ပြသည်။ `gas_asset_id` ကဲ့သို့ အခကြေးငွေဆိုင်ရာ ကီးများကို transaction metadata အဖြစ် မထည့်ပါနှင့်။ Client က ၎င်းတို့ကို ငြင်းပယ်သည်:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` သည် ဒိုမင်များနှင့် ၎င်းတို့၏ SNS ငှားရမ်းမှုများကို ဖန်တီးရန်အတွက် ပုံမှန် ပထမအကြိမ် ထုတ်ဝေခြင်းလမ်းကြောင်းဖြစ်သည်။ ၎င်းသည် တိကျသော ဒေတာနေရာ၊ ပိုင်ရှင်၊ ငှားရန်သက်တမ်းကို ကြေညာချက်အရ ချည်နှောင်ထားသည်။ နောက်ပြီး လိုအပ်တဲ့အခြေအနေအားလုံးကို အက်တမ်နည်းဖြင့် ဖန်တီး (သို့) ပြင်ဆင်ပါ။ စစ်ဆေးထားတဲ့ `POST /v1/aliases/setup/plan` API အဆုံးမှတ် (သို့) ကိုက်ညီသော CLI အလုပ်ဖြစ်စဉ်ကို အသုံးပြုပါ။
+`EnsureAlias` သည် ပထမထုတ်ဝေမှုတွင် domain များနှင့် ၎င်းတို့၏ SNS ငှားရမ်းခွင့်များ ဖန်တီးရန် ပုံမှန်လမ်းကြောင်းဖြစ်သည်။ ၎င်းက data space အတိအကျ၊ ပိုင်ရှင်၊ ငှားရမ်းသက်တမ်းနှင့် quote စစ်ဆေးချက်တို့ကို ကြေညာသတ်မှတ်ကာ ချည်နှောင်ပြီး လိုအပ်သော အခြေအနေအားလုံးကို ခွဲမရသော လုပ်ဆောင်မှုတစ်ခုအဖြစ် ဖန်တီး သို့မဟုတ် ပြုပြင်သည်။ စစ်မှန်ကြောင်း အတည်ပြုထားသော `POST /v1/aliases/setup/plan` endpoint သို့မဟုတ် ကိုက်ညီသည့် CLI လုပ်ငန်းစဉ်ကို သုံးပါ:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -124,15 +121,15 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 မှတ်ပုံတင်ခြင်းနှင့် မမှတ်ပုံတင်ခြင်းသည် blockchain ပေါ်က အဖွဲ့အစည်းသစ်အား ID ပေးရန် အသုံးပြုသည့် ညွှန်ကြားချက်များဖြစ်သည်။
 
-မှတ်ပုံတင်လို့ရတဲ့ အရာတိုင်းဟာ `Registrable` နဲ့ `Identifiable` နှစ်ခုစလုံးပါ။ ဒါပေမဲ့ `Identifiable` ရှိသမျှဟာ `Registrable` မဟုတ်ဘူး။ အများစုဟာ တိုက်ရိုက်မှတ်ပုံတင်ခံရပေမဲ့ တချို့ကိစ္စတွေမှာ blockchain ထဲက ကိုယ်စားလှယ်မှုက သိသိသာသာ ပိုများတဲ့ ဒေတာတွေရှိပါတယ်။ လုံခြုံရေးနှင့် စွမ်းဆောင်ရည်ဆိုင်ရာ အကြောင်းပြချက်များအတွက် ကျွန်ုပ်တို့သည် ဤကဲ့သို့သော ဒေတာဖွဲ့စည်းမှု (ဥပမာ `NewAccount`) များအတွက် ဆောက်လုပ်သူများကို အသုံးပြုကြပြီး ကွန်ရက် peer မှတ်ပုံတင်တွင် ပိုင်ဆိုင်မှုကို သက်သေပြရန် သီးသန့် ညွှန်ကြားချက်တစ်ခုရှိသည်။ ပုံမှန်အားဖြင့် မှတ်ပုံတင်နိုင်သည့် အရာတိုင်းကိုလည်း မှတ်ပုံတင်ခြင်းမရှိနိုင်ပေ။ ဒါပေမဲ့ ဒါက ခက်ခဲပြီး မြန်ဆန်တဲ့ စည်းကမ်းမဟုတ်ပါ။
+မှတ်ပုံတင်နိုင်သော အရာတိုင်းသည် `Registrable` နှင့် `Identifiable` နှစ်ခုစလုံး ဖြစ်သော်လည်း `Identifiable` ဖြစ်တိုင်း `Registrable` မဖြစ်ပါ။ အများစုကို တိုက်ရိုက် မှတ်ပုံတင်သော်လည်း အချို့ကိစ္စများတွင် blockchain ပေါ်ရှိ ကိုယ်စားပြုဖွဲ့စည်းပုံ၌ ဒေတာ ပိုမိုများပြားသည်။ လုံခြုံရေးနှင့် စွမ်းဆောင်ရည်အတွက် ထိုဒေတာဖွဲ့စည်းပုံများ၌ builder များကို သုံးသည် (ဥပမာ `NewAccount`)။ Peer မှတ်ပုံတင်ခြင်းအတွက်လည်း ကီးပိုင်ဆိုင်ကြောင်း သက်သေပြသည့် သီးသန့်ညွှန်ကြားချက် ရှိသည်။ ယေဘုယျအားဖြင့် မှတ်ပုံတင်နိုင်သော အရာတိုင်းကို မှတ်ပုံတင်ပယ်ဖျက်နိုင်သော်လည်း ယင်းသည် ခြွင်းချက်မရှိသော စည်းမျဉ်း မဟုတ်ပါ။
 
-Account များ၊ Asset Definitions NFTs ၊ Network Peers, Roles နှင့် Trigger များကို မှတ်ပုံတင်နိုင်သည်။ Domain Setup အသုံးပြုသည် `EnsureAlias`; Raw `Register::Domain` အသုံးဝင်မှု load ကို genesis/bootstrap. network peer registration uses `RegisterPeerWithPop`, which carries a proof of possession for the network peer key. entity names on restrictions on entities names ကိုသတ်မှတ်ထားသော ကန့်သတ်ချက်များအကြောင်းသိရှိလိုပါက ကျွန်ုပ်တို့၏ [ညီလာခံအမည်ပေးခြင်း](/my/reference/naming.md) ကိုကြည့်ပါ။
+အကောင့်များ၊ ပိုင်ဆိုင်မှုသတ်မှတ်ချက်များ၊ NFTs များ၊ peer များ၊ role များနှင့် trigger များကို မှတ်ပုံတင်နိုင်သည်။ Domain တည်ဆောက်မှုသည် `EnsureAlias` ကို သုံးသည်။ `Register::Domain` payload အကြမ်းကို genesis သို့မဟုတ် ကနဦးတည်ဆောက်မှုအတွက်သာ သီးသန့်ထားသည်။ Peer မှတ်ပုံတင်မှုသည် peer ကီး ပိုင်ဆိုင်ကြောင်း အထောက်အထားပါသော `RegisterPeerWithPop` ကို သုံးသည်။ အရာဝတ္ထုအမည်များအပေါ် ကန့်သတ်ချက်များကို သိရှိရန် ကျွန်ုပ်တို့၏ [အမည်ပေး စည်းမျဉ်းများ](/my/reference/naming.md) ကို ကြည့်ပါ။
 
 RWA အပိုဒ်များကို သီးသန့် `RegisterRwa` ညွှန်ကြားချက်ဖြင့် ဖန်တီးထားသည်။ လက်ရှိကုဒ်တွင် `UnregisterRwa` ညွှန်ပြချက်ကို ဖော်ပြခြင်းမရှိပေ။ `RedeemRwa` ကို ကိုယ်စားပြုသည့် ပမာဏကို ဖျက်သိမ်းရန် အသုံးပြုပါ။
 
 ::: info
 
-[blockchain ဘလော့ဂ်](/my/guide/configure/genesis.md) ကို `genesis.json` မှာ ဘယ်လိုချမှတ်မလဲဆိုတာအပေါ်မှာ မူတည်ပြီး (အထူးသဖြင့် ခွင့်ပြုချက် လက်မှတ်မှတ်တွေ မှတ်ပုံတင်ထားမလား၊ မထားဘူးလား) အကောင့်တစ်ခုကို မှတ်ပုံတင်တဲ့ လုပ်ငန်းစဉ်ဟာ အရမ်းခြားနားနိုင်တာကို သတိပြုပါ။ ယေဘုယျအားဖြင့် ဒါကို ဒီလိုချုပ်ဆိုနိုင်ပါတယ်။
+`genesis.json` တွင် [genesis ဘလော့ခ်](/my/guide/configure/genesis.md) ကို မည်သို့ တည်ဆောက်မည်ဟူသော ဆုံးဖြတ်ချက်အပေါ် မူတည်၍၊ အထူးသဖြင့် ခွင့်ပြုချက် token များ မှတ်ပုံတင်ခြင်း ပါဝင်မပါဝင်အပေါ် မူတည်၍၊ အကောင့်မှတ်ပုံတင်သည့် လုပ်ငန်းစဉ်သည် အလွန်ကွာခြားနိုင်ကြောင်း သတိပြုပါ။ ယေဘုယျအားဖြင့် အောက်ပါအတိုင်း အကျဉ်းချုပ်နိုင်သည်။
 
 - အများပိုင် blockchain တစ်ခုမှာ ဘယ်သူမဆို အကောင့်တစ်ခုကို မှတ်ပုံတင်နိုင်သင့်ပါတယ်။
 - ပုဂ္ဂလိက blockchain တွင် အကောင့်များကို မှတ်ပုံတင်ရန်အတွက် ထူးခြားသော လုပ်ငန်းစဉ်တစ်ခုရှိနိုင်သည်။ သာမန်ပုဂ္ဂလိက Blockchain တွင်၊ ဆိုလိုသည်မှာ အကောင့်များမှတ်ပုံတင်ခြင်းအတွက် ထူးခြားတဲ့ လုပ်ငန်းစဉ်မရှိသည့် blockchain တွင် အခြားအကောင့်တစ်ခုကို မှတ်ပုံတင်ဖို့ အကောင့်တစ်ခုလိုအပ်သည်။
@@ -165,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 မှတ်ပုံတင်စာရင်းများနှင့် မှတ်ပုံတင်ခြင်းမရှိသော စာရင်းများ
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 မှတ်ပုံတင်ခြင်းနှင့် မမှတ်ပုံတင်ခြင်းဆိုင်ရာ အရင်းအမြစ်အနက်ကောက်ချက်များ
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,40 +198,40 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 မှတ်ပုံတင်ခြင်းနှင့် မမှတ်ပုံတင်ခြင်းဆိုင်ရာ အခန်းကဏ္ဍ:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 Register နှင့် unregister trigger များ။ Trigger မှတ်ပုံတင်သည် compiled IVM bytecode သို့မဟုတ် serialized ညွှန်ကြားချက်စာရင်းကိုလိုအပ်သည်။ ဤဥပမာသည် `Log` ညွှန်ပြချက်ကို CLI ဖြင့်တည်ဆောက်ပြီး trigger မှတ်ပုံတွင် pipes ကို:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
-Network peers တွေကို မှတ်ပုံတင်ပြီး မမှတ်ပုံတင်ပါ။ Generate ကို BLS သော့နဲ့ PoP နှင့်အတူ `kagami` သင့်မှာ မရှိသေးဘူးဆိုရင်-
+Peer များကို မှတ်ပုံတင်ခြင်းနှင့် မှတ်ပုံတင်ပယ်ဖျက်ခြင်း ပြုလုပ်ပါ။ BLS ကီးနှင့် PoP မရှိသေးလျှင် `kagami` ဖြင့် ထုတ်လုပ်ပါ။
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
@@ -241,14 +239,14 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
-## Mint/Burn {#mint-burn}
+## ပိုင်ဆိုင်မှု ထပ်မံထုတ်ဝေခြင်းနှင့် ဖျက်သိမ်းခြင်း {#mint-burn}
 
 ထုတ်ဝေခြင်းနှင့် ဖျက်ဆီးခြင်းသည် ကိန်းဂဏန်းအရင်းအမြစ်များကို ရည်ညွှန်းနိုင်ပြီး အကြိမ်ကြိမ်ပြုလုပ်မှု အနည်းအကျဉ်းရှိသည့် trigger များဖြစ်သည်။ asset တစ်ချို့ကို non-mintable အဖြစ်ကြေညာနိုင်သည်မှာ မှတ်ပုံတင်ပြီးနောက်တစ်ကြိမ်သာ ထုတ်ပြန်နိုင်ခြင်းဖြစ်သည်။
 
@@ -270,13 +268,13 @@ Blockchain အရင်းအမြစ်များကို ထုတ်ဝ�
 ကိန်းဂဏန်းအရင်းအမြစ်များကို ထုတ်ပေးခြင်းနှင့် ဖျက်ဆီးခြင်း၊
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 trigger repeat တွေကို ထုတ်ပေးပြီး ဖျက်ဆီးပေးပါ
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## လွှဲပြောင်းခြင်း {#transfer}
@@ -302,7 +300,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 ကိန်းဂဏန်းအရင်းအမြစ်များ လွှဲပြောင်းခြင်း
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,31 +311,31 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Transfer domain၊ asset definition နဲ့ NFT ပိုင်ဆိုင်မှု:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## Native Escrow နှင့် Asset Lock များ {#native-escrow-and-asset-locks}
 
-Native escrow ညွှန်ကြားချက်များသည် blockchain ledger ပရိုတိုကော ထိန်းသိမ်းမှုမှ စီမံခန့်ခွဲသော ကိန်းဂဏန်းအရင်းအမြစ်များကိုပိတ်ထားသည်။ ၎င်းတို့ကိုစျေးကွက်ပုံစံငွေကြေးဆောင်ရွက်မှုဖြေရှင်းရေး၊ ယေဘုယျအရင်းအမြစ်ကိုပိတ်ထားခြင်းနှင့်မည်မသိကာကွယ်ထားတဲ့ escrow စီးဆင်းမှုများအတွက် အသုံးပြုပါသည်။
+မူလပံ့ပိုးထားသော escrow ညွှန်ကြားချက်များသည် ကိန်းဂဏန်းပိုင်ဆိုင်မှုများကို လယ်ဂျာက စီမံခန့်ခွဲသော ပရိုတိုကော ထိန်းသိမ်းမှုတွင် lock လုပ်ထားသည်။ ၎င်းတို့ကို စျေးကွက်ပုံစံ ငွေစာရင်းရှင်းလင်းမှု၊ ယေဘုယျ ပိုင်ဆိုင်မှု lock များနှင့် သက်သေခံအတည်ပြုသူနှင့် ချိတ်ဆက်ထားသော အခြေအနေအလိုက် escrow များအတွက် အသုံးပြုသည်။
 
-စျေးကွက်အမှတ်တံဆိပ်သုံးစွဲမှု `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, နှင့် `ResolveEscrowDispute`. ယေဘုယျ အရင်းအမြစ်ပိတ်ခြင်း အသုံးပြုမှု `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, နှင့် `ExpireAssetLock`. Anonymous escrow ဟာ စျေးကွက်ရဲ့ သက်တမ်း စက်ဝန်းကို ပုံဖော်ပါတယ်။ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, နှင့် `ResolveAnonymousEscrowDispute`.
+စျေးကွက် escrow သည် `OpenAssetEscrow`၊ `AcceptAssetEscrow`၊ `MarkEscrowPaymentSent`၊ `ReleaseAssetEscrow`၊ `CancelAssetEscrow`၊ `OpenEscrowDispute` နှင့် `ResolveEscrowDispute` ကို အသုံးပြုသည်။ ယေဘုယျ ပိုင်ဆိုင်မှု lock များသည် `OpenAssetLock`၊ `DrawdownAssetLock`၊ `CancelAssetLock` နှင့် `ExpireAssetLock` ကို အသုံးပြုသည်။ အခြေအနေအလိုက် escrow သည် `OpenConditionalEscrow`၊ `AttestEscrowCondition` နှင့် `ExpireConditionalEscrow` ကို အသုံးပြုသည်။
 
-ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ ရိုက်နှိပ်ထားသော SDK builders သို့မဟုတ် serialized instruction payloads ကိုအသုံးပြုပြီး ဘဝပတ်လည် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက် [Native Asset Escrow](/my/blockchain/escrow.md) ကိုကြည့်ပါ။
+ဤ ISIs များမှာ လက်ရှိတွင်ပထမတန်းစား CLI commands မရှိပါ။ ရိုက်နှိပ်ထားသော SDK builders သို့မဟုတ် serialized instruction payloads ကိုအသုံးပြုပြီး ဘဝပတ်လည် အသေးစိတ်၊ ခွင့်ပြုချက်များ၊ မေးမြန်းမှုများ၊ အဖြစ်အပျက်များနှင့် Rust နမူနာများအတွက် [ပိုင်ဆိုင်မှုများကို စံညွှန်ကြားချက်ဖြင့် ကြားခံထိန်းသိမ်းခြင်း](/my/blockchain/escrow.md) ကိုကြည့်ပါ။
 
 ## Atomic ပုဂ္ဂလိက ဘဏ္ဍာရေး ငွေပေးချေမှု ဖြေရှင်းခြင်း {#atomic-private-settlement}
 
 ထိန်းချုပ်ထားတဲ့ အက်တမ်-ပုဂ္ဂလိက settlement ညွှန်ကြားချက်မိသားစုဟာ ပွင့်လင်းမြင်သာတဲ့ Native AMX ကနေ ခွဲခြားထားတယ်။ `ActivatePrivateSettlementPoolV1` ဟာ တည်းဖြတ်ထားတဲ့ အုပ်ချုပ်မှု ပရောဂျက်နဲ့ Single Protocol Standard origin cryptographic commitment တန်ဖိုးတွေကနေ လမ်းကြောင်းအချိုးအစားတစ်ခုရှိတဲ့ လျှို့ဝှက်ပရိုတိုကုတ်ဒေတာအုပ်စုတစ်ခုကို သတ်မှတ်ပါတယ်။ `FinalizeAtomicPrivateSettlementV1` ကော်မတီက အသိအမှတ်ပြုထားတဲ့ အစုတစ်ခုလုံးကို အက်တမ်နည်းနဲ့ အသုံးချပြီး `AbortAtomicPrivateSettlementV1` က ပံ့ပိုးသူက ခွင့်ပြုတဲ့ အများပြည်သူ terminal marker ကိုသာ ထုတ်ဝေပါတယ်။
 
-`RotatePrivateSettlementPoolPolicyV1` ဟာ ပုဂ္ဂလိကလွတ်လပ်ရေး အုပ်ချုပ်မှုအတွက် ကန့်သတ်ထားတာပါ။ ၎င်းဟာ လက်ရှိ အုပ်ချုပ်မှုရဲ့ တိကျတဲ့ cryptographic digest တန်ဖိုးကို လိုအပ်တယ်၊ လမ်းကြောင်း၊ ပရိုတိုကောဒေါင် ဒေတာအုပ်စု၊ အရင်းအမြစ် ချုပ်ဆိုထားတဲ့ cryptographic commitment တန်ဖိုး၊ ပြည်နယ် နယ်နိမိတ်၊ replay set တွေနဲ့ အဆုံးသတ် protocol ရလဒ်မှတ်တမ်းတွေကို ထိန်းသိမ်းတယ်။ အများပြည်သူ အပြန်အလှန် ပြန်လည်သုံးသပ်မှုကို တစ်ဆင့် တိုးတက်စေပြီး ပိုမိုသစ်တဲ့ စာရင်းစစ်ဆေးရေး ခလုတ်ခေတ်ကို သုံးပါတယ်။ လည်ပတ်မှုက ၎င်းရဲ့ ပါဝင်မှု အမြင့်မှာ တက်ကြွလာပြီး အလားတူ လမ်းကြောင်း/ရေကန်အတွက် ပရိုတိုကော ရလဒ် မှတ်တမ်းတစ်ခုနဲ့ ဒီအမြင့်ကို မျှဝေလို့မရပါ။ Public revision lineage သည် rotation restart-valid နှင့် exact-replay idempotent မတိုင်မီတွင် protocol ရလဒ်မှတ်တမ်းများကို ပြီးဆုံးစေသည်။ လေယာဉ်မောင်းနှင်မှုအတွင်းရှိ မူဝါဒဟောင်းအစုများပိတ်နိုင်ခြင်းမရှိပါ။ သယ်ဆောင်သူများသည် သိမ်းဆည်းထားသော kapsules များအတွက်ဟောင်း decryption key များကိုသိမ်းထားရမည်ဖြစ်သည် သို့မဟုတ် ဖျက်ဆီးရန်မတိုင်ခင် govern နှင့် test capsule ပြန်ထည့်သွင်းခြင်းကို ထိန်းချုပ်ရမည်ဖြစ်သည်။
+`RotatePrivateSettlementPoolPolicyV1` ကို ကိုယ်ရေးလုံခြုံမှုဆိုင်ရာ အုပ်ချုပ်မှုအတွက်သာ ကန့်သတ်ထားသည်။ ၎င်းသည် လက်ရှိ အုပ်ချုပ်မှု digest အတိအကျကို လိုအပ်ပြီး လမ်းကြောင်း၊ pool၊ ပိုင်ဆိုင်မှုချည်နှောင်မှု ကတိပြုတန်ဖိုး၊ အခြေအနေ frontier၊ ပြန်လည်လုပ်ဆောင်မှု အစုများနှင့် အပြီးသတ်ထားသော receipt များကို ထိန်းသိမ်းသည်။ အများမြင် revision ကို တစ်တိုးပြီး ပိုသစ်သော auditor ကီး epoch ကို သုံးသည်။ အစားထိုးမှုသည် ၎င်းပါဝင်သော ဘလော့ခ်အမြင့်တွင် အသက်ဝင်ပြီး တူညီသော လမ်းကြောင်း/pool အတွက် receipt နှင့် ထိုအမြင့်ကို မျှဝေနိုင်ပါ။ အများမြင် revision မျိုးဆက်မှတ်တမ်းကြောင့် အစားထိုးမှုမတိုင်မီ အပြီးသတ်ထားသော receipt များသည် ပြန်စတင်ပြီးနောက်လည်း မှန်ကန်နေကာ အတိအကျ ပြန်လည်လုပ်ဆောင်လျှင် ရလဒ်မပြောင်းပါ။ လုပ်ဆောင်ဆဲ မူဝါဒဟောင်း bundle များကို မလက်ခံဘဲ ပိတ်ပင်သည်။ အော်ပရေတာများသည် သိမ်းထားသော capsule များအတွက် စာဝှက်ဖြည်ကီးဟောင်းများကို ထိန်းသိမ်းရမည်၊ သို့မဟုတ် ထိုကီးများကို မဖျက်ဆီးမီ capsule များကို ကီးအသစ်ဖြင့် ပြန်ထုပ်ပိုးခြင်းအား အုပ်ချုပ်မှုအရ အတည်ပြုပြီး စမ်းသပ်ရမည်။
 
-လမ်းကြောင်းသည် အလိုအလျောက်ပိတ်ထားပြီး ထုတ်လုပ်မှု အရည်အသွေးမရှိပါ။ ဖွဲ့စည်းပုံ၊ ခွင့်ပြုချက် မူဝါဒ၊ စစ်ဆေးမှု၊ ပြန်လည်ထူထောင်ခြင်းနှင့် ဖြန့်ချိရေးလိုအပ်ချက်များအတွက် [Atomic Private Cross-Dataspace ဘဏ္ဍာရေး ငွေကြေးငွေပေးချေမှု Settlement ကို Run](/my/get-started/atomic-private-settlement) ကိုကြည့်ပါ။
+ဤလမ်းကြောင်းကို ပုံသေအားဖြင့် ပိတ်ထားပြီး ထုတ်လုပ်ရေးသုံး အရည်အချင်းစစ် အတည်ပြုမပြီးသေးပါ။ ပြင်ဆင်သတ်မှတ်မှု၊ authority၊ စာရင်းစစ်၊ ပြန်လည်ရယူမှုနှင့် ထုတ်ဝေမှု လိုအပ်ချက်များကို [Data Space များအကြား အက်တမ်သဘောရှိသော သီးသန့် ငွေစာရင်းရှင်းလင်းမှု လုပ်ဆောင်ခြင်း](/my/get-started/atomic-private-settlement) တွင် ကြည့်ပါ။
 
 ## ထောက်ပံ့မှု / ပြန်လည်သိမ်းဆည်းခြင်း {#grant-revoke}
 
@@ -348,34 +346,34 @@ Native escrow ညွှန်ကြားချက်များသည် block
 အကောင့်တစ်ခုပေါ်က အခန်းကဏ္ဍကို ထောက်ပံ့ပြီး ရုပ်သိမ်းခြင်း
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 ခွင့်ပြုချက် လက်မှတ်များအား ပေးအပ်ခြင်းနှင့် ပယ်ဖျက်ခြင်း။ ခွင့်ပြုမှု အမိန့်များတွင် ခွင့်ပြုချက်တွေ ရှိသည့် အရာဝတ္ထုကို ပုံမှန် input မှ ဖတ်ရှုနိုင်ပါသည်။
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 အခန်းကဏ္ဍတစ်ခုအတွက် ခွင့်ပြုချက်ပေးပြီး ရုပ်သိမ်းခြင်း:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +385,10 @@ Metadata `set` command တွေမှာ Standard input ကနေ JSON တန�
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +396,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -421,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 Standard input မှာ single parameter JSON object တစ်ခုကို ဖြတ်ပြီး parameter ကို သတ်မှတ်ပေးပါ
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ဒီညွှန်ကြားချက်ကို [trigger များ](./triggers.md) လုပ်ဖို့ အသုံးပြုတယ်။
 
-နိုင်ငံတကာ CLI trigger တွေကို မှတ်တမ်းတင်ပြီး trigger execution events ကို တိုက်ရိုက် subscribe လုပ်နိုင်ပါတယ် `execute trigger` ညွှန်ကြားချက်ကို ပေးပို့ဖို့ `ExecuteTrigger` ညွှန်ကြားချက်, serialized ကိုဖန်တီး `InstructionBox` (၁) SDK (သို့) အကောင်အထည်ဖော်ရေး ကိရိယာနဲ့ ရလာတဲ့ pass ကို JSON array မှတစ်ဆင့် `ledger transaction stdin`:
+CLI သည် ပုံသေ `execute` စစ်ထုတ်မှုဖြင့် မှတ်ပုံတင်ထားသော trigger အတွက် ကိုယ်တိုင်စတင်လုပ်ဆောင်မည့် `ExecuteTrigger` ညွှန်ကြားချက်ကို တင်သွင်းသည်။ လိုအပ်ပါက JSON argument များ ထည့်နိုင်ပြီး trigger လုပ်ဆောင်မှု ဖြစ်ရပ်များကိုလည်း စာရင်းသွင်းစောင့်ကြည့်နိုင်သည်:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## အခြားညွှန်ကြားချက်များ {#other-instructions}
@@ -452,21 +449,21 @@ Iroha သည် software execution environment နှင့် executor integrat
 `Log` ညွှန်ကြားချက်ကို ping အကူနဲ့တင်ပြပါ။
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 `InstructionBox` အဖြစ် custom executor ညွှန်ကြားချက်ကို တင်ပါ။ အသုံးဝင်ဝန်ဆောင်မှုပုံစံက executor-specific ဖြစ်သည်၊ ထို့ကြောင့် ညွှန်ပြချက်ကို ကိုက်ညီသော SDK သို့မဟုတ် executor tooling ဖြင့်ထုတ်လုပ်ပါ:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 IVM bytecode file တစ်ခုမှ အကောင်အထည်ဖော်သူကို အဆင့်မြှင့်တင်ပါ။
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

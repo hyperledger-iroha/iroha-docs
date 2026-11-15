@@ -5,7 +5,6 @@ translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb957
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # လက်တွေ့ကမ္ဘာဆိုင်ရာ အရင်းအမြစ်များ {#real-world-assets}
 
 Real-world assets (RWAs) သည်အပိုင်ဆိုင်မှု သို့မဟုတ် ထိန်းချုပ်မှုကိုကွင်းဆက်ပေါ်တွင် ခြေရာခံထားသောချိတ်ဆက်ပြင်ပအရင်းအမြစ်ပုံစံဖြစ်သည်။ Iroha တွင် RWA သည်ထုတ်လုပ်သည့်မှတ်ပုံတင်မှတ်တမ်း၊ ပိုင်ရှင်စာရင်း၊ အရေအတွက်တစ်ခု၊ စီးပွားရေးမီတာဒေတာများ၊ မူလနေရာနှင့်ရွေးချယ်စရာသက်တမ်းလည်ပတ်ရေးစက်ဝန်းထိန်းချုပ်မှုများရှိသည့် မှတ်ပုံတင် blockchain ledger များဖြစ်သည်။
@@ -66,7 +65,7 @@ RWA ID ရဲ့ စာသားပုံစံက-
 |`FreezeRwa` |သာမန်ပိုင်ရှင် လုပ်ငန်းတွေကို ပိတ်လိုက်ပါ Configured controller နဲ့ `freeze_enabled` လိုပါတယ်။ |
 |`UnfreezeRwa` |ပုံမှန်ပိုင်ရှင် လုပ်ငန်းတွေကို ပြန်လည်ဖွင့်ပေးပါ။ ကွန်ပြူတာ ထိန်းချုပ်ရေးစနစ်နဲ့ `freeze_enabled` ကို လိုအပ်ပါတယ်။ |
 |`RedeemRwa` |အရေအတွက်ကို လည်ပတ်မှုမှအမြဲတမ်း နှုတ်ယူပါ။ `redeem_enabled` မှန်တဲ့အခါ ပိုင်ရှင် (သို့) ထိန်းချုပ်သူက တင်ပြနိုင်ပါတယ်။ |
-|`MergeRwas` |တူညီတဲ့ နယ်ပယ်နဲ့ သီးခြားသတ်မှတ်ချက်ရှိတဲ့ မိဘအစုတွေကနေ ထုတ်ထားတဲ့ ကလေးအစုကို ပေါင်းစပ်ပါ။ |
+| `MergeRwas` | တူညီသော domain နှင့် သတ်မှတ်ချက်ရှိသည့် မူလအစုများ၏ ပမာဏများကို အသစ်ထုတ်လုပ်သော ဆင့်ပွားအစုတစ်ခုထဲသို့ ပေါင်းစည်းသည်။ |
 |`ForceTransferRwa` |Controller စီးဆင်းမှုတစ်ခုမှတစ်ဆင့် အရေအတွက်ကို ရွေ့ရှားပါ။ configured controller နှင့် `force_transfer_enabled` ကိုလိုအပ်သည်။ |
 |`SetRwaControls` |ပဲခူးထိန်းချုပ်ရေး မူဝါဒကို အစားထိုးပါ။ ပိုင်ရှင် (သို့) ထိန်းချုပ်သူ လိုအပ်တယ်။|
 |`SetKeyValue<Rwa>` / `RemoveKeyValue<Rwa>` |အစု metadata ကို update လုပ်ပါ။ ပိုင်ရှင် (သို့) ထိန်းချုပ်သူကို လိုအပ်တယ်။ အေးခဲတဲ့ အစုတွေက ထိန်းချုပ်သူလိုပါတယ်။ |
@@ -96,13 +95,13 @@ RWA ID ရဲ့ စာသားပုံစံက-
 }
 ```
 
-Controller အကောင့်များနှင့် Roles များသည် သက်ဆိုင်ရာ Boolean Flag များမှအခွင့်ပြုသောလုပ်ဆောင်ချက်များကိုသာဆောင်ရွက်နိုင်သည်။ လက်ရှိထိန်းချုပ်မှု အသုံးဝင်မှုတွင် Controller Identities နှင့် Operation Flag များပါဝင်သည်။ Transfer allow-lists နှင့် nested `transfers` စည်းမျဉ်းများသည်ဤအသုံးဝင်မှု၏အပြင်သို့ဖြစ်သည်။
+ထိန်းချုပ်သူ အကောင့်များနှင့် role များသည် သက်ဆိုင်ရာ boolean flag များက ဖွင့်ထားသော လုပ်ဆောင်မှုများကိုသာ ဆောင်ရွက်နိုင်သည်။ လက်ရှိ ထိန်းချုပ်မှု payload တွင် ထိန်းချုပ်သူ အထောက်အထားများနှင့် လုပ်ဆောင်မှု flag များ ပါဝင်သည်။ လွှဲပြောင်းခွင့်ပြုစာရင်းများနှင့် အတွင်းထပ်ထားသော `transfers` စည်းမျဉ်းများသည် ဤ payload တွင် မပါဝင်ပါ။
 
 ## မေးမြန်းချက်များ၊ ဖြစ်ရပ်များနှင့် APIs {#queries-events-and-apis}
 
 အသုံးပြုခြင်း [`FindRwas`](/my/reference/queries.md#assets-nfts-and-rwas) မှတ်ပုံတင်ခြင်း RWA တိုက်ရိုက် update တွေလိုတဲ့ Application တွေက subscribe လုပ်လို့ရပါတယ်။ [`Rwa` ဒေတာဖြစ်ရပ်များ](/my/blockchain/filters.md#data-event-filters) ဖန်တီး၊ ပိုင်ရှင်ပြောင်း၊ ခွဲ၊ ပေါင်းစပ်၊ ပြန်လည်ဝယ်၊ အေးခဲ၊ မအေးခဲ ကျင်းပ၊ ထုတ်လွှတ်ခြင်း၊ အင်အားလွှဲပြောင်းခြင်း၊ ထိန်းချုပ်မှု ပြောင်းလဲခြင်းနှင့် မီတာဒေတာဖြစ်ရပ်များ။
 
-Torii ကွင်းဆက်အခြေအနေလမ်းကြောင်းများကို ဖေါ်ပြထားသည် `/v1/rwas` နှင့် `/v1/rwas/query`, ဒါ့အပြင် စူးစမ်းရှာဖွေရေးလမ်းကြောင်းတွေလည်း ရှိပါတယ်။ `/v1/explorer/rwas` နှင့် `/v1/explorer/rwas/{rwa_id}` ဒီလမ်းကြောင်းမိသားစုကို ဖွင့်ထားတဲ့အခါ Generated Client တွေက Live [`/openapi.json`](/my/reference/torii-endpoints.md#common-endpoints) node တစ်ခုက ဖော်ပြတဲ့ တိကျတဲ့ တုံ့ပြန်မှုပုံစံအတွက် စာရွက်စာတမ်းပါ။
+Torii သည် `/v1/rwas` နှင့် `/v1/rwas/query` ကဲ့သို့ ချိန်းအခြေအနေ လမ်းကြောင်းများကို ဖော်ပြသည်။ သက်ဆိုင်ရာ လမ်းကြောင်းအစုကို ဖွင့်ထားလျှင် `/v1/explorer/rwas` နှင့် `/v1/explorer/rwas/{rwa_id}` ကဲ့သို့ explorer လမ်းကြောင်းများကိုလည်း ဖော်ပြသည်။ ထုတ်လုပ်ထားသော client များသည် နိုဒ်က ဖော်ပြသော တုံ့ပြန်ချက်ပုံစံ အတိအကျအတွက် လက်ရှိနိုဒ်၏ [`/openapi.json`](/my/reference/torii-endpoints.md#common-endpoints) စာတမ်းကို ဦးစားပေးသင့်သည်။
 
 ### Taira တွင် ဤလုပ်ငန်းစဉ်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
@@ -148,7 +147,7 @@ for path in rwa_paths:
 
 ### Warehouse Protocol ရလဒ် မှတ်တမ်းကို မှတ်ပုံတင်ပါ။ {#register-a-warehouse-receipt}
 
-လုပ်ငန်းဆောင်ရွက်မှုတစ်ခုဟာ လက်မှတ်ထိုးထားတဲ့ ငွေပေးချေမှုတစ်ခု ဖြစ်လာတဲ့အခါ မူကြမ်းကို အသုံးပြုပါ။ စီးပွားရေးပရိုတိုကော ရလဒ် မှတ်တမ်းနံပါတ်သည် `primary_reference` သို့သွားပြီး ငွေပေးချေးမှု ပြီးဆုံးပြီးနောက် blockchain ledger ID ကို ဖန်တီးသည်။
+လုပ်ငန်းလုပ်ဆောင်ချက်တစ်ခုကို လက်မှတ်ထိုးထားသော transaction တစ်ခုအဖြစ် ပြုလုပ်လိုလျှင် မူကြမ်းကို သုံးပါ။ လုပ်ငန်းပြေစာနံပါတ်ကို `primary_reference` တွင် ထည့်ပြီး transaction commit ဖြစ်ပြီးနောက် လယ်ဂျာသတ်မှတ်နံပါတ်ကို ထုတ်ပေးသည်။
 
 ```python
 from iroha_python import TransactionConfig, TransactionDraft
@@ -327,7 +326,7 @@ client.submit_transaction_envelope_and_wait(envelope)
 
 ### ငွေကြေးပေးချေမှု {#invoice-receivable}
 
-ငွေပေးချေမှု စာရင်းကို RWA စာရင်းနံပါတ်ကို ထည့်သွင်းထားခြင်းဖြင့် `primary_reference` မှတ်ပုံတင်ပြီးနောက် ထုတ်ပေးထားတဲ့ ID ကို လွှဲပြောင်းဖို့နဲ့ ပြန်ဆပ်ဖို့ သုံးပါ။
+ပြေစာနံပါတ်ကို `primary_reference` နှင့် metadata တွင် သိမ်းဆည်း၍ ပြေစာတစ်ခုကို RWA အစုအဖြစ် ကိုယ်စားပြုပါ။ မှတ်ပုံတင်ပြီးနောက် လွှဲပြောင်းခြင်းနှင့် ပြန်လည်ရွေးယူခြင်းအတွက် ထုတ်လုပ်ထားသော ID ကို သုံးပါ။
 
 ```python
 draft = TransactionDraft(
@@ -363,7 +362,7 @@ envelope = draft.sign_with_keypair(alice_pair)
 client.submit_transaction_envelope_and_wait(envelope)
 ```
 
-ငွေကြေးပေးချေမှု (သို့) ပေးချေမှု ရှိပါက ထုတ်လုပ်ထားသော စာရင်းအင်း ID ကို အသုံးပြုပါ။
+ရရန်ငွေကို ငွေကြေးထောက်ပံ့ပြီး သို့မဟုတ် ပေးချေပြီးလျှင် ထုတ်လုပ်ထားသော ပြေစာအစု ID ကို သုံးပါ။
 
 ```python
 invoice_lot_id = (
@@ -457,5 +456,5 @@ Python ငွေပေးချေမှု အပြည့်အဝအတွက
 - [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)
 - [Iroha သင်ကြားမှု လုပ်ငန်းများ](/my/blockchain/instructions.md)
-- [မေးခွန်းများ](/my/reference/queries.md#assets-nfts-and-rwas)
+- [Query များ](/my/reference/queries.md#assets-nfts-and-rwas)
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md#app-and-sora-route-families)

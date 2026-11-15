@@ -1,26 +1,25 @@
 ---
 translation_locale: my
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ဒိုမင်များ {#domains}
 
-Domain တွေကို `World` မှာ မှတ်ပုံတင်ထားတဲ့ Name Spaces လို့ခေါ်ပါတယ်။ လက်ရှိ Iroha 3 ဒေတာမော်ဒယ်မှာ domain တစ်ခုဟာ ၎င်းရဲ့ မူလ data space ကနေ သတ်မှတ်ထားတာပါ။ ဒီတော့ Single Protocol Standard Identifier ကတော့:
+Domain များသည် `World` တွင် မှတ်ပုံတင်ထားသော အမည်ရှိ namespace များဖြစ်သည်။ လက်ရှိ Iroha 3 ဒေတာမော်ဒယ်တွင် domain ၏ အမည်အပြည့်အစုံကို ၎င်း၏ မိခင် data space ဖြင့် သတ်မှတ်သောကြောင့် စံ identifier သည်:
 
 ```text
 domain.dataspace
 ```
 
-ဥပမာ `payments.universal` သည် `payments` ဒေတာနေရာအတွင်းရှိ `universal` နယ်ပယ်ကို အမည်ပေးသည်။
+ဥပမာ `payments.universal` သည် `universal` data space အတွင်းရှိ `payments` domain ကို အမည်ပေးထားသည်။
 
 ## ဖွဲ့စည်းပုံ {#structure}
 
 မှတ်ပုံတင်ထားသော `Domain` တွင်:
 
-- `id`: ဒေတာနေရာအတွက် အရည်အချင်းပြည့်မီသော `DomainId`
+- `id`: data space ဖြင့် အမည်အပြည့်အစုံ သတ်မှတ်ထားသော `DomainId`
 - `logo`: ဒိုမင်လောဂိုအတွက် ရွေးချယ်စရာ `SoraFS` URI။
 - `metadata`: key value ကို အလိုလို metadata လုပ်ပါ။
 - `owned_by`: domain ကိုပိုင်ဆိုင်သူစာရင်း၊ ပုံမှန်အားဖြင့် domain ကိုမှတ်ပုံတင်သူစာရင်း
@@ -29,7 +28,7 @@ Domain တစ်ခုကို ရုပ်လုံးဖေါ်ဖို့
 
 ## မှတ်ပုံတင်ခြင်း {#registration}
 
-သာမန်ဒိုမင်ဖန်တီးမှုသည် ကြေညာချက် alias setup flow ကိုအသုံးပြုသည်။ ဤသည်မှာ SNS ငှားရမ်းစာချုပ်၊ ပိုင်ရှင်စွမ်းဆောင်ရည်များ၊ အခွန်စျေးအတည်ပြုစောင့်ရှောက်ရေးနှင့် ဒိုမင်တန်းကို အက်တမ် `EnsureAlias` ငွေပေးချေမှုတစ်ခုတည်းတွင် ထိန်းသိမ်းထားပါသည်။ `Register::Domain` သည် genesis/bootstrap မျက်နှာပြင်တစ်ခုဖြစ်နေဆဲဖြစ်ပြီး `ledger domain` command တွင် `register` subcommand မရှိပါ။
+ပုံမှန် domain ဖန်တီးမှုသည် လိုချင်သောရလဒ်ကို ကြေညာသတ်မှတ်သည့် alias တည်ဆောက်မှု လုပ်ငန်းစဉ်ကို သုံးသည်။ ဤနည်းဖြင့် SNS အငှားခွင့်၊ ပိုင်ရှင်၏ လုပ်ပိုင်ခွင့်များ၊ quote အကာအကွယ်နှင့် domain မှတ်တမ်းတို့ကို ခွဲခြားမရသော `EnsureAlias` transaction တစ်ခုတည်းတွင် ထိန်းသိမ်းထားသည်။ `Register::Domain` သည် genesis သို့မဟုတ် ကနဦးတည်ဆောက်မှုအတွက်သာ ကျန်ရှိပြီး `ledger domain` command တွင် `register` command ခွဲ မရှိပါ။
 
 SDK (သို့) Onboarding ဝန်ဆောင်မှုတစ်ခုနဲ့ လျှို့ဝှက်ချက်မဲ့ `AliasSetupPlanRequestV1` ရည်ရွယ်ချက်ကို ဖန်တီးပြီး CLI အစီအစဉ်ကို live state နဲ့ ဆန့်ကျင်ပြီး တိကျတဲ့ အစီအစဉ်ကို တင်ပြပါ။
 
@@ -39,15 +38,15 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-ရည်ရွယ်ချက်ကို ဖော်ထုတ် `payments.universal`, ၎င်းရဲ့ ကိန်းဂဏန်း ဒေတာနေရာ၊ Single Protocol Standard I105 ပိုင်ရှင်၊ ငှားရမ်းဝယ်ယူမှု သက်တမ်းနှင့် လက်ရှိ မူဝါဒ/ပေးချေမှုခများ-စျေးနှုန်း အတည်ပြုစောင့်ရှောက်သူ။ စီမံကိန်းဆွဲသူ API အဆုံးသတ်မှတ်ချက်က `POST /v1/aliases/setup/plan`; ပြန်ပို့တဲ့ အစီအစဉ်က ချုပ်ဆက်၊ ငွေပေးချေမှု ခွင့်ပြုချက်နဲ့ ချည်နှောင်နေတာပါ။ အမည်၊ blockchain ledger အခြေအနေနဲ့ နောက်ဆုံးရက်။ Domain ကိုဖယ်ရှားခြင်းသည် [`Unregister`](/my/blockchain/instructions.md#un-register).
+ရည်ရွယ်ချက်တွင် `payments.universal`၊ ၎င်း၏ ကိန်းဂဏန်း data space၊ စံ I105 ပိုင်ရှင်၊ ငှားရမ်းခွင့်ရယူမည့် သက်တမ်းနှင့် လက်ရှိ မူဝါဒ/ငွေပေးချေမှု quote စစ်ဆေးချက်တို့ကို သတ်မှတ်သည်။ အစီအစဉ်ရေးဆွဲသည့် endpoint သည် `POST /v1/aliases/setup/plan` ဖြစ်ပြီး ပြန်ပေးသော အစီအစဉ်ကို ချိန်း၊ authority၊ အခြေအနေနှင့် နောက်ဆုံးသတ်မှတ်အချိန်တို့နှင့် ချည်နှောင်ထားသည်။ Domain ဖယ်ရှားခြင်းတွင် [`Unregister`](/my/blockchain/instructions.md#un-register) ကို ဆက်လက်အသုံးပြုသည်။
 
-Domain တစ်ခုကို ဖန်တီးရန် (သို့) ဖယ်ရှားရန်အတွက် Active software execution environment validator ကို အသုံးပြုပြီး Domain metadata တွေကို update လုပ်နိုင်ပါတယ်။ [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) ခွင့်ပြုချက်ပေးသူက ဒီဒိုမင်ကို ပြင်ဆင်ဖို့ ခွင့်ပြုချက်ကိုရတဲ့အခါမှာ
+Domain တစ်ခုကို ဖန်တီးခြင်း သို့မဟုတ် ဖယ်ရှားခြင်းအတွက် လက်ရှိ runtime ၏ စစ်ဆေးသူ အရ သင့်လျော်သော domain စီမံခန့်ခွဲမှု ခွင့်ပြုချက် လိုအပ်သည်။ Authority အကောင့်တွင် ထို domain ကို ပြင်ဆင်ခွင့်ရှိလျှင် domain metadata ကို [`SetKeyValue` နှင့် `RemoveKeyValue`](/my/blockchain/instructions.md#setkeyvalue-removekeyvalue) ဖြင့် ပြင်ဆင်နိုင်သည်။
 
 ## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-အများပြည်သူ အကောင်အထည်ဖော်မှုလမ်းကြောင်းစာရင်းကို ဒေတာနေရာ အမည်မဲ့များသို့ ပြန်ညွှန်းပါ:
+အများသုံး lane ကတ်တလောက်ကို data space alias များနှင့် ပြန်လည်ချိတ်ဆက်ဖော်ပြပါ:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-App တစ်ခုမှာ domain ရှိမရှိ စစ်ဆေးဖို့ ပထမအမိန့်ကို အသုံးပြုပါ။ ဒေတာနေရာတစ်ခုဟာ အများပြည်သူ၊ ကန့်သတ်ထားတယ်၊ ဒါမှမဟုတ် core execution lane နောက်ကျနေလားဆိုတာ အတည်ပြုဖို့ အကောင်အထည်ဖော်လမ်းကြောင်းစာရင်းကို သုံးပါ။
+အက်ပ်က domain ရှိမရှိ စစ်ဆေးလိုသည့်အခါ ပထမ command ကို သုံးပါ။ Data space နှင့် ဆက်စပ်သော lane များ၊ lane တစ်ခုစီ၏ အများပြည်သူ သို့မဟုတ် ကန့်သတ်ထားသော မြင်နိုင်မှုနှင့် ပင်မ lane နှင့် နှိုင်းယှဉ်သော ထပ်တူပြုမှု အခြေအနေတို့ကို စစ်ဆေးရန် lane ကတ်တလောက်ကို သုံးပါ။
 
-Taira မှာမကြိုးစားခင် testnet ဘဏ္ဍာရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` အဖြစ် သိမ်းဆည်းပြီး အများပြည်သူ testnet ဘဏ်ငွေပေးချေမှု ဝန်ဆောင်မှုမှတစ်ဆင့် cryptographic လက်မှတ်ထိုးမှုကို ဘဏ္ဍာပြုပြီး အခွန်ဒေတာများကို ချိတ်ဆက်ပါ:
+Domain ပြင်ဆင်တည်ဆောက်ခြင်းသည် အခကြေးငွေပေးရသော ရေးသားမှုဖြစ်သည်။ Taira တွင် မစမ်းသပ်မီ [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ရှိ ကြိုတင်ပြင်ဆင်သည့် faucet လုပ်ငန်းစဉ်ဖြင့် လက်မှတ်ထိုးသူကို ငွေဖြည့်ပြီး အခကြေးငွေပေးသူကို တိတိကျကျ သတ်မှတ်ကာ အစီအစဉ်ကို အကောင်အထည်ဖော်ပါ။ CLI သည် လက်မှတ်မထိုးမီ အခကြေးငွေအတိအကျကို တွက်ချက်ဖော်ပြသည်:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # רשיונות {#permissions}
 
 החשבונות זקוקים לטוגנים של רשות עבור פעולות שונות ב-blockchain, לדוגמה, כדי להנפיק או לשרוף נכסים .
@@ -56,7 +55,7 @@ translation_engine: nllb-200-ct2
 
 ### רשום תפקיד חדש {#register-a-new-role}
 
-בואו נרשם תפקיד חדש, שכאשר יוענק, יאפשר לחשבון אחר גישה לתנתונים [](/he/blockchain/metadata.md) בחשבון של Mouse:
+נרשום תפקיד חדש. הענקתו לחשבון אחר תיתן לאותו חשבון גישה ל[מטא־נתונים](/he/blockchain/metadata.md) בחשבון של Mouse.
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -73,23 +72,29 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## מדדני אישור {#permission-validators}
 
-הרשיונות קיימות כך שרק חשבונות עם סימן הרשיון הנדרש יכולים לבצע פעולה מוגנת. המפעיל המקובל בודק רשיונות במהלך ההוראה, שאילתת, וביצוע הביטוי.
+הרשאות קיימות כדי שרק חשבונות שמחזיקים באסימון ההרשאה הנדרש יוכלו לבצע פעולה מוגנת. המבצע המוגדר כברירת מחדל בודק הרשאות במהלך ביצוע עסקאות והוראות ובמהלך אימות שאילתות.
 
-משטחי ה־validator הרגילים מקובצים לפי תחום בספר החשבונות:
+ממשק המאמת המוגדר כברירת מחדל מקובץ לפי תחומים בספר החשבונות:
 
 - ניהול צמתים
 - תחומים וחשבות
 - נכסים, NFTs, ושכרות
 - טריגרים
 - תפקידים וזכויות
-- מבצע/זמן הפעלה, ראיות, גשרים ומודלים SORA/Nexus
+- מנוע הביצוע/סביבת הריצה, הוכחות, גשרים ומודולים של SORA Nexus
 
 רשימת הסימנים המדויקת נתמכת במקור ב [תייחסות סימני הרשות ](/he/reference/permissions.md).
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 בדיקות רשיונות מבוקשות על ידי המבצע הפעיל. המבצע המקובל מספק את אישורני הרשיונות המובנים והגדרות של הסימן, ורשת יכולה לשנות מדיניות על-ידי עדכון למבצע שהיא משתמשת בו.
 
-מאמתים מספקים פסקי הרשאה. מאמת יכול להתיר פעולה, לדחות אותה בצירוף סיבה או להימנע אם הפעולה מחוץ לתחומו. המכריע שנבחר משלב פסקי דין אלה כדי לקבוע אם ההוראה, השאילתה או הביטוי יכולים להמשיך.
+המבצע מתיר פעולה או דוחה אותה עם סיבת `ValidationFail`. הוראה שנדחתה גורמת לדחיית העסקה שלה, ושאילתה שנדחתה מחזירה את השגיאה למתקשר.
 
 ## שאילתות תומכות {#supported-queries}
 

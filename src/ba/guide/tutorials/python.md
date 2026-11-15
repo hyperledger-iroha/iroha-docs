@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -29,7 +29,7 @@ translation_engine: nllb-200-ct2
 python -m pip install /path/to/iroha_python-*.whl
 ```
 
-Әгәр проект upstream эш киңлеген туранан-тура ҡулланһа, Python бәйлелектәрен урынлаштырығыҙ һәм `Instruction`, `TransactionDraft`, ҡултамғалау, крипто, SoraFS native ярҙамсылары, GPU ярҙамсылары йәки Connect frame codec-тары ҡулланылған миҫалдарҙы эшләтер алдынан native киңәйтеүҙе төҙөгөҙ. Upstream `python/iroha_python/README.md`-тағы build командаһын ҡулланығыҙ, һуңынан native экспорттарҙың йөкләнеүен тикшерегеҙ:
+Проектығыҙ төп репозиторийҙың эш киңлеген туранан-тура ҡулланһа, `Instruction`, `TransactionDraft`, ҡул ҡуйыу, криптография, SoraFS-тың натив ярҙамсылары, GPU ярҙамсылары йәки Connect кадр кодектары ҡулланылған миҫалдарҙы эшләтер алдынан Python бәйлелектәрен урынлаштырығыҙ һәм натив киңәйтеүҙе төҙөгөҙ. Төп репозиторийҙың `python/iroha_python/README.md` файлындағы төҙөү командаһын ҡулланығыҙ, һуңынан натив экспорттарҙың йөкләнеүен тикшерегеҙ:
 
 ```bash
 cd python/iroha_python
@@ -56,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -86,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -104,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -173,20 +173,16 @@ for limit in fee_quote["intent"]["value"]["charge_limits"]:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-faucet баланс тикшереүендә ҡулланыу өсөн конкрет `asset_id` ҡайтара. иҫәбенә туранан-тура комиссия иҫәбе түләүҙәр тикшерергә `FEE_ASSET_DEFINITION`; транзакция был активты һайлап алмай метамәғлүмәттәр аша.
+Иҫәптең баланстарын һынау аҡсаһы биреү хеҙмәте аҡса күсергән комиссия активы билдәләмәһе буйынса һөҙөгөҙ. Ағымдағы хаҡ тәҡдиме `FEE_ASSET_DEFINITION` менән түләтеүен тикшерегеҙ; транзакция был активты метамәғлүмәттәр аша һайламай.
 
 Ҡулланма метамәғлүмәттәре ирекле һәм түләүле семантикаға эйә түгел:
 
@@ -216,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -230,7 +226,7 @@ print(accounts.total, domains.total, definitions.total)
 print(time_now.now_ms)
 ```
 
-`/v1/time/status` һәм һәр `/v1/sumeragi/*` operator snapshot, state үҙгәртмәһә лә, exact-network operator signature талап итә. Anonymous node status өсөн `request_json("GET", "/status")` ҡулланығыҙ; consensus йәки node-local clock diagnostics өсөн payload һәм operator setup түбәндә күрһәтелгән. Connect session status — айырым protocol route һәм session management token талап итә.
+`/v1/time/status` һәм һәр `/v1/sumeragi/*` оператор күсермәһе, хәлде үҙгәртмәһә лә, тап ошо селтәр операторының ҡултамғаһын талап итә. Аноним төйөн статусы өсөн `request_json("GET", "/status")` ҡулланығыҙ; консенсус йәки урындағы сәғәт диагностикаһы өсөн аҫтағы оператор көйләүҙәрен ҡулланығыҙ. Connect сеансы статусы айырым протокол маршруты булып тора һәм ошо сеанстың идара итеү токенын талап итә.
 
 ## Төҙөүселәргә күрһәтмәләр {#instruction-builders}
 
@@ -240,10 +236,10 @@ print(time_now.now_ms)
 
 |Уҡытыу ғаиләһе |Python йөҙө |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|Регистрация | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` genesis/bootstrap инструменттары өсөн тәғәйенләнгән |
+|Регистрация | `register_account`, `register_asset_definition`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` genesis/bootstrap инструменттары өсөн тәғәйенләнгән |
 |Теркәлмәгеҙ |`unregister_trigger`; башҡа варианттар өсөн ҡулланыу `Instruction.from_json` |
-|Минт/Борн |`mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-|Трансфер | `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
+|Минт/Борн |`mint_asset_quantity`, `burn_asset_quantity`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|Трансфер | `transfer_asset_quantity`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
 |Метамәғлүмәттәр һәм контроль |`set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
 |RWA тормош циклы | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`                                                                                                         |
 |ExecuteTrigger |`execute_trigger` |
@@ -251,7 +247,7 @@ print(time_now.now_ms)
 |Протоколға индерелгән актив йоҙаҡтары |`open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, өҫтәүенә клиент ярҙамсылары `*_and_wait` |
 |Grant/Revocate, SetParameter, Log, Custom, Upgrade, һәм ҡағиҙә булараҡ теркәлгән / теркәлмәгән варианттар |`Instruction.from_json` йәки `TransactionBuilder.add_instruction_json` каноник `InstructionBox` JSON |
 
-Эскор формаһындағы шартлы түләүҙәр өсөн ҡарағыҙ [Башҡорт активтары эскоры](/ba/blockchain/escrow.md#python-asset-locks). Python әлеге ваҡытта дөйөм активтарҙы ябыу өсөн беренсе класлы ярҙамсыларҙы асыҡлай; баҙар һәм аноним эскор ярҙамсылары әлегә беренсе класлы Python алымдар түгел.
+Эскроу рәүешендәге шартлы түләүҙәр өсөн [протоколға индерелгән актив эскроуын](/ba/blockchain/escrow.md#python-asset-locks) ҡарағыҙ. Python әлеге ваҡытта дөйөм актив бикләүҙәре өсөн тулы хоҡуҡлы ярҙамсыларҙы тәҡдим итә; баҙар һәм шартлы эскроу ярҙамсылары әлегә тулы хоҡуҡлы Python методтары түгел.
 
 ### Домендар булдырығыҙ, ә һуңынан иҫәптәр һәм активтар теркәгеҙ {#set-up-domains-then-register-accounts-and-assets}
 
@@ -264,12 +260,13 @@ print(time_now.now_ms)
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -283,13 +280,13 @@ submit(
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### Трансфер биләмәһе {#transfer-ownership}
@@ -298,14 +295,14 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
 
 ### Метамәғлүмәттәрҙе йыйыу һәм алып ташлау {#set-and-remove-metadata}
 
-JSON-сериализацияланған метамәғлүмәт ҡиммәттәренә эйә булырға тейеш. һеҙ `TransactionDraft` ҡулланғанда, `TransactionConfig`-ҙағы вәкәләтле иҫәп default маҡсатлы иҫәпкә әйләнә.
+Метамәғлүмәт ҡиммәттәре JSON форматына сериализациялана алырға тейеш. `TransactionDraft` ҡулланғанда, `TransactionConfig` эсендәге вәкәләтле иҫәп ғәҙәттәге маҡсатлы иҫәпкә әйләнә.
 
 ```python
 # Values are encoded as JSON metadata under the target account.
@@ -380,7 +377,7 @@ draft.register_rwa(
 Теркәлеү операцияһы commit үтәгәндән һуң, `FindRwas`, `/v1/rwas`, RWA ваҡиғаһын йәки генерацияланған ID табыу өсөн ҡуйылған эҙләүсе маршрутын ҡулланығыҙ:
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -464,7 +461,7 @@ draft.force_transfer_rwa(
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -619,7 +616,7 @@ submit(instruction)
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -698,13 +695,13 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 JSON һүҙлектәре урынына типланған һорау ярҙамсылары мәғлүмәт кластары кире ҡайтара. Улар башлауҙың иң ябай ысулы, сөнки SDK страницаларҙы һәм дөйөм яҙма ҡырҙарын анализлай:
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
@@ -727,25 +724,22 @@ with urlopen(request, timeout=5) as response:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
 
 ## Ваҡиғалар {#events}
 
-Streaming ярҙамсылары JSON payload-тарҙы default буйынса decode итә. SSE event name, id, retry hint һәм raw payload кәрәк булғанда `with_metadata=True` тапшырығыҙ. Canonical `/v1/events/sse` feed live-only: replay IDs сығармай һәм replay log һаҡламай, шуға ярҙамсылар cursor йәки resume argument бирмәй. Яңынан тоташыу яңы subscription башлай һәм gap булыуы мөмкин; тулы ledger history кәрәк булғанда, билдәле height-тан `/v1/blocks/stream` ҡулланығыҙ. Был миҫалдар live event-тарҙы көтә, шуға stream enabled һәм active булған node-та эшләтегеҙ.
+Ағым ярҙамсылары ғәҙәттә JSON мәғлүмәт йөгөн декодлай. SSE ваҡиғаһының исеме, идентификаторы, ҡабатлап ҡарау кәңәше һәм эшкәртелмәгән мәғлүмәт йөгө кәрәк булғанда `with_metadata=True` тапшырығыҙ. Каноник `/v1/events/sse` ағымы тик ағымдағы ваҡиғаларҙы бирә: ҡабат уйнатыу IDs-ын сығармай һәм ҡабат уйнатыу журналын һаҡламай, шуға күрә был ярҙамсылар курсор йәки дауам итеү аргументын бирмәй. Яңынан тоташыу яңы яҙылыуҙы башлай һәм арала өҙөклөк булыуы мөмкин; реестрҙың тулы тарихы кәрәк булғанда билдәле бейеклектән башлап `/v1/blocks/stream` ҡулланығыҙ. Был миҫалдар ағымдағы ваҡиғаларҙы көтә, шуға күрә уларҙы ағым ҡабыҙылған һәм әүҙем булған төйөндә эшләтегеҙ.
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -754,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -999,7 +989,7 @@ supports_sm2 = "sm2" in allowed and bool(sm and sm.enabled)
 print(supports_gost, supports_post_quantum, supports_sm2)
 ```
 
-Әгәр төйөн һеҙгә кәрәк алгоритмды иғлан итмәһә, асҡысты local йәки offline workflow өсөн генә ҡулланығыҙ. Шул алгоритм менән ҡул ҡуйылған transaction-дарҙы был төйөнгә ебәрмәгеҙ. Public Taira тикшереүе ваҡытында GOST һәм ML-DSA upstream Python китапханаһында SDK crypto helper-ҙары булараҡ бар ине, әммә төйөн уларҙы transaction signing өсөн иғлан итмәне.
+Төйөн һеҙгә кәрәкле алгоритмды иғлан итмәһә, асҡысты тик урындағы йәки селтәрһеҙ эш ағымдары өсөн ҡулланығыҙ. Шул алгоритм менән ҡул ҡуйылған транзакцияларҙы был төйөнгә ебәрмәгеҙ. Асыҡ Taira тикшереүе ваҡытында GOST һәм ML-DSA төп Python китапханаһында SDK криптография ярҙамсылары булараҡ бар ине, ләкин төйөн уларҙы транзакцияларға ҡул ҡуйыу өсөн иғлан итмәгәйне.
 
 ## Конфигурацияланған клиенттар булдырыу {#config-aware-client-creation}
 
@@ -1024,26 +1014,6 @@ client = create_torii_client(
     resolved_config=resolved,
 )
 ```
-
-## Кагемуша әҙерлеге {#kagemusha-readiness}
-
-Python SDK үҙенең генераль Torii заявка ярҙамсыһы аша ағымдағы JSON әҙерлек маршрутын һорарға мөмкин:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python типланған Кагемуша тулыландырыу йәки ҡайтарыу архив төҙөүселәрҙе фаш итмәй. Swift йәки JVM тип яҙылған аҡса янсығын ҡулланып, каноник V4 архивтарын төҙөйһөгөҙ, һуңынан уларҙы Kagemusha Torii клиент аша тапшырығыҙ һәм һорау алыу үткәргеҙ.
 
 ## Абонементтар {#subscriptions}
 
@@ -1281,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1299,22 +1268,20 @@ if connect_status is not None:
 
 ## SoraFS, UAID һәм Kaigi ярҙамсылары {#sorafs-uaid-and-kaigi-helpers}
 
-Был ярҙамсылар маҡсатлы узел тейешле Nexus/SORA endpoint-тарын асҡанда ҡулланыла. Буш исемлекте дөрөҫ яуап тип ҡабул итегеҙ: йәмәғәт Taira-ла маршрут әүҙем булырға мөмкин, ләкин өлгө manifest йәки UAID өсөн мәғлүмәт булмауы ихтимал.
+Был ярҙамсылар маҡсатлы төйөн тейешле SORA Nexus нөктәләрен асҡанда ҡулланыла ала. Буш исемлектәрҙе дөрөҫ яуап тип ҡабул итегеҙ: асыҡ Taira-ла маршрут әүҙем булып, миҫал манифесты йә UAID өсөн мәғлүмәт булмауы мөмкин.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()
@@ -1356,10 +1323,10 @@ Python SDK инде түбәндәге ярҙамсыларҙы үҙ эсенә 
 - дөйөм ISI һәм доменға ярашлы киңәйтеүҙәр өсөн типлаштырылған инструкция төҙөүселәре
 - Транзакция проекттары, манифесттар, ҡултамғалау һәм ҡул ҡуйылған транзакция конверты эш ағымдары
 - тура ваҡиғалар ағымдары һәм типлаштырылған фильтрҙар; commit ителгән блок ағымдары тулы тарихты бирә
-- дөйөм Kagemusha әҙерлек инеү һәм Torii абонемент ярҙамсылары; типталған өҫтәмә һәм ҡайтарыу төҙөүселәр асыҡланмаған
+- Torii яҙылыуҙарын уҡыу һәм ҡул ҡуйылмаған транзакция өлгөләрен төҙөү ярҙамсылары
 - иҫәп адресы, бөтә алгоритм ҡултамғалау ярҙамсылары, күп һанлы шашкалар менән ҡайтыуҙар, SM2, GOST, ML-DSA, BLS һәм серле асҡыстар менән идара итеү.
 - URIs, сессиялар, кадрҙар, шифрлау ярҙамсылары һәм реестр администраторы тоташтырыу
-- node был мөмкинлектәрҙе тәҡдим иткәндә governance, runtime яңыртыу, Sumeragi, node administration, SoraFS, UAID һәм Kaigi endpoint-тарының программа wrapper-ҙары
+- төйөн ошо мөмкинлектәрҙе биргәндә, идара итеү, башҡарыу мөхитен яңыртыу, Sumeragi, төйөн менән идара итеү, SoraFS, UAID һәм Kaigi нөктәләренең программа ҡаплауҙары
 
 ## Үрге йүнәлештәге белешмәләр {#upstream-references}
 

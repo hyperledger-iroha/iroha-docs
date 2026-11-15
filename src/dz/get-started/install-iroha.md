@@ -1,19 +1,21 @@
 ---
 translation_locale: dz
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # གཞི་བཙུགས་འབད་ Iroha 3 {#install-iroha-3}
 
 ཤོག་ལེབ་འདི་གིས་ ཡར་འཕར་ `hyperledger-iroha/iroha` ལཱ་གི་ས་སྒོ་ལག་ལེན་འཐབ་སྟེ་ Iroha 3 ལག་ཆས་རིམ་སྒྲིག་དང་གཉིས་ལྡན་ཚུ་གི་དོན་ལུ་ ད་ལྟོའི་གཞི་བཙུགས་ལཱ་གི་རྒྱུན་རིམ་འདི་ཁྱབ་ཚུགསཔ་ཨིན།
 
+ཧོསཊི་གུ་ཐད་ཀར་གཞི་བཙུགས་འབད་ནི་ལུ་ འོག་གི་ Rust ལམ་སྟོན་ལུ་གནས། Docker གིས་བདེན་དཔྱད་འབད་མི་བཞི་གཡོག་བཀོལ་ནི་ལུ་ [Iroha 3 འགོ་བཙུགས་ནི](/dz/get-started/launch-iroha.md) ལས་འགོ་བཙུགས།
+
 ## ༡ སྔོན་འགོག་གི་གནས་སྟངས་ཚུ་ {#_1-prerequisites}
 
 དང་པོ་འདི་དག་བཙུགས།
 
-- [rustup](https://www.rust-lang.org/tools/install) འདི་འབདཝ་ལས་ མཐུད་སྦྲེལ་འབད་ཡོད་པའི་ `rust-toolchain.toml` ལག་ཆས་སྤོག་ (`1.93.1`) འདི་ རང་བཞིན་གྱིས་བཙུགས་འབདཝ་ཨིན།
+- [rustup](https://www.rust-lang.org/tools/install) འདི་འབདཝ་ལས་ མཐུད་སྦྲེལ་འབད་ཡོད་པའི་ `rust-toolchain.toml` ལག་ཆས་སྤོག་ (`1.99.1`) འདི་ རང་བཞིན་གྱིས་བཙུགས་འབདཝ་ཨིན།
 - `git`
 - གདམ་ཁ་རྐྱབ་པ་ཅིན་ Docker དང་ Docker Compose གི་དོན་ལུ་ ས་གནས་ཀྱི་ སྣ་མང་ཆ་མཉམ་པ མགྱོགས་འགོ
 
@@ -63,7 +65,8 @@ cargo run --bin kagami -- --help
 
 ད་ལྟོའི་འབྱུང་ཁུངས་རྒྱབ་སྐྱོར་འབད་མི་ ལོ་ཀཱལ་ནེཊི་རྒྱུན་རིམ་འདི་ Kagami གིས་བཟོ་བཏོན་འབད་ཡོདཔ་ཨིན། འདི་གིས་ ཡོངས་འབྲེལ་གྱི་མཉམ་རོགས་རིམ་སྒྲིག་དང་ བཀག་ཆ་རིགས་མཚན་གྱི་ཅ་ཆས་ མཁོ་སྤྲོད་འབད་མི་རིམ་སྒྲིག་ གྲོགས་རམ་ཡིག་ཚུགས་ཚུ་ དེ་ལས་ བརྟག་ཞིབ་འབད་ཡོད་པའི་ཨང་རྟགས་དང་མཐུན་སྒྲིག་འབད་མི་ གདམ་ཁ་ཅན་གྱི་རྩོམ་སྒྲིག་ཡིག་སྣོད་ཚུ་བྲིསཝ་ཨིན།
 
-- `kagami localnet` ས་གནས་ཀྱི་ཉེ་གནས་མཉམ་རོགས་ཡིག་གཟུགས་ཚུ་གི་དོན་ལུ་
+- Kagami གིས་འགོ་བཙུགས་ཏེ་ལྟ་རྟོག་འབད་པའི་ འཛིན་སྐྱོང་ཅན་གྱི་ཉེ་གནས་དྲ་ལམ་དོན་ལུ་ `kagami localnet up`།
+- རང་བྱུང་ཉེ་གནས་མཐུད་གྲོགས་ཀྱི་བཀོད་ཡིག་ཚུའི་དོན་ལུ་ `kagami localnet generate`།
 - `kagami docker` གི་དོན་ལུ་ Docker Compose འདི་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ཐོ་བཀོད་ནང་ལས་ ཐོན་ཡོདཔ་ཨིན།
 
 [འགོ་བཙུགསཔ་ད་ Iroha 3](/dz/get-started/launch-iroha.md).

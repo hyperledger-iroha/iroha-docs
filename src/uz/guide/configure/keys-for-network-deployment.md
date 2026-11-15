@@ -1,27 +1,26 @@
 ---
 translation_locale: uz
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Tarmoqni joylashtirish uchun kalitlar {#keys-for-network-deployment}
 
-Har bir tarmoqda mijozlar, tugunlar va boshlang‘ich holatni imzolash uchun, NPoS yoki Nexus profillarida esa BLS tasdiqlovchi identifikatorlari uchun alohida kalit materiali kerak.
+Har bir tarmoqqa mijozlar, genezisni imzolash hamda egalik isbotlariga ega BLS-normal tasdiqlovchi identifikatorlari uchun alohida kalit materiallari kerak.
 
 ## Kalitlar qaerda ishlatiladi {#where-keys-are-used}
 
 - Mijoz imzo kalitlari `client.toml` ichida `[account]` ostida saqlanadi.
 - Tugun identifikatsiya kalitlari har bir tugunning `config.toml` faylida `public_key` va `private_key` sifatida saqlanadi.
 - tarmoq hamkasbini aniqlash har bir tarmoq hamkasbining ochiq kalitidan `trusted_peers` da foydalanadi.
-- BLS tasdiqlovchi Proofs-of-Possession NPoS profillari uchun `trusted_peers_pop` da saqlanadi.
+- BLS validatorlarining egalik isbotlari konsensus rejimidan qat’i nazar, har bir validator uchun `trusted_peers_pop` da saqlanadi.
 - Boshlang‘ich holatni imzolash tugun konfiguratsiyasidagi `[genesis].public_key` va manifestni imzolashda unga mos maxfiy kalitdan foydalanadi.
 
 Mahalliy yoki sinov joylashtirishlar uchun, Kagami ushbu fayllarning barchasini birga yaratishga ruxsat bering:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Mavjud tarmoq yoki profil uchun, yo‘riqnoma bo‘yicha oqimdan foydalaning:

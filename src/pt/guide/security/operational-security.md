@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Segurança Operacional {#operational-security}
 
 A segurança operacional protege as pessoas, hosts, credenciais e procedimentos em torno de uma implantação Iroha. O livro razão da blockchain registra alterações de estado aceitas. Os operadores devem proteger separadamente suas estações de trabalho, chaves de assinatura e processo de resposta a incidentes.

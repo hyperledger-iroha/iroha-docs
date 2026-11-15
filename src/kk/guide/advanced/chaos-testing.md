@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Изанами арқылы хаос тестілеу {#chaos-testing-with-izanami}
 
 Izanami – бұл жоғарғы Iroha жұмыс алаңындағы хаостық желі ұйымдастырушысы. Ол уақытша жергілікті Iroha кластерін іске қосады, бапталатын жұмыс жүктемесін береді және таңдалған желі әріптестеріне ақаулар енгізеді, осылайша операторлар желінің басқарылатын ақау кезінде де алға жылжуын тексере алады.

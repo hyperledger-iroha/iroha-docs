@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift اور iOS {#swift-and-ios}
 
 اپ اسٹریم workspace کی Swift SDK، ‏`IrohaSwift/` کے تحت `IrohaSwift` Swift package ہے۔ اس کا package مینی فیسٹ تین library products—`IrohaSwift`، ‏`IrohaSwiftMobileTransports` اور `IrohaSwiftTransferUI`—متعین کرتا ہے، اور Swift tools 5.9 کے ساتھ iOS 15+ اور macOS 12+ کو ہدف بناتا ہے۔
@@ -30,20 +29,16 @@ targets: [
 ]
 ```
 
-اپنی ایپ کے لئے راستہ ایڈجسٹ کریں۔ موجودہ `examples/ios/ConnectMinimalApp` راستے کی نقل نہ کریں جیسا کہ یہ ہے؛ اس دستاویز کا حل `../../IrohaSwift` سے `examples/IrohaSwift` تک ہے۔
+اپنی ایپ کے لیے راستہ ایڈجسٹ کریں۔ `examples/ios/ConnectMinimalApp/Package.swift` یہی انحصار نسبتی راستے `../../../IrohaSwift` کے ساتھ دکھاتا ہے۔
 
-پیکج کو حل کرنے سے پہلے، اس بات کا یقین کریں کہ پل کام کی جگہ کی جڑ پر موجود ہے:
+پیکیج حل کرنے سے پہلے موجودہ مقامی برج بنائیں۔ مقامی ترقی اور ٹیسٹوں کے لیے اسے ورک اسپیس کی جڑ سے چلائیں:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-اس سے `dist/NoritoBridge.xcframework` پیدا ہوتا ہے۔ `IrohaSwift/Package.swift` اس کا حوالہ دیتا ہے `../dist/NoritoBridge.xcframework`.
-
-## CocoaPods {#cocoapods}
-
-کوڈ بیس میں بھی شامل ہے `IrohaSwift/IrohaSwift.podspec`. یہ اعلان کرتا ہے کہ `IrohaSwift` پوڈ، Swift 5.9، اور iOS 15. پوڈ سپیک کھینچتا ہے Swift مرکزی ذخیرہ سے ذرائع؛ مقامی پل اب بھی موجود ہونا ضروری ہے اور ٹرانزیکشن کوڈنگ کے لئے منسلک، غیر ایڈی25519 دستخط، اور کنیکٹ کرپٹو.
+ریلیز بلڈز `make bridge-xcframework` کے ذریعے `dist/NoritoBridge.xcframework` تیار کرتی ہیں، جس کے لیے `SOURCE_DATE_EPOCH`، `NORITO_BRIDGE_OUT_DIR`، `NORITO_BRIDGE_BUILD_DIR`، `NORITO_BRIDGE_ARCHIVE_OUTPUT` اور `MOBILE_SDK_CARGO_LOCKFILE` درکار ہیں۔ `IrohaSwift/Package.swift` برج کا حوالہ `../dist/NoritoBridge.xcframework` کے طور پر دیتا ہے۔
 
 ## فوری آغاز {#quickstart}
 
@@ -52,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -89,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -103,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, اور `UnshieldRequest` کینونیکل اکاؤنٹ کی توثیق IDs اور کینونیکل غیر مقررہ Base58 اثاثے کی تعریف IDs دستخط کرنے سے پہلے.
+`TransferRequest`، `MintRequest` اور `BurnRequest` دستخط سے پہلے کینونیکل اکاؤنٹ IDs اور بغیر سابقے کے کینونیکل Base58 اثاثہ تعریف IDs کی توثیق کرتے ہیں۔
 
 ## مقامی ایایسکرو {#native-escrow}
 
-Swift، `NativeEscrowInstructionBuilders` یا مساوی `IrohaSDK.build*Escrow*` معاون کے ذریعے مارکیٹ پلیس اور گمنام ایایسکرو ہدایات بناتا ہے، جو پے لوڈ کو Norito JSON میں انکوڈ کرتے ہیں۔ مثالوں، گمنام ثبوت فیلڈز اور تنازعہ حل کرنے والے permission tokens کے لیے [مقامی اثاثہ ایایسکرو](/ur/blockchain/escrow.md#swift-and-ios) دیکھیں۔
+Swift، `NativeEscrowInstructionBuilders` یا مساوی `IrohaSDK.build*Escrow*` معاونین کے ذریعے مارکیٹ پلیس ایسکرو ہدایات کو Norito JSON پے لوڈز کے طور پر بناتا ہے۔ مثالوں اور تنازعہ حل کرنے والے کی اجازت کے ٹوکن کے لیے [مقامی اثاثہ ایسکرو](/ur/blockchain/escrow.md#swift-and-ios) دیکھیں۔
 
 ## دستخط {#signing}
 
@@ -144,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` کھولنے اور بند کرنے کے کنٹرولز، خفیہ لفافے پڑھتا ہے، سمت کی چابیاں، بہاؤ کنٹرول، واقعہ بہاؤ، بیلنس بہاؤ، اور تشخیصی جرنل ہینڈل.
@@ -155,13 +156,13 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Swift ذریعہ میں فی الحال شامل ہیں:
 
 - `ToriiClient` HTTP اکاؤنٹس، اثاثوں، عرفی ناموں، تلاش کرنے والے صفحات، RWA، معاہدوں، ملٹی سیگ، گورننس، سبسکرپشنز، ڈیٹا کی دستیابی، خفیہ اثاثے، نوڈ / رن ٹائم کی حیثیت، صحت، میٹرکس، اور SSE سلسلہ
-- `IrohaSDK` ٹرانزیکشن بلڈرز اور منتقلی، منٹ، جلن، شیلڈ، غیر شیلڈ ، ZK منتقلی ، ZK اثاثہ رجسٹریشن ، میٹا ڈیٹا ، شناختی دعوے ، ملٹی سگ رجسٹریشن اور گورننس ہدایات کے لئے جمع کرانے / پولنگ معاونین۔
+- `IrohaSDK` کے لین دین بلڈرز اور منتقلی، منٹ، برن، ZK اثاثہ رجسٹریشن، میٹا ڈیٹا، شناخت کنندہ کے دعووں، ملٹی سگ رجسٹریشن، معاہدے کی تعیناتی اور گورننس بیلٹس کے لیے جمع/پول معاونین
 - `PendingTransactionQueue` اور `FilePendingTransactionQueue` کے ذریعے ٹرانزیکشن کی قطار میں معاونت کا انتظار کرنا
 - `AccountAddress` اور `AccountId` کے ذریعے اکاؤنٹ ایڈریس اور I105 معاونین
 - Ed25519، secp256k1، ML-DSA، BLS، GOST، اور SM2 پر دستخط کرنے والی سطحیں، جہاں ضروری ہو مقامی پل کی حمایت کے ساتھ
 - مارکیٹ پلیس اور گمنام ایسکرو کے لئے مقامی سپلائی ہدایات کی پے لوڈ بنانے والے
 - WebSocket ، فریم، کرپٹو، سیشن، قطار، دوبارہ چلائیں، اور تشخیص کے مددگاروں کو مربوط کریں
-- Kagemusha کی تیاری، ٹائپ کردہ بھرنے اور واپسی، آپریشن کی حیثیت، نوٹ، نیٹ ورک نوڈ بنڈل، رسید، اور QR سٹریم ماڈلز
+- KAGEMUSHA V1 وائر معاون افعال اور نَیٹو والیٹ کے Advance فراہم کنندہ، اندراج، بازیابی اور منظور شدہ تبادلے کی کالز کے لیے iPhone پلیٹ فارم اڈاپٹر
 - SoraFS ، اعداد و شمار کی دستیابی اور ثبوت منسلک کرنے میں مدد
 
 ## API مثالیں {#api-examples}
@@ -171,7 +172,6 @@ Swift ذریعہ میں فی الحال شامل ہیں:
 ## ذرائع کے حوالہ جات {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

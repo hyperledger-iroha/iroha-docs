@@ -1,27 +1,26 @@
 ---
 translation_locale: he
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # מפתחות לשימוש ברשתים {#keys-for-network-deployment}
 
-כל רשת צריכה חומר מפתח נפרד עבור לקוחות, צמתים, חתימת גנזה, ו, עבור פרופילים של NPoS או Nexus, זהויות אישור BLS.
+כל רשת זקוקה לחומר מפתחות נפרד ללקוחות, לחתימת genesis ולזהויות מאמתים מסוג BLS-normal עם הוכחות החזקה.
 
 ## היכן משתמשים במפתחות {#where-keys-are-used}
 
 - מפתחות החתימה של הלקוח מאוחסרות ב `client.toml` תחת `[account]`.
 - מפתחות הזהות של הצומת מאוחסנים בכל `config.toml` של צומת בתור `public_key` ו-`private_key`.
 - גילוי צמתים משתמש במפתח הציבורי של כל צומת ב-`trusted_peers`.
-- בדיקת BLS הוכחות רכוש מאוחסן ב- `trusted_peers_pop` לפרופילים של NPoS.
+- הוכחות ההחזקה של מאמתי BLS נשמרות ב־`trusted_peers_pop` עבור כל מאמת, יהא מצב הקונצנזוס אשר יהא.
 - חתימת בראשית משתמשת ב `[genesis].public_key` בהשוואה לצמתים ובפתח פרטי תואם בעת חתימה על המניפסט.
 
 עבור השימוש המקומי או במבחן, תן Kagami ליצור את כל הקבצים האלה יחד:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 עבור רשת או פרופיל קיים, השתמשו בזרם המובנה:
@@ -50,7 +49,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 
 ## עקביות בין צמתים {#peer-consistency}
 
-כל המאושרים חייבים להסכים על אותו עסקנת הגנז, טופולוגיה, מפתחות ציבוריים של צמתים מהימנים ו-validator PoPs. מפתח צומת אחד חסר או לא מתאים יכול למנוע את הרשת להתחיל או להגיע להסכמה.
+כל המאמתים צריכים להשתמש באותה עסקת בראשית, באותה טופולוגיה, באותם מפתחות ציבוריים של העמיתים המהימנים ובאותן הוכחות החזקה של המאמתים (PoPs). אפילו מפתח אחד שחסר או אינו תואם עלול למנוע מהרשת לעלות או להגיע להסכמה.
 
 עבור מינימום הפעלת סובלנות אשמה ביזנטנית, השתמש לפחות בארבעה צמתים. לכל צומת חייב להיות מפתח פרטי משלו, אבל כל קונפיגורציה של צמתים צריכה את אותה קבוצת הצומת שלות אמינה.
 

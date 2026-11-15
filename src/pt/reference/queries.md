@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Consultas {#queries}
 
 Iroha consultas leem o estado do livro-razão da blockchain sem modificá-lo. O modelo de dados atual expõe dois formatos amplos de consulta:
@@ -57,7 +56,7 @@ Use os construtores digitados SDK ou o CLI em vez de construir manualmente cont�
 |Consulta|Propósito|
 | --- | --- |
 | `FindAssets` |Listar saldos de ativos.|
-| `FindAssetsDefinitions` |Listar definições de ativos.|
+| `FindAssetDefinitions` |Listar definições de ativos.|
 | `FindAssetsByAccountId` |Listar os ativos mantidos por uma conta.|
 | `FindAssetById` |Encontre um saldo de ativo por `AssetId`.|
 | `FindAssetDefinitionById` |Encontre uma definição de ativo pelo ID.|
@@ -67,7 +66,7 @@ Use os construtores digitados SDK ou o CLI em vez de construir manualmente cont�
 
 ## Depósito em garantia e registros de prova {#escrow-and-proof-records}
 
-As consultas de escrow inspecionam os registros criados por [custódia de ativo nativo ISIs](/pt/blockchain/escrow.md), incluindo escrows do mercado, bloqueios genéricos de ativos e registros de escrow anônimos.
+As consultas de escrow inspecionam os registros criados pelas [ISIs de custódia de ativo nativo](/pt/blockchain/escrow.md), incluindo escrows do mercado, bloqueios genéricos de ativos e escrows condicionais.
 
 |Consulta|Propósito|
 | --- | --- |
@@ -76,29 +75,23 @@ As consultas de escrow inspecionam os registros criados por [custódia de ativo 
 | `FindAssetEscrowsBySeller` |Listar cauções de ativos por vendedor.|
 | `FindAssetEscrowsByBuyer` |Listar cauções de ativos por comprador.|
 | `FindAssetEscrowsByStatus` |Listar cauções de ativos por status.|
-| `FindAnonymousAssetEscrows` |Listar registros de custódia de ativos anônimos.|
-| `FindAnonymousAssetEscrowById` |Encontre um depósito em garantia de ativo anônimo pelo ID.|
-| `FindAnonymousAssetEscrowsBySeller` |Listar cauções anônimas por vendedor.|
-| `FindAnonymousAssetEscrowsByBuyer` |Listar cauções anônimas por comprador.|
-| `FindAnonymousAssetEscrowsByStatus` |Listar cauções anônimas por status.|
 | `FindProofRecordById` |Encontre um registro de prova pelo ID.|
 | `FindProofRecords` |Listar registros de prova.|
 | `FindProofRecordsByBackend` |Listar registros de prova para um backend de prova.|
 | `FindProofRecordsByStatus` |Listar registros de prova por status.|
 
-## Nexus, Disponibilidade de Dados e Pacotes {#nexus-data-availability-and-packages}
+## SORA Nexus, Disponibilidade de Dados e Pacotes {#nexus-data-availability-and-packages}
 
 |Consulta|Propósito|
 | --- | --- |
-| `FindRepoAgreements` |Listar acordos de repositório armazenados na blockchain.|
+| `FindRepoAgreements` |Listar acordos de recompra e de recompra reversa armazenados na cadeia.|
 | `FindTwitterBindingByHash` |Resolva uma vinculação do Twitter por hash criptográfico.|
 | `FindDaPinIntentByTicket` |Encontrar uma intenção de pino de disponibilidade de dados por ticket.|
 | `FindDaPinIntentByManifest` |Encontre uma intenção de pin por referência de manifesto técnico.|
 | `FindDaPinIntentByAlias` |Encontrar uma intenção de pin pelo alias.|
 | `FindDaPinIntentByLaneEpochSequence` |Encontre uma intenção de pin por pista de execução, época e sequência.|
-| `FindLaneRelayEnvelopeByRef` |Encontre um contêiner de dados de revezamento de pista verificado.|
 | `FindSorafsProviderOwner` |Resolva o proprietário de um provedor SoraFS.|
-| `FindDataspaceNameOwnerById` |Resolve um proprietário de nome de espaço de dados.|
+| `FindDataspaceNameOwnerById` |Resolve o proprietário SNS ativo de um alias de espaço de dados.|
 | `FindMusubiExactPackageV1` |Leia um registro exato de pacote e suas revisões atuais.|
 | `FindMusubiExactReleaseV1` |Leia um instantâneo exato da versão.|
 | `FindMusubiProviderBundleAttestationV1` |Leia a declaração de atestado do pacote de arquivamento de um provedor.|
@@ -118,7 +111,7 @@ As consultas de escrow inspecionam os registros criados por [custódia de ativo 
 | `FindActiveTriggerIds` |Listar IDs de gatilho ativos.|
 | `FindTriggers` |Listar gatilhos.|
 | `FindTriggerById` |Encontre um gatilho pelo ID.|
-| `FindContractManifestByCodeHash` |Encontre um manifesto técnico de contrato inteligente pelo hash criptográfico do código.|
+| `FindContractManifestByArtifactId` |Encontre um manifesto técnico de contrato inteligente pelo seu ID de artefato do espaço de dados.|
 | `FindTransactions` |Listar transações confirmadas.|
 | `FindBlocks` |Listar blocos.|
 | `FindBlockHeaders` |Listar cabeçalhos de bloco.|

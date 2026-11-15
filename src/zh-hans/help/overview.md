@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 解决问题 {#troubleshooting}
 
 如果您在工作中遇到问题, Iroha. 如果有什么不对,请 [查看钥匙](#check-the-keys) 如果这没有帮助,请查看每个阶段的故障解决说明:

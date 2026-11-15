@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # الأمن التشغيلي {#operational-security}
 
 تحمي الأمان التشغيلي الأشخاص والمضيفين والاعتمادات والإجراءات حول نشر Iroha. يسجل دفتر الأستاذ الخاص بالبلوكتشين التغييرات في الحالة المقبولة. يجب على المشغلين تأمين محطات العمل الخاصة بهم ومفاتيح التوقيع وعملية الاستجابة للحوادث بشكل منفصل.

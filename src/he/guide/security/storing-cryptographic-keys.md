@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # אחסון מפתחות קריפטוגרפיים {#storing-cryptographic-keys}
 
 מפתח פרטי יכול לאשר כל פעולה המותרת לסמכות המשויכת אליו. לעולם אין לשתף מפתח פרטי. יש להגן באותה מידה על חומר האתחול, סודות שחזור, אסימוני נושא וקובצי מפתחות שיוצאו.
@@ -28,7 +27,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-ספריית האב חייבת להיות קיימת. ספריית היעד חייבת להיות חדשה או כבר בבעלות המשתמש הנוכחי, במצב `0700`, ללא קישורים סמליים וריקה. Kagami כותב את `public.key` ואת `private.key` במצב `0600`; האפשרות `--pop` כותבת גם את `pop.hex`. הפקודה נכשלת בפלטפורמות שבהן Kagami אינו יכול לאכוף את כללי מערכת הקבצים המגבילים גישה לבעלים בלבד.
+תיקיית האב חייבת להיות קיימת. היעד חייב לא להיות קיים, גם לא כתיקייה ריקה. Kagami יוצר אותו במצב הרשאות `0700`, אוכף בדיקות מערכת קבצים המגבילות גישה לבעלים, דוחה קישורים סמליים וכותב את `public.key` ואת `private.key` במצב הרשאות `0600`; ‏`--pop` כותב גם את `pop.hex`. הפקודה נכשלת בפלטפורמות שבהן Kagami אינו יכול לאכוף את כללי מערכת הקבצים המגבילים גישה לבעלים.
 
 קובץ המפתח הפרטי הוא ייצוא לא מוצפן. יש להשאירו מחוץ לבקרת גרסאות, תיקיות משותפות, יומנים, כרטיסי מעקב, צ'אטים ותוצרי בנייה. יש לייבא מפתח ייצור אל גבול המשמורת המאושר שלו, ואז להסיר את הייצוא בהתאם לנוהל הפריסה. אין לעשות שימוש חוזר במפתח פיתוח בייצור.
 

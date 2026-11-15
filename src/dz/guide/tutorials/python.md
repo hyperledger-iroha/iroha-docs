@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # Python {#python}
 
@@ -56,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -86,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -104,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -173,20 +173,16 @@ for limit in fee_quote["intent"]["value"]["charge_limits"]:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་འདི་གིས་ ལྷག་ལུས་ཞིབ་དཔྱད་ཀྱི་དོན་ལུ་ལག་ལེན་འཐབ་ནི་ལུ་ ངེས་གཏན་ `asset_id` སླར་ལོག་འབདཝ་ཨིན། དངོས་ཡོད་ཚིག་བརྗོད་ཀྱི་གླ་ཆ་ `FEE_ASSET_DEFINITION` བདེན་དཔྱད་འབད། བརྗེ་སོར་འདི་གིས་ མེ་ཊ་ཌེ་ཊ་བརྒྱུད་དེ་ རྒྱུ་དངོས་དེ་སེལ་འཐུ་མི་འབད།
+བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གིས་ མ་དངུལ་བཙུགས་པའི་ གླ་ཡོན་རྒྱུ་དངོས་ངེས་ཚིག་ལུ་གཞི་བཞག་སྟེ་ རྩིས་ཐོའི་ལྷག་ལུས་ཚུ་ བཙག་འཐུ་འབད། ཐད་ཀར་གླ་ཡོན་རྩིས་འདི་གིས་ `FEE_ASSET_DEFINITION` བཀལཝ་ཨིན་ན་ བདེན་དཔྱད་འབད། ཚོང་འབྲེལ་འདི་གིས་ མེ་ཊ་ཌེ་ཊ་བརྒྱུད་དེ་ རྒྱུ་དངོས་དེ་སེལ་འཐུ་མི་འབད།
 
 གློག་རིམ་མེ་ཊ་ཌེ་ཊ་འདི་གདམ་ཁ་ཅན་ཨིནམ་དང་ འཐུས་ཡིག་བརྡ་མེདཔ་ཨིན།
 
@@ -216,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -240,10 +236,10 @@ SDK གིས་ སྤྱིར་བཏང་གི་བརྡ་སྟོན
 
 |སློབ་སྟོན་གྱི་བཟའ་ཚང་ |Python ས་ཁོངས།|
 | | ------------------------------------------------------------------------------------------- ------------------------------------------------------------------------------ |
-| ཐོ་བཀོད་འབད། | `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` འདི་ རིགས་མཚན་/བུཊི་སི་ཊརཔ་ལག་ཆས་ཚུ་གི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན། |
+| ཐོ་བཀོད་འབད། | `register_account`, `register_asset_definition`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` འདི་ རིགས་མཚན་/བུཊི་སི་ཊརཔ་ལག་ཆས་ཚུ་གི་དོན་ལུ་ བཀག་བཞག་ཡོདཔ་ཨིན། |
 | ཐོ་བཀོད་འབད་མ་བཏུབ། | `unregister_trigger`; དབྱེ་བ་གཞན་ཚུ་གི་དོན་ལུ་ `Instruction.from_json` ལག་ལེན་འཐབ། |
-| མིན་ཊི་/བརན་ | `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
-|བསྒྱུར་བཅོས་ |`transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+| མིན་ཊི་/བརན་ | `mint_asset_quantity`, `burn_asset_quantity`, `mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|བསྒྱུར་བཅོས་ |`transfer_asset_quantity`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
 | མེ་ཊ་ཌེ་ཊ་དང་ཚད་འཛིན་ཚུ་ | `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
 | RWA མི་ཚེ་འཁོར་རིམ། | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa` |
 |ExecuteTrigger |`execute_trigger` |
@@ -251,7 +247,7 @@ SDK གིས་ སྤྱིར་བཏང་གི་བརྡ་སྟོན
 |ནང་སྐྱེས རྒྱུ་དངོས་བཀག་སྡོམ་ཚུ་ |`open_asset_lock`, `drawdown_asset_lock`,`cancel_asset_lock`, `expire_asset_lock` དེ་ལས་རྒྱབ་སྐྱོར་འབད་མི་མགྲོན་པ་ `*_and_wait` |
 |གནང་བ་སྤྲོད/ཕྱིར་བསྡུ, SetParameter, དྲན་ཐོ, རང་སྒྲིག, རིམ་སྤར དེ་ལས་ ཐོ་བཀོད་འབད་མ་བཏུབ་པའི་ འདྲ་བཤུས་ཚུ་ |`Instruction.from_json` ཡང་ན་ `TransactionBuilder.add_instruction_json` དང་གཅིག་ཁར་ ཚད་ལྡན་གྱི་ `InstructionBox` JSON |
 
-ཆ་ཚན་གྱི་རྣམ་ཐངས་ཀྱི་ གནས་སྟངས་ཅན་གྱི་སྤྲོད་ལེན་ཚུ་གི་དོན་ལུ་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md#python-asset-locks) ལུ་གཟིགས་དགོ། Python གིས་ ད་རེས་ནངས་པར་ ཨང་དང་པ་གི་རོགས་རམ་འབད་མི་ཚུ་ལུ་ སྤྱིར་བཏང་ནོར་རྫས་བཀག་སྡོམ་འབད་ནི་གི་ གོ་སྐབས་བྱིན་དོ་ཡོདཔ་ཨིན། ཚོང་ལམ་དང་མིང་མ་ཤེསཔ་གི་སྦ་སྒོའི་རོགས་རམ་འབད་མི་ཚུ་ ད་ལྟོ་ཡང་ ཨང་དང་པ་ཨིན་མི་ ཐབས་ལམ་ཚུ་ Python ཨིན་མས།
+བར་གཏོགས་བདག་ཉར་བཟོ་རྣམ་གྱི་ ཆ་རྐྱེན་ཅན་གྱི་དངུལ་སྤྲོད་ཚུ་གི་དོན་ལུ་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md#python-asset-locks) ལུ་གཟིགས་དགོ། Python གིས་ ད་ལྟོ་ སྤྱིར་བཏང་རྒྱུ་དངོས་བཀག་སྡོམ་གྱི་དོན་ལུ་ ཨང་དང་པའི་རོགས་རམ་ལས་རིམ་ཚུ་ བྱིནམ་ཨིན། ཚོང་ར་དང་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་གྱི་རོགས་རམ་ལས་རིམ་ཚུ་ ད་ལྟོ་ཚུན་ Python གི་ཨང་དང་པའི་ཐབས་ལམ་ཚུ་ མེན།
 
 ### མངའ་ཁོངས གཞི་བཙུགས་འབད་ དེ་ལས་རྩིས་ཐོ་དང་ རྒྱུ་དངོས་ཚུ་ ཐོ་བཀོད་འབདཝ་ཨིན། {#set-up-domains-then-register-accounts-and-assets}
 
@@ -264,12 +260,13 @@ SDK གིས་ སྤྱིར་བཏང་གི་བརྡ་སྟོན
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -283,13 +280,13 @@ submit(
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### བསྒྱུར་བཅོས་ཀྱི་དབང་ཆ་ {#transfer-ownership}
@@ -298,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
@@ -380,7 +377,7 @@ draft.register_rwa(
 ཐོ་བཀོད་ཚོང་འབྲེལ་ཁས་བླངས་འབད་བའི་ཤུལ་ལས་ `FindRwas`, `/v1/rwas`, RWA བྱུང་ལས་ ཡང་ན་ འཚོལ་ཞིབ་འགྲུལ་ལམ་གཞི་སྒྲིག་འབད་དེ་ བཟོ་བཏོན་འབད་ཡོད་པའི་ཨའི་ཌི་འདི་འཚོལ་ཞིབ་འབད་ནི་ལུ་ལག་ལེན་འཐབ།
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -464,7 +461,7 @@ draft.force_transfer_rwa(
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -619,7 +616,7 @@ submit(instruction)
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -698,13 +695,13 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 ཐོ་བཀོད་ཅན་གྱི་དྲི་བཀོད་གྲོགས་རམ་ཚུ་གིས་ JSON ཚིག་མཛོད་མ་བཟོ་བའི་ཚབ་ལུ་ ཌེ་ཊ་སློབ་རིམ་ཚུ་སླར་ལོག་འབདཝ་ཨིན། ཁོང་འགོ་འདྲེན་འཐབ་ནིའི་ཐབས་ལམ་འཇམ་ཤོས་ཅིག་ཨིནམ་ད་ SDK གིས་ ཁྱོད་ཀྱི་དོན་ལུ་ ཤོག་ལེབ་དང་ཡིག་སྡེབ་ཀྱི་ས་ཁོངས་ཚུ་ བརྟག་ཞིབ་འབདཝ་ཨིན།
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
@@ -723,13 +720,13 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-རྩིས་ཐོའི་ཐོ་གཞུང་ལས་རོགས་ཚུ་ལུ་ SDK གི་སྤྱིར་བཏང་བཟོ་བྱེད་ཀྱིས་ངོས་ལེན་འབད་མི་རྩིས་ཐོའི་ངོས་འཛིན་དགོ། ཚད་ལྡན་ I105 རྩིས་ཐོ་ ID ཡང་ན་ རྒྱུན་ཐག་གུ་ཡོད་པའི་མིང་གཞན་ལག་ལེན་འཐབ། སྡེབ་ཚན་འཚོལ་ཞིབ་ལས་རིམ་ཡང་ན་ API མཐའ་མཚམས་ངོ་མ་གིས་ SDK གིས་ཆ་མེད་གཏང་མི་ ID ཅིག་ལོག་བྱིན་པ་ཅིན་ ལས་རོགས་འདི་ཚུ་མ་འབོ་པའི་ཧེ་མར་ ཚད་ལྡན་རྩིས་ཐོ་ ID ལུ་སེལ།
+རྩིས་ཐོའི་ཐོ་གཞུང་ལས་རོགས་ཚུ་ལུ་ SDK གི་ཚད་ལྡན་བཟོ་མི་གིས་ངོས་ལེན་འབད་པའི་རྩིས་ཐོའི་ངོ་རྟགས་དགོ། ཚད་ལྡན་ I105 རྩིས་ཐོའི་ངོ་རྟགས་ཡང་ན་སྡེབ་ཐག་གུའི་མིང་གཞན་ཚུ་ལག་ལེན་འཐབ། སྡེབ་ཚན་འཚོལ་ཞིབ་གློག་རིམ་ཡང་ན་མཐའ་མཚམས་ངོ་མ་ཅིག་གིས་ SDK གིས་ངོས་ལེན་མི་འབད་པའི་ངོ་རྟགས་ལོག་བྱིན་ན་ ལས་རོགས་འདི་ཚུ་མ་འབོ་བའི་ཧེ་མ་འདི་ཚད་ལྡན་རྩིས་ཐོའི་ངོ་རྟགས་ལུ་ཐག་བཅད།
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
@@ -739,13 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 གློག་ཐག་ར་བ་ལུ་ རྒྱབ་སྐྱོར་འབད་མི་ཚུ་ རྩ་སྒྲིག་འབདཝ་ཨིན། JSON ནང་དོན་གནད་སྡུད་གྱི་ཁེ་རྒུད་ཚུ་ སྔོན་སྒྲིག་འབདཝ་ཨིན། མཐར༌འཁྱོལ༌ `with_metadata=True` ཁྱོད་ཀྱིས་ དགོས་མཁོ་ཡོདཔ་ད་ SSE འབྱུང་རྐྱེན་གྱི་མིང་དང་ ངོས་འཛིན་ དེ་ལས་ བརྟག་དཔྱད་བསྐྱར་འབད་ནིའི་བརྡ་སྟོན་ དེ་ལས་ གྲུབ་འབྲས་ཚུ་ `/v1/events/sse` བཀྲམ་སྟོན་ནི་དེ་ ཕྲང་ལམ་རྐྱངམ་གཅིག་ཨིན། འདི་ཡང་ ལོག་བཏང་མི་ཚུགས། IDs འདི་འབདཝ་ལས་ རྒྱབ་སྐྱོར་ཚུ་གིས་ ཀེར་སོརཌ་དང་ བསྐྱར་གསོ་མ་འབད་བར་ བཞག་ཚུགས། གྲོས་བསྡུར་འབདཝ་ཨིན། སླར་ལོག་མཐུད་དེ་ཅིག་གིས་ ཐོ་བཀོད་གསརཔ་འགོ་བཙུགས་ཏེ་ གྱོང་ལྡོག་འབྱུང་ཚུགས་ཨིན། `/v1/blocks/stream` ཡོངས་གྲགས་ཅན་གྱི་མཐོ་ཚད་ལས་ ཡོངས་ཁྱབ་གི་ཐོ་ཡིག་ལོ་རྒྱུས་འདི་ དགོཔ་ཨིན། འ་ནི་དཔེ་རྙིཊ་ཚུ་ འབྱུང་རྐྱེན་ངོ་མ་གི་དོན་ལུ་སྒུག་སྡོད་དོ་ཡོདཔ་ཨིན། འདི་འབདཝ་ལས་ རྒྱུན་འདི་ འགོ་བཙུགས་ཏེ་ བྱ་སྤྱོད་འབད་སའི་ཨེབ་ཐག་ཅིག་ལུ་ བཏོན་གཏང་དགོ།
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -754,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -1025,26 +1015,6 @@ client = create_torii_client(
 )
 ```
 
-## Kagemusha གྲ་སྒྲིག་འབད་ནི་ {#kagemusha-readiness}
-
-Python SDK གིས་ ད་ལྟོའི་ JSON གྲ་སྒྲིག་ལམ་ལུགས་འདི་ དེ་གི་སྤྱིར་བཏང་ Torii ཞུ་བ་གྲོགས་རམ་པ་བརྒྱུད་དེ་ འདྲི་དཔྱད་འབད་ཚུགས།
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python གིས་ Kagemusha ཡིག་སྣོད་ལོག་བཏབ་ ཡང་ན་གློག་འཁྱོལ་ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི་ཚུ་ལུ་ གསལ་སྟོན་མ་འབད་བས། ཁྱོད་ཀྱིས་ Swift ཡང་ན་ JVM བརྒྱུད་འཕྲིན་ལག་ལེན་འཐབ་སྟེ་ ཀ་ནོ་ནིཀསི་ V4 ཡིག་སྣོད་ཚུ་བཟོ་ཞིནམ་ལས་ རྒྱབ་སྐྱོར་འབད་མི་ Kagemusha Torii ཌེ་བི་ཡཱན་བརྒྱུད་དེ་ དབྱེ་ཞིབ་གཏང་ཚུགས།
-
 ## ཐོ་བཀོད་ཚུ་ {#subscriptions}
 
 མཁོ་མངགས ལྷག དང་ ཟིན་བྲིས་ཚུ བཟོ་བྱེད འདི་ Torii ཞབས་ཏོག་ལེན་མི གིས་ལག་ལེན་འཐབ་མི་ བརྗེ་སོར་འབད་ཡོདཔ `iroha_python.ToriiClient` ལས་བགོ་བཤའ་རྐྱབ་ཡོདཔ་ཨིན། བཟོ་བཀོད་བསྒྱུར་བཅོས་ཆ་མཉམ་འདི་ ནང་དོན བཅིངས ཚད་ལྡན རྩིས་ཐོ མིང་རྟགས དང་གཅིག་ཁར་ འཛུལ་ཆོག ཡིན། དེ་ལས་ མཚན་རྟགས་མེད ཚོང་འབྲེལ ཟིན་བྲིས སླར་ལོག་འབདཝ་ཨིན། Torii གིས་ནམ་ཡང་ སྒེར༌ ལྡེ་མིག མེདཔ་བཟོཝ་མ་ཚད་ ཁྱོད་ཀྱིས་ ཟིན་བྲིས བཏང་མ་ཚུགས།
@@ -1281,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1299,22 +1268,20 @@ if connect_status is not None:
 
 ## SoraFS, UAID དང་ Kaigi གྲོགས་རམ་འབད་མི་ {#sorafs-uaid-and-kaigi-helpers}
 
-གྲོགས་རམ་འདི་ དམིགས་གཏད་གྱི་ཨེབ་ཐག་འདི་གིས་ Nexus/SORA ཚད་མཇུག་གི་སྒོ་ཚུ་བཏོན་པའི་སྐབས་ལུ་ ལག་ལེན་འཐབ་ཚུགསཔ་ཨིན། ཐོ་བཀོད་མེད་པའི་ཐོ་ཡིག་འདི་ ཆ་གནས་ཅན་གྱི་ལན་ཅིག་སྦེ་བརྩི་དགོ། མི་མང་གིས་ Taira གིས་ ལམ་དེ་ བརྟག་ཞིབ་ལག་ཁྱེར་ ཡང་ན་ UAID གི་དོན་ལས་ བརྡ་བཀོད་མེད་པར་བཟོ་བཅོས་འབད་འོང་།
+དམིགས་གཏད་མཐུད་གནས་ཀྱིས་ དེ་དང་མཐུན་པའི་ SORA Nexus མཐའ་མཚམས་ཚུ་སྟོན་པའི་སྐབས་ ལས་རོགས་འདི་ཚུ་ཐོབ་ཚུགས། ཐོ་ཡིག་སྟོངམ་ཚུ་ཆ་གནས་ཅན་གྱི་ལན་སྦེ་རྩིས། མི་མང་ Taira ནང་ལམ་འདི་སྤྱོད་བཏུབ་བཟོ་ཡོད་རུང་ དཔེའི་གསལ་སྟོན་ཡིག་ཆ་ཡང་ན་ UAID གི་གནད་སྡུད་མེདཔ་འོང་སྲིད།
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()
@@ -1323,7 +1290,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC དང་ GPU གྲོགས་རམ་འབད་མི་ {#norito-rpc-and-gpu-helpers}
 
-ཁྱོད་ཀྱིས་ `NoritoRpcClient` ལག་ལེན་འཐབ་པའི་སྐབས་ ཁྱོད་ཀྱིས་ Norito བའི་ཊི་ཚུ་ཡོད་པའི་ཁར་ ཌའི་ལོག་གི་མཐའ་མཚམས་ (API མཐའ་མཚམས) Torii ལུ་འབོ་དགོཔ་ཨིན། དཔེ་འདི་ སྔོན་བྱོན་གྱི་ཅ་ཆས་བཟོ་རྣམ་ནང་ལས་ ཐོ་བཀོད་འབད་ཡོད་པའི་ཁེབས་ཅིག་ དགོཔ་ཨིན་མས།
+Norito བཱའིཊི་ཚུ་ཧེ་མ་ལས་ཡོདཔ་དང་ Torii གི་ཟུང་ཨང་མཐའ་མཚམས་ལུ་འབོ་དགོ་པའི་སྐབས་ `NoritoRpcClient` ལག་ལེན་འཐབ། དཔེ་འདི་ལུ་ ཧེ་མའི་ཚོང་འབྲེལ་དཔེ་གཞི་ལས་ཐོབ་པའི་མིང་རྟགས་ཅན་གྱི་སྣོད་དགོ།
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1356,10 +1323,10 @@ Python SDK གིས་ ད་ལྟོའི་བར་ན་ཡང་ རྒ�
 - ISI དང་ ཌོ་མ་ནེསི་རྐྱང་གི་ཁྱབ་སྒྲགས་ཚུ་གི་དོན་ལུ་ བརྡ་བཀོད་བཀོད་བཟོ་སྐྲུན་འབད་མི་ཚུ་
 - ཚོང་འབྲེལ་ཟིན་བྲིས་དང་ གསལ་བསྒྲགས་ མིང་རྟགས་བཀོད་མི་ དེ་ལས་ མིང་རྟགས་བཀོད་ཡོད་པའི་ཚོང་འབྲེལ་ཡིག་ཤུབས་ཀྱི་ ལཱ་གི་རྒྱུན་རིམ་ཚུ་
 - ཐད་གཏོང་བྱུང་རིམ་གྱི་རྒྱུན་ལམ་དང་ཡིག་དཔར་རྐྱབས་ཡོད་པའི་ཚགས་མ་ཚུ། ཁས་བླངས་འབད་ཡོད་པའི་སྡེབ་ཚན་རྒྱུན་ལམ་ཚུ་གིས་ བྱུང་རབས་ཆ་ཚང་བྱིནམ་ཨིན།
-- སྤྱིར་བཏང་ Kagemusha གྲ་སྒྲིག་འཛུལ་སྤྱོད་དང་ Torii མཁོ་སྒྲུབ་རོགས་སྐྱོར། ཡིག་དཔར་རྐྱབ་ཡོད་པའི་ མཐོ་ཚད་དང་ བསྐྱར་ལེན་བཟོ་བསྐྲུན་པ་ཚུ་ ཕྱི་ཁར་མ་བཏོན་པས།
+- Torii མངགས་བཞག་གི་ཀློག་ལེན་དང་ མིང་རྟགས་མ་བཀོད་པའི་ཚོང་འབྲེལ་ཟིན་བྲིས་བཟོ་མི་ཚུ།
 - རྩིས་ཐོ་གི་ཁ་བྱང་། ཨལ་ག་རི་ཏེམ་ཡོངས་འབྲེལ་གྱི་བརྡ་དོན་འབྲི་སའི་ལས་བྱེདཔ་ཚུ། མང་ཤོས་ཀྱི་ཧེཤ་དང་ ཕར་དང་ཚུར་ འགྲོ་འགྲུལ་འབད་ SM2, GOST, ML-DSA, BLS དེ་ལས་ གསང་བའི་ལྡེ་མིག་ལག་ལེན་འཐབ་ཐབས།
 - URIs མཐུད་སྦྲེལ་འབད་ཐབས། གྲོས་བསྡུར་ཚུ་, ཐེམ་ཕེརམསི་, ཨེབ་གཏང་ནིའི་རོགས་དང་ ཐོ་བཀོད་འཛིན་སྐྱོང་པ་
-- མཐུད་མཚམས གིས་ཁྱད་ཆོས་དེ་ཚུ་བྱིན་པའི་སྐབས་ གཞུང་སྐྱོང, ལག་བསྟར་མཉེན་ཆས རིམ་སྤར, Sumeragi, མཐུད་མཚམས བདག་སྐྱོང་, SoraFS, UAID དང་ Kaigi API མཐའ་མཚམས ཚུ་གི་ གློག་རིག་མཉེན་ཆས མཐུད་ཆས ཚུ
+- མཐུད་གནས་ཀྱིས་ཁྱད་རྣམ་དེ་ཚུ་སྟོན་པའི་སྐབས་ གཞུང་སྐྱོང་ ལག་བསྟར་མ་ལག་རིམ་སྤར་ Sumeragi, མཐུད་གནས་བདག་སྐྱོང་ SoraFS, UAID དང་ Kaigi མཐའ་མཚམས་ཀྱི་ཐུམ་སྒྲིལ་ཚུ།
 
 ## གཙོ་རིམ་གོང་མའི་ཁ་བྱང་ཚུ་ {#upstream-references}
 

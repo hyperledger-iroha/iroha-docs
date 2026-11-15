@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Xavfsizlik printsiplari {#security-principles}
 
 Bir Iroha blokcheyn ledgeri imzolangan ko‘rsatmalarni tasdiqlaydi va ruxsatlarni qo‘llaydi. U shaxsiy kalitlar, serverlar, ilovalar, operator ish stantsiyalari yoki boshqaruv protseduralarini himoya qilmaydi. Joylashtirish ushbu tizimlarni himoya qilishi kerak.

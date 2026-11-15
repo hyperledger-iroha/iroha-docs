@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Un Iroha NFT es un objeto único del libro mayor de blockchain con un propietario. Utilice NFTs cuando un registro necesite su propia identidad, metadatos, eventos del ciclo de vida y semántica de transferencia de propiedad, pero no necesite un saldo numérico.
@@ -27,7 +26,7 @@ El campo `content` es un mapa `Metadata`. Manténgalo compacto: almacene allí c
 Verifique si la testnet pública Taira actualmente tiene NFT registros:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-Por ejemplo, `badge$docs.universal` identifica el `badge` NFT en el dominio `docs.universal`. Si se omite el espacio de datos, el analizador actual utiliza el espacio de datos `universal`, por lo que `badge$docs` se resuelve como `badge$docs.universal`.
+Por ejemplo, `badge$docs.universal` identifica el NFT `badge` en el dominio `docs.universal`. Si se omite el espacio de datos, el analizador actual utiliza el espacio de datos `universal`, por lo que `badge$docs` se resuelve como `badge$docs.universal`.
 
 Use nombres estables para los IDs NFT. El ID es la identidad del objeto utilizada por instrucciones, consultas, permisos, filtros de eventos y referencias de aplicaciones.
 
@@ -68,17 +67,17 @@ Estos ejemplos asumen que has lanzado una red local y tienes la configuración d
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-La red local generada ya configura `wonderland.universal` y su arrendamiento SNS. Para usar un dominio diferente, créelo primero con el flujo de trabajo declarativo `app alias setup plan` y `app alias setup apply` descrito en [Dominios](/es/blockchain/domains.md#registration).
+Una red local generada no registra ningún dominio de aplicación para su cliente. Establezca `NFT_DOMAIN` en un dominio que pertenezca a la cuenta firmante o para el que esta tenga `CanRegisterNft`. Para crear uno, utilice el flujo declarativo de `app alias setup plan` y `app alias setup apply` descrito en [Dominios](/es/blockchain/domains.md#registration).
 
 Registre un NFT. El registro lee el contenido inicial JSON desde la entrada estándar:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 Agrega una clave de metadatos y lee nuevamente el NFT:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 Eliminar la clave de metadatos:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-Opcionalmente transfiera el NFT. Use `ledger nft get` para leer el propietario actual de `owned_by`, y use `ledger account list all` para encontrar un ID de cuenta de destino.
+Si lo desea, transfiera el NFT. Utilice `ledger nft get` para consultar el propietario actual en `owned_by` y `account list --all` para buscar el identificador de una cuenta de destino.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 Elimine el ejemplo NFT después de la guía paso a paso. Si lo transfirió, ya sea transfiéralo de nuevo o envíe el comando de baja con la configuración de la cuenta del propietario actual.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

@@ -153,7 +153,7 @@ const TAIRA_SORAFS_ROUTE = /^src\/(?:[a-z]+(?:-[a-z]+)?\/)?blockchain\/sora-nexu
 const TAIRA_SORAFS_REQUIRED_TOKENS = [
   'fc56984b-2be7-431d-840e-21514d1883f0',
   '369',
-  'hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94',
+  'hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774',
   'https://taira.sora.org',
   'https://taira-validator-1.sora.org',
   'https://taira-validator-2.sora.org',
@@ -163,11 +163,9 @@ const TAIRA_SORAFS_REQUIRED_TOKENS = [
   'chunk_range_fetch',
   'potr_mldsa',
   '[sorafs.storage]\nenabled = false',
-  'max_capacity_bytes = 13743895347',
+  'max_capacity_bytes = 2684354560',
   '[sorafs.discovery]\ndiscovery_enabled = true',
-  '[sorafs.discovery.admission]\nenvelopes_dir = "configs/soranexus/taira/sorafs_admission"',
-  'trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]',
-  'signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"',
+  '[sorafs.discovery.admission]\nenabled = true',
   '[sorafs.gateway]\nrequire_manifest_envelope = true',
   'enforce_admission = true',
   'enforce_capabilities = true',
@@ -250,6 +248,15 @@ export async function validateContentPolicy(repositoryRoot: string): Promise<str
       const missing = TAIRA_SORAFS_REQUIRED_TOKENS.filter((token) => !content.includes(token))
       if (missing.length > 0)
         errors.push(`${relative}: incomplete canonical Taira SoraFS profile (${missing.join(', ')})`)
+      for (const section of content.matchAll(
+        /^\[sorafs\.discovery\.admission\][ \t]*\r?\n([\s\S]*?)(?=^\[|^```|(?![\s\S]))/gmu,
+      )) {
+        for (const field of section[1].matchAll(
+          /^[ \t]*(envelopes_dir|trusted_council_keys|signature_threshold)[ \t]*=/gmu,
+        )) {
+          errors.push(`${relative}: retired local SoraFS admission authority setting ${field[1]}`)
+        }
+      }
       if (content.includes('https://{cid}.sorafs.sora.org')) {
         errors.push(`${relative}: production SoraFS content origin used for Taira`)
       }

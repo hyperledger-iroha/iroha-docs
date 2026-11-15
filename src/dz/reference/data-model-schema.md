@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # ཌའི་ཊ་གི་རྣམ་གཞག་འཆར་གཞི། {#data-model-schema}
 
@@ -16,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-ཐོ་བཀོད་འབད་ཡོད་པའི་ཡིག་ཆའི་དུམ་གྲ་ནང་ལས་ བསྡུ་སྒྲིག་ཚུ་ བཟོ་མ་ཚུགས། འདི་ཚུ་གི་འབྱུང་ཁུངས་ཀྱི་གནས་སྟངས་འདི་ སྒུག་སྟེ་ཡོད་པའི་བར་ན་ཨིན། ཕྲང་ལམ་གྱི་ལན་དེ་ ཐོ་བཀོད་ཀྱི་ གནད་སྡུད་རྣམ་གཞག་ལུ་ ཆ་རྐྱེན་ཅན་ཅིག་ཨིན་; ཁྱོད་ཀྱི་མཐུན་སྒྲིལ་གིས་ལག་ལེན་འཐབ་མི་ ལྡེ་མིག་བཟོ་སྐྲུན་དང་མཉམ་འབྲེལ་སྦེ་བཞག་འོང་།
+གཞན་མི་བཟོ་སྐྲུན་གྱི་དོན་ལུ་ཁྱབ་བསྒྲགས་འབད་པའི་འདྲ་བཤུས་ལས་མེན་པར་ ལན་དེ་ལས་འབྲེལ་མཐུད་ཚུ་བཟོ། ལག་ལེན་ནང་ཡོད་པའི་མཐུད་གནས་ཀྱི་ལན་འདི་ དེའི་བསྡུ་སྒྲིག་འབད་པའི་གནད་སྡུད་དཔེ་ཚད་ཀྱི་དབང་འཛིན་གཞི་རྟེན་ཨིན། ཁྱོད་ཀྱི་མཉམ་སྦྲེལ་ནང་ལག་ལེན་འཐབ་པའི་མཐུད་གནས་བཟོ་སྐྲུན་དང་མཉམ་དུ་འདི་གཏན་འཁེལ་བཞག།

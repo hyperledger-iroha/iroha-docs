@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Anonim Əməliyyatlar {#anonymous-transactions}
 
 Iroha-də anonim əməliyyatlar məxfi aktiv əməliyyatlarından ibarətdir. İctimai məbləğlərlə açıq hesabdan-hesaba köçürmələr yazmaq əvəzinə, bir cüzdan dəyəri qorunan blokçeyn dəftərinə köçürür və sonra sıfır-bilik sübutları ilə qeyri-şəffaf qeydləri xərcləyir.
@@ -47,7 +46,7 @@ Aktiv tərifi həm də bir şeyi daşıyır [`AssetConfidentialPolicy`](/az/refe
 4. Ümumi vəsaitləri `Shield` ilə qoruyun. Cüzdan əməliyyatı təqdim etməzdən əvvəl alıcı üçün bir qeyd kriptoqrafik öhdəlik dəyəri və şifrəli məlumat yaradır.
 5. Şəxsi şəkildə `ZkTransfer` ilə köçürün. Cüzdan, giriş qeydlərinə sahib olduğunu, giriş və çıxış dəyərlərinin balansda olduğunu və hər xərclənmiş qeydın son kriptoqrafik öhdəlik dəyəri ağacında yerləşdirildiyini sübut edən bir sübut yaradır.
 6. Varlıq siyasəti icazə verdikdə yalnız qorunmasız edin. `Unshield` ictimai məbləği və alıcının hesabını açır, şəxsi qeydlərin ləğv edicisini xərcləyir və şəxsi dəyişiklik çıxışları yarada bilər.
-7. Məxfi hadisələri, sübut qeydlərini, ləğv vəziyyətini və anonim əmanət qeydlərini yazılı sorğular və Torii API son nöqtələri vasitəsilə oxumaqla audit.
+7. Məxfi hadisələri, sübut qeydlərini və ləğvedici vəziyyətini tipli sorğular və Torii son nöqtələri vasitəsilə oxumaqla audit aparın.
 
 ## CLI Nümunələr {#cli-examples}
 
@@ -151,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## Anonim Aktiv Depoziti {#anonymous-asset-escrow}
-
-Anonim aktiv eskrovu, eskrova qoyulmuş dəyər üçün eyni qorunan köçürmə mexanizmini istifadə edir. Tərəflər və eskro vəziyyəti hələ də eskro qeydinə yazılır, lakin maliyyələşdirmə, buraxılış, ləğv, və maliyyə köçürmələrinin hissələrinin həlli qorunan nullifierlərdən və çıxış kriptoqrafik öhdəlik dəyərlərindən istifadə edir.
-
-Ətraflı depozit ISI davranışı və nümunələr üçün baxın [Yerli Aktiv Depoziti](/az/blockchain/escrow.md#anonymous-escrow).
-
-Həyat dövrü belədir:
-
-1. `OpenAnonymousAssetEscrow` qorunan maliyyələşdirmə qeydlərini xərcləyir və bir vasitə kriptoqrafik öhdəlik dəyəri yaradır.
-2. `AcceptAnonymousAssetEscrow` alıcını qeyd edir.
-3. `MarkAnonymousEscrowPaymentSent` qeydləri göstərir ki, alıcı ödənişi zəncir xaricində göndərib.
-4. `ReleaseAnonymousAssetEscrow` depozit kriptoqrafik öhdəlik dəyərini alıcı çıxış kriptoqrafik öhdəlik dəyərlərinə xərcləyir.
-5. `CancelAnonymousAssetEscrow` ödəniş işarələnmədikdə, satıcı çıxışının kriptoqrafik öhdəlik dəyərlərinə kirayə saxlanan kriptoqrafik öhdəlik dəyərini geri göndərir.
-6. `OpenAnonymousEscrowDispute` və `ResolveAnonymousEscrowDispute` mübahisəli əmanətləri sübut kriptoqrafik xeşlər və həlledicinin idarə etdiyi paylama ilə idarə edir.
-
-[Sorğular](/az/reference/queries.md#escrow-and-proof-records) ünvanında siyahıya alınmış anonim əmanət sorğularından istifadə edərək əmanət qeydlərini və vəziyyətlərini yoxlayın.
-
 ## Riyaziyyat {#math}
 
 Aşağıdakı qeyd gizli aktiv axınını təsvir edir. Tətbiqlər aktiv siyasətindən və yoxlayıcı qeydindən aktiv dövrə və parametr ID-lərindən istifadə edir, buna görə müştərilər kriptoqrafik öhdəlik dəyərlərini, nullifier-ləri və sübut baytlarını cüzdan/prover tərəfindən yaranan qeyri-şəffaf nəticələr kimi qəbul etməlidir.
@@ -236,7 +218,6 @@ Anonim əməliyyatlar hər müşahidə oluna bilən faktı gizli etmir. Aşağı
 - ləğv edicilər və çıxış kriptoqrafik öhdəlik dəyərləri
 - sübut kriptoqrafik xeşlər, yoxlama açarı istinadları və isteğe bağlı məlumat konteyneri kriptoqrafik xeşlər
 - `Unshield` üçün ictimai məbləğ və alıcı hesabı
-- anonim depozit satıcısı, alıcı, vəziyyət, zaman möhürləri və sübut kriptoqrafik həşlər
 
 Tətbiqləri belə dizayn edin ki, bu ümumi metadatalar qorumağa çalışdığınız biznes əlaqəsini açıqlamasın.
 

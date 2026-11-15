@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Foydalanish Norito ma'lumotlar konsensus, imzolash, hashing, chidamlilik yoki o'
 |Torii yozgan javoblar |`Accept: application/x-norito`dan foydalanib, ikkilamchi javoblarni yozishni qo'llab-quvvatlaydigan oxirgi nuqtalar. |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, va Android mijozlar foydalanadi Norito qo'lda yig'ilgan baytlar o'rniga quruvchilar yoki bog'lovchilar. |
 |Kura saqlash |Blok fayzli yuklar, tiklash yordamchi yozuvlari, ro'yxatlar va commit belgilari Norito ramkalashtirilgan ma'lumotlar sifatida saqlanadi. |
-|Manifestolar |Nexus, ma'lumotlar mavjudligi, SoraFS, oqim va ilovalarga ko'zlangan manifestlar manzili imzolangan yoki hash bo'lishi kerak bo'lganda Norito dan foydalanadi. |
+|Manifestolar |SORA Nexus, ma'lumotlar mavjudligi, SoraFS, oqim va ilovalarga ko'zlangan manifestlar manzili imzolangan yoki hash bo'lishi kerak bo'lganda Norito dan foydalanadi. |
 |Yoyish |Norito Streamingda Norito manifestlari, segment sarlavhalari, boshqaruv ramkalari va muvofiqlik sinov ma’lumotlaridan foydalanadi. |
 
 Norito aqlli shartnoma tili emas, balki bitimlar, kontrakt qo'ng'iroqlari, manifestlar va API faydali yuklarni olib boradigan deterministik qadoq va kodek hisoblanadi.
@@ -205,5 +205,5 @@ Streamingga oid kodeklar va entropiya profillari asosiy Norito transaksiya/so'ro
 
 ## Yuqoridagi ma'lumotlar {#upstream-references}
 
-- [Norito formatining moslamalari](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito formatining moslamalari](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

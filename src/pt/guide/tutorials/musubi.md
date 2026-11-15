@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Musubi Kotodama Pacotes {#musubi-kotodama-packages}
 
 Musubi é o gerenciador de pacotes de primeira versão para pacotes de origem Kotodama. Ele resolve um gráfico de dependências exato na cadeia, autentica SoraFS arquiva fontes, compila e testa o espaço de trabalho selecionado, constrói arquivos canônicos CAR e publica versões imutáveis através do Iroha.
@@ -32,7 +31,7 @@ Identificadores exatos de lançamento adicionam uma versão:
 namespace/package@version
 ```
 
-Não há `@` à frente de um namespace. Um namespace é ou uma raiz de espaço de dados, como `universal`, ou um espaço de dados qualificado por domínio, como `dex.universal`. O livro-razão da blockchain vincula esse namespace estrutural a um espaço de dados doméstico estável antes que um pacote possa ser reivindicado.
+Não há `@` à frente de um namespace. Um namespace é ou uma raiz de espaço de dados, como `universal`, ou um namespace qualificado por domínio, como `dex.universal`. O livro-razão vincula esse namespace estrutural a um espaço de dados de origem estável antes que um pacote possa ser reivindicado.
 
 ## manifesto técnico e Lockfile {#manifest-and-lockfile}
 
@@ -68,10 +67,10 @@ Taira é a testnet pública deste fluxo de trabalho. Comece com uma configuraç�
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-O catálogo de provedores fornece identidades de provedores e endpoints anunciados API. Obtenha a autorização correspondente do operador junto ao provedor escolhido. O tempo de execução do software usa essa chave para solicitar tokens de stream limitados; os tokens não são argumentos CLI nem conteúdo de arquivo de bloqueio.
+O catálogo de provedores fornece identidades de provedores e endpoints anunciados. Obtenha a autorização correspondente do operador junto ao provedor escolhido. O tempo de execução do software usa essa chave para solicitar tokens de stream limitados; os tokens não são argumentos CLI nem conteúdo de arquivo de bloqueio.
 
-Não use um pino de validador Taira URL como `url`. Os validadores registrados têm o armazenamento incorporado SoraFS desativado. Seus pontos de extremidade `https://taira-validator-{1,2,3,4}.sora.org` API aceitam registro de pino, enquanto leituras de arquivo usam a origem HTTPS do provedor admitido selecionado.
+Não use um pino de validador Taira URL como `url`. Os validadores registrados têm o armazenamento incorporado SoraFS desativado. Seus pontos de extremidade `https://taira-validator-{1,2,3,4}.sora.org` aceitam registro de pino, enquanto leituras de arquivo usam a origem HTTPS do provedor admitido selecionado.
 
 ## Fluxo de Trabalho Local {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi usa instruções e consultas V1 de primeira versão:
 | `FindMusubiArchiveLocationsV1`                       |Leia locais de arquivo finalizados suportados pelo provedor.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |Leia o alvo do alias atual ou seu histórico imutável.|
 
-Torii expõe a família de rotas do aplicativo sob `/v1/musubi/*`. As ferramentas MCP usam os nomes atuais de `iroha.musubi.queries.*` e `iroha.musubi.instructions.*`. Veja [Torii API pontos de extremidade](/pt/reference/torii-endpoints.md) e o [referência de consulta](/pt/reference/queries.md) para o mapa mais amplo de API.
+Torii expõe a família de rotas do aplicativo sob `/v1/musubi/*`. As ferramentas MCP usam os nomes atuais de `iroha.musubi.queries.*` e `iroha.musubi.instructions.*`. Veja [Torii pontos de extremidade](/pt/reference/torii-endpoints.md) e o [referência de consulta](/pt/reference/queries.md) para o mapa mais amplo de API.

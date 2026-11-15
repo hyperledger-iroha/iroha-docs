@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Разрешениелар {#permissions}
 
 Хисапҡа блокчейн буйынса төрлө эштәр өсөн рөхсәт билдәләре кәрәк, мәҫәлән, активтарҙы йәшереү йәки яндырыу өсөн.
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Рөхсәтте раҫлаусылар {#permission-validators}
 
-Рөхсәт бар, шуға күрә бары тик тейешле рөхсәт билдәһе булған аккаунттар ғына һаҡланған эште башҡара ала. Дефолт башҡарыусы инструкциялар, һорауҙар һәм экспрессиялар үтәлеү ваҡытында рөхсәтте тикшерә.
+Рөхсәттәр кәрәкле рөхсәт билдәһе булған иҫәптәр генә һаҡланған ғәмәлде башҡара алһын өсөн бар. Ғәҙәттәге башҡарыусы рөхсәттәрҙе транзакцияларҙы һәм инструкцияларҙы башҡарғанда һәм һорауҙарҙы тикшергәндә тикшерә.
 
 Проверкалаусының алдан билдәләнгән өҫкө йөҙө иҫәп-хисап зонаһы буйынса төркөмләнә:
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - активтар, NFTs, һәм гарантиялар
 - триггерҙар
 - роле һәм рөхсәттәре
-- үтәүсе/эшләү ваҡыты, иҫбатлауҙар, күперҙәр һәм SORA/Nexus модулдәр
+- башҡарыусы/башҡарыу мөхите, иҫбатлауҙар, күперҙәр һәм SORA Nexus модулдәре
 
 Тулы билдәләр исемлеге сығанаҡ менән тәьмин ителгән [Permission Tokens шиғырында](/ba/reference/permissions.md).
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 Рөхсәтте тикшереүҙе актив башҡарыусы үтәй. Башланғыс башҡарыусы индерелгән рөхсәт раҫлаусыларҙы һәм токен билдәләрен бирә, ә селтәр ҡулланылған башҡарыусыны яңыртып, сәйәсәтте үҙгәртә ала.
 
-Валидаторҙар раҫлау вердикты бирә. Белешмә биреүсе операция рөхсәт итә ала, уны сәбәп менән кире ҡаға ала, йәки әгәр операция был валидаторҙың сиктәрендә булмаһа, уны ситтә ҡалдыра ала. һайланған судья күрһәтмәләрҙең, һорауҙарҙың һәм белдереүҙәрҙең дауам итеүен хәл итер өсөн ошо ҡарарҙарҙы берләштерә.
+Башҡарыусы операцияны йә рөхсәт итә, йә уны `ValidationFail` сәбәбе менән кире ҡаға. Кире ҡағылған инструкция бөтә транзакцияның кире ҡағылыуына килтерә, ә кире ҡағылған һорау хатаны саҡырыусыға ҡайтара.
 
 ## Яҡшы һорауҙар {#supported-queries}
 

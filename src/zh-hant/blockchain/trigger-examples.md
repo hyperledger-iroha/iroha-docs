@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 事件觸發器示例 {#event-trigger-example}
 
 這個例子使用了可信無域名帳戶 IDs 預計的資產定義 Iroha 3 資料模型.

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 在裸机上运行 Iroha {#running-iroha-on-bare-metal}
 
 当您想通过 Docker Compose 而不是在主机上直接运行对等节点时使用此工作流程.当前的源树提供 Kagami 生成器,用于编写匹配创世组,对等节点配置,客户端配置和启动/停止脚本.
@@ -32,10 +31,10 @@ cargo build --release \
 创建一个四对的 Iroha 3 本地网络:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-输出目录包含生成的 `genesis.json`, `genesis.signed.nrt`,对等节点`config.toml`文件, `client.toml`,辅助脚本以及生成的 `README.md`,其中包含该捆绑的确切命令.
+输出目录包含生成的 `genesis.json`、`genesis.signed.nrt`、`genesis.expected_hash`、每个验证者一个的 `peerN.toml`、`client.toml`、`start.sh` 和 `stop.sh` 脚本，以及一个生成的 `README.md`，其中包含该捆绑包的确切命令。
 
 ## 3. 启动对等节点 {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-如果您需要将每个对等节点连接到像 systemd 这样的进程管理器中,请使用为每一个对等节点记录在 `./localnet/README.md` 的启动命令. 保持每个对等节点的 `config.toml`,私钥,存储目录和端口分开.
+如果您需要将每个对等节点接入 systemd 等进程管理器，请遵循 `./localnet/start.sh` 中针对每个对等节点的命令：在 `<bundle>/state/peerN` 目录下运行 `iroha3d --config <bundle>/peerN.toml`，并且仅在该对等节点首次启动时传入 `--sumeragi-assert-fresh-key`。请将每个对等节点的 `peerN.toml`、私钥、存储目录和端口分开保存。
 
 ## 4. 运营网络 {#_4-operate-the-network}
 
 使用生成的客户端配置:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 
@@ -64,7 +63,7 @@ target/release/iroha --config ./localnet/client.toml --output-format text ops su
 
 ## 5. 产品说明 {#_5-production-notes}
 
-- 创建生产的新私钥,并将其存储在仓库外.
+- 为生产环境生成新的私钥，并将其存放在代码仓库之外。
 - 让每个对等节点都同意相同的签名创世交易,拓,可信任的对等节点和验证器 PoPs.
 - 只有在其他机器不能从对等节点到达时,将收听器绑定到主机本地接口.
 - 使用反向代理或防火墙来对 Torii 曝光,基础 auth, TLS 和速度限制.

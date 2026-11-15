@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Суурилуулалтын асуудлыг шийдвэрлэх {#troubleshooting-installation-issues}
 
 Энэ хэсэг нь Iroha 3 суулгах талаар асуудлыг шийдэх зөвлөмжийг санал болгодог. Хэрэв та тулгарч буй асуудал энд дурдагдаагүй бол бидэнтэй [Телеграм](https://t.me/hyperledgeriroha) хаягаар холбогдоно уу.

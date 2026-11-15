@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # ངོས་ལེན་རྟགས་ཚུ་ {#permission-tokens}
 
@@ -16,7 +16,6 @@ translation_engine: human-reviewed
 | གནང་བ་རྟགས་མཚན་ | དབྱེ་ཁག | བཀོལ་སྤྱོད་ |
 | --- | --- | --- |
 | `CanManagePeers` | མཉམ་རོགས | ཐོ་བཀོད་འབད་ནི་དང་ ཐོ་བཀོད་འབད་ནི་མེདཔ་བཟོ་ནི་ ཡང་ན་ དེ་མེན་པ་ཅིན་ མཉམ་རོགས་ཚུ་འཛིན་སྐྱོང་འཐབ་ནི། |
-| `CanManageLaneRelayEmergency` | མཉམ་རོགས | གློ་བུར་གྱི་ལམ་-བརྒྱུད་སྤྲོད་ཚད་འཛིན་ཚུ་འཛིན་སྐྱོང་འཐབ། |
 | `CanRegisterDomain` | མངའ་ཁོངས་ | མངའ་ཁོངས་ཅིག་ཐོ་བཀོད་འབད། |
 | `CanUnregisterDomain` | མངའ་ཁོངས་ | མངའ་ཁོངས་ཅིག་ཐོ་བཀོད་འབད་བཤོལ་འབད། |
 | `CanModifyDomainMetadata` | མངའ་ཁོངས་ | མངའ་ཁོངས་མེ་ཊ་ཌེ་ཊ་ལེགས་བཅོས་འབད། |
@@ -28,7 +27,7 @@ translation_engine: human-reviewed
 | `CanMintAssetWithDefinition` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་ངེས་ཚིག་ཅིག་གི་དོན་ལུ་ མིན་ཊི་རྒྱུ་དངོས་ཚུ། |
 | `CanBurnAssetWithDefinition` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་ངེས་ཚིག་ཅིག་གི་དོན་ལུ་ རྒྱུ་དངོས་ཚུ་འཚིག་བཅུག། |
 | `CanTransferAssetWithDefinition` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་ངེས་ཚིག་ཅིག་གི་དོན་ལུ་ རྒྱུ་དངོས་ཚུ་སྤོ་བཤུད་འབད། |
-| `CanMintAsset` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་རྒྱུ་དངོས་ལྷག་ལུས་ཅིག་ བཙུགས། |
+| `CanMintAssetToAccount` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་རྒྱུ་དངོས་ལྷག་ལུས་ཅིག་ བཙུགས། |
 | `CanBurnAsset` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་རྒྱུ་དངོས་ལྷག་ལུས་ཅིག་མེ་བཏང་། |
 | `CanTransferAsset` | རྒྱུ་ནོར། | དམིགས་བསལ་གྱི་རྒྱུ་དངོས་ལྷག་ལུས་ཅིག་སྤོ་བཤུད་འབད། |
 | `CanRegisterNft` | NFT | NFT ཐོ་བཀོད་འབད། |
@@ -43,8 +42,9 @@ translation_engine: human-reviewed
 | `CanModifyTrigger` | འབྱུང་ཁུངས་ | ཊི་གར་རིམ་སྒྲིག་ལེགས་བཅོས་འབད། |
 | `CanModifyTriggerMetadata` | འབྱུང་ཁུངས་ | ཊི་གར་མེ་ཊ་ཌེ་ཊ་ལེགས་བཅོས་འབད། |
 | `CanUpgradeExecutor` | ལག་ལེན་འཐབ་མི | ལག་བསྟར་མཉེན་ཆས་ལག་ལེན་འཐབ་མི་འདི་ཡར་བསྐྱེད་འབད། |
-| `CanRegisterSmartContractCode` | གན་རྒྱ་རིག་པ། | གན་རྒྱ་ཨང་རྟགས་རིག་པ་ཅན་ཐོ་བཀོད་འབད། |
-|`CanUseFeeSponsor` |Nexus |ཟད་འགྲོ་ Nexus རྩིས་སྤྲོད་འབད་ནིའི་དོན་ལས་ འབྲི་ཤོག་བཀོད་ཡོད་པའི་རྩིས་ཐོ་ཅིག་ལུ་ སྤྲོད་དགོ།|
+| `CanManageSmartContractCode` | གན་རྒྱ་རིག་པ། | གཞི་བསྟུན་མ་འབད་བའི་ ཀོཌི་ཐོན་དངོས་ཚུ་ བཏོན་གཏང་ནི་དང་ གན་རྒྱའི་འཛུལ་སྒོ་ཚུ་ འཐུས་ཚབ་བསྐོ་ནི། ཐོ་བཀོད་འབད་ཡོད་པའི་རྩིས་ཐོ་ཚུ་གིས་ དེ་མེད་རུང་ བདེན་དཔྱད་འབད་ཡོད་པའི་ཐོན་དངོས་ཚུ་ བཟོ་ཚུགས། |
+| `CanManageFeeSponsorProgram` | SORA Nexus | རྒྱབ་སྐྱོར་པའི་རྩིས་ཐོ་ཏག་ཏག་དེའི་བདག་དབང་ནང་ཡོད་པའི་ལས་རིམ་ཚུ་བདག་སྐྱོང་འབད། |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | རྒྱབ་སྐྱོར་པའི་ལས་རིམ་གཅིག་ཏག་ཏག་གི་ཕན་ཐོགས་ཐོབ་མི་ཚུ་འཛིན་སྐྱོང་འབད། |
 
 ## ཚོང་འབྲེལ་འཐབ་ནི་ {#ownership}
 

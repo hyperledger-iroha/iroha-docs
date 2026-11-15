@@ -1,27 +1,26 @@
 ---
 translation_locale: hy
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Համացանցի տեղակայման բանալիները {#keys-for-network-deployment}
 
-Յուրաքանչյուր ցանց պահանջում է հաճախորդների, հանգույցների, գենեզի ստորագրման եւ NPoS կամ Nexus պրոֆիլների համար տարբեր հիմնական նյութեր BLS վավերացնող նույնականացման համար:
+Յուրաքանչյուր ցանցի պետք են առանձին բանալիային նյութեր հաճախորդների, ծագման ստորագրման և տիրապետման ապացույցներով BLS-normal վավերացնողների նույնությունների համար։
 
 ## Որտեղ են օգտագործվում բանալիները {#where-keys-are-used}
 
 - Հաճախորդի ստորագրման բանալիները պահվում են `client.toml` բաժնում՝ `[account]`:
 - Պերային նույնականացման բանալիները պահվում են յուրաքանչյուր պերային `config.toml` որպես `public_key` եւ `private_key`:
 - Պարբերականների հայտնաբերումը օգտագործում է յուրաքանչյուր պարբերականի հանրային բանալին `trusted_peers`
-- BLS վավերացնող NPoS պրոֆիլների համար տիրապետման ապացույցները պահվում են `trusted_peers_pop` բաժնում:
+- BLS վավերացնողների տիրապետման ապացույցները յուրաքանչյուր վավերացնողի համար պահվում են `trusted_peers_pop`-ում՝ անկախ կոնսենսուսի ռեժիմից։
 - Գենեզիսի ստորագրությունն օգտագործում է `[genesis].public_key` հանգույցների կարգավորման մեջ եւ համապատասխան մասնավոր բանալին՝ մանիֆեստը ստորագրելիս:
 
 Տեղական կամ փորձարկման տեղակայման համար, թույլ տվեք Kagami ստեղծել բոլոր այս ֆայլերը միասին:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Ներկայացած ցանցի կամ պրոֆիլի համար օգտագործեք ուղեցույցային հոսքը.

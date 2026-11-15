@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Teste de Caos com Izanami {#chaos-testing-with-izanami}
 
 Izanami é o orquestrador chaosnet no workspace upstream Iroha. Ele inicia um cluster local descartável Iroha, envia uma carga de trabalho configurável e injeta falhas em pares de rede selecionados para que os operadores possam verificar se a rede continua progredindo sob falhas controladas.

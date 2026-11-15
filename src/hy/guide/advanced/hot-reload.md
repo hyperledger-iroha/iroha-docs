@@ -1,14 +1,13 @@
 ---
 translation_locale: hy
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha տաք վերբեռնվածություն Docker պահոցում {#hot-reload-iroha-in-a-docker-container}
 
-Օգտագործեք սառը վերբեռնում միայն տեղական թերագրման համար: Բնականոն տեղական զարգացման համար նախընտրեք վերակառուցել նկարը կամ վերսկսել ստեղծված Docker Compose փաթեթը նոր Kagami փաթեթի միջոցով:
+Թեժ վերաբեռնումը կիրառեք միայն տեղային վրիպազերծման համար։ Docker-ում նույն վերանայման գործարկվող ֆայլերով չորս վավերացնող հանգույց կառուցելու և գործարկելու համար հետևեք [Լանչում Iroha 3](/hy/get-started/launch-iroha.md) ուղեցույցին։
 
 ## Փոխարինեք հանգույցի գործարկվող ֆայլը {#replace-the-peer-binary}
 
@@ -25,21 +24,12 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Օգտագործեք `docker ps` կոնտեյների անվանումը հաստատելու համար: Ստեղծված փաթեթում հանգույցային կոնտեյները սահմանվում են `./docker-compose.yml`.
+Կոնտեյները գտնելու համար օգտագործեք `docker ps`։ Նախքան ծառայության գործարկվող ֆայլը փոխարինելը՝ ստուգեք դրա ուղին պատկերի մեջ։
 
 ## Գինեզիսը վերակառուցել մեկ անգամ օգտագործվող ցանցում {#recommit-genesis-in-a-disposable-network}
 
-Պերը կատարում է գեներեզը միայն այն ժամանակ, երբ դրա պահեստը դատարկ է: Մեկ անգամ օգտագործվող Docker ցանցի համար դադարեցրեք փաթեթը, հեռացրեք ստեղծված վիճակը, վերածեք կամ փոխարինեք ստորագրված գեներիզային փաթեթի եւ սկսեք նորից.
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Մի փոխարինեք գենեզը ցանցի վրա, որի վիճակը պետք է պահպանվի:
+Նոր սկզբնաբլոկի համար հանգույցի պահոցը պետք է դատարկ լինի։ Նույն ցանցը վերագործարկելու համար գործարկեք `python3 poc.py down` և ապա `python3 poc.py up`։ `state/` գրացուցակը պահեք իր չորս Docker հատորների հետ միասին։
 
 ## Օգտագործեք հարմարվողական կազմաձեւում {#use-custom-configuration}
 
-Ներկայիս հանգույցային կոնֆիգուրացիան TOML է: Կապեք կամ պատճենեք առաջադրված `config.toml`, `genesis.signed.nrt` եւ դրանց հետ կապված հիմնական ֆայլերը պատկերով սպասվող պահեստային ուղիների մեջ, այնուհետեւ վերսկսեք հանգույցը: Պահպանեք ստեղծված ֆայլերը միասին. տարբեր Kagami երթեւեկություններից ֆայլերի խառնումը կարող է առաջացնել deserialization կամ համաձայնության ձախողումներ:
+Հանգույցի ընթացիկ կարգավորումը TOML ձևաչափով է։ Kagami-ն յուրաքանչյուր վավերացնողի համար գրում է մեկ `peerN.toml`՝ `genesis.signed.nrt`-ի, `genesis.public_key`-ի և `genesis.expected_hash`-ի հետ միասին. `kagami docker`-ի ստեղծած Compose ֆայլը դրանք միացնում է կոնտեյների մեջ։ Ֆայլերը ձեռքով պատճենելու փոխարեն վերստեղծեք այն, ապա վերագործարկեք հանգույցը։ Ստեղծված ֆայլերը պահեք միասին. տարբեր Kagami գործարկումներից ֆայլերի խառնումը կարող է առաջացնել ապասերիալացման կամ կոնսենսուսի ձախողումներ։

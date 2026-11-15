@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Oʻzgarishlarni qoʻzgʻatish {#event-trigger-example}
 
 Ushbu misol Iroha 3 ma'lumotlar modelidagi kanonik domensiz hisob IDs va ko'zda tutilgan aktivlarni aniqlashdan foydalanadi.

@@ -1,25 +1,24 @@
 ---
 translation_locale: he
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # העולם {#world}
 
 `World` הוא יחידה גלובלית המכילה יחידות אחרות. `World` מורכב מ:
 
-- Iroha [פרמטרים של הגדרות ](/he/guide/configure/client-configuration.md)
+- פרמטרים של השרשרת על גבי השרשרת, שנקבעים ב־[בראשית](/he/reference/genesis.md) ובאמצעות `SetParameter`
 - צמתים רשומים
 - שדות רשומים
-- טריגרים רשומים [ ](/he/blockchain/triggers.md)
-- חלקים רשומים [](/he/blockchain/permissions.md#permission-groups-roles)
+- [טריגרים](/he/blockchain/triggers.md) רשומים
+- [תפקידים](/he/blockchain/permissions.md#permission-groups-roles) רשומים
 - רשום [הגדרות של סימני רשות ](/he/blockchain/permissions.md#permission-tokens)
 - סימני רשות לכל החשבונות
-- [שרשרת מבקרי תקופת הפעולה ](/he/blockchain/permissions.md#runtime-validators)
+- [המבצע הפעיל של זמן הריצה](/he/blockchain/permissions.md#runtime-validators)
 
-כאשר תחומים, צמתים או תפקידים נרשמים או לא נרשמים, `World` הוא המטרה של הוראת (לא) רישום [ ](/he/blockchain/instructions.md).
+כאשר רושמים או מסירים רישום של תחומים, צמתים או תפקידים, `World` הוא היעד של [הוראת הרישום או ביטול הרישום](/he/blockchain/instructions.md).
 
 ## תצוגת מצב העולם (WSV) {#world-state-view-wsv}
 
@@ -36,7 +35,7 @@ WSV הוא רחב יותר מהאובייקט `World`. במציאות הוא מ�
 - אינדיקטורים של עסקאות לבלוקים המשמשים בשאילתות ומקבלות
 - הטופולוגיה הנוכחית והקדמית של commit המשמשת על ידי הסכמה
 - אינדיקסים בזיכרון המוצאים מבלוקים מחויבים, כגון התחייבויות זמינות נתונים, קורסורים של קבלה, כוונות פין ומרקטרים של תצפית בקשה
-- תמונות מצב של תצורת runtime הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד עיבוד, תוכן, סליקה ו־Nexus
+- תמונות מצב של תצורת סביבת הריצה הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד, תוכן, סליקה ו־SORA Nexus
 
 חיפוש בדרך כלל מקבל רק קריאה `StateView` על מבנים אלה. תצוגה היא תמונת מצב עקבית לביצוע חיפוש; זה לא מאפשר מוטציה ישירה של WSV.
 
@@ -58,22 +57,19 @@ Replay מאושרת כל בלוק שנחזק, מבצעת מחדש את רשימ�
 
 Kura הוא אחסון בלוק קבוע של Iroha. הוא מאחסן בלוקים חתומים ונתונים מתאוששים. זה לא מאחסן עותק משתנה שנייה של WSV.
 
-האחסון Kura מקושר ב- [`kura.store_dir`](/he/reference/peer-config/params.md#param-kura-store-dir). בתוך שורש זה, נתונים של בלוק מחולקים על ידי ליין או קטע. הקבצים העיקריים לחלק הם:
+שורש האחסון של Kura נמצא ב־[`kura.store_dir`](/he/reference/peer-config/params.md#param-kura-store-dir). הבלוקים של השרשרת הגלובלית נמצאים בתיקייה `blocks/canonical` התחומה לשרשרת, ומופעי הנתיבים שומרים מאגרי בלוקים נפרדים לכל נתיב. הקבצים הקנוניים העיקריים הם:
 
 |דרך |מטרה.|
 | --- | --- |
-|`blocks/<segment>/blocks.data` |מטעני בלוקים חתומים ורציפים, ממוסגרים ב־Norito. |
-|`blocks/<segment>/blocks.index` |רשומות בגודל קבוע `(start, length)` הגובה של בלוק המפה באייטים ב- `blocks.data`. |
-|`blocks/<segment>/blocks.hashes` |גיבובי בלוקים לפי גובה, לחיפוש מהיר ולאימות בעת האתחול. |
-|`blocks/<segment>/blocks.count.norito` |סימן commit יציבה שידוד כמה כתיבים של אינדיקס בלוק בטוחים לשימוש. |
-|`blocks/<segment>/da_blocks/` |מטענים של בלוקים נשמרים מחוץ ל־`blocks.data` כאשר אכיפת תקציב הדיסק מעבירה גופי בלוק ישנים מחוץ לקובץ החם. |
-|`blocks/<segment>/pipeline/sidecars.norito` ו־`sidecars.index` |קובצי sidecar לשחזור שרשרת עיבוד העיבוד, הממופתחים לפי גובה הבלוק. |
-|`blocks/<segment>/pipeline/roster_sidecars.norito` ו `roster_sidecars.index` |קובצי עזר של commit-roster האחרונים המשמשים על ידי סינכרון בלוק ושוב. |
-|`merge_ledger/<segment>.log` |הכניסה למספר הנתונים המורכבות עם בלוקים commit. |
-|`commit-rosters.norito` |שמרו על תעודות commit ונקודות בדיקת לאישור עבור בלוקים האחרונים. |
+|`blocks/canonical/blocks.data` |מטעני בלוקים חתומים ורציפים, ממוסגרים ב־Norito. |
+|`blocks/canonical/blocks.index` |רשומות בגודל קבוע `(start, length)` הגובה של בלוק המפה באייטים ב- `blocks.data`. |
+|`blocks/canonical/blocks.hashes` |גיבובי בלוקים לפי גובה, לחיפוש מהיר ולאימות בעת האתחול. |
+|`blocks/canonical/blocks.count.norito` |סימן commit יציבה שידוד כמה כתיבים של אינדיקס בלוק בטוחים לשימוש. |
+|`blocks/canonical/da_blocks/` |מטענים של בלוקים נשמרים מחוץ ל־`blocks.data` כאשר אכיפת תקציב הדיסק מעבירה גופי בלוק ישנים מחוץ לקובץ החם. |
+|`blocks/canonical/pipeline/sidecars.norito` ו־`sidecars.index` |קובצי sidecar לשחזור שרשרת עיבוד העיבוד, הממופתחים לפי גובה הבלוק. |
 
 Kura שומר על וקטור קומפקטי של זיכרון עבור שרשרת: לכל גובה יש את ההש בלוק, ובבקשה, גוף הבלוק. בלוק הגנזיס נשאר מאוחסן, והבלוקים האחרונים [ `kura.blocks_in_memory`](/he/reference/peer-config/params.md#param-kura-blocks-in-memory) שאינם גנזיס שומרים את הגוף שלהם בזיכרון . גופים של בלוקים ישנים נפטרים מהזיכרון ומוחזקים מחדש מתוך קבצים Kura כאשר זה נחוץ.
 
-במהלך ההחלקה, מצב `strict` מעודד בלוקים מאוחסנים מהחובשים הפועלים של הבלוק ומכתוב מחדש את הקובץ האש אם זה נחוץ. מצב `fast` מתחיל מ-האש/אינדקס מטא נתונים מאוחסרים וחוזר ל-החלקה קפדנית אם המטא נתונים אלה אינם עקביים. אם Kura יגלה זנב שבור, הוא יפוצץ את האחסון לבלוק האחרון שהוסמך.
+במהלך האתחול, מצב `strict` (ברירת המחדל) מאמת כל גוף בלוק קנוני וכל קישור לבלוק ההורה. ‏`fast` הוא מצב חירום לאחסון ש־`strict` כבר אתחל: הוא סומך על תמונת מצב חתומה עדכנית ועל הספירה והקצה שנשמרו באופן עמיד, ומשאיר את Sumeragi, את הפצת העסקאות בין העמיתים ואת ייצור הבלוקים מושבתים עד שהצומת מופעל מחדש במצב `strict`. האתחול דוחה תוצרים שהוצאו משימוש מסוג `merge_ledger`, ‏`roster_sidecars` ו־`commit-rosters.norito`. אם Kura מזהה סיומת פגומה, הוא מקצץ את האחסון עד לבלוק המאומת האחרון.
 
 Kura כותב בלוקים חדשים באמצעות כותב שפועל ברקע. הכותב מצרף את מטעני הבלוקים, הגיבובים ורשומות האינדקס, ולאחר מכן מקדם את סמן הספירה העמיד בהתאם למדיניות ה־fsync שהוגדרה. כאשר אכיפת תקציב הדיסק פעילה, Kura יכול למחוק מקטעים שיצאו משימוש או להעביר גופי בלוקים ישנים אל `da_blocks/`, תוך שמירת הגיבובים ורשומות האינדקס לצורך אימות וחיפוש.

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # རྒྱུ་དངོས་ཚུ་ {#assets}
 
@@ -21,7 +21,8 @@ Iroha རྒྱུ་དངོས་འདི་རྩིས་ཐོ་གི�
 - `mintable`: བརྟག་ཞིབ་འབད་ནིའི་ སྲིད་བྱུས་
 - `logo`: གདམ་ཁ་རྐྱབས། `SoraFS` URI
 - `metadata`: གང་བྱུང་ལྡེ་མིག་གནས་གོང་མེ་ཊ་ཌེ་ཊ།
-- `balance_scope_policy`: ལྷག་ལུས་ཚུ་ ཡོངས་ཁྱབ་ཡང་ན་ གནད་སྡུད་ས་སྟོང་ཚད་འཛིན་འབད་ཡོདཔ་ཨིན་ན་མེན་ན།
+- `balance_scope_policy`: ལྷག་ལུས་ཚུ་ཡོངས་ཁྱབ་ཨིན་ན་ ཡང་ན་གནད་སྡུད་ས་སྟོང་ནང་ཚད་འཛིན་འབད་ཡོད་ན།
+- `owning_domain`: མངའ་ཁོངས་ཀྱིས་བདག་དབང་འཛིན་པའི་ངེས་ཚིག་གི་བདག་པོ་མངའ་ཁོངས། གནད་སྡུད་ས་སྟོང་ནང་ཐད་ཀར་ཐོ་བཀོད་འབད་པའི་ངེས་ཚིག་ཚུ་ལུ་ མེད།
 - `owned_by`: ཐོ་བཀོད་འབད་མི་ཡང་ན་ངེས་ཚིག་བདག་དབང་འབད་མི་རྩིས་ཐོ།
 - `total_quantity`: བསྡོམས་རྩིས་བཏོན་པའི་གྲངས་ཚད།
 - `confidential_policy`: ཉེན་སྲུང་འབད་ཡོད་པའི་རྒྱུ་དངོས་བཀོལ་སྤྱོད་ཀྱི་སྲིད་བྱུས།
@@ -33,9 +34,9 @@ Iroha རྒྱུ་དངོས་འདི་རྩིས་ཐོ་གི�
 `Asset` འདི་ནང་ལུ་:
 
 - `id`: `AssetId` ཅིག་, དེ་གིས་ རྒྱུ་དངོས་ངེས་ཚིག་དང་ བདག་དབང་རྩིས་ཐོ་ དེ་ལས་ གདམ་ཁའི་ལྷག་ལུས་ཁྱབ་ཁོངས་ཚུ་ མཉམ་སྡེབ་འབདཝ་ཨིན།
-- `value`: a `Numeric` ལྷག་ལུས་
+- `value`: a `Quantity` ལྷག་ལུས་
 
-རྩིས་ཐོ་བདག་འཛིན་དེ་ ཀན་ནོ་སི་དང་ ཌོ་མེནམེད་ཡོདཔ་ཨིན། རྒྱུ་དངོས་གི་འགྲེལ་བཤད་འདི་ ཌེ་ཊའི་ས་ཁོངས་ནང་ ཁྱད་ཚད་ཅན་གྱི་ ཌོ་མེན་ནང་ལུ་ བརྟག་དཔྱད་འབད་བཏུབ། དཔེ་འབད་བ་ཅིན་ `payments.universal`.
+བདག་འཛིན་པའི་རྩིས་ཐོ་འདི་ཚད་ལྡན་ཨིནམ་དང་མངའ་ཁོངས་མེདཔ་ཨིན། རྒྱུ་དངོས་ཀྱི་ངེས་ཚིག་འདི་ གནད་སྡུད་ས་སྟོང་གིས་ཁྱད་པར་བཀོད་པའི་མངའ་ཁོངས་འོག་ལུ་སྟོན་ཚུགས། དཔེར་ན་ `payments.universal` ཨིན།
 
 ## བཟོ་སྐྲུན་འབད་ཚུགསཔ་ {#mintability}
 
@@ -55,9 +56,9 @@ Iroha རྒྱུ་དངོས་འདི་རྩིས་ཐོ་གི�
 `balance_scope_policy` གིས་ ལྷག་ལུས་ཚུ་ག་དེ་སྦེ་ བཱ་ཀེཊི་འབདཝ་ཨིན་ན་ ཚད་འཛིན་འབདཝ་ཨིན།
 
 - `Global`: རྩིས་ཐོ་རེ་ལུ་ལྷག་ལུས་བཱ་ཀེཊ་གཅིག་དང་རྒྱུ་དངོས་ངེས་ཚིག
-- `DataspaceRestricted`: ལྷག་ལུས་ཚུ་ གནད་སྡུད་ས་སྟོང་སྐབས་དོན་གྱིས་བར་བཅད་འབད་ཡོདཔ་ཨིན།
+- `DataspaceRestricted`: ལྷག་ལུས་ཚུ་གནད་སྡུད་ས་སྟོང་གི་སྐབས་དོན་ལྟར་དབྱེ་བགོ་འབདཝ་ཨིན།
 
-ཌེ་ཊ་ས་པི་སི་ཚད་འཛིན་ཅན་གྱི་དངུལ་ཀྲམ་ཚུ་ ཕན་ཐོགས་ཡོདཔ་ད་ རྒྱུ་དངོས་གི་འགྲེལ་བཤད་དེ་ མང་ཤོས་ར་ Nexus ཌེ་ཀྲ་ས་པིསི་ནང་ལུ་ལག་ལེན་འཐབ་དོ་ཡོད་རུང་ དངུལ་ཀྲམ་དེ་ཚུ་སོ་སོ་སྦེ་བཞག་དགོཔ་ཨིན།
+རྒྱུ་དངོས་ཀྱི་ངེས་ཚིག་གཅིག་ར་ SORA Nexus གནད་སྡུད་ས་སྟོང་མང་པོའི་ནང་ལག་ལེན་འཐབ་རུང་ ལྷག་ལུས་ཚུ་སོ་སོ་སྦེ་བཞག་དགོ་པའི་སྐབས་ གནད་སྡུད་ས་སྟོང་ནང་ཚད་འཛིན་འབད་པའི་ལྷག་ལུས་ཚུ་ཕན་ཐོགས་ཡོད།
 
 ## Taira ལུ་ བརྟག་དཔྱད་རྐྱབས། {#try-it-on-taira}
 
@@ -88,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-དཔེ་གསུམ་པོ་འདི་ཀློག་ཡོད། Taira གུ་རྒྱུ་དངོས་ཚུ་ བཏོན་ནི་དང་ མེ་བཏང་ནི་ ཡང་ན་ སྤོ་བཤུད་འབད་ནི་ལུ་ བརྟག་དཔྱད་ནེཊ་གི་མ་དངུལ་རྒྱབ་སྐྱོར་རྩིས་ཐོ་དང་ [ ནང་ལུ་ ཉེན་སྲུང་འབད་ཡོད་པའི་རྒྱུན་འགྲུལ་འདི་ SORA Nexus གནད་སྡུད་ས་སྒོ་](/dz/get-started/sora-nexus-dataspaces.md) ལུ་མཐུད།
+དཔེ་གསུམ་ཆ་ར་ཀློག་ལེན་ཨིན། Taira གུ་རྒྱུ་དངོས་བཟོ་སྐྲུན་ རྩ་མེད་ ཡང་ན་སྤོ་བཤུད་འབད་ནི་ལུ་ བརྟག་དཔྱད་དངུལ་བྱིན་མི་ཞབས་ཏོག་ལས་མ་དངུལ་བཙུགས་པའི་རྩིས་ཐོ་དང་ [Taira དང་ Minamoto ལག་ལེན་འཐབ་སྟེ་ SORA Nexus གུ་བཟོ་སྐྲུན་འབད་ནི](/dz/get-started/sora-nexus-dataspaces.md) ནང་གི་སྲུང་སྐྱོབ་ཅན་གྱི་ལས་རིམ་ལག་ལེན་འཐབ།
 
-འཐུས་སྤྲོད་དགོ་པའི་ Taira རྒྱུ་དངོས དཔེ་ཅིག་གི་དོན་ལུ་ [Taira ལས་ བརྟག་དཔྱད་དྲ་རྒྱ XOR ལེན།](/dz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ནང་གི་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག རོགས་ལས་རིམ འདི་ `taira_faucet_claim.py` སྦེ་བསྲུང་ཞིནམ་ལས་ དང་པ་རང་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག རྒྱུ་དངོས ལེན་ཏེ་ ཚོང་འབྲེལ ལག་བསྟར་ཟད་གྲོན རྒྱུ་དངོས སྦེ་ལག་ལེན་འཐབ།
+Taira གུ་གླ་ཡོན་སྤྲོད་དགོ་པའི་རྒྱུ་དངོས་དཔེ་དོན་ལུ་ དང་པ་ [Taira གུ་བརྟག་དཔྱད་དྲ་ལམ་གྱི་ XOR ལེན་ནི](/dz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ནང་གི་གྲ་སྒྲིག་འབད་པའི་བརྟག་དཔྱད་དངུལ་བྱིན་པའི་ལས་རིམ་ཐོག་ལས་ མིང་རྟགས་བཀོད་མི་ལུ་མ་དངུལ་བཙུགས། དེ་ལས་ `ledger asset mint`, `ledger asset burn`, དང་ `ledger asset transfer` བརྡ་བཀོད་ཚུ་ནང་ `--fee-payer authority` བཙུགས། CLI གིས་མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ Taira གི་གླ་ཡོན་རྒྱུ་དངོས་ནང་གླ་ཡོན་ཏག་ཏག་སྟོནམ་ཨིན།
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-དེ་ལས་ `ledger asset mint`, `ledger asset burn` དང་ `ledger asset transfer` གི་བཀའ་རྒྱ་ཚུ་ནང་ལུ་ `--metadata ./taira.tx-metadata.json` རྩིས་དགོ།
 
 ## ལམ་སྟོན་ཚུ་ {#instructions}
 

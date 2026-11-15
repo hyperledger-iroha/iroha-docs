@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # פתרון בעיות אינטגרציה {#troubleshooting-integration-issues}
 
 חלק זה מציע עצות פתרון בעיות לאינטגרציה של Iroha 3. אם הבעיה שאתם חווים אינה מתוארת כאן, צור איתנו קשר באמצעות [טלגרם](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 עבור בדיקות CLI, העבירו את אותו תיק במפורש:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 אם הדוגמא פועלת ב Docker או Kubernetes, השתמשו במארח או כתובת שירות שניתן להגיע אליה מתהליך הלקוח. `127.0.0.1` בתוך מיכל אינו המכונה המארחת.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - המפתח הציבורי של החשבון בקונפיגור הלקוח אינו מתאים למפתח הפרטי המשמש לחתימה.
 - החשבון אינו רשום בהתחלה או על ידי עסקאות קודמות.
 - החשבון חסר את סימן הרשיון או תפקיד הנדרש על-ידי מבדיקת זמן הפעלה.
-- תחום ID חסר את מיומנות החלל הנתונים שלו, כמו `domain.dataspace`
+- במזהה דומיין חסרה השלמה המציינת את מרחב הנתונים, למשל `domain.dataspace`
 
 השתמש `--output-format text` בעת תיקון הפקודות CLI כדי שגיאות יהיו קלות יותר לקרוא:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## שאילתות מחזירות תוצאות ריקות {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 עבור בדיקות domain, התחילו בשאילתה הרחבה ביותר:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## הזרמים של אירועים או מחסומים עוצרים מוקדם. {#event-or-block-streams-stop-early}

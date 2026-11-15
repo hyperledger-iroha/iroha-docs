@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Xarici Funksiya İnterfeysləri (FFI) {#foreign-function-interfaces-ffi}
 
 `iroha_ffi` proqram paketində Rust APIs-dən C ABI bağlamalarını yaratmaq üçün makrolar və xüsusiyyətlər təqdim olunur. Bu, Iroha tiplərinin FFI sərhədini keçməsi lazım olduqda istifadə olunur, məsələn, SDK bağlamalar və ya host inteqrasiyaları ilə.

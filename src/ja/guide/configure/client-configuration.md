@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
+translation_source_hash: b3cfc8d8bf51a43b88cefb5ac7fe641717b347f7c89d983bf4c2de80944f1bb8
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # クライアント設定 {#client-configuration}
 
 Iroha、CLI、および SDK のクライアントは TOML 構成を使用します。リポジトリは`defaults/client.toml`で現在のデフォルトを提供します。生成されたローカルネットワークも、自分の出力ディレクトリに一致する`client.toml`を書き込みます。
@@ -18,22 +17,24 @@ Iroha、CLI、および SDK のクライアントは TOML 構成を使用しま�
 
 ## コアフィールド {#core-fields}
 
-最小限で、クライアント設定はチェーン、Torii API エンドポイント、および署名アカウントを識別します:
+クライアント設定では、少なくともチェーン、そのネットワーク識別子、Torii のエンドポイント、アカウントのネットワークコンテキスト、署名鍵を指定します。
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
-torii_url = "http://127.0.0.1:8080"
+network_id = "hash:32C903E5B3497E34C2B844EBFE8A39C19E6CF8F95D44C1FFB8BA9DCB42F91149#A2F0"
+torii_url = "http://127.0.0.1:8080/"
 
 [account]
-domain = "wonderland.universal"
+chain_discriminant = 753
 public_key = "ed0120..."
 private_key = "802620..."
 ```
 
 - `chain`は、送信された取引が属するチェーンを選択します。
+- `network_id` はジェネシスから導出されるネットワーク識別子であり、すべての署名付きリクエストがこの識別子に結び付けられます。`network_id` と `network_id_file` のどちらか一方だけを設定してください。ノードは `GET /v1/accounts/capabilities` でこの値を公開します。
 - `torii_url` がネットワークピア Torii HTTP API を指しています。
-- `[account].domain` は CLI のショートカットおよびアドレスセレクタのエンコーディングに使用されます。標準的な `AccountId` 自体にはドメインはありません。
-- `[account].public_key` と `[account].private_key` が取引に署名します。
+- `[account].chain_discriminant` は、そのネットワークの I105 アカウント接頭辞を選択します。公開ネットワークでは、代わりに `[account].profile = "taira"` または `"minamoto"` を指定できます。接頭辞の選択にはこの二つの方法のどちらかが必要です。正規の `AccountId` 自体はドメインを含みません。
+- `[account].public_key` と `[account].private_key` は、トランザクション署名に使う鍵ペアを指定します。`private_key` の代わりに `private_key_file` を使用できます。
 
 アカウントはすでにオンチェーン上に存在している必要があります。デフォルトのローカルネットワークでは、これはバンドルされたブロックチェーンジェネシス技術マニフェストによって処理されます。
 
@@ -70,25 +71,25 @@ nonce = false
 
 ## キュー設定を接続 {#connect-queue-settings}
 
-現在の Iroha クライアントは、ローカルキューの状態のためにオプションの `[connect]` セクションも使用できます:
+`iroha` CLI は、ローカルのキュー状態を設定する任意の `[connect]` セクションも読み取ります。再利用可能な SDK の設定は、このセクションを受け付けません。
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-ワークフローに耐久性のあるクライアント側キューのストレージが必要なときにこれを使用します。
+クライアント側のキューを永続化する必要がある手順で使用します。`connect.queue_root` のデフォルトは `~/.iroha/connect` です。相対パスは、クライアントの TOML ファイルがあるディレクトリを基準に解決されます。
 
 ## 構成の生成 {#generating-configurations}
 
 使い捨てのローカルネットワークには、Kagami を使用することを推奨します。なぜなら、それは一致する Iroha 3 の設定、ブロックチェーンジェネシス、スクリプト、そして README を書き込むからです。
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 CLI と一緒に生成された`./localnet/client.toml`を使用してください：
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```

@@ -5,10 +5,9 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Хәүефһеҙлек {#security}
 
-Sensitive data һәм value менән эш иткән башҡа system кеүек үк Iroha deployment-ты ла һаҡлағыҙ. Signing key, network access, node operation, monitoring һәм incident response-ты яҡлағыҙ. Ledger булыуы был control-дарға ихтыяжды бөтөрмәй.
+Iroha-ны йәшерен мәғлүмәт һәм ҡиммәттәр менән эшләгән башҡа системалар кеүек үк һаҡлағыҙ. Ҡултамға асҡыстарын, селтәргә инеүҙе, төйөндәрҙе эшләтеүҙе, күҙәтеүҙе һәм инциденттарға яуап биреү тәртибен һаҡлау саралары менән тәьмин итегеҙ. Реестр булыуы был сараларға ихтыяжды бөтөрмәй.
 
 ### Навигация {#navigation}
 

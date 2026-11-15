@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # עיצוב נתונים {#data-modeling}
 
 נתוני ההדף צריכים להיות מודלים סביב בעלות, התנהגות העברה, גבולות רשות, ודפוסי בקשת. בחר את ייצוג הקטן ביותר על שרשרת שיכול לתמוך בדיקת וביצוע דטרמיניסטי.

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # データモデル {#data-model}
 
 Iroha は `World` にブロックチェーン台帳の状態を保存します。初回リリースのデータモデルでは、以下の標準的な識別子とエンティティを使用します:
@@ -122,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |資産の定義|正規の `AssetDefinitionId` Base58 アドレス| `name#domain.dataspace` または `name#dataspace`            | `AssetDefinitionAlias` 資産定義に紐付けられています |
 |契約|標準的な Bech32m `ContractAddress`| `name::domain.dataspace` または `name::dataspace`          |`ContractAlias` 配備済みコントラクトアドレスにバインド|
 |ドメイン名| `DomainId` を `domain.dataspace` 形式で| `domain.dataspace`                                    | SNS `domain` ネームスペース記録 |
-|データスペース名|アクティブな Nexus カタログからの数値 `DataSpaceId`| `universal`、`paynet`、または`zk`のようなデータスペースエイリアス| SNS `dataspace` 名前空間レコードとアクティブデータスペースカタログ|
+|データスペース名|アクティブな SORA Nexus カタログからの数値 `DataSpaceId`| `universal` や `paynet` のようなデータスペースエイリアス| SNS `dataspace` 名前空間レコードとアクティブデータスペースカタログ|
 
-アカウントのエイリアスは、ユーザーが目にするアカウント名です。エイリアスは、ワールドステートインデックスとアカウント再キー記録を通じてアクティブなアカウントIDを指すため、アカウントの再キー設定後も維持されます。アカウントの主要ラベルには `SetPrimaryAccountAlias` を使用し、追加の非主要エイリアスには `SetAccountAliasBinding` を使用し、読み取りには `FindAccountByAlias` または `FindAliasesByAccountId` を使用します。アカウントエイリアスには通常、`AcquireAccountAliasLease` で取得し、`RenewAccountAliasLease` で更新するアクティブな SNS アカウントエイリアスリースが必要です。
+アカウントエイリアスは、ユーザーが目にするアカウント名です。エイリアスは、ワールドステートインデックスとアカウント再キー記録を通じてアクティブなアカウントIDを指すため、アカウントの再キー設定後も維持されます。アカウントエイリアスのリースを取得してエイリアスをバインドするには、通常は `app alias setup` の計画・適用フローを通じて `EnsureAlias` を使用します。主要ラベルの変更には `CompareAndSetPrimaryAccountAlias`、エイリアスを別のアカウントへ移すには `RebindAccountAlias`、読み取りには `FindAccountByAlias` または `FindAliasesByAccountId` を使用します。リースは `RenewAliasLease` で更新するか、`ConfigureAliasAutoRenew` で自動更新を設定します。
 
 アセットのエイリアスは、個々のアカウント残高ではなく、アセットの定義に名前を付けます。アセットのエイリアスと契約のエイリアスは、読みやすい名前から既存の正規のターゲットへの直接的な結びつきです。資産のエイリアスは`SetAssetDefinitionAlias`で設定されます。エイリアス名のセグメントは、資産定義の表示名または投影定義名と一致する必要があります。契約のエイリアスは`SetContractAlias`で設定されます。エイリアスデータスペースは、契約アドレスにエンコードされたデータスペースと一致する必要があります。両方のバインディングは `lease_expiry_ms` を保持できます。期限切れの後、猶予期間が経過すると解決を停止し、ワールドステートインデックスから掃除されます。
 

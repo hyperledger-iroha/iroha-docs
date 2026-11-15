@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Consultas {#queries}
 
 Iroha las consultas leen el estado del libro mayor de la blockchain sin modificarlo. El modelo de datos actual expone dos formas generales de consulta:
@@ -57,7 +56,7 @@ Utilice los constructores tipeados SDK o el CLI en lugar de construir contenedor
 |Consulta|Propósito|
 | --- | --- |
 | `FindAssets` |Listar saldos de activos.|
-| `FindAssetsDefinitions` |Listar definiciones de activos.|
+| `FindAssetDefinitions` |Listar definiciones de activos.|
 | `FindAssetsByAccountId` |Enumere los activos que posee una cuenta.|
 | `FindAssetById` |Encuentre un saldo de activo por `AssetId`.|
 | `FindAssetDefinitionById` |Busca una definición de activo por ID.|
@@ -67,7 +66,7 @@ Utilice los constructores tipeados SDK o el CLI en lugar de construir contenedor
 
 ## Depósito en garantía y registros de prueba {#escrow-and-proof-records}
 
-Las consultas de depósito en garantía inspeccionan los registros creados por [depósito en garantía de activo nativo ISIs](/es/blockchain/escrow.md), incluyendo depósitos en garantía del mercado, bloqueos de activos genéricos y registros de depósito en garantía anónimos.
+Las consultas de depósito en garantía inspeccionan los registros creados por [las ISIs de depósito en garantía de activos nativos](/es/blockchain/escrow.md), incluyendo depósitos en garantía del mercado, bloqueos de activos genéricos y depósitos en garantía condicionales.
 
 |Consulta|Propósito|
 | --- | --- |
@@ -76,29 +75,23 @@ Las consultas de depósito en garantía inspeccionan los registros creados por [
 | `FindAssetEscrowsBySeller` |Listado de depósitos en garantía de activos por vendedor.|
 | `FindAssetEscrowsByBuyer` |Listado de depósitos en garantía de activos por comprador.|
 | `FindAssetEscrowsByStatus` |Listado de depósitos en garantía de activos por estado.|
-| `FindAnonymousAssetEscrows` |Listar registros de fideicomiso de activos anónimos.|
-| `FindAnonymousAssetEscrowById` |Encuentra un depósito de activos anónimo por ID.|
-|`FindAnonymousAssetEscrowsBySeller`|Listar depósitos en garantía anónimos por vendedor.|
-| `FindAnonymousAssetEscrowsByBuyer` |Listado de depósitos en garantía anónimos por comprador.|
-| `FindAnonymousAssetEscrowsByStatus` |Listado de depósitos en garantía anónimos por estado.|
 | `FindProofRecordById` |Busca un registro de prueba por ID.|
 | `FindProofRecords` |Listar registros de prueba.|
 | `FindProofRecordsByBackend` |Listar registros de prueba para un backend de prueba.|
 | `FindProofRecordsByStatus` |Listar registros de prueba por estado.|
 
-## Nexus, Disponibilidad de Datos y Paquetes {#nexus-data-availability-and-packages}
+## SORA Nexus, Disponibilidad de Datos y Paquetes {#nexus-data-availability-and-packages}
 
 |Consulta|Propósito|
 | --- | --- |
-| `FindRepoAgreements` |Enumerar los acuerdos de repositorio almacenados en la cadena.|
+| `FindRepoAgreements` |Enumerar los acuerdos de recompra y de recompra inversa almacenados en la cadena.|
 | `FindTwitterBindingByHash` |Resolver una vinculación de Twitter mediante hash criptográfico.|
 | `FindDaPinIntentByTicket` |Encuentra una intención de pin de disponibilidad de datos por ticket.|
 | `FindDaPinIntentByManifest` |Encuentra una intención de pin por referencia del manifiesto técnico.|
 | `FindDaPinIntentByAlias` |Buscar un pin por alias.|
 | `FindDaPinIntentByLaneEpochSequence` |Encuentra una intención de pin por carril de ejecución, época y secuencia.|
-| `FindLaneRelayEnvelopeByRef` |Encuentra un contenedor de datos de relevo de carril verificado.|
 | `FindSorafsProviderOwner` |Resuelve el propietario de un proveedor SoraFS.|
-| `FindDataspaceNameOwnerById` |Resolver un propietario de nombre de espacio de datos.|
+| `FindDataspaceNameOwnerById` |Resolver el propietario SNS activo de un alias de espacio de datos.|
 | `FindMusubiExactPackageV1` |Lea un registro de paquete exacto y sus revisiones actuales.|
 | `FindMusubiExactReleaseV1` |Leer una instantánea de lanzamiento exacta.|
 | `FindMusubiProviderBundleAttestationV1` |Lea la certificación del paquete de archivo de un proveedor.|
@@ -118,7 +111,7 @@ Las consultas de depósito en garantía inspeccionan los registros creados por [
 | `FindActiveTriggerIds` |Lista de ID de disparadores activos.|
 | `FindTriggers` |Enumera los desencadenantes.|
 | `FindTriggerById` |Encuentra un disparador por ID.|
-| `FindContractManifestByCodeHash` |Encuentra un manifiesto técnico de contrato inteligente mediante el hash criptográfico del código.|
+| `FindContractManifestByArtifactId` |Encuentra un manifiesto técnico de contrato inteligente mediante su ID de artefacto del espacio de datos.|
 | `FindTransactions` |Listar transacciones confirmadas.|
 | `FindBlocks` |Enumera los bloques.|
 | `FindBlockHeaders` |Listar los encabezados de bloque.|

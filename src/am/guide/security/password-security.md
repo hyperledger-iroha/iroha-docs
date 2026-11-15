@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የይለፍ ቃል ደህንነት {#password-security}
 
 የይለፍ ቃሎች ኦፕሬተር ኮንሶሎችን፣ ሚስጥራዊ መደብሮችን፣ ምትኬዎችን እና የአካባቢ ቁልፍ ፋይሎችን ሊጠብቁ ይችላሉ። የይለፍ ቃል አንድ መቆጣጠሪያ ብቻ ነው። ደህንነቱ የተጠበቀ የቁልፍ መያዣ፣ የመዳረሻ መቆጣጠሪያዎች እና ባለብዙ ደረጃ ማረጋገጫ ካለ ጋር አብረው ይጠቀሙበት።

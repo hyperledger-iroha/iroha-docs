@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-הניקוי SDK החבילה לא מכילה את חלל העבודה של מטען הנדרש על ידי `npm run build:native`, אז לבנות את זה מחדש Iroha בדיקת המקור לאחר SDK השינויים. SDK המקור מחובר [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+הניקוי SDK החבילה לא מכילה את חלל העבודה של מטען הנדרש על ידי `npm run build:native`, אז לבנות את זה מחדש Iroha בדיקת המקור לאחר SDK השינויים. SDK המקור מחובר [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## בדוק את נקודת הסיום {#check-the-endpoint}
 

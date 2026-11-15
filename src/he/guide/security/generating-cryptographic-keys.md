@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # יצירת מפתחות קריפטוגרפיים {#generating-cryptographic-keys}
 
 יש להשתמש ב-`kagami keys` כדי ליצור חומר מפתחות ללקוחות, לצמתים ולמאמתים של Iroha 3.
@@ -18,7 +17,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-ספריית האב חייבת להיות קיימת מראש. ספריית היעד חייבת להיות חדשה או כבר בבעלות המשתמש הנוכחי, במצב `0700`, ללא קישורים סמליים וריקה. `kagami` כותב את `public.key` ואת `private.key` במצב `0600` ואינו מדפיס חומר מפתחות. עם `--pop` הוא כותב גם את `pop.hex`.
+תיקיית האב חייבת להיות קיימת. היעד חייב לא להיות קיים: Kagami מסרב גם לתיקייה ריקה קיימת. הוא יוצר את היעד במצב הרשאות `0700`, בכפוף לבדיקות מערכת קבצים המגבילות גישה לבעלים, ודוחה קישורים סמליים. `kagami` כותב את `public.key` ואת `private.key` במצב הרשאות `0600` ואינו מדפיס חומר מפתחות. עם `--pop`, הוא כותב גם את `pop.hex`.
 
 בפלטפורמות שבהן Kagami אינו יכול לאכוף את כללי מערכת הקבצים המגבילים את הגישה לבעלים בלבד, `--out-dir` מסרב לפעול באופן בטוח וסגור. קובץ המפתח הפרטי הוא יצוא לא מוצפן, ולא חותם חומרה או חותם ייצור שאינו ניתן ליצוא. יבאו אותו אל גבול המשמורת המאושר ומחקו את היצוא בהתאם לנוהל הפריסה.
 
@@ -57,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` תקף רק עם `bls_normal`; הוא מוסיף את `pop.hex` לספריית המשמורת. genesis חתום דורש PoP תואם לכל מאמת מצביע. בתצורת הצמתים, מפה לא ריקה של `trusted_peers_pop` בוחרת את קבוצת המשנה של המאמתים; צמתים מהימנים שאינם מופיעים במפה הלא ריקה הזאת הם משקיפים. אם המפה ריקה, כל הצמתים המהימנים בעלי BLS-normal נכנסים לקבוצת מועמדי האתחול, ו־PoPs של המצביעים עדיין מסופקים בידי ה־genesis החתום.
+`--pop` תקף רק עם `bls_normal`; הוא מוסיף את `pop.hex` לספריית המשמורת. genesis חתום דורש PoP תואם לכל מאמת מצביע. בתצורת הצמתים, ציינו את ה־PoP של כל מאמת ב־`trusted_peers_pop`: צמתים מהימנים ללא PoP תקף מוחרגים מרשימת הקונצנזוס, ומפה ריקה אינה מניבה מאמתים כלל, ולכן צומת שהמפה שלו משמיטה את מאמתי ה־genesis מסרב לעלות. הריצו צומת לסנכרון בלבד עם `[sumeragi] role = "observer"`.
 
 ## פלט למשמורת {#custody-output}
 

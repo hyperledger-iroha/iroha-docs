@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 资产 {#assets}
 
 一个 Iroha 资产是一个账户持有的数值余额.每个具体的余额指向一个 `AssetDefinition`,定义描述了该资产可以如何命名、铸造、显示和分区.
@@ -22,7 +21,8 @@ translation_engine: nllb-200-ct2
 - `mintable`:可接受性政策
 - `logo`:可选的 `SoraFS` URI
 - `metadata`:任意的关键值元数据
-- `balance_scope_policy`:资产负债是否是全球性或数据空间有限的
+- `balance_scope_policy`：余额是全局可用，还是受数据空间限制
+- `owning_domain`：由域拥有的定义所属的域；直接在数据空间中注册的定义不含此字段
 - `owned_by`:已注册或拥有定义的账户
 - `total_quantity`:发行总量
 - `confidential_policy`:保护资产运营的政策
@@ -34,9 +34,9 @@ translation_engine: nllb-200-ct2
 一个 `Asset` 包含:
 
 - `id`:结合资产定义,持有者账户和可选余额范围的`AssetId`
-- `value`:一个 `Numeric`的余额
+- `value`:一个 `Quantity`的余额
 
-持有者账户是规范性的,无域名的.资产定义可以在一个数据空间合格的域名下进行预测,例如 `payments.universal`.
+持有者账户采用规范标识且不包含域。资产定义可以投影到由数据空间限定的域下，例如 `payments.universal`。
 
 ## 料可使用 {#mintability}
 
@@ -56,9 +56,9 @@ translation_engine: nllb-200-ct2
 `balance_scope_policy` 控制了余额的运行方式:
 
 - `Global`:每个账户和资产定义的1个余额桶
-- `DataspaceRestricted`:按数据空间背景划分了余额
+- `DataspaceRestricted`：按数据空间上下文划分余额
 
-在多个 Nexus 数据空间中使用相同资产定义时,数据空间限制的余额是有用的,但必须保持孤立的余额.
+当多个 SORA Nexus 数据空间共用同一资产定义，但余额必须保持隔离时，可以使用受数据空间限制的余额。
 
 ## 在 Taira 试看. {#try-it-on-taira}
 
@@ -89,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-所有三种例子都是可以读的. Taira, 使用水龙头资助的账户和保证流量 [连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md).
+这三个示例都是读取操作。要在 Taira 上铸造、销毁或转移资产，请使用通过水龙头获得资金的账户，并遵循[使用 Taira 和 Minamoto 在 SORA Nexus 上开发](/zh-hans/get-started/sora-nexus-dataspaces.md)中的受校验流程。
 
-在付费资产 Taira 示例中,保存从 [获取 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)上测试网 XOR 为 `taira_faucet_claim.py`,然后首先索赔水龙头资产并将其作为交易gas资产:
+对于需要支付费用的 Taira 资产示例，先按[在 Taira 获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中带有准备步骤的水龙头流程，为签名账户提供资金。然后在 `ledger asset mint`、`ledger asset burn` 和 `ledger asset transfer` 命令中传入 `--fee-payer authority`；CLI 会在签名前以 Taira 的费用资产给出准确报价：
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-然后在 `ledger asset mint`,`ledger asset burn`和 `ledger asset transfer`命令中输入 `--metadata ./taira.tx-metadata.json`.
 
 ## 指示 {#instructions}
 

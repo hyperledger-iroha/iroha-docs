@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 获得支持 {#receive-support}
 
 有时,你可能会有关于 Iroha 你想和其他人详细讨论这些问题.快速与我们的社区联系的方法:电讯,Discord, GitHub.

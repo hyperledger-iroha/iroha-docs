@@ -1,8 +1,6 @@
 # Hot Reload Iroha in a Docker Container
 
-Use hot reload only for local debugging. For normal local development, prefer
-rebuilding the image or restarting the generated Docker Compose stack from a
-fresh Kagami bundle.
+Use hot reload only for local debugging. Follow [Launch Iroha 3](/get-started/launch-iroha.md) to build and run four validators with matching binaries in Docker.
 
 ## Replace the Peer Binary
 
@@ -19,28 +17,18 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Use `docker ps` to confirm the container name. In the generated stack the peer
-containers are defined by `./docker-compose.yml`.
+Use `docker ps` to find the container. Check the path of the daemon in your image before replacing it.
 
 ## Recommit Genesis in a Disposable Network
 
-A peer commits genesis only when its storage is empty. For a disposable Docker
-network, stop the stack, remove generated state, regenerate or replace the
-signed genesis bundle, and start again:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Do not replace genesis on a network whose state must be preserved.
+A new genesis requires empty peer storage. Use `python3 poc.py down` and `python3 poc.py up` to restart the same network. Keep `state/` together with its four Docker volumes.
 
 ## Use Custom Configuration
 
-Current peer configuration is TOML. Bind mount or copy the generated
-`config.toml`, `genesis.signed.nrt`, and related key files into the container
-paths expected by the image, then restart the peer. Keep the generated files
+Current peer configuration is TOML. Kagami writes one `peerN.toml` per
+validator with `genesis.signed.nrt`, `genesis.public_key`, and
+`genesis.expected_hash`; the Compose file from `kagami docker` mounts them into
+the container. Regenerate it instead of copying files by hand, then restart
+the peer. Keep the generated files
 together; mixing files from different Kagami runs can produce deserialization or
 consensus failures.

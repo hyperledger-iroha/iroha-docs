@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # رموز الإذن {#permission-tokens}
 
 تسرد هذه الصفحة أنواع رموز الأذونات الافتراضية التي يكشف عنها نموذج بيانات المنفذ الحالي Iroha. للإرشادات المفاهيمية حول الأدوار والأذونات، انظر [الأذونات](/ar/blockchain/permissions.md).
@@ -17,7 +16,6 @@ translation_engine: bing-translator-llm
 |رمز الإذن|الفئة|عملية|
 | --- | --- | --- |
 | `CanManagePeers` |نظير الشبكة|سجّل أو ألغِ التسجيل أو قم بإدارة نظراء الشبكة بطريقة أخرى.|
-| `CanManageLaneRelayEmergency` |نظير الشبكة|إدارة ضوابط تحويل الحارة الطارئة.|
 | `CanRegisterDomain` |نطاق|قم بتسجيل نطاق.|
 | `CanUnregisterDomain` |نطاق|إلغاء تسجيل نطاق.|
 | `CanModifyDomainMetadata` |نطاق|تعديل بيانات تعريف النطاق.|
@@ -29,7 +27,7 @@ translation_engine: bing-translator-llm
 | `CanMintAssetWithDefinition` |أصل|إصدار الأصول لتعريف محدد.|
 | `CanBurnAssetWithDefinition` |أصل|تدمير الأصول لتعريف محدد.|
 | `CanTransferAssetWithDefinition` |أصل|نقل الأصول لتعريف محدد.|
-| `CanMintAsset` |أصل|إصدار رصيد أصل محدد.|
+| `CanMintAssetToAccount` |أصل|إصدار رصيد أصل محدد.|
 | `CanBurnAsset` |أصل|تدمير رصيد أصل محدد.|
 | `CanTransferAsset` |أصل|نقل رصيد أصل محدد.|
 | `CanRegisterNft` | NFT |سجّل NFT.|
@@ -44,8 +42,9 @@ translation_engine: bing-translator-llm
 | `CanModifyTrigger` |زناد|تعديل تكوين المحفز.|
 | `CanModifyTriggerMetadata` |زناد|تعديل بيانات تعريف المحفز.|
 | `CanUpgradeExecutor` |المنفذ|قم بترقية منفذ تنفيذ بيئة تشغيل البرنامج.|
-| `CanRegisterSmartContractCode` |العقد الذكي|تسجيل رمز العقد الذكي.|
-| `CanUseFeeSponsor` | Nexus |فرض رسوم Nexus على حساب الراعي المحدد.|
+| `CanManageSmartContractCode` | العقد الذكي | إزالة عناصر الشيفرة غير المشار إليها وتفويض نقاط دخول العقود. يمكن للحسابات المسجلة إنشاء عناصر متحقق منها دون هذا الإذن. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | إدارة البرامج التي يملكها حساب الراعي المحدد بدقة. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | إدارة المستفيدين من برنامج رعاية واحد محدد بدقة. |
 
 ## الملكية {#ownership}
 

@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # المحفزات {#triggers}
 
 المحفزات تربط مرشح حدث بإجراء قابل للتنفيذ. عندما يطابق حدث ما مرشح المحفز، يقوم Iroha بتقييم إجراء المحفز كجزء من تنفيذ الكتلة.

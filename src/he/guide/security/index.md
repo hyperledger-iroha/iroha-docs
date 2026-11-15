@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # אבטחה {#security}
 
 הגנו על פריסת Iroha כפי שהייתם מגנים על כל מערכת שמטפלת בנתונים רגישים ובערך. הגנו על מפתחות חתימה, גישה לרשת, פעולות node, ניטור ותגובה לתקריות. ספר החשבונות אינו מבטל את הצורך בבקרות אלה.

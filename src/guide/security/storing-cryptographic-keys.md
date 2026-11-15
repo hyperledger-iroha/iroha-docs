@@ -30,8 +30,9 @@ generate a new key directory with `kagami`:
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must exist. The target must be new or already owned by the
-current user, mode `0700`, free of symbolic links, and empty. Kagami writes
+The parent directory must exist. The target must not exist, even as an empty
+directory. Kagami creates it with mode `0700`, enforces owner-only filesystem
+checks, rejects symbolic links, and writes
 `public.key` and `private.key` with mode `0600`; `--pop` also writes `pop.hex`.
 The command fails on platforms where Kagami cannot enforce the owner-only
 filesystem rules.

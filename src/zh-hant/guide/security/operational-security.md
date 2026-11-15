@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 維運安全 {#operational-security}
 
 維運安全可保護 Iroha 部署周邊的人員、主機、認證資訊與作業程式。帳本會記錄已接受的狀態變更；維運人員仍須另行保護工作站、簽署金鑰與事件回應流程。

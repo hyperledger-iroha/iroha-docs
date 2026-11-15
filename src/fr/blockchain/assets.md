@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Actifs {#assets}
 
 Un actif Iroha est un solde numérique détenu par un compte. Chaque solde concret pointe vers un `AssetDefinition`, et la définition décrit comment cet actif peut être nommé, émis, affiché et réparti.
@@ -23,6 +22,7 @@ Un `AssetDefinition` contient :
 - `logo` : facultatif `SoraFS` URI
 - `metadata` : métadonnées clé-valeur arbitraires
 - `balance_scope_policy` : si les soldes sont globaux ou limités à l'espace de données
+- `owning_domain` : le domaine propriétaire d'une définition détenue par un domaine ; absent pour les définitions enregistrées directement dans un espace de données
 - `owned_by` : le compte qui a enregistré ou possède la définition
 - `total_quantity` : quantité totale émise
 - `confidential_policy` : politique pour les opérations sur les actifs protégés
@@ -34,9 +34,9 @@ Les identifiants de définition d'actif sont des adresses opaques canoniques. Lo
 Un `Asset` contient :
 
 - `id` : un `AssetId`, qui combine la définition de l'actif, le compte du détenteur et l'éventuel périmètre du solde de l'actif
-- `value` : un solde `Numeric`
+- `value` : un solde `Quantity`
 
-Le compte détenteur est canonique et sans domaine. La définition de l'actif peut être projetée sous un domaine qualifié par espace de données, par exemple `payments.universal`.
+Le compte détenteur est canonique et sans domaine. La définition d’actif peut être projetée sous un domaine qualifié par un espace de données, par exemple `payments.universal`.
 
 ## Politique d'émission d'actifs {#mintability}
 
@@ -58,7 +58,7 @@ Le `balance_scope_policy` contrôle la façon dont les soldes sont répartis :
 - `Global` : une partition de solde par compte et définition d'actif
 - `DataspaceRestricted` : les soldes sont répartis par contexte d'espace de données
 
-Les soldes restreints à un espace de données sont utiles lorsque la même définition d'actif est utilisée dans plusieurs espaces de données Nexus, mais que les soldes doivent rester isolés.
+Les soldes restreints par espace de données sont utiles lorsque la même définition d'actif est utilisée dans plusieurs espaces de données SORA Nexus, mais que les soldes doivent rester isolés.
 
 ## Essayez-le sur Taira {#try-it-on-taira}
 
@@ -89,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Les trois exemples sont des lectures. Pour émettre, brûler ou transférer des actifs sur Taira, utilisez un compte financé par le réseau de test et le flux sécurisé dans [Connecter aux espaces de données SORA Nexus](/fr/get-started/sora-nexus-dataspaces.md).
+Les trois exemples sont des opérations de lecture. Pour émettre, détruire ou transférer des actifs sur Taira, utilisez un compte alimenté par le faucet et la procédure protégée décrite dans [Développer sur SORA Nexus avec Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md).
 
-Pour voir un actif Taira servant à payer les frais, enregistrez l’outil de [Obtention de XOR de test sur Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) sous `taira_faucet_claim.py`, demandez d’abord des fonds au distributeur et utilisez l’actif reçu pour payer le gas de la transaction :
+Pour un exemple d’actif Taira soumis à des frais, alimentez d’abord le compte signataire avec la procédure de faucet préparée dans [Obtenir des XOR de test sur Taira](/fr/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). Passez ensuite `--fee-payer authority` aux commandes `ledger asset mint`, `ledger asset burn` et `ledger asset transfer` ; la CLI calcule les frais exacts, exprimés dans l’actif de frais de Taira, avant la signature :
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Puis incluez `--metadata ./taira.tx-metadata.json` dans les commandes `ledger asset mint`, `ledger asset burn` et `ledger asset transfer`.
 
 ## Instructions {#instructions}
 

@@ -1,40 +1,43 @@
 ---
 translation_locale: he
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
+# חשבונות וכינויים {#accounts-and-aliases}
 
-# חשבונות ושמות {#accounts-and-aliases}
+## תוצאה {#outcome}
 
-## התוצאה {#outcome}
-
-תעבוד בבטחה עם חשבון קאנוניקל I105 ללא דומיין IDs וכיסויים שניתן לקרוא לבני אדם מחוברים בנפרד כגון `treasury@payments.universal`. תוכל לבדוק חשבונות Taira, להוציא את הקאנוניקל שלך ID, ולפתור כיסויים מבלי לבלבול את ההקשר של הנתיב עם הזהות.
+עבדו בבטחה עם מזהי חשבון I105 קנוניים ללא דומיין, ועם כינויים קריאים לאדם הקשורים אליהם בנפרד, כגון `treasury@payments.universal`. תבדקו חשבונות ב־Taira, תגזרו מזהה קנוני משלכם ותפתרו כינויים, בלי לבלבל בין הקשר הניתוב לבין הזהות.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 או מאוחר יותר, והזרם `iroha` CLI.
-- `taira.client.toml` מ- [תחבר ל- Taira ](./connect-to-taira.md) בעת ביקורת על החשבון שלך.
-- חשבון שהוצא באמצעות המברר Taira או דרך הכניסה של הרשת הנפוצה לפני שציפית לקריאה ספציפית לחשבון תצליח.
+- `curl`, `jq`, Python 3.11 או חדש יותר, וה־CLI העדכני של `iroha`.
+- קובץ `taira.client.toml` מהמתכון [התחברות ל־Taira](./connect-to-taira.md), בעת בדיקת החשבון שלכם.
+- חשבון שהוקצה באמצעות הברז של Taira או מסלול ההצטרפות של הרשת שבפיקוח הממשל, לפני שמצפים שקריאה ייעודית לחשבון תצליח.
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. לבחון חשבונות קנוניים על Taira {#_1-inspect-canonical-accounts-on-taira}
+### 1. בדקו חשבונות קנוניים ב־Taira {#_1-inspect-canonical-accounts-on-taira}
 
-רשימת החשבונות הציבוריים תמיד מספקת את הקנוניקה I105 IDs. שם זיהוי ראשוני הוא בחופשי ומוצג בנפרד.
+רשימת החשבונות הציבורית מחזירה תמיד מזהי I105 קנוניים. כינוי ראשי הוא אופציונלי; בקשו את השדה `aliases` כדי לראות אותו.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-ID מ- `.id` הוא נכון עבור שדות חשבונות קפדניים. אל תוסיף לו דומיין. שם כינוי מ- `.primary_alias` הוא מפתח חיפוש פונה למשתמש, לא זהות קנוניקה אחרת.
+מזהה מתוך `.id` תקף לשדות חשבון המחייבים צורה קנונית. אל תצרפו אליו דומיין. כינוי מתוך `.aliases[].alias` הוא מפתח חיפוש למשתמש, ולא זהות קנונית נוספת.
 
-### 2. להוציא ולנורמליז את Taira I105 ID שלך {#_2-derive-and-normalize-your-taira-i105-id}
+### 2. גזרו ונרמלו את מזהה I105 שלכם ב־Taira {#_2-derive-and-normalize-your-taira-i105-id}
 
-קראו רק את המפתח הציבורי מהקונפיגורת המקומית. אותו מפתח ציבורי מוצפן באופן שונה עבור פרופילים שונים ברשתות ציבוריות, אז בחרו `taira` במפורש.
+קראו רק את המפתח הציבורי מהתצורה המקומית. אותו מפתח ציבורי מקודד בצורה שונה בפרופילים של רשתות ציבוריות שונות, ולכן בחרו במפורש ב־`taira`.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -53,14 +56,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-הערך הנורמלי צריך להיות זהה ל `TAIRA_ACCOUNT_ID`. הגדרת `[account].domain` בקובץ TOML יכולה להיות `wonderland.universal`, אבל הערך הזה משפיע רק על ההקשר של ההסלול ו- alias.
+הערך המנורמל צריך להיות זהה ל־`TAIRA_ACCOUNT_ID`. ההגדרה `[account].profile` בוחרת רק את קידומת הרשת של I105; דומיינים שייכים לכינויים, ולעולם לא למזהה החשבון.
 
-### 3. קרא את החשבון ואת נכסיו. {#_3-read-the-account-and-its-assets}
+### 3. קראו את החשבון ואת נכסיו {#_3-read-the-account-and-its-assets}
 
 לאחר הקצאת החשבון, בצעו עליו שאילתה ישירה והציגו דף נכסים מוגבל. קודדו את ערך I105 ל-URL לפני השימוש בו בנתיב.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,13 +72,13 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
-### 4. תבדוק את הכינויים הקשורים לחשבון. {#_4-look-up-aliases-bound-to-the-account}
+### 4. חפשו כינויים הקשורים לחשבון {#_4-look-up-aliases-bound-to-the-account}
 
-הגורם ההפוך מקבל חשבון קנוני אחד מדויק ID. שורות של מסלול נתונים ציבורי ניתן לקרוא ללא כותרות חתימה בקשה; מסלולים נתונים מוגבלים דורשים בקשה חתומה רשמית.
+הפותר ההפוך מקבל מזהה חשבון קנוני מדויק אחד. ניתן לקרוא רשומות של מרחבי נתונים ציבוריים ללא כותרות חתימה על הבקשה; מרחבי נתונים מוגבלים מחייבים בקשה חתומה ומורשית.
 
 ```bash
 jq -nc --arg account_id "$TAIRA_ACCOUNT_ID" \
@@ -89,7 +92,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` הוא בתוקף: חשבון אינו זקוק לכינוי זיהוי. כאשר קיימת קשורה, לפתור את הכינוי המדויק המלא שלו ולהשוות את החשבון הובא ID:
+`total: 0` הוא תוצאה תקינה: חשבון אינו זקוק לכינוי. כאשר קיים קישור, פתרו את הכינוי המדויק והמלא שלו והשוו את מזהה החשבון שהוחזר:
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -109,29 +112,29 @@ else
 fi
 ```
 
-::: warning גבולת היתר
+::: warning גבול ההרשאות
 
-ה-faucet של Taira יכול לספק את חשבון הבקשה שלו, אבל זה לא נותן סמכות רישום חשבונות כללית או סמכות ניהול פרופיל. הרישום של חשבון אחר דורש `CanRegisterAccount` תחת האישור הפעיל. כינויים של חשבונות דורשים בדרך כלל גם חוזה שכירות פעיל SNS ורישיונות כינוי מתאימים. השתמש ב-onboarding/alias planner הנמלט, או תרגלי רישום נגד הרשת המקומית שנוצרה.
+הברז של Taira יכול להקצות את החשבון המבקש ממנו מימון, אך אינו מעניק סמכות כללית לרישום חשבונות או לניהול כינויים. רישום חשבון אחר דורש `CanRegisterAccount` תחת המבצע הפעיל. כינויי חשבונות דורשים בדרך כלל גם חכירת SNS פעילה והרשאות כינוי מתאימות. השתמשו במתכנן ההצטרפות והכינויים שבפיקוח הממשל, או תרגלו רישום ברשת המקומית שנוצרה.
 
 :::
 
-ברשת מקומית, ברגע שלב סימון חותמים מאובטח ייצא קאנוניקה חדשה `NEW_ACCOUNT_ID`, פני הקידום הוא:
+ברשת מקומית, לאחר שתהליך מאובטח להכנת חותם ייצא `NEW_ACCOUNT_ID` קנוני חדש, ממשק הרישום הוא:
 
 ```bash
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
-לייצר ולשמור את המפתח הפרטי המתאים מחוץ למלאי המסמכים או התיישומים. הרישום של ID שמרכיב השליטה שלו נזרק יוצר חשבון שאינו ניתן לשימוש.
+צרו ושמרו את המפתח הפרטי המתאים מחוץ למאגר התיעוד או היישום. רישום מזהה שמפתח השליטה שלו הושלך יוצר חשבון שאי אפשר להשתמש בו.
 
-## לאמת {#verify}
+## אימות {#verify}
 
-להוכיח כי המפתח הציבורי, הקוד I105 ושמות מחברים כולם מתכנסים על חשבון קנוני אחד ID:
+הוכיחו שהמפתח הציבורי שבתצורה, קידוד I105 וקישור הכינוי מצביעים כולם על אותו מזהה חשבון קנוני:
 
 ```bash
 NORMALIZED_ACCOUNT_ID="$(
@@ -145,22 +148,22 @@ if test "${ALIAS_WAS_RESOLVED:-false}" = true; then
 fi
 ```
 
-שמרו IDs קנוניים. השתמשו ב־IDs קנוניים לחתימות, להרשאות ולהוראות עסקה; השתמשו בכינויים רק בגבול היישום. שמרו את ה־ID הקנוני של החשבון לצד הכינוי.
+שמרו מזהי חשבון קנוניים. השתמשו במזהים קנוניים לחתימות, להרשאות ולהוראות עסקה. פתרו את הכינוי בגבול היישום. שמרו את מזהה החשבון הקנוני ששימש לפעולה.
 
 ## פתרון בעיות {#troubleshooting}
 
-- שגיאה בניתוח או תצוגה בדרך כלל פירושה כי כתובת הועברה לפרופיל רשת אחר. `--profile taira` ומכחישים את ההפרעות.
-- תגובת חשבון `404` לאחר קבלת `202` עשויה להעיד על עיכוב בהפצה. בצעו polling על החשבון או על נכס היעד לפני שליחת פעולת כתיבה תלויה.
-- `total: 0` מהמשתגר ההפוך אומר שאין שם זיהוי מחובר; זה לא כישלון בחיפוש החשבון.
-- `401` או `403` ממסלול שמהותי מצביעים על חלל נתונים מוגבל או לא מספיק רשות פתרון מדויק. אל תשתמשו בחיפוש מקדמות רחבה כמחזור.
+- שגיאת פענוח או קידומת מעידה בדרך כלל שהכתובת קודדה לפרופיל רשת אחר. נרמלו באמצעות `--profile taira` ודחו אי־התאמות.
+- תגובת חשבון `404` לאחר תגובת ברז `202` עשויה לנבוע מעיכוב בהפצה. בדקו שוב ושוב את החשבון או את הנכס שמומן לפני שליחת כתיבה.
+- `total: 0` מהפותר ההפוך פירושו שלא קשור לחשבון כינוי גלוי; אין זו תקלה בחיפוש החשבון.
+- `401` או `403` מנתיב כינויים מעידים על מרחב נתונים מוגבל או על הרשאה לא מספקת לפתרון מדויק. אל תשתמשו בחיפוש רחב לפי קידומת כחלופה.
 - ערך קריא `name@domain.dataspace` אינו מתקבל בכל מקום שבו נדרש מזהה I105 קנוני (ID). יש לפתור אותו תחילה.
-- אם רישום חשבון מקומי מצליח אבל Taira דוחה אותו, ההבדל הוא אישור. לקבל `CanRegisterAccount`; לא לשנות את החשבון ID כדי לעקוף אישור.
+- אם רישום חשבון מצליח מקומית אך נדחה ב־Taira, ההבדל הוא בהרשאה. השיגו `CanRegisterAccount`; אל תשנו את מזהה החשבון כדי לעקוף את האימות.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
-- [יישום כתובת חשבון קאנוניקה בביצוע הקליטה ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)
-- [בדיקות חשבון ושמה Torii בביצוע ה-Pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [מימוש כתובת החשבון הקנונית בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)
+- [בדיקות בסיסיות לנקודת הקצה של חשבונות ב־Torii](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) ו־[בדיקות נתיבי הכינויים](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs) בקומיט המקובע
 - [חשבונות](/he/blockchain/accounts.md)
-- [שמה של דגם נתונים ](/he/blockchain/data-model.md#aliases)
-- [קונבנוציות שמות](/he/reference/naming.md)
-- [סימני רשיון ](/he/reference/permissions.md)
+- [כינויים במודל הנתונים](/he/blockchain/data-model.md#aliases)
+- [כללי מתן שמות](/he/reference/naming.md)
+- [אסימוני הרשאה](/he/reference/permissions.md)

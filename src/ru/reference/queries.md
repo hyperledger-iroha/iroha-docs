@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Запросы {#queries}
 
 Iroha запросы считывают состояние распределённого реестра блокчейна без его изменения. Текущая модель данных предлагает две основные формы запросов:
@@ -57,7 +56,7 @@ Iroha запросы считывают состояние распределё�
 |Запрос|Цель|
 | --- | --- |
 | `FindAssets` |Список балансов активов.|
-| `FindAssetsDefinitions` |Список определений активов.|
+| `FindAssetDefinitions` |Список определений активов.|
 | `FindAssetsByAccountId` |Перечислите активы, находящиеся на счету.|
 | `FindAssetById` |Найдите один баланс актива по `AssetId`.|
 | `FindAssetDefinitionById` |Найти определение одного актива по ID.|
@@ -67,7 +66,7 @@ Iroha запросы считывают состояние распределё�
 
 ## Эскроу и доказательные записи {#escrow-and-proof-records}
 
-Запросы эскроу проверяют записи, созданные [эскроу для родного актива ISIs](/ru/blockchain/escrow.md), включая эскроу на рынке, общие блокировки активов и анонимные записи эскроу.
+Запросы эскроу проверяют записи, созданные [эскроу для родного актива ISIs](/ru/blockchain/escrow.md), включая эскроу на рынке, общие блокировки активов и условные эскроу.
 
 |Запрос|Цель|
 | --- | --- |
@@ -76,29 +75,23 @@ Iroha запросы считывают состояние распределё�
 | `FindAssetEscrowsBySeller` |Перечислить эскроу-активы по продавцу.|
 | `FindAssetEscrowsByBuyer` |Список условных депозитов активов по покупателю.|
 | `FindAssetEscrowsByStatus` |Список условных депозитов активов по статусу.|
-| `FindAnonymousAssetEscrows` |Список анонимных записей условного депонирования активов.|
-| `FindAnonymousAssetEscrowById` |Найдите один анонимный эскроу-актив по идентификатору.|
-| `FindAnonymousAssetEscrowsBySeller` |Список анонимных эскроу по продавцу.|
-| `FindAnonymousAssetEscrowsByBuyer` |Список анонимных эскроу по покупателю.|
-| `FindAnonymousAssetEscrowsByStatus` |Список анонимных эскроу по статусу.|
 | `FindProofRecordById` |Найдите одну запись доказательства по идентификатору.|
 | `FindProofRecords` |Список записей доказательств.|
 | `FindProofRecordsByBackend` |Список записей доказательств для подсистемы доказательств.|
 | `FindProofRecordsByStatus` |Список записей доказательств по статусу.|
 
-## Nexus, Доступность данных и пакеты {#nexus-data-availability-and-packages}
+## SORA Nexus, Доступность данных и пакеты {#nexus-data-availability-and-packages}
 
 |Запрос|Цель|
 | --- | --- |
-| `FindRepoAgreements` |Перечислить соглашения репозитория, хранящиеся на цепочке.|
+| `FindRepoAgreements` |Перечислить соглашения репо и обратного репо, хранящиеся в цепочке.|
 | `FindTwitterBindingByHash` |Разрешить привязку Twitter с помощью криптографического хеша.|
 | `FindDaPinIntentByTicket` |Найдите намерение закрепить доступность данных по билету.|
 | `FindDaPinIntentByManifest` |Найдите намерение PIN по ссылке на технический манифест.|
 | `FindDaPinIntentByAlias` |Найти намерение пина по псевдониму.|
 | `FindDaPinIntentByLaneEpochSequence` |Найдите намерение пина по линии выполнения, эпохе и последовательности.|
-| `FindLaneRelayEnvelopeByRef` |Найдите проверенный контейнер данных релейной линии.|
 | `FindSorafsProviderOwner` |Определите владельца поставщика SoraFS.|
-| `FindDataspaceNameOwnerById` |Определите владельца имени пространства данных.|
+| `FindDataspaceNameOwnerById` |Определите активного владельца SNS для псевдонима пространства данных.|
 | `FindMusubiExactPackageV1` |Прочитайте одну точную запись пакета и её текущие версии.|
 | `FindMusubiExactReleaseV1` |Прочитайте один точный снимок выпуска.|
 | `FindMusubiProviderBundleAttestationV1` |Прочитайте аттестацию архива-пакета одного поставщика.|
@@ -118,7 +111,7 @@ Iroha запросы считывают состояние распределё�
 | `FindActiveTriggerIds` |Список активных идентификаторов триггеров.|
 | `FindTriggers` |Составьте список триггеров.|
 | `FindTriggerById` |Найдите один триггер по идентификатору.|
-| `FindContractManifestByCodeHash` |Найдите технический манифест смарт-контракта по криптографическому хэшу кода.|
+| `FindContractManifestByArtifactId` |Найдите технический манифест смарт-контракта по его идентификатору артефакта пространства данных.|
 | `FindTransactions` |Список завершённых транзакций.|
 | `FindBlocks` |Список блоков.|
 | `FindBlockHeaders` |Список заголовков блоков.|

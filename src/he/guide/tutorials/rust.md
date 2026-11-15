@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Rust {#rust}
 
 יישום Rust חי במרחב העבודה העיקרי ונשאר הדרך המובילה ביותר לעבוד עם בסיס הקוד Iroha 3.
@@ -31,7 +30,7 @@ cargo build --workspace
 תפעיל את לקלינט ההשוואה עם הגדרת הלקוח המקובל הנעברת:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## נסה Taira לקרוא בלבד {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-לאחר שאתה יוצר `taira.client.toml`, אותו בינרי יכול להפעיל פקודות קאנאריות חתומות נגד Taira. לשמור את אלה נפרדים מבדיקות יחידות רגילות כי הם דורשים חשבון מימון מכבר וקיום טסטנט זמינות.
+לאחר שיצרתם את `taira.client.toml`, אותו קובץ בינארי יכול לצרף חשבון ולממן אותו באמצעות `iroha taira account`, ולשלוח פקודות חתומות רגילות לספר החשבונות מול Taira. הפרידו אותן מבדיקות יחידה רגילות, משום שהן דורשות חשבון שמומן מה־faucet וזמינות של רשת הבדיקה החיה.
 
 ## שימוש בכספת הלקוח Rust {#using-the-rust-client-crate}
 
@@ -71,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-לתהליכי escrow המנוהלים ב-ledger, ראו [escrow מובנה לנכסים](/he/blockchain/escrow.md#rust-sdk). מודל הנתונים של Rust מספק כיום את הכיסוי המלא ביותר בעל טיפוסים עבור escrow של שוק, נעילות נכסים כלליות, escrow אנונימי, שאילתות ואירועים.
+לתהליכי נאמנות המנוהלים בספר החשבונות, ראו [נאמנות נכסים מובנית](/he/blockchain/escrow.md#rust-sdk). מודל הנתונים של Rust מספק כיום את הכיסוי המלא ביותר בעל טיפוסים עבור נאמנות שוק, נעילות נכסים כלליות, נאמנות מותנית, שאילתות ואירועים.
 
 אתה יכול לשחזר תמונת מצב של עזרה מקומית CLI עם:
 

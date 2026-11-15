@@ -22,27 +22,33 @@ Every change to world state still happens through transactions.
 Transactions carry instructions or IVM bytecode, and Torii is the main way
 clients submit them or observe their effects.
 
-- Nexus-aware configurations can define multiple lanes
-- data spaces isolate workloads while staying part of the same ledger model
-- routing policy decides which lane and dataspace handle a class of work
+- data spaces provide environments for institutional data, authority, policy,
+  and applications
+- lanes provide routing and certification capacity within those environments
+- an independently signed data space root owns its State and local finality
 
-## Multi-Dataspace Architecture
+## Data spaces and execution roots {#multi-dataspace-architecture}
 
-A dataspace is a routing and namespace boundary, not a separate blockchain.
-The runtime still has one `World`, one transaction model, and one consensus
-pipeline. Nexus adds catalogs that tell the node how to partition work
-across lanes and how to name the dataspaces those lanes serve.
+A data space catalog entry defines an environment and its identity. A catalog
+entry alone does not establish an independent execution root. Public lanes
+certify transaction batches for execution by the global chain; an independently
+signed data space root has its own State, committee, and local finality.
 
-At runtime, a dataspace is represented by a numeric `DataSpaceId` and
+`DataSpaceCatalog` defines data spaces, while `LaneCatalog` defines lanes.
+Every lane references exactly one data space through `dataspace_id`; a data
+space can contain several lanes. `DataSpaceId` and `LaneId` are distinct
+identities, and a lane alias does not create another data space.
+
+At runtime, a data space is represented by a numeric `DataSpaceId` and
 catalog metadata. `DataSpaceId::UNIVERSAL` is reserved as `0`; the default
-catalog contains the `universal` dataspace. Each configured dataspace has:
+catalog contains the `universal` data space. Each configured data space has:
 
 - a unique numeric ID
-- a unique alias such as `universal`, `governance`, or `zk`
+- a unique alias such as `universal` or an explicitly registered institutional name
 - an optional description for operator surfaces
 - a non-zero `fault_tolerance` value used to size relay committees
 
-Lanes are the execution and storage routes bound to those dataspaces. A
+Lanes are the routing and certification resources bound to those data spaces. A
 lane entry carries a `LaneId`, the `DataSpaceId` it serves, an alias,
 visibility (`public` or `restricted`), storage profile (`full_replica`,
 `commitment_only`, or `split_replica`), proof scheme, and optional
@@ -53,49 +59,61 @@ and deterministic key prefixes.
 The routing path is:
 
 1. Configuration builds a validated `DataSpaceCatalog`, `LaneCatalog`, and
-   `LaneRoutingPolicy`. Multiple lanes, multiple dataspaces, or non-default
-   routing require `nexus.enabled = true`.
-2. The transaction queue asks the active lane router for a
-   `RoutingDecision` containing a lane ID and dataspace ID.
-3. Explicit routing rules can match by authority/account or by instruction
-   label. Without a matching rule, the router can derive the dataspace from
-   domain IDs, asset-definition projections, dataspace-scoped permissions,
-   settlement legs, or the authority's bound account scope.
-4. The resolved route is checked against both catalogs. Unknown lanes,
-   unknown dataspaces, and lane/dataspace mismatches are deterministic
-   routing errors. If a transaction writes to two different dataspace
-   targets, it is rejected as a conflicting route; cross-dataspace DVP/PVP
-   settlement is routed through the universal coordinator lane.
-5. Sumeragi and telemetry keep the assignment visible as lane and dataspace
-   activity, backlog, and commitment snapshots.
+   `LaneRoutingPolicy`. SORA Nexus routing is mandatory. On the global root, multiple
+   data spaces, lanes, or non-default routing require the SORA Nexus profile
+   (`--sora`) and NPoS; an independently signed data space root runs in
+   Permissioned mode.
+2. The transaction queue resolves a `RoutingPlan` from the transaction and
+   committed state. Each coordinator or participant route contains a lane ID
+   and data space ID; Native AMX plans retain the full participant set.
+3. For global execution, complete control-plane batches and cross-data space
+   coordinators use lane `0`. Concrete non-universal instruction or
+   contract-address targets select an admitted fixed lane with the matching
+   data space and committee before account or instruction-label rules.
+   Other work follows committed explicit rules and default sharding;
+   concrete universal targets remain on universal lanes.
+4. Every route is checked against the catalogs and active lane state. Unknown
+   IDs and lane/data space mismatches are rejected; an unavailable private
+   target cannot fall back to universal execution. Multiple data space
+   targets can produce a Native AMX plan. Transaction metadata `amx_policy`
+   set to `reject_cross_dataspace` rejects cross-data space plans. A routing
+   plan alone does not authorize or complete settlement across independent roots.
+5. Telemetry keeps the assignment visible as per-lane activity and backlog in
+   the `/status` lane snapshot (`teu_lane_commit`).
 
-This is why object identifiers matter. Domains include the dataspace alias
+This is why object identifiers matter. Domains include the data space alias
 in their ID, for example `payments.universal`, so domain-scoped writes can
 be routed. Accounts remain canonical and domainless, so the same account
 can be bound into different application scopes without changing its
-`AccountId`. Asset definitions can carry a domain/dataspace projection,
-which lets asset operations inherit the correct dataspace route.
+`AccountId`. Asset definitions can carry a domain/data space projection,
+which lets asset operations inherit the correct data space route.
 
-Without Nexus overrides, the node uses a single lane and the `universal`
-dataspace. The bundled SORA profile replaces that with a three-lane
+Without SORA Nexus overrides, the node uses a single lane and the `universal`
+data space. The bundled SORA Nexus profile replaces that with a three-lane
 catalog: `core` for the universal public lane, `governance` for governance
 traffic, and `zk` for zero-knowledge attachment and contract-deployment
 traffic.
 
-Those three defaults exist to separate workload classes:
+All three bundled lanes are public and reference the same `universal` data
+space. They separate workload classes:
 
-| Dataspace    | Lane         | Why it exists                                                                                                                                       |
+| Data space    | Lane         | Why it exists                                                                                                                                       |
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `universal`  | `core`       | Reserved default dataspace (`DataSpaceId::UNIVERSAL == 0`) for ordinary public ledger traffic and fallback routing.                                 |
-| `governance` | `governance` | Restricted lane for governance and parliament traffic, so control-plane activity is not mixed with general application writes.                      |
-| `zk`         | `zk`         | Restricted lane for zero-knowledge proofs, attachments, and contract deployment routing, keeping proof-heavy workflows separate from normal writes. |
+| `universal` | `core` | Ordinary public ledger traffic and default routing. |
+| `universal` | `governance` | Public governance and SORA Parliament traffic. |
+| `universal` | `zk` | Public zero-knowledge attachment and contract-deployment traffic. |
 
-Only `universal` is the reserved baseline. `governance` and `zk` are SORA
-profile choices encoded in the bundled catalog and routing policy;
-operators can define a different catalog when they need different dataspace
-boundaries.
+`DataSpaceId::UNIVERSAL == 0` is the reserved baseline. The `governance` and
+`zk` names above identify lanes, not separate data spaces. Different institutional
+boundaries require explicit data space entries; independent execution additionally
+requires an independently authenticated root.
 
-Sumeragi always uses data availability and reliable broadcast. These paths are
+These relationships are fixed by the pinned
+[profile constructors](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs),
+[lane implementation](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs),
+and [independent-root contract](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md).
+
+Sumeragi always uses signed RS16 payload availability and certified-body recovery. These paths are
 part of the Iroha 3 consensus protocol and cannot be disabled by a deployment
 profile.
 

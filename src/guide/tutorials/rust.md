@@ -25,7 +25,7 @@ cargo build --workspace
 Run the reference client with the checked-in default client config:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Try Taira Read-Only
@@ -48,7 +48,8 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-After you create `taira.client.toml`, the same binary can run signed canary
+After you create `taira.client.toml`, the same binary can onboard and fund
+an account with `iroha taira account` and submit ordinary signed ledger
 commands against Taira. Keep those separate from ordinary unit tests because
 they require a faucet-funded account and live testnet availability.
 
@@ -71,7 +72,7 @@ practice, inspect:
 For ledger-managed escrow workflows, see
 [Native Asset Escrow](/blockchain/escrow.md#rust-sdk). The Rust data model
 currently has the most complete typed coverage for marketplace escrow, generic
-asset locks, anonymous escrow, queries, and events.
+asset locks, conditional escrow, queries, and events.
 
 You can regenerate a local CLI help snapshot with:
 

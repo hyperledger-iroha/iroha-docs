@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # اختبار الفوضى مع إيزانامي {#chaos-testing-with-izanami}
 
 إيزانامي هو منسق الفوضى في مساحة العمل العليا Iroha. يقوم ببدء عنقود محلي Iroha مؤقت، ويقدم عبء عمل قابل للتكوين، ويحقن الأخطاء في الأقران المختارين في الشبكة لكي يتمكن المشغلون من التحقق مما إذا كانت الشبكة تواصل التقدم تحت الفشل المسيطر عليه.

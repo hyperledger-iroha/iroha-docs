@@ -1,26 +1,24 @@
 ---
 translation_locale: ru
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Управлять Iroha 3 через CLI {#operate-iroha-3-via-cli}
 
-Двоичный файл `iroha` является клиентом командной строки для Iroha 3. Используйте его для запроса состояния распределённого реестра блокчейнов, отправки транзакций и проверки конечных точек операторов API.
+Бинарный файл `iroha` — клиент командной строки для Iroha 3. Он позволяет запрашивать состояние реестра, отправлять транзакции и проверять конечные точки для операторов.
 
 ## 1. Требования {#_1-prerequisites}
 
-Сначала запустите локальную сеть:
-
-- [Запуск Iroha 3](./launch-iroha.md)
-
-Примеры ниже предполагают сгенерированную конфигурацию клиента из локальной сети, созданной в [Запуск Iroha 3](./launch-iroha.md):
+Из рабочей копии Iroha на задокументированной ревизии исходного кода сгенерируйте и запустите локальную сеть из четырёх узлов:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+В примерах ниже используется сгенерированная для неё конфигурация клиента `./localnet/client.toml`.
 
 ## 2. Базовая настройка CLI {#_2-basic-cli-setup}
 
@@ -32,16 +30,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI организован в следующие команды верхнего уровня:
 
-- `account` для ярлыков, ориентированных на учетную запись
-- `tx` для помощников на уровне транзакций
+- `account` — чтение и изменение учётных записей
+- `explorer` — ленты обозревателя с общими фильтрами и постраничной выдачей
+- `tx` — статус транзакций и вспомогательные операции с ними
 - `ledger` для чтения и записи в распределённом блокчейн-реестре
+- `trigger` — чтение, запись и исполнение триггеров
 - `ops` для диагностики оператора
 - `app` для помощников приложения API
-- `contract` для развертывания контракта и технических вызовов
+- `contract` — вызовы контрактов, представления и локальная отладка; для развёртывания используйте `kagami contract deploy` или `musubi deploy`
 - `tools` для диагностики и инструментов разработчика
-- `taira` для рабочих процессов, ориентированных на Taira и Nexus
+- `dataspace` — планирование, применение и проверка определения пространства данных
+- `taira` — диагностика Taira и подключение учётных записей
+- `offline` — автономные кодировщики, отчёты и диагностика
+- `soracloud` — вспомогательные средства платформы приложений Soracloud
+- `sccp` — чтение, переводы и доказательства SORA Cross-Chain Protocol
 
-Группа `ledger` также содержит специализированные помощники по транзакциям, такие как `ledger transaction`.
+Каждая команда, отправляющая транзакцию, требует явно указанного плательщика комиссии, например `--fee-payer authority`; перед подписанием CLI запрашивает точную комиссию.
 
 Используйте `--output-format text` для вывода оператора в формате, удобном для чтения человеком, и `--machine` для строгого режима автоматизации.
 
@@ -56,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-Список общедоступных областей в пространстве данных `universal`:
+Выведите домены, видимые неаутентифицированному читателю:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -76,32 +80,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Создавайте `taira.client.toml` только тогда, когда вы готовы тестировать подписанные команды. Смотрите [Подключиться к SORA Nexus Dataspaces](/ru/get-started/sora-nexus-dataspaces.md) для конфигурации, сервиса финансирования тестовой сети и канарейного потока. Не выполняйте команды записи в Taira, пока аккаунт не будет профинансирован с помощью тестового сетевого сервисного актива.
+Создавайте `taira.client.toml` только тогда, когда будете готовы проверять подписанные команды. Конфигурация, пополнение через кран и последовательность проверок описаны в разделе [Подключение к пространствам данных SORA Nexus](/ru/get-started/sora-nexus-dataspaces.md). Не выполняйте команды записи в Taira, пока учётная запись не получит от крана актив для оплаты комиссии.
 
-Для любого примера Taira CLI с оплатой, сохраните помощника службы финансирования тестовой сети от [Получить тестовую сеть XOR на Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) как `taira_faucet_claim.py`, затем сначала запросите тестовую сеть XOR:
+Для любого примера Taira CLI с оплатой комиссии пополните счёт подписанта через процесс с предварительной подготовкой запроса к крану из раздела [Получение тестовых XOR в Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), затем проверьте баланс:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Если служба финансирования тестовой сети или маршрут запроса возвращает `502`, подождите и попробуйте снова. Это проблема доступности публичной тестовой сети, а не сигнал к регенерации ключей аккаунта.
+Если маршрут крана возвращает `502`, подождите и повторите запрос. Это проблема доступности публичной тестовой сети, а не повод заново создавать ключи учётной записи.
 
-После того как баланс станет видимым, прикрепите метаданные активов комиссии к записям:
+Когда баланс станет виден, отправляйте операции записи с `--fee-payer authority`. Перед подписанием CLI запрашивает точную комиссию в комиссионном активе Taira:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. Основные команды распределенного блокчейн-реестра {#_4-basic-ledger-commands}
@@ -109,7 +111,7 @@ iroha --config ./taira.client.toml \
 Перечислите все домены:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Создание обычного домена использует декларативный планировщик алиасов; команда `ledger domain` не имеет подкоманды `register`. Подготовьте намерение `AliasSetupPlanRequestV1` без секретов для `docs.universal` с вашим SDK или сервисом онбординга, затем спланируйте и примените его:
@@ -120,16 +122,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Intent фиксирует идентификатор пространства данных, канонический аккаунт владельца, срок аренды и текущий контроль проверки стоимости платы. Планировщик проверяет текущее состояние и возвращает точный атомарный план `EnsureAlias` для отправки. Не копируйте значения контроля с другой сети.
+Намерение закрепляет идентификатор пространства данных, каноническую учётную запись владельца, срок аренды и текущий защитный параметр расчёта стоимости. Планировщик проверяет актуальное состояние и возвращает точный атомарный план `EnsureAlias` для отправки. Не копируйте защитные значения вручную из другой сети.
 
 Отправьте простую ping-транзакцию:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 Прочитайте недавний блок или подпишитесь на события блока:
@@ -141,10 +143,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. Команды оператора {#_5-operator-commands}
 
-Команды оператора консенсуса требуют ключа программного обеспечения из разрешённого списка. Держите его вне `client.toml` и явно передавайте файл, доступный только владельцу:
+Команды оператора консенсуса требуют ключ среды исполнения из списка разрешённых. Храните его вне `client.toml` и передавайте абсолютный путь к файлу, доступному только владельцу:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -161,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-Наивысшие и заблокированные сертификаты кворума консенсуса:
+Зафиксированные линии консенсуса и статус экземпляров на этом узле:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 Параметры консенсуса в блокчейне:
@@ -182,12 +185,12 @@ cargo run --bin iroha -- \
 ## 6. Куда идти дальше {#_6-where-to-go-next}
 
 - [SDK учебные пособия](/ru/guide/tutorials/)
-- [Torii API конечные точки](/ru/reference/torii-endpoints.md)
+- [Конечные точки Torii](/ru/reference/torii-endpoints.md)
 - [Работа с бинарными файлами Iroha](/ru/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-Чтобы заново создать полный снимок справочных данных Markdown из рабочей копии исходного кода, выполните:
+Чтобы вывести полный снимок справки в Markdown из рабочей копии исходного кода, выполните:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

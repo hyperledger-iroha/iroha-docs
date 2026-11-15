@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 匿名交易 {#anonymous-transactions}
 
@@ -45,8 +45,8 @@ Iroha 中的匿名交易由机密资产操作构成。钱包不会把公开金�
 3. 使用 `RegisterZkAsset` 将资产注册为支持 ZK，或者安排从 `TransparentOnly` 转换到 `Convertible` 或 `ShieldedOnly` 的策略变更。
 4. 使用 `Shield` 将公开资金转入隐私账本。钱包在提交交易之前，会为接收者创建票据承诺和加密载荷。
 5. 使用 `ZkTransfer` 进行私密转移。钱包生成证明，证明它拥有输入票据、输入与输出的价值平衡，且每张已花费票据都锚定在较新的承诺树中。
-6. 仅在资产策略允许时使用 `Unshield`。`Unshield` 会公开金额和接收账户，花费私有票据的作废标识符，并且可以生成私有找零输出。
-7. 通过类型化查询和 Torii 端点读取机密事件、证明记录、作废标识符状态和匿名托管记录，以完成审计。
+6. 仅在资产策略允许时执行解除屏蔽。`Unshield` 会公开金额和接收账户，花费私有票据的作废标识符，并且可以生成私有找零输出。
+7. 通过类型化查询和 Torii 端点读取机密事件、证明记录和作废标识符状态，以完成审计。
 
 ## CLI 示例 {#cli-examples}
 
@@ -77,7 +77,7 @@ iroha app zk envelope \
 
 CLI 会准备资产策略、验证密钥引用和加密票据封装。它不提供 `shield` 或 `unshield` 交易子命令。请使用 SDK 构建这些指令，并将其作为完成费用报价和签名的普通交易提交。
 
-`Unshield` 的证明附件具有以下形式：
+解除屏蔽的证明附件具有以下形式：
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -150,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## 匿名资产托管 {#anonymous-asset-escrow}
-
-匿名资产托管使用同样的隐私转移机制处理被托管的价值。托管记录仍会记录各方和托管状态，但资金注入、释放、取消和裁决各阶段都使用隐私作废标识符和输出承诺。
-
-有关托管 ISI 的详细行为和示例，请参阅[原生资产托管](/zh-hans/blockchain/escrow.md#anonymous-escrow)。
-
-生命周期如下：
-
-1. `OpenAnonymousAssetEscrow` 花费用于注资的隐私票据，并创建一个托管承诺。
-2. `AcceptAnonymousAssetEscrow` 记录买方。
-3. `MarkAnonymousEscrowPaymentSent` 记录买方已在链下发送付款。
-4. `ReleaseAnonymousAssetEscrow` 花费托管承诺，并生成给买方的输出承诺。
-5. 如果尚未标记付款，`CancelAnonymousAssetEscrow` 会花费托管承诺，并生成返回给卖方的输出承诺。
-6. `OpenAnonymousEscrowDispute` 和 `ResolveAnonymousEscrowDispute` 用证据哈希以及由裁决方控制的拆分方案处理有争议的托管。
-
-使用[查询](/zh-hans/reference/queries.md#escrow-and-proof-records)中列出的匿名托管查询来检查托管记录和状态。
-
 ## 数学原理 {#math}
 
 下面的符号描述机密资产流程。实现使用资产策略和验证器注册表中的活动电路和参数 IDs，因此客户端应将承诺、作废标识符和证明字节视为钱包/证明器输出的不透明数据。
@@ -235,7 +218,6 @@ $$
 - 作废标识符和输出承诺
 - 证明哈希、验证密钥引用和可选封装哈希
 - `Unshield` 的公开金额和接收账户
-- 匿名托管的卖方、买方、状态、时间戳和证据哈希
 
 应用设计应确保这些公开元数据不会泄露需要保护的业务关系。
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # Operações {#operations}
 
 Prontidão operacional significa que a rede pode ser observada, alterada, copiada e recuperada sem depender de acesso improvisado aos hosts validadores.
@@ -38,7 +37,7 @@ Veja [Segurança Operacional](/pt/guide/security/operational-security.md).
 ## Gestão de Mudanças {#change-management}
 
 - Trate as alterações de configuração on-chain como transações que exigem revisão, leituras preliminares, autorização e verificação após a alteração.
-- Implante atualizações binárias de pares de rede com um plano de compatibilidade e um ponto de decisão de reversão.
+- Antes de instalar uma versão do nó par, verifique se ela implementa a seleção de execução autenticada da rede e o histórico acima do seu ponto de controle de inicialização. Alterações nas definições do protocolo exigem uma transição de seleção qualificada e aprovada pela governança; após a ativação, a recuperação usa uma transição corretiva em vez de retornar a um binário antigo incompatível.
 - Evite alterar a topologia dos pares de rede, o tempo de consenso e a carga de trabalho do aplicativo na mesma janela de manutenção, a menos que o plano de migração exija.
 - Registre os hashes criptográficos da transação e as alturas dos blocos para mudanças operacionais.
 

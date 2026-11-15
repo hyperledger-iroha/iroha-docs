@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # 許可證 {#permissions}
 
 對於區塊鏈上的各種操作,例如錢或燒燬資產,帳戶需要許可令牌.
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## 許可證驗證器 {#permission-validators}
 
-允許存在,因此只有需要的許可權符號的帳戶才能執行受保護的操作.預設執行器在命令,查詢和表示式執行過程中檢查許可權.
+權限的存在是為了確保只有持有所需權限權杖的帳戶才能執行受保護的操作。預設執行器會在交易與指令執行以及查詢驗證期間檢查權限。
 
 預設驗證器表面按賬本區分組合:
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - 資產, NFTs,以及託管
 - 觸發器
 - 角色和許可權
-- 執行器/執行階段,證明,橋樑和 SORA/Nexus 模組
+- 執行器/執行階段,證明,橋樑和 SORA Nexus 模組
 
 準確的代幣列表在 [Permission Tokens引用](/zh-hant/reference/permissions.md)中得到源支援.
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 允許檢查由主動執行器執行.預設執行器提供內建的許可權驗證器和代幣定義,網路可以透過升級使用的執行器來改變政策.
 
-驗證者返回驗證判決.驗證人可以允許操作,理由地拒絕它,或者如果該操作不在驗證者的範圍之外,跳過它.所選的法官將這些裁決結合在一起來決定指示,查詢或表達是否可以繼續進行.
+執行器要麼允許某項操作，要麼以 `ValidationFail` 原因拒絕它。遭拒絕的指令會使其所屬交易遭到拒絕，遭拒絕的查詢則會將錯誤傳回給呼叫方。
 
 ## 支援的查詢 {#supported-queries}
 

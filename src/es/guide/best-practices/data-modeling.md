@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Modelado de datos {#data-modeling}
 
 Los datos del libro mayor de blockchain deben modelarse en torno a la propiedad, el comportamiento de transferencia, los límites de permisos y los patrones de consulta. Elija la representación más pequeña en cadena que pueda soportar la verificabilidad y la ejecución determinista.

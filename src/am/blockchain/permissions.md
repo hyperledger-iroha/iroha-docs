@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # ፈቃዶች {#permissions}
 
 መለያዎች በብሎክቼይን ላይ ለተለያዩ ድርጊቶች የፍቃድ ቶከኖች ያስፈልጋቸዋል፣ ለምሳሌ ንብረቶችን ለማውጣት ወይም ለማጥፋት።
@@ -56,7 +55,7 @@ translation_engine: bing-translator-llm
 
 ### አዲስ ሚና ይመዝገቡ {#register-a-new-role}
 
-በ Mouse መለያ ውስጥ ወደ [ሜታዳታ](/am/blockchain/metadata.md) ሌላ መለያ እንዲደርስ የሚፈቅድ አዲስ ሚና እንመዘግባለን -
+ሲሰጥ ሌላ መለያ በMouse መለያ ውስጥ ያለውን [ሜታዳታ](/am/blockchain/metadata.md) እንዲያገኝ የሚፈቅድ አዲስ ሚና እናስመዝግብ፦
 
 ```rust
 let role_id = RoleId::from_str("ACCESS_TO_MOUSE_METADATA")?;
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## የፈቃድ አረጋጋጮች {#permission-validators}
 
-ፈቃዶች ያሉት አስፈላጊው የፈቃድ ቶከን ያላቸው መለያዎች ብቻ የተጠበቀ ተግባር እንዲፈጽሙ ነው። ነባሪው አስፈጻሚ መመሪያዎች፣ መጠይቆች እና ኤክስፕሬሽኖች ሲፈጸሙ ፈቃዶችን ይፈትሻል።
+ፈቃዶች ያሉት አስፈላጊው የፈቃድ ቶከን ያላቸው መለያዎች ብቻ የተጠበቀ ተግባር እንዲፈጽሙ ነው። ነባሪው አስፈጻሚ ግብይቶችና መመሪያዎች ሲፈጸሙ እና መጠይቆች ሲረጋገጡ ፈቃዶችን ይፈትሻል።
 
 ነባሪው አረጋጋጭ ወለል በብሎክቼይን መዝገብ አካባቢ ተከፋፍሏል -
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - NFTs እና የ ‹SEO› እና የ ‹SEO› ን
 - ቀስቅሴዎች
 - ሚናዎች እና ፈቃዶች
-- አስፈፃሚ/የአሂድ ጊዜ፣ ማረጋገጫዎች፣ ድልድዮች እና SORA/Nexus ሞጁሎች
+- አስፈፃሚ/የአሂድ ጊዜ፣ ማረጋገጫዎች፣ ድልድዮች እና SORA Nexus ሞጁሎች
 
 ትክክለኛው የቶከን ዝርዝር በ [የፍቃድ ቶከኖች ማጣቀሻ](/am/reference/permissions.md) ውስጥ በምንጭ የተደገፈ ነው።
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 የፍቃድ ፍተሻዎች የሚተገበሩት በነቃ አስፈፃሚው ነው። ነባሪው አስፈፃሚው አብሮገነብ የፍቃድ አረጋጋጮችን እና የቶከን ፍቺዎችን ያቀርባል፣ እና አውታረ መረብ የሚጠቀመውን አስፈፃሚ በማሻሻል ፖሊሲን ሊለውጥ ይችላል።
 
-አረጋጋጮች የማረጋገጫ ውሳኔ ይመልሳሉ። አረጋጋጭ ቀዶ ጥገናን ሊፈቅድ፣ በምክንያት ሊክደው ወይም ክዋኔው ከአረጋጋጩ ወሰን ውጭ ከሆነ ሊዘለለው ይችላል። የተመረጠው ዳኛ መመሪያው፣ ጥያቄው ወይም አገላለጹ መቀጠል ይችል እንደሆነ ለመወሰን እነዚያን ፍርዶች ያጣምራል።
+አስፈጻሚው ክዋኔን ይፈቅዳል ወይም በ`ValidationFail` ምክንያት ውድቅ ያደርገዋል። ውድቅ የተደረገ መመሪያ ግብይቱን ውድቅ ያደርጋል፣ ውድቅ የተደረገ መጠይቅ ደግሞ ስህተቱን ለጠሪው ይመልሳል።
 
 ## የሚደገፉ መጠይቆች {#supported-queries}
 

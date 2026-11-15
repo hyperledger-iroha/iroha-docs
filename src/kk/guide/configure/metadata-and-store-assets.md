@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Метадеректер және блокчейн тіркелімін сақтау таңдау {#metadata-and-ledger-storage-choices}
 
 Iroha 3 деректер моделінде кездейсоқ кілт-значение деректері үшін бөлек `Store` актив түрі жоқ. Келесі сақтау нұсқаларын пайдаланыңыз.

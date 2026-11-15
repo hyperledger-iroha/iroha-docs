@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Anonim bitimlar {#anonymous-transactions}
 
@@ -46,7 +46,7 @@ Aktiv ta’rifi [`AssetConfidentialPolicy`](/uz/reference/data-model-schema.md) 
 4. Ochiq mablag‘larni `Shield` bilan himoyalang. Hamyon tranzaksiyani yuborishdan oldin oluvchi uchun nota majburiyati va shifrlangan foydali yukni yaratadi.
 5. `ZkTransfer` bilan maxfiy o‘tkazma bajaring. Hamyon kirish notalariga egaligini, kirish va chiqish qiymatlari tengligini hamda har bir sarflangan nota yaqindagi majburiyatlar daraxtiga bog‘langanini isbotlaydi.
 6. Aktiv siyosati ruxsat bergandagina himoyani olib tashlang. `Unshield` ochiq miqdor va oluvchi hisobni oshkor qiladi, xususiy nota nullifikatorini sarflaydi va xususiy qaytim majburiyatlarini yaratishi mumkin.
-7. Tiplashtirilgan so‘rovlar va Torii yo‘nalishlari orqali maxfiy hodisalar, isbot yozuvlari, nullifikator holati hamda anonim eskrou yozuvlarini o‘qib tekshiring.
+7. Tiplashtirilgan so‘rovlar va Torii yo‘nalishlari orqali maxfiy hodisalar, isbot yozuvlari va nullifikator holatini o‘qib tekshiring.
 
 ## CLI misollari {#cli-examples}
 
@@ -150,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## Anonim aktiv eskrousi {#anonymous-asset-escrow}
-
-Anonim aktiv eskrousi eskrouga qo‘yilgan qiymat uchun ayni himoyalangan o‘tkazma mexanizmidan foydalanadi. Tomonlar va eskrou holati eskrou yozuvida baribir qayd etiladi, ammo mablag‘ kiritish, chiqarish, bekor qilish va nizoni hal qilish bosqichlarida himoyalangan nullifikatorlar hamda chiqish majburiyatlari ishlatiladi.
-
-Eskrou ISI ko‘rsatmalarining ishlashi va misollari haqida batafsil ma’lumot uchun [Mahalliy aktiv eskrousi](/uz/blockchain/escrow.md#anonymous-escrow) bo‘limiga qarang.
-
-Hayot davri quyidagicha:
-
-1. `OpenAnonymousAssetEscrow` himoyalangan moliyalashtirish notalarini sarflaydi va bitta eskrou majburiyatini yaratadi.
-2. `AcceptAnonymousAssetEscrow` xaridorni qayd etadi.
-3. `MarkAnonymousEscrowPaymentSent` xaridor to‘lovni zanjirdan tashqarida yuborganini qayd etadi.
-4. `ReleaseAnonymousAssetEscrow` eskrou majburiyatini xaridorning chiqish majburiyatlariga sarflaydi.
-5. To‘lov yuborilgani belgilanmagan bo‘lsa, `CancelAnonymousAssetEscrow` eskrou majburiyatini sotuvchining chiqish majburiyatlariga qaytaradi.
-6. `OpenAnonymousEscrowDispute` va `ResolveAnonymousEscrowDispute` dalil xeshlari hamda nizoni hal qiluvchi nazoratidagi taqsimot yordamida bahsli eskroularni boshqaradi.
-
-[So‘rovlar](/uz/reference/queries.md#escrow-and-proof-records) bo‘limida keltirilgan anonim eskrou so‘rovlari orqali eskrou yozuvlari va holatlarini tekshiring.
-
 ## Matematika {#math}
 
 Quyidagi belgilashlar maxfiy aktiv oqimini tasvirlaydi. Amalga oshirish aktiv siyosati va tekshiruvchilar reyestrida ko‘rsatilgan faol sxema hamda parametr identifikatorlaridan foydalanadi. Shu sababli mijozlar majburiyatlar, nullifikatorlar va isbot baytlarini hamyon/isbotlovchi yaratadigan shaffof bo‘lmagan natijalar deb qabul qilishi kerak.
@@ -235,7 +218,6 @@ Anonim tranzaksiyalar kuzatiladigan barcha ma’lumotlarni maxfiy qilmaydi. Quyi
 - nullifikatorlar va chiqish majburiyatlari;
 - isbot xeshlari, tekshirish kalitlariga havolalar va ixtiyoriy konvert xeshlari;
 - `Unshield` uchun ochiq miqdor va oluvchi hisob;
-- anonim eskrou sotuvchisi, xaridori, holati, vaqt tamg‘alari va dalil xeshlari.
 
 Ilovalarni shunday loyihalangki, bu ochiq metama’lumotlar siz himoya qilmoqchi bo‘lgan biznes munosabatlarini oshkor etmasin.
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Təlimat əməliyyatları {#iroha-special-instructions}
 
 Biz [Iroha necə işləyir](/az/blockchain/iroha-explained) haqqında danışanda, Iroha Təlimat əməliyyatlarının dünya vəziyyətini dəyişdirməyin yeganə yolu olduğunu dedik. Beləliklə, hansı növ təlimat Bizdə hansı əməliyyatlar var? Əgər siz bu dərslikdə dilə xas bələdçiləri oxumusunuzsa, artıq bir neçə təlimatı görmüsünüz: `Register<Account>` və `Mint<Numeric>`.
@@ -35,14 +34,14 @@ Bəzi təlimatlar bir təyinatın göstərilməsini tələb edir. Məsələn, ə
 
 |Təlimat|Obyektlər|Təyinat|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias)                               |adi domen, məlumatlar məkanı-təxəllüs və hesab-təxəllüs qurulması|                      |
+| [EnsureAlias](#ensurealias) | adi domenin, məlumat məkanı ləqəbinin və hesab ləqəbinin qurulması | |
 | [Qeydiyyatdan keç/Qeydiyyatı ləğv et](#un-register)                       |hesablar, aktiv təsvirləri, NFTs, rollar, tetikleyicilər, şəbəkə həmkarları; domenin silinməsi|                      |
 | [Mint/Burn](#mint-burn) |rəqəmsal aktivlər, təkrarları tetiklə|hesablar və ya tetikleyicilər|
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |obyektlər ki, [metaməlumat](./metadata.md): domenlər, hesablar, aktiv tərifləri, NFTs, RWAs, tetikleyiciləri var|                      |
 | [SetParameter](#setparameter)                             |zəncir parametrləri|                      |
 | [Grant/Revoke](#grant-revoke)                             | [rollar, icazə tokenləri](/az/blockchain/permissions.md)                                                  |hesablar və ya rollar|
 | [Köçürmə](#transfer)                                     |domenlər, aktiv tərifləri, rəqəmsal aktivlər, NFTs|hesablar|
-| [Yerli etibar və aktiv kilidləri](#native-escrow-and-asset-locks) |rəqəmsal aktiv depozitləri, aktiv kilidləri, anonim depozit kriptoqrafik öhdəlik dəyərləri|alıcılar, təyinatlar və ya mübahisə bölgüləri|
+| [Yerli etibar və aktiv kilidləri](#native-escrow-and-asset-locks) |rəqəmsal aktiv depozitləri, aktiv kilidləri, şərti depozitlər|alıcılar, təyinatlar və ya mübahisə bölgüləri|
 | [Atomik şəxsi maliyyə əməliyyatının həlli](#atomic-private-settlement)   |marşrut üzrə məhdudlaşdırılmış gizli protokol məlumat qrupları, siyasət rotasiyaları, yekunlaşdırılmış paketlər və ləğv işarələri|                      |
 | [ExecuteTrigger](#executetrigger)                         |tetikləyir|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |jurnallar, icraçıya xüsusi fayllar, icraçı yeniləmələri|                      |
@@ -69,7 +68,7 @@ Bu səhifədəki nümunələr, upstream Iroha iş sahəsindən komandaları defo
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-Əgər siz `iroha` ikili faylını quraşdırmısınızsa, onun əvəzinə `iroha --config ./defaults/client.toml`-dən istifadə edin. Aşağıdakı yer tutucuları şəbəkənizdən olan dəyərlərlə əvəz edin:
+`iroha` icra faylını quraşdırmısınızsa, əvəzində `iroha --config ./defaults/client.toml` istifadə edin. Əməliyyat göndərən əmrlər həmçinin `--fee-payer authority` ötürür; bu seçim haqqı imzalayan hesabdan tutur. CLI imzalamadan əvvəl dəqiq haqqı hesablayıb göstərir. Aşağıdakı əvəzedici dəyərləri öz şəbəkənizin dəyərləri ilə əvəz edin:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-İctimai Taira testnet-i hədəfləyərkən, Taira müştəri konfiqurasiyasından istifadə edin. Ödəniş tələb edən nümunələri işlətmədən əvvəl, testnet maliyyələşdirmə xidməti köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` olaraq yadda saxlayın, sonra testnet maliyyələşdirmə xidmətindən testnet XOR-ü tələb edin:
+Açıq Taira testnetinə müraciət edərkən Taira müştəri konfiqurasiyasından istifadə edin və [Taira üzərində testnet XOR əldə etmək](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindəki əvvəlcədən hazırlanan vəsait alma axını ilə hesabı maliyyələşdirin. Haqq tələb edən nümunələri işə salmazdan əvvəl haqq aktivinin balansının göründüyünü yoxlayın:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Testnet tərəfindən maliyyələşdirilən aktiv göründükdən sonra, yazı əməliyyatlarına lazım olan əməliyyat icra xərci aktiv metadatasını əlavə edin:
+Taira yazma əməliyyatları eyni `--fee-payer authority` seçimindən istifadə edir və CLI haqqı Taira-nın haqq aktivində hesablayıb göstərir. `gas_asset_id` kimi haqq açarlarını əməliyyatın metaməlumatı kimi əlavə etməyin; müştəri onları rədd edir:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` domenlər yaratmaq və onların SNS icarələrini təyin etmək üçün adi ilk-çıxış yoludur. Bu, dəqiq məlumat sahəsini, sahibi, icarə müddətini deklarativ şəkildə bağlayır, və ödəniş-qiymət yoxlama qoruyucusu, sonra bütün tələb olunan vəziyyəti atomik şəkildə yaradır və ya təmir edir. Doğrulanmış `POST /v1/aliases/setup/plan` API son nöqtəsindən və ya uyğun CLI iş axınından istifadə edin:
+`EnsureAlias` ilk buraxılışda domenləri və onların SNS icarələrini yaratmağın adi yoludur. O, dəqiq məlumat məkanını, sahibi, icarə müddətini və qiymət təklifinin yoxlama şərtini deklarativ şəkildə bağlayır, sonra bütün tələb olunan vəziyyəti atomik olaraq yaradır və ya düzəldir. Autentifikasiya tələb edən `POST /v1/aliases/setup/plan` son nöqtəsindən və ya uyğun CLI iş axınından istifadə edin:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 Hesabları qeydiyyatdan keçirin və qeydiyyatdan çıxarın:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 Aktiv təyinatlarını qeydiyyatdan keçirin və qeydiyyatdan silin:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +198,37 @@ NFTs-i qeydiyyatdan keçirin və qeydiyyatdan silin. NFT qeydiyyatı onun məzmu
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 Rolları qeydiyyatdan keçirin və qeydiyyatını ləğv edin:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 Tətikçiləri qeydiyyatdan keçirmək və qeydiyyatdan çıxarmaq. Tətikçi qeydiyyatı ya tərcümə olunmuş IVM bayt koduna, ya da seriyalaşdırılmış təlimatlar siyahısına ehtiyac duyur. Bu nümunə CLI ilə bir `Log` təlimatı yaradır və onu tətikçi qeydiyyatına yönləndirir:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 Şəbəkə iştirakçılarını qeydiyyatdan keçirin və qeydiyyatını ləğv edin. Əgər artıq onlara malik deyilsinizsə, BLS açarını və PoP-i `kagami` ilə yaradın:
@@ -241,10 +239,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +268,13 @@ Blockchain aktivlərini çıxarmaq üçün dilə spesifik təlimatdan istifadə 
 rəqəmsal aktivləri buraxmaq və məhv etmək:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 təhvil verin və təkrarları məhv edin:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## Köçürmə {#transfer}
@@ -302,7 +300,7 @@ Bunu etmək üçün bir hesaba [aktivlərin köçürülməsi icazəsi](/az/refer
 Rəqəmsal aktivləri köçürmək:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,21 +311,21 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Domeni, aktiv-tərifini və NFT mülkiyyətini köçürmək:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## Yerli Depozit və Aktiv Bloklamaları {#native-escrow-and-asset-locks}
 
-Yerleşik etibarnamə təlimatları rəqəmsal aktivləri blokçeyn dəftər protokolu tərəfindən idarə olunan mühafizədə kilidləyir. Onlar bazar tərzi maliyyə əməliyyatlarının həlli, ümumi aktiv kilidləri və anonim qorunan etibarnamə axınları üçün istifadə olunur.
+Yerli eskrou təlimatları rəqəmsal aktivləri reyestr tərəfindən idarə olunan protokol mühafizəsində kilidləyir. Onlar bazar tərzi maliyyə əməliyyatlarının həlli, ümumi aktiv kilidləri və attestatora bağlı şərti eskroular üçün istifadə olunur.
 
-Marketplace depoziti `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` və `ResolveEscrowDispute`-dən istifadə edir. Ümumi aktiv kilidləri `OpenAssetLock`, `DrawdownAssetLock`-dən istifadə edir, `CancelAssetLock` və `ExpireAssetLock`. Anonim depozit `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute` və `ResolveAnonymousEscrowDispute` ilə bazar dövrünü əks etdirir.
+Bazar eskrousu `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` və `ResolveEscrowDispute`-dən istifadə edir. Ümumi aktiv kilidləri `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` və `ExpireAssetLock`-dan istifadə edir. Şərti eskrou `OpenConditionalEscrow`, `AttestEscrowCondition` və `ExpireConditionalEscrow`-dan istifadə edir.
 
 Bu ISIs hazırda birinci dərəcəli CLI əmrlərə malik deyil. Tipli SDK quruculardan və ya sıralanmış təlimat paketlərindən istifadə edin və həyat dövrü detalları, icazələr, sorğular, hadisələr və Rust nümunələri üçün [Yerli Aktiv Əmanət](/az/blockchain/escrow.md)-a baxın.
 
@@ -337,7 +335,7 @@ Tənzimlənən atom-xüsusi-hesablama təlimatı ailəsi şəffaf Yerli AMX-dən
 
 `RotatePrivateSettlementPoolPolicyV1` məxfilik idarəçiliyi ilə məhdudlaşdırılıb. Bu, dəqiq cari idarəetmə kriptoqrafik xülasə dəyərini tələb edir, marşrutu, protokol məlumat qrupunu, aktiv-bağlama kriptoqrafik öhdəlik dəyərini, vəziyyət sərhədini, təkrar dəstlərini və yekunlaşdırılmış protokol nəticə qeydlərini qoruyur, ictimai təftişi bir addım irəlilədərək, daha yeni auditçi açarı epoxundan istifadə edir. Dövriyyə daxilolma hündürlüyündə aktivləşir və eyni marşrut/baxa üçün protokol nəticəsi qeydi ilə həmin hündürlüyü paylaşa bilməz. İctimai baxış soyadı protokol nəticəsi qeydlərini dövriyyə yenidən başlatmadan əvvəl sonlandırılmış, doğru və dəqiq təkrar icra olunabilən saxlayır; hərəkətdə olan köhnə siyasət paketləri bağlı şəkildə uğursuz olur. Operatorlar saxlanılmış kapsullar üçün köhnə deşifrə açarlarını qorumalı və ya onları məhv etməzdən əvvəl kapsulu yenidən bükməyi idarə etməli və yoxlamalıdırlar.
 
-Yol varsayılan olaraq deaktivdir və istehsal üçün uyğun deyil. Konfiqurasiya, səlahiyyət prinsipi, audit, bərpa və buraxılış tələbləri üçün [Atomik Şəxsi Çarpaz Məlumatlar Məkanında maliyyə əməliyyatı hesablaşmasını icra et](/az/get-started/atomic-private-settlement)-a baxın.
+Bu yol standart olaraq qeyri-aktiv qalır və istehsal mühiti üçün uyğunluğu təsdiqlənməyib. Konfiqurasiya, səlahiyyət, audit, bərpa və buraxılış tələbləri üçün [Məlumat məkanları arasında atomik özəl hesablaşmanın icrası](/az/get-started/atomic-private-settlement) bölməsinə baxın.
 
 ## Təyin et/Ləğv et {#grant-revoke}
 
@@ -348,34 +346,34 @@ Hesab [icazələr və rollar](permissions.md) üçün icazə vermək və ləğv 
 Hesabda rolu vermək və ya ləğv etmək:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 İcazə tokenlərini vermək və geri almaq. İcazə əmrləri icazə obyektini standart girişdən oxuyur:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 Bir rolda icazələri verin və ləğv edin:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +385,10 @@ Metadata `set` əmrləri standart girişdən JSON dəyərini oxuyur:
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +396,20 @@ Eyni nümunə hesablar, aktiv tərifləri, NFTs, RWAs və tetikleyicilər üçü
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -421,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 Standart girişdə tək parametr JSON obyekti ötürərək parametri təyin edin:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 Bu təlimat [tetikleyicilər](./triggers.md)-i icra etmək üçün istifadə olunur.
 
-CLI tetikleyiciləri qeydiyyatdan keçirə və tetikleyici icra hadisələrinə birbaşa abunə ola bilər. O, tiplənmiş `execute trigger` əmri təmin etmir, buna görə təqdim etmək üçün əl kitabçası `ExecuteTrigger` təlimat, sıra şəklində `InstructionBox` yaradın SDK və ya icraçı alət ilə və yaranan JSON massivini `ledger transaction stdin` vasitəsilə keçirin:
+CLI standart `execute` filtri ilə qeydiyyatdan keçmiş tətik üçün əl ilə `ExecuteTrigger` təlimatı göndərir, istəyə görə JSON arqumentləri əlavə edir və tətik icrası hadisələrinə abunə ola bilir:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## Digər təlimatlar {#other-instructions}
@@ -452,21 +449,21 @@ Iroha həmçinin proqram icra mühiti və icraçı inteqrasiyası üçün aşağ
 Ping yardımçısı ilə `Log` təlimatını təqdim edin:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 Xüsusi icraçı təlimatını serializə edilmiş `InstructionBox` kimi təqdim edin. Yükləmə forması icraçıya xasdır, buna görə təlimatı uyğun SDK və ya icraçı alətləri ilə yaradın:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 İcraçını tərtib edilmiş IVM baytkod faylından yeniləyin:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

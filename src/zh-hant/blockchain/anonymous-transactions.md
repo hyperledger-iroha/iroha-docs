@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 匿名交易 {#anonymous-transactions}
 
@@ -45,8 +45,8 @@ Iroha 中的匿名交易由機密資產操作構成。錢包不會將公開金�
 3. 使用 `RegisterZkAsset` 將資產註冊為支援 ZK，或安排從 `TransparentOnly` 轉換到 `Convertible` 或 `ShieldedOnly` 的策略變更。
 4. 使用 `Shield` 將公開資金轉入隱私帳本。錢包在提交交易之前，會為接收者建立票據承諾和加密承載資料。
 5. 使用 `ZkTransfer` 進行私密轉移。錢包會產生證明，證明它擁有輸入票據、輸入與輸出的價值平衡，且每張已花費票據都錨定在近期的承諾樹中。
-6. 僅在資產策略允許時使用 `Unshield`。`Unshield` 會公開金額和接收帳戶，花費私有票據的作廢標識符，並可產生私有找零輸出。
-7. 透過型別化查詢和 Torii 端點讀取機密事件、證明記錄、作廢標識符狀態和匿名託管記錄，以完成稽核。
+6. 僅在資產策略允許時執行解除遮蔽。`Unshield` 會公開金額和接收帳戶，花費私有票據的作廢標識符，並可產生私有找零輸出。
+7. 透過型別化查詢和 Torii 端點讀取機密事件、證明記錄和作廢標識符狀態，以完成稽核。
 
 ## CLI 範例 {#cli-examples}
 
@@ -77,7 +77,7 @@ iroha app zk envelope \
 
 CLI 會準備資產策略、驗證金鑰參照和加密票據封裝。它不提供 `shield` 或 `unshield` 交易子命令。請使用 SDK 建立這些指令，並將其作為完成費用報價與簽署的一般交易提交。
 
-`Unshield` 的證明附件具有以下形式：
+解除遮蔽的證明附件具有以下形式：
 
 ```bash
 cat > unshield-proof.json <<'JSON'
@@ -150,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## 匿名資產託管 {#anonymous-asset-escrow}
-
-匿名資產託管使用相同的隱私轉移機制處理託管中的價值。託管記錄仍會記載各方與託管狀態，但資金注入、釋放、取消和裁決各階段都使用隱私作廢標識符與輸出承諾。
-
-有關託管 ISI 的詳細行為和範例，請參閱[原生資產託管](/zh-hant/blockchain/escrow.md#anonymous-escrow)。
-
-生命週期如下：
-
-1. `OpenAnonymousAssetEscrow` 花費用來注資的隱私票據，並建立一個託管承諾。
-2. `AcceptAnonymousAssetEscrow` 記錄買方。
-3. `MarkAnonymousEscrowPaymentSent` 記錄買方已在鏈下傳送付款。
-4. `ReleaseAnonymousAssetEscrow` 花費託管承諾，並為買方產生輸出承諾。
-5. 如果尚未標記付款，`CancelAnonymousAssetEscrow` 會花費託管承諾，並產生回到賣方的輸出承諾。
-6. `OpenAnonymousEscrowDispute` 和 `ResolveAnonymousEscrowDispute` 透過證據雜湊以及由裁決方控制的拆分方案處理有爭議的託管。
-
-使用[查詢](/zh-hant/reference/queries.md#escrow-and-proof-records)中列出的匿名託管查詢，檢查託管記錄與狀態。
-
 ## 數學原理 {#math}
 
 下列符號描述機密資產流程。實作會使用資產策略與驗證器登錄檔中的有效電路和參數 IDs，因此用戶端應將承諾、作廢標識符和證明位元組視為錢包／證明器輸出的不透明資料。
@@ -235,7 +218,6 @@ $$
 - 作廢標識符和輸出承諾
 - 證明雜湊、驗證金鑰參照和可選的封裝雜湊
 - `Unshield` 的公開金額與接收帳戶
-- 匿名託管的賣方、買方、狀態、時間戳記和證據雜湊
 
 應用程式設計應確保這些公開的中繼資料不會洩露需要保護的業務關係。
 

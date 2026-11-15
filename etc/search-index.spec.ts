@@ -44,6 +44,22 @@ describe('search index rendering', () => {
     expect(rendered).not.toContain('large duplicated code sample')
   })
 
+  test('indexes headings of embedded generated references under the containing heading', () => {
+    const references: Record<string, string> = { 'kotodama-diagnostics': '## Lex\n\n### K0001\n\nBody.' }
+    const rendered = renderSearchHeadings(
+      '# Diagnostics\n\n```generated-reference\nkotodama-diagnostics\n```\n\n```text\n## Not a heading\n```',
+      {},
+      markdownWithAnchors(),
+      (name) => references[name],
+    )
+
+    expect(splitSearchHeadings('diagnostics.md', rendered)).toEqual([
+      { anchor: 'diagnostics', text: 'Diagnostics', titles: ['Diagnostics'] },
+      { anchor: 'lex', text: 'Lex', titles: ['Diagnostics', 'Lex'] },
+      { anchor: 'k0001', text: 'K0001', titles: ['Diagnostics', 'Lex', 'K0001'] },
+    ])
+  })
+
   test('honors pages excluded from search', () => {
     const rendered = renderSearchHeadings('# Hidden', { frontmatter: { search: false } }, markdownWithAnchors())
     expect(splitSearchHeadings('hidden.md', rendered)).toEqual([])

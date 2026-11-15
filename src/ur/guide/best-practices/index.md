@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # بہترین طریق کار {#best-practices}
 
 اس سیکشن میں Iroha ایپلی کیشنز اور نیٹ ورکس کے لئے پیداوار پر مبنی رہنمائی جمع کی جاتی ہے۔ یہ آپ کو لینے کا فیصلہ کرنے کی ضرورت ہے، نہ کہ اس خصوصیت کی طرف سے منظم کیا جاتا ہے جو اسے لاگو کرنے کے لئے ہوتا ہے.

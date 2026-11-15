@@ -7,16 +7,15 @@ deterministic protocol custody account and record the escrow lifecycle in
 world state.
 
 Use native escrow for marketplace settlement, Aitai-style off-chain payment
-coordination, milestone locks, and shielded escrow workflows that need
-ledger-visible lifecycle state.
+coordination, milestone locks, and attestor-bound conditional releases that
+need ledger-visible lifecycle state.
 
 ## Concepts
 
 | Concept | Description |
 | --- | --- |
-| `EscrowId` | Caller-selected identifier wrapping a hash. It must be unique across transparent and anonymous escrows. |
+| `EscrowId` | Caller-selected identifier wrapping a hash. It must be unique across all escrow records. |
 | `AssetEscrowRecord` | Transparent numeric asset escrow or lock record. |
-| `AnonymousAssetEscrowRecord` | Shielded escrow record backed by nullifiers, commitments, and proof attachments. |
 | Custody account | Deterministic protocol account derived from chain ID, escrow ID, and asset definition. |
 | Evidence hashes | Evidence hashes can identify invoices, judgments, messages, storage manifests, or other off-chain evidence. The evidence payload itself is not stored in the escrow record. |
 
@@ -188,7 +187,7 @@ fn drawdown_and_close_asset_locks(
 
 Python currently exposes high-level helpers for generic locks:
 `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, and
-`expire_asset_lock`. For marketplace and anonymous escrow from Python, use
+`expire_asset_lock`. For marketplace and conditional escrow from Python, use
 canonical `InstructionBox` JSON through the SDK's JSON escape hatch, or submit
 through an SDK that exposes first-class escrow builders.
 
@@ -245,87 +244,34 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Anonymous Escrow
+## Conditional Escrow
 
-Anonymous escrow uses the same marketplace lifecycle, but the funding and
-closing asset movement are shielded. The public record still stores seller,
-buyer, status, evidence hashes, timestamps, and proof-linked movement
-records. Amounts and recipients inside shielded notes are represented by
-commitments, nullifiers, and proof attachments.
+Conditional escrow locks a numeric asset for a beneficiary and releases it
+only after every condition passes, in order. Each condition names the
+attestor account, a predicate that the ledger evaluates (`Equals` a typed
+value or `QuantityAtMost` a bound), and its one-based sequence. An optional
+ledger-time window bounds all attestations.
 
-| Transparent ISI | Anonymous ISI |
-| --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
-
-Wallet or prover tooling must build the proof attachment and public inputs.
-Opening creates one escrow commitment. Release, cancellation, and anonymous
-dispute resolution must spend exactly one escrow commitment and create the
-buyer, seller, or split output commitments required by the action.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-For the underlying shielded transaction model, see
-[Anonymous Transactions](/blockchain/anonymous-transactions.md).
+| ISI | Caller | Effect |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Opener | Locks the amount in protocol custody with immutable conditions and an absolute expiry. |
+| `AttestEscrowCondition` | The condition's attestor | Supplies a `Bool`, `Text`, or `Quantity` value for the next condition. The escrow releases to the beneficiary when the last condition passes. |
+| `ExpireConditionalEscrow` | Any account | Refunds the opener after the expiry if the escrow has not been released. |
 
 ## SDK Usage
 
 Escrow support is exposed differently across the SDKs. Rust has the canonical
 typed data model. Python currently exposes generic asset-lock helpers.
 JavaScript and TypeScript use Kotodama escrow host calls. Kotlin/JVM and Swift
-provide typed payload builders for marketplace and anonymous escrow.
+provide typed payload builders for marketplace escrow.
 
 | SDK | Use this surface | Scope |
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | Marketplace escrow, generic locks, anonymous escrow, queries, and events. |
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, and client `*_and_wait` helpers | Generic asset locks. Marketplace and anonymous escrow helpers are not first-class Python methods yet. |
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | Marketplace escrow, generic locks, conditional escrow, queries, and events. |
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, and client `*_and_wait` helpers | Generic asset locks. Marketplace and conditional escrow helpers are not first-class Python methods yet. |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` from `@iroha/iroha-js/kotodama-compiler` | Escrow host calls inside Kotodama contracts. |
-| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` classes in `org.hyperledger.iroha.sdk.core.model.instructions` | Marketplace and anonymous escrow custom instruction templates. |
-| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` and `IrohaSDK.build*Escrow*` helpers | Marketplace and anonymous escrow Norito JSON instruction payloads. |
+| [Kotlin / JVM](#kotlin-and-jvm) | `InstructionTemplate` classes in `org.hyperledger.iroha.sdk.core.model.instructions` | Marketplace escrow custom instruction templates. |
+| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` and `IrohaSDK.build*Escrow*` helpers | Marketplace escrow Norito JSON instruction payloads. |
 
 The examples below focus on instruction construction. Account funding,
 signature management, and transaction submission follow the normal flow for
@@ -334,8 +280,8 @@ each SDK.
 ### Rust SDK
 
 Use the Rust SDK when you need full native coverage or query/event support.
-The examples above show marketplace release, generic lock drawdown, dispute
-resolution, and anonymous escrow construction with
+The examples above show marketplace release, generic lock drawdown, and
+dispute resolution with
 `iroha::data_model::isi::escrow`.
 
 ```rust
@@ -441,8 +387,6 @@ if (compiled.diagnostics.length > 0) {
 
 For disputes, use `escrow_open_dispute(offer, evidence)` and
 `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.
-Anonymous escrow host calls accept Norito request payload bytes, for example
-`anonymous_escrow_open_offer(request)`.
 
 ### Kotlin and JVM
 
@@ -478,15 +422,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Anonymous templates are available as
-`OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`,
-`MarkAnonymousEscrowPaymentSentInstruction`,
-`ReleaseAnonymousAssetEscrowInstruction`,
-`CancelAnonymousAssetEscrowInstruction`,
-`OpenAnonymousEscrowDisputeInstruction`, and
-`ResolveAnonymousEscrowDisputeInstruction`. Android Java callers can use the
-matching `NativeEscrowInstructions.*` builders from the Android artifact.
-
 ### Swift and iOS
 
 The Swift SDK builds escrow instructions as Norito JSON payloads. Use
@@ -520,9 +455,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Anonymous Swift builders take nullifier lists, output commitment lists, a proof
-dictionary, and optional `rootHint` values. The dispute resolver permission
-token is available as `NativeEscrowPermissions.canResolveEscrowDispute`.
+The dispute resolver permission token is available as
+`NativeEscrowPermissions.canResolveEscrowDispute`.
 
 ## Queries and Events
 
@@ -535,14 +469,11 @@ Use escrow queries for status pages, reconciliation jobs, and support tools:
 | `FindAssetEscrowsBySeller` | List records opened by a seller or lock opener. |
 | `FindAssetEscrowsByBuyer` | List marketplace escrows accepted by a buyer or locks targeting a destination. |
 | `FindAssetEscrowsByStatus` | List records by `AssetEscrowStatus`. |
-| `FindAnonymousAssetEscrowById` | Read one anonymous escrow by `EscrowId`. |
-| `FindAnonymousAssetEscrows*` | List anonymous escrows by all records, seller, buyer, or status. |
 
 `EscrowEventFilter` can subscribe to transparent native escrow and lock
 events by escrow ID, seller, buyer, status, and event-set mask. The event
 family includes `Opened`, `Accepted`, `PaymentSent`, `Released`,
-`Cancelled`, `Expired`, `Disputed`, and `Resolved`. Anonymous escrow
-records are inspected through the anonymous escrow queries.
+`Cancelled`, `Expired`, `Disputed`, and `Resolved`.
 
 ## Operational Notes
 

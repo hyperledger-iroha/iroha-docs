@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 Python SDK в верхнем рабочем пространстве `iroha-python`. Первый выпуск Iroha 3 нацелен на текущие поверхности Torii и Norito. Закрепите версию пакета или источник ревизии, используемые вашей интеграцией, чтобы SDK и узел оставались на одной версии формата сериализации.
@@ -46,7 +45,7 @@ PY
 
 ## Быстрый старт {#quickstart}
 
-Начните с общедоступных, только для чтения Taira API конечных точек:
+Начните с публичных конечных точек Taira, доступных только для чтения:
 
 ```python
 from iroha_python import (
@@ -57,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -87,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -105,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -174,20 +173,16 @@ for limit in fee_quote["intent"]["value"]["charge_limits"]:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-Сервис финансирования тестовой сети возвращает конкретный `asset_id` для проверки баланса. Убедитесь, что живая котировка списывает `FEE_ASSET_DEFINITION`; транзакция не выбирает этот актив через метаданные.
+Отфильтруйте балансы аккаунта по определению актива комиссии, которое пополнил сервис финансирования тестовой сети. Убедитесь, что живая котировка списывает `FEE_ASSET_DEFINITION`; транзакция не выбирает этот актив через метаданные.
 
 Метаданные приложения являются необязательными и не имеют семантики оплаты:
 
@@ -217,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -241,10 +236,10 @@ SDK предоставляет типизированные построител
 
 |Семья инструкций| Python поверхность|
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|Регистрация| `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` зарезервирован для инструментов создания/инициализации|
+|Регистрация| `register_account`, `register_asset_definition`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` зарезервирован для инструментов создания/инициализации|
 |Отменить регистрацию| `unregister_trigger`; используйте `Instruction.from_json` для других вариантов|
-|Создание/Сжигание| `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions`                                                                                          |
-|Перевод| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
+|Создание/Сжигание| `mint_asset_quantity`, `burn_asset_quantity`, `mint_trigger_repetitions`, `burn_trigger_repetitions`                                                                                          |
+|Перевод| `transfer_asset_quantity`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
 |Метаданные и элементы управления| `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value`                                                                        |
 | RWA жизненный цикл| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`|
 | ExecuteTrigger | `execute_trigger` |
@@ -252,7 +247,7 @@ SDK предоставляет типизированные построител
 |Блокировки нативных активов| `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, `expire_asset_lock`, плюс помощники клиента `*_and_wait`|
 |Предоставить/Отозвать, SetParameter, Журнал, Пользовательский, Обновление и менее распространённые варианты регистрации/отмены регистрации| `Instruction.from_json` или `TransactionBuilder.add_instruction_json` с каноническим `InstructionBox` JSON|
 
-Для условных платежей в стиле эскроу см. [Эскроу для родных активов](/ru/blockchain/escrow.md#python-asset-locks). Python в настоящее время предоставляет первоклассные вспомогательные средства для блокировки универсальных активов; вспомогательные средства для маркетплейсов и анонимного эскроу пока не являются первоклассными методами Python.
+Для условных платежей в стиле эскроу см. [Эскроу для родных активов](/ru/blockchain/escrow.md#python-asset-locks). Python в настоящее время предоставляет первоклассные вспомогательные средства для блокировки универсальных активов; вспомогательные средства для маркетплейсов и условного эскроу пока не являются первоклассными методами Python.
 
 ### Настройте домены, затем зарегистрируйте аккаунты и активы {#set-up-domains-then-register-accounts-and-assets}
 
@@ -265,12 +260,13 @@ SDK предоставляет типизированные построител
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -284,13 +280,13 @@ submit(
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### Передать право собственности {#transfer-ownership}
@@ -299,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
@@ -381,7 +377,7 @@ draft.register_rwa(
 После завершения регистрационной транзакции используйте `FindRwas`, `/v1/rwas`, событие RWA или маршрут обозревателя для обнаружения сгенерированного идентификатора:
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -465,7 +461,7 @@ draft.force_transfer_rwa(
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -620,7 +616,7 @@ submit(instruction)
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -699,17 +695,17 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 Помощники для набора запросов возвращают датаклассы вместо необработанных словарей JSON. Они являются самым простым способом начать, потому что SDK разбирает постраничный вывод и общие поля записей для вас:
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
-Используйте универсальные помощники для запросов, когда у конечной точки Torii API ещё нет типового программного адаптера:
+Используйте универсальные вспомогательные средства запросов, если у конечной точки Torii ещё нет типизированной обёртки:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,13 +720,13 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-Вспомогательные средства инвентаризации аккаунтов требуют идентификатор аккаунта, принимаемый нормализатором SDK. Используйте канонические идентификаторы аккаунтов I105 или алиасы в блокчейне; если блок-эксплорер или исходная точка API возвращает идентификатор, который SDK отклоняет, преобразуйте его в канонический идентификатор аккаунта перед вызовом этих помощников:
+Для вспомогательных средств просмотра учётных записей нужен идентификатор, принимаемый нормализатором SDK. Используйте канонические идентификаторы I105 или псевдонимы, зарегистрированные в цепочке. Если обозреватель блоков или непосредственный запрос к конечной точке возвращает идентификатор, который SDK отклоняет, разрешите его в канонический идентификатор учётной записи до вызова этих средств:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
@@ -740,13 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 Помощники потоковой передачи по умолчанию декодируют полезные нагрузки JSON. Передайте `with_metadata=True`, когда вам нужно имя события SSE, идентификатор, подсказку для повторной попытки и необработанную полезную нагрузку. Каноническая лента `/v1/events/sse` доступна только в прямом эфире: она не выдаёт идентификаторы повтора и не сохраняет журнал повтора, поэтому эти помощники не предоставляют аргумент курсора или возобновления. Переподключение запускает новую подписку и может иметь разрыв; используйте `/v1/blocks/stream` из известной высоты, когда требуется полная история распределенного реестра блокчейна. Эти примеры ожидают живых событий, поэтому запускайте их на узле, где поток включен и активен.
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -755,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -1026,26 +1015,6 @@ client = create_torii_client(
 )
 ```
 
-## Готовность Камэмуши {#kagemusha-readiness}
-
-Python SDK может запрашивать текущий маршрут готовности JSON через свой универсальный помощник запроса Torii:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python не предоставляет доступ к типизированным сборщикам архивов пополнения или выкупа Kagemusha. Используйте типизированный кошелек Swift или JVM для создания канонических архивов V4, затем отправляйте их и опрашивайте через поддерживаемый клиент Kagemusha Torii.
-
 ## Подписки {#subscriptions}
 
 Подписки на чтение и конструкторы черновиков наследуются от общего клиента Torii, используемого `iroha_python.ToriiClient`. Каждая мутация принимается с канонической подписью аккаунта, связанной с телом запроса, и возвращает черновик неподписанной транзакции. Torii никогда не принимает приватный ключ и не отправляет черновик за вас.
@@ -1282,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1300,22 +1268,20 @@ if connect_status is not None:
 
 ## SoraFS, UAID и Kaigi помощники {#sorafs-uaid-and-kaigi-helpers}
 
-Эти помощники доступны, когда целевой узел предоставляет соответствующие конечные точки Nexus/SORA API. Рассматривайте пустые списки как допустимый ответ: общедоступный Taira может иметь включенный маршрут без данных для примерного технического манифеста или UAID.
+Эти вспомогательные средства доступны, если целевой узел предоставляет соответствующие конечные точки SORA Nexus. Пустой список — допустимый ответ: в публичной Taira маршрут может быть включён, даже если для манифеста или UAID из примера нет данных.
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()
@@ -1324,7 +1290,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC и GPU помощники {#norito-rpc-and-gpu-helpers}
 
-Используйте `NoritoRpcClient`, когда у вас уже есть Norito байт и необходимо вызвать бинарный Torii API эндпоинт. Пример требует подписанный контейнер данных из предыдущего шаблона транзакции:
+Используйте `NoritoRpcClient`, если у вас уже есть байты Norito и нужно вызвать бинарную конечную точку Torii. Для примера нужен подписанный конверт из предыдущего шаблона транзакции:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,10 +1323,10 @@ Python SDK уже включает помощников для:
 - построители инструкций с типами для общих ISI и специализированных расширений
 - черновики транзакций, технические манифесты, подписание и рабочие процессы контейнера данных подписанной транзакции
 - потоки живых событий и фильтры по вводу; потоки завершенных блоков предоставляют полную историю
-- обобщенные помощники по доступу к готовности Kagemusha и подписке Torii; типизированные сборщики пополнений и выкупа не открыты
+- чтение подписок Torii и построители черновиков неподписанных транзакций
 - адрес аккаунта, помощники для подписания всеми алгоритмами, круговые операции с мультхэшами, SM2, GOST, ML-DSA, BLS, и обработка конфиденциальных ключей
 - Подключить URIs, сессии, кадры, помощники шифрования и администратора реестра
-- управление, обновление программного обеспечения во время выполнения, Sumeragi, node-admin, SoraFS, UAID и Kaigi API адаптеры программного обеспечения конечной точки, где узел предоставляет эти функции
+- обёртки конечных точек управления, обновления среды исполнения, Sumeragi, node-admin, SoraFS, UAID и Kaigi, если узел предоставляет эти функции
 
 ## Исходные ссылки {#upstream-references}
 

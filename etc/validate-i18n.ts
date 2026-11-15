@@ -524,8 +524,8 @@ const NETWORK_FEE_AS_HONORARIUM: Readonly<Partial<Record<string, RegExp>>> = {
 
 const PROTOCOL_QUOTE_AS_QUOTATION: Readonly<Partial<Record<string, RegExp>>> = {
   es: /(?<!\p{L})cita\p{L}*(?!\p{L})/iu,
-  pt: /(?:citaç|(?<!\p{L})citar)\p{L}*/iu,
-  fr: /(?:citation|(?<!\p{L})citer)\p{L}*/iu,
+  pt: /(?<!\p{L})(?:citaç|citar)\p{L}*/iu,
+  fr: /(?<!\p{L})(?:citation|citer)\p{L}*/iu,
   ru: /цитат\p{L}*/iu,
   ar: /اقتباس/u,
   ur: /اقتباس/u,
@@ -983,6 +983,11 @@ const SEMANTIC_FALSE_FRIEND_RULES: Readonly<Record<string, readonly SemanticFals
     },
   ],
   ja: [
+    {
+      source: /^(?=[\s\S]*\b(?:lanes?|consensus|runtime)\b)(?=[\s\S]*\bincarnations?\b)/iu,
+      localized: /(?:化身|転生)/u,
+      description: 'protocol incarnation rendered as a spiritual embodiment or rebirth',
+    },
     {
       source: /\bBLS-Normal\b/u,
       localized: /BLS-通常/u,
@@ -1566,8 +1571,7 @@ const SEMANTIC_FALSE_FRIEND_RULES: Readonly<Record<string, readonly SemanticFals
     },
     {
       source: /\bdigests?\b/iu,
-      localized:
-        /(?:የምግብ\s+)?(?:(?:ምስጠራ|ክሪፕቶግራፊክ)\s+)?(?:መፍጨ(?:ት|ቶች)|መፍጫ|መፈጨት)/u,
+      localized: /(?:የምግብ\s+)?(?:(?:ምስጠራ|ክሪፕቶግራፊክ)\s+)?(?:መፍጨ(?:ት|ቶች)|መፍጫ|መፈጨት)/u,
       description: 'cryptographic digest rendered as food digestion',
     },
     {
@@ -2658,7 +2662,10 @@ function semanticFalseFriends(source: string, localized: string, locale: DocsLoc
     ...(technicalExecutionAsCapitalPunishment
       ? [
           {
-            source: /\bexecut(?:e|es|ed|ing|ion|ions)\b/iu,
+            source:
+              locale.key === 'ja'
+                ? /\b(?:execut(?:e|es|ed|ing|ion|ions)|lanes?|software)\b/iu
+                : /\bexecut(?:e|es|ed|ing|ion|ions)\b/iu,
             localized: technicalExecutionAsCapitalPunishment,
             description: 'software execution rendered as capital punishment',
           },
@@ -3438,13 +3445,8 @@ export async function validateI18n(options: I18nValidationOptions = {}): Promise
               ) ?? matchingIndexes[0])
           if (localizedIndex === undefined) continue
           const [localizedLink] = remainingLocalizedMarkdownLinks.splice(localizedIndex, 1)
-          if (
-            isPreservedTechnicalLinkLabel(englishLink.label) &&
-            localizedLink.label !== englishLink.label
-          ) {
-            errors.push(
-              `${locale.path}/${route}: link ${index + 1} must preserve technical label ${englishLink.label}`,
-            )
+          if (isPreservedTechnicalLinkLabel(englishLink.label) && localizedLink.label !== englishLink.label) {
+            errors.push(`${locale.path}/${route}: link ${index + 1} must preserve technical label ${englishLink.label}`)
           } else if (HUMAN_READABLE_LINK_LABELS.has(englishLink.label) && localizedLink.label === englishLink.label) {
             errors.push(`${locale.path}/${route}: link ${index + 1} has untranslated label ${englishLink.label}`)
           }

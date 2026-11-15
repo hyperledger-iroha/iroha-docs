@@ -5,7 +5,6 @@ translation_source_hash: 4fee7425a237d2781745025c9cd240fbc9df84f07f7427ff19c4bd8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # SDK მასწავლებლები {#sdk-tutorials}
 
 ეს გვერდები შეაჯამებს Iroha 3 კლიენტის შესასვლელ პუნქტებს, რომლებიც გზავნილია ძირითადი სამუშაო სივრცედან, მათ შორის კანონიკური პაკეტის სახელები, ინსტალაციის გზები და მინიმალური საწყისი წერტილები.

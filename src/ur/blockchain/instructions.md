@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Iroha خصوصی ہدایات {#iroha-special-instructions}
 
 جب ہم نے [کے بارے میں بات کی کہ Iroha کیسے کام کرتا ہے ](/ur/blockchain/iroha-explained)، ہم نے کہا کہ Iroha خصوصی ہدایات دنیا کی حالت کو تبدیل کرنے کا واحد طریقہ ہیں. تو، ہمارے پاس کس قسم کی خصوصی ہدایات ہیں؟ اگر آپ نے اس ٹیوٹوریل میں زبان کے مخصوص رہنماؤں کو پڑھا ہے، تو آپ نے پہلے ہی کچھ ہدایات دیکھی ہیں: `Register<Account>` اور `Mint<Numeric>`.
@@ -15,7 +14,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 |تعلیم |تفصیلات |
 | --------------------------------------------------------- | ------------------------------------------------ |
 | [رجسٹریشن/غیر رجسٹریشن](#un-register) |بلاکچین پر ایک نئی ادارے کو ID دیں. |
-| [مائنٹ/برن](#mint-burn) |مائنٹ / برن عددی اثاثے یا ٹرگر تکرار۔ |
+| [Mint/Burn](#mint-burn) | عددی اثاثے جاری یا تلف کریں، یا ٹرگر کی تکرار بڑھائیں یا گھٹائیں۔ |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |بلاکچین اعتراض میٹا ڈیٹا کو اپ ڈیٹ کریں. |
 | [SetParameter](#setparameter) |ایک سلسلہ وسیع پیرامیٹر مقرر کریں. |
 | [Grant/Revoke](#grant-revoke) |اجازت اور کردار دیں یا ہٹا دیں۔ |
@@ -23,7 +22,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 | [مقامی گرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) |پروٹوکول کی دیکھ بھال میں عددی اثاثوں کو بند کریں. |
 | [ایٹمی نجی تصفیہ](#atomic-private-settlement) | خفیہ پولز اور ایٹمی بنڈلز کو منظم کرتا ہے۔ |
 | [ExecuteTrigger](#executetrigger) |ٹرگرز کو انجام دیں۔ |
-| [لاگ / کسٹم / اپ گریڈ](#other-instructions) |رجسٹر، توسیع، یا رن ٹائم رویے کو اپ گریڈ. |
+| [Log/Custom/Upgrade](#other-instructions) |رجسٹر، توسیع، یا رن ٹائم رویے کو اپ گریڈ. |
 
 آئیے Iroha خصوصی ہدایات کا خلاصہ کرتے ہیں۔ ہر ہدایات کے لئے کون سے اشیاء طلب کی جاسکتی ہیں اور ہر اعتراض کے لئے کون سی ہدایات دستیاب ہیں۔
 
@@ -35,17 +34,17 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 |تعلیم |اشیاء |منزل |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |عام ڈومین، ڈیٹا اسپیس کے نام اور اکاؤنٹ کے نام کی ترتیب |                      |
+| [EnsureAlias](#ensurealias) | عام ڈومین، ڈیٹا اسپیس کے عرفی نام اور اکاؤنٹ کے عرفی نام کی ترتیب | |
 | [رجسٹریشن/غیر رجسٹریشن](#un-register) |اکاؤنٹس، اثاثوں کی تعریفیں، NFTs، کردار، ٹرگرز، نیٹ ورک نوڈ؛ ڈومین ہٹانا |                      |
-| [مائنٹ/برن](#mint-burn) |عددی اثاثے، ٹرگر تکرار |اکاؤنٹس یا ٹرگر |
+| [Mint/Burn](#mint-burn) | عددی اثاثے، ٹرگر کی تکرار | اکاؤنٹس یا ٹرگرز |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[میٹا ڈیٹا](./metadata.md) رکھنے والے اشیاء: ڈومینز، اکاؤنٹس، اثاثوں کی تعریفیں، NFTs ، RWAs، ٹرگر |                      |
 | [SetParameter](#setparameter) |سلسلہ پیرامیٹرز |                      |
 | [Grant/Revoke](#grant-revoke) | [کردار، اجازت کے ٹوکن](/ur/blockchain/permissions.md) |اکاؤنٹس یا کردار |
 | [منتقلی](#transfer) |ڈومینز، اثاثوں کی تعریفیں، عددی اثاثے، NFTs |اکاؤنٹس |
-| [مقامی گرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) |اعداد و شمار کے اثاثوں کی ضمانتیں ، اثاثوں کو بند کرنا ، گمنام اثاثہ جات کی ذمہ داریاں |خریدار، منزل یا تنازعہ تقسیم |
+| [مقامی ایسکرو اور اثاثوں کے تالے](#native-escrow-and-asset-locks) | عددی اثاثوں کے ایسکرو، اثاثوں کے تالے، مشروط ایسکرو | خریدار، منزلیں یا تنازعہ کی تقسیم |
 | [ایٹمی نجی تصفیہ](#atomic-private-settlement) | مخصوص روٹ کے خفیہ پولز، پالیسی کی گردشیں، حتمی بنڈلز اور منسوخی کے نشانات | |
 | [ExecuteTrigger](#executetrigger) |ٹرگرز |                      |
-| [لاگ / کسٹم / اپ گریڈ](#other-instructions) |نوشتہ جات، عملدرآمد کے لئے مخصوص پے لوڈ ، عملدرآمد کو اپ گریڈ کرنا |                      |
+| [Log/Custom/Upgrade](#other-instructions) | لاگز، ایگزیکیوٹر سے مخصوص پے لوڈز، ایگزیکیوٹر کی اپ گریڈز | |
 
 ISI کو دیکھنے کا ایک اور طریقہ بھی ہے، جس میں وہ لیجر آبجیکٹ چھوتے ہیں:
 
@@ -69,7 +68,7 @@ ISI کو دیکھنے کا ایک اور طریقہ بھی ہے، جس میں و
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-اگر آپ نے `iroha` بائنری انسٹال کی ہے تو ، اس کے بجائے `iroha --config ./defaults/client.toml` کا استعمال کریں۔ اپنے نیٹ ورک سے اقدار کے ساتھ نیچے دیئے گئے پلیس ہولڈرز کو تبدیل کریں:
+اگر آپ نے `iroha` بائنری نصب کی ہے تو اس کے بجائے `iroha --config ./defaults/client.toml` استعمال کریں۔ لین دین بھیجنے والی کمانڈز `--fee-payer authority` بھی دیتی ہیں، جس سے دستخط کرنے والے اکاؤنٹ سے فیس لی جاتی ہے؛ CLI دستخط سے پہلے درست فیس معلوم کرتا ہے۔ نیچے کی عارضی قدروں کو اپنے نیٹ ورک کی قدروں سے بدلیں:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-جب عوام کو نشانہ بنایا جائے Taira ٹیسٹ نیٹ، استعمال کریں ایک Taira کلائنٹ کی ترتیب. فیس ادا کرنے والے مثالوں کو چلانے سے پہلے ، فوسیٹ کے مددگار کو [ٹیسٹ نیٹ حاصل کریں XOR پر Taira](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) کے طور `taira_faucet_claim.py`, پھر دعویٰ ٹیسٹ نیٹ XOR فوسیٹ سے:
+عوامی Taira ٹیسٹ نیٹ کے لیے Taira کلائنٹ ترتیب استعمال کریں اور [Taira پر ٹیسٹ نیٹ XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) میں پیشگی تیاری والے فوسیٹ عمل سے اس کے اکاؤنٹ کو فنڈ کریں۔ فیس ادا کرنے والی مثالیں چلانے سے پہلے دیکھیں کہ فیس کے اثاثے کا بیلنس نظر آ رہا ہے:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-فوسیٹ سے فنڈ شدہ اثاثہ نظر آنے کے بعد ، لین دین کو لکھنے کے لئے ضروری گیس اثاثے میٹا ڈیٹا منسلک کریں:
+Taira کی تحریری کارروائیاں بھی `--fee-payer authority` منتخب کرتی ہیں، اور CLI فیس Taira کے فیس والے اثاثے میں معلوم کرتا ہے۔ فیس کی کلیدیں، مثلاً `gas_asset_id`، لین دین کے میٹاڈیٹا میں شامل نہ کریں؛ کلائنٹ انہیں مسترد کرتا ہے:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` ڈومینز اور ان کے SNS لیزنگ کی تخلیق کے لئے عام پہلی ریلیز کا راستہ ہے۔ یہ اعلاناتی طور پر عین مطابق ڈیٹا اسپیس ، مالک ، لیزنگ ٹرم ، اور کوٹ گارڈ کو پابند کرتا ہے ، پھر تمام مطلوبہ ریاست کو ایٹمی طور پر تشکیل دیتا ہے یا مرمت کرتا ہے۔ تصدیق شدہ `POST /v1/aliases/setup/plan` اختتامی نقطہ یا مماثل CLI ورک فلو کا استعمال کریں:
+`EnsureAlias` پہلی ریلیز میں ڈومینز اور ان کی SNS لیز بنانے کا عام راستہ ہے۔ یہ عین ڈیٹا اسپیس، مالک، لیز کی مدت اور تخمینے کی حفاظتی شرط کو اعلانیہ طور پر باندھتا ہے، پھر تمام مطلوبہ حالت کو ایک ایٹمی کارروائی میں بناتا یا درست کرتا ہے۔ مستند `POST /v1/aliases/setup/plan` اینڈ پوائنٹ یا اسی کے مطابق CLI عمل استعمال کریں:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,11 +111,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
-ارادے اور منصوبہ راز سے پاک ہیں ، لیکن قدم کے نشانات لاگو کریں اور ترتیب شدہ اکاؤنٹ کے ساتھ ایک عام لین دین جمع کروائیں۔ ایک منصوبہ اس کے سلسلہ ، اتھارٹی ، زندہ ریاست لنگر ، اور آخری تاریخ پر پابند ہے۔ کسی دوسرے نیٹ ورک پر دوبارہ استعمال نہ کریں۔
+درخواست اور منصوبے میں کوئی راز شامل نہیں ہوتا۔ منصوبہ نافذ کرنے پر ترتیب دیے گئے اکاؤنٹ سے عام ٹرانزیکشن پر دستخط کر کے اسے بھیجا جاتا ہے۔ منصوبہ اپنی زنجیر، مجاز اکاؤنٹ، لیجر کی موجودہ حالت کے حوالے اور آخری وقت سے منسلک ہوتا ہے۔ اسے کسی دوسرے نیٹ ورک پر استعمال نہ کریں۔
 
 ## (Un) رجسٹریشن {#un-register}
 
@@ -165,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 رجسٹرڈ اور غیر رجسٹر شدہ اکاؤنٹس:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 رجسٹر اور غیر رجسٹرڈ اثاثہ کی تعریفیں:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +198,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 رجسٹرڈ اور غیر رجسٹر شدہ کردار:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 ٹرگرز کو register اور unregister کریں۔ Trigger registration کے لیے یا تو compiled IVM bytecode یا serialized instruction list درکار ہے۔ یہ مثال CLI سے ایک `Log` instruction بناتی ہے اور اسے trigger registration میں pipe کرتی ہے:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 رجسٹر اور غیر رجسٹر نیٹ ورک نوڈ. اگر آپ کے پاس پہلے سے ہی نہیں ہیں تو BLS کلید اور PoP کے ساتھ `kagami` پیدا کریں:
@@ -241,10 +239,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +268,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 مائنٹ اور برن عددی اثاثے:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 مینٹ اور جلنے کے ٹرگر کی تکرار:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## منتقلی {#transfer}
@@ -302,7 +300,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 عددی اثاثوں کی منتقلی:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,31 +311,31 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 منتقلی کا ڈومین، اثاثہ کی تعریف اور NFT ملکیت:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## مقامی کریڈٹ اور اثاثوں کے تالے {#native-escrow-and-asset-locks}
 
-مقامی ایایسکرو ہدایات لیجر کے زیر انتظام پروٹوکول کی دیکھ بھال میں عددی اثاثوں کو مقفل کرتی ہیں۔ وہ مارکیٹ اسٹائل تصفیہ ، عام اثاثوں کے مقفل اور گمنام شیلڈڈ ایایسکرو بہاؤ کے لئے استعمال ہوتے ہیں۔
+مقامی ایسکرو ہدایات عددی اثاثوں کو لیجر کے زیرِ انتظام پروٹوکول کی تحویل میں مقفل کرتی ہیں۔ یہ مارکیٹ پلیس طرز کے تصفیے، عام اثاثوں کے تالوں اور گواہی دہندگان سے بندھے مشروط ایسکرو کے لیے استعمال ہوتی ہیں۔
 
-مارکیٹ پلیس ایسرو کا استعمال `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, اور `ResolveEscrowDispute`. عام اثاثہ بندش کا استعمال `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, اور `ExpireAssetLock`. Anonymous escrow مارکیٹ لائف سائیکل کی عکاسی کرتا ہے `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, اور `ResolveAnonymousEscrowDispute`.
+مارکیٹ پلیس ایسکرو `OpenAssetEscrow`، `AcceptAssetEscrow`، `MarkEscrowPaymentSent`، `ReleaseAssetEscrow`، `CancelAssetEscrow`، `OpenEscrowDispute` اور `ResolveEscrowDispute` استعمال کرتا ہے۔ عام اثاثہ تالے `OpenAssetLock`، `DrawdownAssetLock`، `CancelAssetLock` اور `ExpireAssetLock` استعمال کرتے ہیں۔ مشروط ایسکرو `OpenConditionalEscrow`، `AttestEscrowCondition` اور `ExpireConditionalEscrow` استعمال کرتا ہے۔
 
 ان ISIs میں فی الحال فرسٹ کلاس CLI کمانڈز نہیں ہیں۔ ٹائپ شدہ SDK بلڈرز یا سیریل انسٹرکشن پے لوڈز کا استعمال کریں ، اور زندگی کے سائیکل کی تفصیلات ، اجازتیں ، استفسارات ، واقعات ، اور Rust مثالوں کے لئے [مقامی اثاثہ ایایسکرو](/ur/blockchain/escrow.md) کو دیکھیں.
 
 ## ایٹمی نجی تصفیہ {#atomic-private-settlement}
 
-گورننس کے تحت ایٹمی نجی تصفیے کی ہدایات شفاف Native AMX سے الگ ہیں۔ `ActivatePrivateSettlementPoolV1` ترمیم شدہ گورننس پروجیکشن اور کینونیکل ماخذ کمٹمنٹس سے ایک عین روٹ کے لیے ایک خفیہ `pool` بناتا ہے۔ `FinalizeAtomicPrivateSettlementV1` تمام شریک کمیٹیوں سے تصدیق شدہ مکمل بنڈل کو ایٹمی طور پر لاگو کرتا ہے۔ `AbortAtomicPrivateSettlementV1` صرف اسپانسر سے مجاز عوامی اختتامی نشان شائع کرتا ہے۔
+گورننس کے تحت ایٹمی نجی تصفیے کی ہدایات شفاف Native AMX سے الگ ہیں۔ `ActivatePrivateSettlementPoolV1`، حساس تفصیلات حذف شدہ گورننس پروجیکشن اور کینونیکل ماخذ کمٹمنٹس سے ایک راستے تک محدود خفیہ پول قائم کرتی ہے۔ `FinalizeAtomicPrivateSettlementV1` کمیٹی سے تصدیق شدہ ایک مکمل بنڈل ایٹمی طور پر لاگو کرتی ہے، جبکہ `AbortAtomicPrivateSettlementV1` صرف اسپانسر سے مجاز عوامی اختتامی نشان شائع کرتی ہے۔
 
-صرف پرائیویسی گورننس `RotatePrivateSettlementPoolPolicyV1` چلا سکتی ہے۔ ہدایت عین موجودہ گورننس ڈائجسٹ مانگتی ہے؛ روٹ، `pool`، اثاثہ بائنڈنگ کمٹمنٹ، اسٹیٹ فرنٹیئر، ری پلے سیٹس اور حتمی رسیدیں برقرار رکھتی ہے، عوامی ریویژن میں ایک کا اضافہ کرتی ہے اور آڈیٹر کلید کا نیا دور استعمال کرتی ہے۔ گردش شمولیت کی اونچائی پر فعال ہوتی ہے، اور اسی روٹ اور `pool` کی رسید اس اونچائی پر حتمی نہیں ہو سکتی۔ عوامی ریویژن سلسلہ گردش سے پہلے کی حتمی رسیدوں کو دوبارہ آغاز کے بعد بھی درست اور ان کے عین ری پلے کو idempotent رکھتا ہے۔ پرانی پالیسی کے زیر عمل بنڈلز اسٹیٹ بدلنے سے پہلے بند انداز میں ناکام ہوتے ہیں۔ آپریٹرز پرانی ڈکرپشن کلیدیں محفوظ رکھیں، یا انہیں تلف کرنے سے پہلے کیپسولز کی گورننس کے تحت دوبارہ ریپنگ اور اس کی جانچ کریں۔
+`RotatePrivateSettlementPoolPolicyV1` صرف رازداری کی گورننس کے لیے مخصوص ہے۔ اسے عین موجودہ گورننس ڈائجسٹ درکار ہوتا ہے؛ یہ راستہ، پول، اثاثے کی وابستگی کا کمٹمنٹ، حالت کی حد، ری پلے مجموعے اور حتمی رسیدیں برقرار رکھتی ہے، عوامی ریویژن ایک بڑھاتی ہے اور آڈیٹر کلید کا زیادہ نیا ایپوک استعمال کرتی ہے۔ یہ تبدیلی شمولیت کی اونچائی پر فعال ہوتی ہے اور اسی راستے/پول کی رسید اس اونچائی پر شامل نہیں ہو سکتی۔ عوامی ریویژن کا سلسلہ تبدیلی سے پہلے حتمی ہونے والی رسیدوں کو دوبارہ آغاز کے بعد بھی درست رکھتا ہے اور عین ری پلے کا دوبارہ اثر نہیں ہونے دیتا؛ پرانی پالیسی کے زیرِ عمل بنڈلز محفوظ طور پر مسترد ہوتے ہیں۔ آپریٹرز محفوظ کیپسولز کے لیے پرانی ڈکرپشن کلیدیں برقرار رکھیں، یا انہیں تلف کرنے سے پہلے گورننس کے تحت کیپسولز کی دوبارہ ریپنگ کریں اور اس کی جانچ کریں۔
 
-یہ راستہ بطور ڈیفالٹ غیر فعال ہے اور پروڈکشن کے لیے اہل قرار نہیں دیا گیا۔ کنفیگریشن، اختیار، آڈٹ، بازیابی اور ریلیز کے تقاضوں کے لیے [ڈیٹا اسپیسز کے درمیان ایٹمی نجی تصفیہ چلائیں](/get-started/atomic-private-settlement) دیکھیں۔
+یہ راستہ بطور ڈیفالٹ غیر فعال ہے اور صنعتی استعمال کے لیے اہل ثابت نہیں ہوا۔ ترتیب، اختیارات، آڈٹ، بازیابی اور ریلیز کے تقاضوں کے لیے [ڈیٹا اسپیسز کے درمیان ایٹمی نجی تصفیہ چلائیں](/ur/get-started/atomic-private-settlement) دیکھیں۔
 
 ## تفویض / منسوخی {#grant-revoke}
 
@@ -348,34 +346,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 ایک اکاؤنٹ پر کردار دینے اور واپس لینے:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 اجازت دینے اور منسوخ کرنے کے ٹوکن. اجازت کمانڈ معیاری ان پٹ سے ایک اجازت آبجیکٹ پڑھتے ہیں:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 کسی کردار کی اجازت دیں اور منسوخ کریں:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +385,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +396,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -421,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 معیاری ان پٹ پر ایک واحد پیرامیٹر JSON آبجیکٹ کو منتقل کرکے ایک پیرامیٹر مقرر کریں:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 یہ ہدایات [ ٹرگرز](./triggers.md) کو انجام دینے کے لئے استعمال کی جاتی ہیں۔
 
-CLI ٹرگرز کو رجسٹر کر سکتا ہے اور براہ راست ٹرگر عملدرآمد کے واقعات پر سبسکرائب کرسکتا ہے۔ اس میں ٹائپ کردہ `execute trigger` کمانڈ فراہم نہیں کیا جاتا ہے ، لہذا ایک دستی `ExecuteTrigger` ہدایات پیش کرنے کے لئے ، ایک SDK یا ایک ایگزیکٹر ٹول کے ساتھ ایک serialized `InstructionBox` پیدا کریں اور `ledger transaction stdin` کی طرف سے نتیجہ خیز JSON صف منتقل:
+CLI، بنیادی `execute` فلٹر کے ساتھ رجسٹر شدہ ٹرگر کے لیے دستی `ExecuteTrigger` ہدایت بھیجتا ہے، جس میں اختیاری JSON آرگومنٹس ہو سکتے ہیں، اور ٹرگر کے اجرا کے واقعات کی سبسکرپشن بھی کر سکتا ہے:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## دیگر ہدایات {#other-instructions}
@@ -452,21 +449,21 @@ Iroha رن ٹائم اور ایگزیکٹر انٹیگریشن کے لئے بھ�
 پنگ ہیلپر کے ساتھ ایک `Log` ہدایات جمع کروائیں:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 ایک کسٹم ایگزیکٹر ہدایات کو سیریل `InstructionBox` کے طور پر جمع کروائیں۔ پے لوڈ کی شکل ایگزیکیٹر مخصوص ہے ، لہذا مشابہت والے SDK یا ایگزیکٹر ٹولنگ کے ساتھ ہدایت پیدا کریں:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 ایک مرتب شدہ IVM بائٹ کوڈ فائل سے عملدرآمد کنندہ کو اپ گریڈ:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Sorğular {#queries}
 
 Iroha sorğuları blokçeyn dəftərxana vəziyyətini dəyişdirmədən oxuyur. Mövcud məlumat modeli iki əsas sorğu formasını ortaya qoyur:
@@ -57,7 +56,7 @@ Sorğu məlumat konteynerlərini əl ilə qurmaq əvəzinə SDK tipli yaradıcı
 |Sorğu|Məqsəd|
 | --- | --- |
 | `FindAssets` |Aktiv balanslarını siyahıya alın.|
-| `FindAssetsDefinitions` |Aktivlərin təriflərini siyahıya alın.|
+| `FindAssetDefinitions` |Aktivlərin təriflərini siyahıya alın.|
 | `FindAssetsByAccountId` |Hesab tərəfindən saxlanılan aktivlərin siyahısını verin.|
 | `FindAssetById` |`AssetId` ilə bir əmlak balansını tapın.|
 | `FindAssetDefinitionById` |Bir aktivin tərifini ID üzrə tapın.|
@@ -67,7 +66,7 @@ Sorğu məlumat konteynerlərini əl ilə qurmaq əvəzinə SDK tipli yaradıcı
 
 ## Etibarnamə və Sübut Qeydləri {#escrow-and-proof-records}
 
-Escrow sorğuları [yerli aktiv eskro ISIs](/az/blockchain/escrow.md) tərəfindən yaradılmış qeydləri, o cümlədən bazar yeri escrow-ları, ümumi aktiv blokları və anonim escrow qeydlərini yoxlayır.
+Eskrou sorğuları [yerli aktiv eskrou ISIs](/az/blockchain/escrow.md) tərəfindən yaradılmış qeydləri, o cümlədən bazar yeri eskrouları, ümumi aktiv kilidləri və şərti eskrouları yoxlayır.
 
 |Sorğu|Məqsəd|
 | --- | --- |
@@ -76,29 +75,23 @@ Escrow sorğuları [yerli aktiv eskro ISIs](/az/blockchain/escrow.md) tərəfind
 | `FindAssetEscrowsBySeller` |Müəssisəci tərəfindən aktiv girovları siyahıya alın.|
 | `FindAssetEscrowsByBuyer` |Alıcıya görə aktiv depozitləri siyahıya al.|
 | `FindAssetEscrowsByStatus` |Aktiv əmanətləri statusa görə siyahıya alın.|
-| `FindAnonymousAssetEscrows` |Anonim aktiv əmanət qeydlərini siyahıya alın.|
-| `FindAnonymousAssetEscrowById` |ID ilə bir anonim əmanət hesabını tapın.|
-| `FindAnonymousAssetEscrowsBySeller` |Satıcı tərəfindən anonim depozitləri siyahıya alın.|
-| `FindAnonymousAssetEscrowsByBuyer` |Alıcıya görə anonim depozitləri siyahıya al.|
-| `FindAnonymousAssetEscrowsByStatus` |Anonim əmanətləri statusa görə siyahıya alın.|
 | `FindProofRecordById` |Bir sübut qeydini ID ilə tapın.|
 | `FindProofRecords` |Sənəd qeydlərini siyahıya alın.|
 | `FindProofRecordsByBackend` |Bir sübut backend-i üçün sübut qeydlərini siyahıya alın.|
 | `FindProofRecordsByStatus` |Sənəd sübut qeydlərini statusa görə siyahıya alın.|
 
-## Nexus, Məlumatın Mövcudluğu və Paketlər {#nexus-data-availability-and-packages}
+## SORA Nexus, Məlumatın Mövcudluğu və Paketlər {#nexus-data-availability-and-packages}
 
 |Sorğu|Məqsəd|
 | --- | --- |
-| `FindRepoAgreements` |Zəncirdə saxlanılan saxlama müqavilələrini siyahıya alın.|
+| `FindRepoAgreements` |Zəncirdə saxlanılan repo və əks-repo müqavilələrini siyahıya alın.|
 | `FindTwitterBindingByHash` |Kriptoqrafik xəş vasitəsilə Twitter bağlamasını həll edin.|
 | `FindDaPinIntentByTicket` |Bilet üzrə məlumat mövcudluğu pin niyyətini tapın.|
 | `FindDaPinIntentByManifest` |Texniki manifest istinadına görə pin niyyətini tapın.|
 | `FindDaPinIntentByAlias` |Bir pin niyyətini ləqəblə tapın.|
 | `FindDaPinIntentByLaneEpochSequence` |İcra yoluna, epoxa və ardıcıllığa görə pin niyyətini tapın.|
-| `FindLaneRelayEnvelopeByRef` |Təsdiqlənmiş yol-relə məlumat konteynerini tapın.|
 | `FindSorafsProviderOwner` | SoraFS təminatçısının sahibini müəyyən edin.|
-| `FindDataspaceNameOwnerById` |Bir məlumat sahəsi adı sahibini həll edin.|
+| `FindDataspaceNameOwnerById` |Məlumat məkanı ləqəbinin aktiv SNS sahibini müəyyən edin.|
 | `FindMusubiExactPackageV1` |Bir dəqiq paket qeydini və onun cari dəyişikliklərini oxuyun.|
 | `FindMusubiExactReleaseV1` |Bir dəqiq buraxılış anlıq görüntüsünü oxuyun.|
 | `FindMusubiProviderBundleAttestationV1` |Bir təminatçının arxiv-bundl təsdiqini oxuyun.|
@@ -118,7 +111,7 @@ Escrow sorğuları [yerli aktiv eskro ISIs](/az/blockchain/escrow.md) tərəfind
 | `FindActiveTriggerIds` |Aktiv tetikleyici ID-lərini siyahıya al.|
 | `FindTriggers` |Siyahı tətikləyiciləri.|
 | `FindTriggerById` |Bir tətikçini ID üzrə tapın.|
-| `FindContractManifestByCodeHash` |Şifrləmə xətti kodu ilə ağıllı müqavilənin texniki manifestini tapın.|
+| `FindContractManifestByArtifactId` |Ağıllı müqavilə manifestini onun məlumat məkanı artefakt ID-si ilə tapın.|
 | `FindTransactions` |Təsdiqlənmiş əməliyyatların siyahısı.|
 | `FindBlocks` |Blokları siyahıya alın.|
 | `FindBlockHeaders` |Blok başlıqlarını siyahıya al.|

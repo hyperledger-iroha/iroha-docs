@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 最好的做法 {#best-practices}
 
 这一节收集 Iroha 应用程序和网络的生产指导. 它是由您需要做出的决定组织的,而不是运行它的功能.

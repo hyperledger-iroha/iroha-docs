@@ -22,8 +22,8 @@ for operator-authenticated consensus state. The operator key must be allowed by
 the target node and is loaded only at runtime:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -36,7 +36,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +53,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Do not use public-testnet observations as production capacity numbers for your
@@ -152,21 +152,15 @@ more visible rather than increasing sustainable throughput.
 
 ### Candidate and Ingress Bounds
 
-Node-local Sumeragi bounds determine how much candidate and recovery work a
-validator can retain:
+Block size and transaction limits come from signed genesis and committed
+chain parameters. Node-local `[sumeragi]` settings cover the participation
+role, signing custody, safety-record paths, and the documented local timeout
+and synchronization overrides.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` and `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, and
-  `sumeragi.queues.ready_bodies`
-
-Too-small bounds create queue or payload-recovery pressure; oversized bounds
-increase retained memory and the amount of work available to an abusive peer.
+Network ingress and transaction-queue bounds control local retained work.
 Compare the diagnostics snapshot with process memory, message handling, and
-missing-body metrics before changing one bound at a time:
+missing-body metrics before changing an operational bound. Keep the signed
+chain parameters fixed when comparing runs of the same network:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -227,13 +221,13 @@ Common signals include:
 | --- | --- | --- |
 | Accepted throughput | `sum(rate(txs{type="accepted"}[5m]))` | Should meet or exceed target TPS in steady state |
 | Rejections | `sum(rate(txs{type="rejected"}[5m]))` | Should be explainable by the test plan |
-| Commit latency | `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` | Compare p95/p99 with the latency budget |
+| Commit latency | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` | Compare p95/p99 with the latency budget |
 | Queue depth | `queue_size`, `sumeragi_tx_queue_depth` | Should stay bounded during peak load |
 | Queue saturation | `sumeragi_tx_queue_saturated` | Sustained non-zero values mean overload |
-| View changes | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` | Rising values indicate timing, topology, payload, or network trouble |
-| Dropped messages | `dropped_messages`, `sumeragi_consensus_message_handling_total` | Drops during load usually explain latency spikes |
-| Payload and DA recovery | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` | Persistent requests, rising age, or repeated DA gates indicate body or chunk acquisition trouble |
-| Commit quorum | `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` | Counted signatures should reach the required quorum quickly |
+| View changes | `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` | Rising values indicate timing, topology, payload, or network trouble |
+| Dropped messages | `sumeragi_dropped_total`, `p2p_queue_dropped_total` | Drops during load usually explain latency spikes |
+| Payload and catch-up fetches | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` | Persistent body or sync fetches indicate payload acquisition or catch-up trouble |
+| Commit progress | `sumeragi_committed_height`, `sumeragi_applied_height` | Certified and applied heights should advance together |
 
 When a metric exists only in `/v1/sumeragi/status`, capture the JSON snapshot in
 the same run artefacts as the Prometheus scrape.
@@ -277,7 +271,7 @@ Publish performance numbers only with enough context to reproduce them:
 - validator and observer counts
 - consensus mode, signed block cadence, and DA layout
 - exact `3f + 1` committee, quorum, and observer roster
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, network-ingress, and
+- signed chain parameters, local Sumeragi overrides, network-ingress, and
   transaction-queue bounds
 - telemetry profile
 - hardware, storage, and OS details
@@ -287,7 +281,7 @@ Publish performance numbers only with enough context to reproduce them:
 - accepted/rejected TPS
 - p50/p95/p99 commit latency
 - queue depth and saturation
-- view changes, dropped messages, missing-block fetches, and DA-gate counters
+- view changes, timeout votes, Sumeragi drops, and body and sync fetches
 - CPU, memory, disk, and network utilization per validator
 
 Without these details, a TPS number should be treated as anecdotal.

@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 生成加密密钥 {#generating-cryptographic-keys}
 
 使用 `kagami keys` 为 Iroha 3 生成客户端、对等节点和验证器密钥材料。
@@ -18,7 +17,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-父目录必须已存在。目标目录必须是新目录或已归当前用户所有，权限模式为 `0700`，不含符号链接且为空。`kagami` 以 `0600` 模式写入 `public.key` 和 `private.key`，并且不会打印密钥材料。使用 `--pop` 时，它还会写入 `pop.hex`。
+父目录必须已存在，目标目录则必须不存在：即使是已存在的空目录，Kagami 也会拒绝。它在检查文件系统仅允许所有者访问后，以 `0700` 权限创建目标，并拒绝符号链接。`kagami` 以 `0600` 权限写入 `public.key` 和 `private.key`，不会打印密钥材料。指定 `--pop` 时，还会写入 `pop.hex`。
 
 如果 Kagami 无法在某个平台上强制执行这些仅限所有者访问的文件系统规则，`--out-dir` 会以安全关闭方式拒绝操作。私钥文件是未加密的导出副本，并非硬件签名器或不可导出的生产签名器。请将其导入获准的托管边界，并按照部署规程删除该导出副本。
 
@@ -57,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` 仅可与 `bls_normal` 一起使用；它会在托管目录中添加 `pop.hex`。签名的创世配置要求每个投票验证器都有匹配的 PoP。在对等节点配置中，非空的 `trusted_peers_pop` 映射用于选择验证器子集；未列入该非空映射的受信任对等节点是观察者。如果映射为空，所有使用 BLS-normal 的受信任对等节点都会进入引导候选集，而投票者的 PoPs 仍由签名的创世配置提供。
+`--pop` 仅可与 `bls_normal` 一起使用；它会在托管目录中添加 `pop.hex`。签名的创世配置要求每个投票验证器都有匹配的 PoP。在对等节点配置中，请在 `trusted_peers_pop` 中列出每个验证器的 PoP：没有有效 PoP 的受信任对等节点会被排除在共识名单之外，而空映射不会产生任何验证器，因此映射中缺少创世验证器的节点会拒绝启动。若要运行仅同步的节点，请使用 `[sumeragi] role = "observer"`。
 
 ## 托管输出 {#custody-output}
 

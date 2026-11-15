@@ -5,7 +5,6 @@ translation_source_hash: 2a9211efa691d8be17d1cdd99082d11c62389da846fb29ee2d2acb8
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # მიიღეთ მხარდაჭერა {#receive-support}
 
 დროდადრო, თქვენ შეიძლება ჰქონდეთ კითხვები Iroha შესახებ, რომელთა დეტალურად განხილვა გსურთ სხვებთან. არსებობს სამი გზა, რომ სწრაფად დაუკავშირდეთ ჩვენს საზოგადოებას: Telegram, Discord და GitHub.

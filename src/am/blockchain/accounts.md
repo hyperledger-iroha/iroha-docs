@@ -1,14 +1,13 @@
 ---
 translation_locale: am
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # መለያዎች {#accounts}
 
-መለያ ግብይቶችን መፈረም እና የብሎክቼይን መዝገብ ሁኔታ ባለቤት የሆነ የፈቃድ ባለቤት ነው። አሁን ባለው Iroha 3 የውሂብ ሞዴል፣ `AccountId` ነጠላ ፕሮቶኮል-ስታንዳርድ እና ጎራ የሌለው ነው። ከመለያ ተቆጣጣሪው የተገኘ እና በነጠላ ፕሮቶኮል-መደበኛ ቅጽ እንደ [I105](/am/reference/i105.md) ተቀምጧል። በሰው ሊነበብ የሚችል ጎራ እና የውሂብ ቦታ አውድ የተለየ መለያ-ተለዋጭ ማሰሪያዎች ናቸው።
+መለያ ግብይቶችን መፈረም እና የመዝገቡ ሁኔታ ባለቤት መሆን የሚችል ፈቃድ ያለው አካል ነው። በአሁኑ Iroha 3 የውሂብ ሞዴል `AccountId` ቀኖናዊ ነው፣ ጎራም አያካትትም፤ ከመለያው ተቆጣጣሪ ይመነጫል እና በ[I105](/am/reference/i105.md) ቀኖናዊ ቅርጽ ይቀየራል። በሰው ሊነበብ የሚችል የጎራ እና የውሂብ ቦታ አውድ በተለዩ የመለያ ተለዋጭ ስም ማሰሪያዎች ውስጥ ይቀመጣል።
 
 ## መዋቅር {#structure}
 
@@ -17,12 +16,12 @@ translation_engine: bing-translator-llm
 - `id` ነጠላ ፕሮቶኮል-መደበኛ `AccountId`
 - `metadata` የዘፈቀደ መለያ ሜታዳታ
 - `label` አማራጭ የተረጋጋ ተለዋጭ ስም
-- `uaid` በ Nexus ፍሰቶች ጥቅም ላይ የሚውል አማራጭ ሁለንተናዊ መለያ መታወቂያ
+- `uaid`፦ በSORA Nexus ሂደቶች የሚጠቀሙበት አማራጭ ሁለንተናዊ የመለያ ID
 - `opaque_ids` ከመለያው ጋር የተሳሰሩ ግልጽ ያልሆኑ መለያዎች UAID
 
 መለያ ለመፍጠር ጥቅም ላይ የሚውለው የግብይት ጭነት `NewAccount` ነው። በተመዘገበው መለያ የሚጠቀሙባቸውን ተመሳሳይ ማንነት፣ ሜታዳታ፣ መለያ፣ UAID እና ግልጽ ያልሆኑ የመታወቂያ መስኮችን ይይዛል።
 
-`uaid` ነጠላ ፕሮቶኮል-ደረጃውን ያሟላል `AccountId`; አይተካውም. Nexus አገልግሎቶች በዳታ ቦታዎች፣ ግላዊነትን የሚጠብቅ ምዝገባ ወይም የአገልግሎት አቅም ፍለጋ ላይ የተረጋጋ ተጠቃሚ ወይም ድርጅት አያያዝ ሲፈልጉ ይጠቀሙበት። የሶፍትዌር ማስፈጸሚያ አካባቢ ከአንድ ለአንድ UAID-ወደ-መለያ መረጃ ጠቋሚን ይይዛል፣ ግልጽ ያልሆኑ መለያዎች በ UAID በኩል እንዲያያዙ ይፈልጋል፣ እና የተባዙ ወይም የሚጋጩ ግልጽ ያልሆኑ መለያዎችን ውድቅ ያደርጋል። ለ Nexus የአገልግሎት-ንብርብር ፍሰት [FHE እና UAID](/am/blockchain/sora-nexus-services.md#fhe-and-uaid)ን ይመልከቱ።
+`uaid` ቀኖናዊውን `AccountId` ያሟላል እንጂ አይተካውም። የSORA Nexus አገልግሎቶች በውሂብ ቦታዎች መካከል የማይለወጥ የተጠቃሚ ወይም የድርጅት መለያ፣ ግላዊነትን የሚጠብቅ ምዝገባ ወይም የአገልግሎት ችሎታ ፍለጋ ሲፈልጉ ይጠቀሙበት። የማስፈጸሚያ አካባቢው UAIDን ከመለያ ጋር አንድ ለአንድ የሚያገናኝ ጠቋሚ ይይዛል፣ ግልጽ ያልሆኑ መለያዎች በUAID በኩል እንዲያያዙ ይጠይቃል፣ የተደገሙ ወይም የሚጋጩ መለያዎችንም ይከለክላል። የSORA Nexus የአገልግሎት ንብርብር ሂደትን ለማየት [FHE እና UAID](/am/blockchain/sora-nexus-services.md#fhe-and-uaid) ይመልከቱ።
 
 ## መለያ ተቆጣጣሪዎች {#account-controllers}
 
@@ -32,8 +31,9 @@ translation_engine: bing-translator-llm
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 ለአሁኑ ቁልፍ ቅርጸቶች [የደንበኛ ውቅር](/am/guide/configure/client-configuration.md) እና [ቁልፍ ትውልድ](/am/guide/security/generating-cryptographic-keys.md) ይመልከቱ።
@@ -44,7 +44,7 @@ private_key = { digest_function = "ed25519", payload = "..." }
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 የመለያ ንብረቶችን ለመመርመር የመለያ መታወቂያን ከመጀመሪያው ቴክኒካል ጥሪ ይቅዱ እና በመንገዱ ላይ ከማስቀመጥዎ በፊት URL-ኮድ ያድርጉት። ይህ Python ቅንጭብ ለመጀመሪያው የተዘረዘረው መለያ ያንን ያደርጋል -
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-እነዚህ ይፋዊ ንባቦች ናቸው። መለያ መፍጠር ወይም ማዘመን የተፈረመ ግብይት ነው እና በ[ከ SORA Nexus የውሂብ ቦታዎች ጋር ይገናኙ](/am/get-started/sora-nexus-dataspaces.md) ውስጥ የተገለጸውን በቴስትኔት የገንዘብ ድጋፍ የሚደረግለት Taira ማዋቀርን ይጠይቃል።
+እነዚህ ለሁሉም ክፍት የንባብ ክዋኔዎች ናቸው። መለያ መፍጠር ወይም ማዘመን የተፈረመ ግብይት ነው፤ [በTaira እና Minamoto በመጠቀም በSORA Nexus ላይ መገንባት](/am/get-started/sora-nexus-dataspaces.md) በሚለው ገጽ የተገለጸውን፣ ከፋውሴት ገንዘብ የተሞላለት የTaira ዝግጅት ይፈልጋል።
 
 ## ምዝገባ እና ፈቃዶች {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ PY
 - የራሳቸው ጎራዎች
 - ሚናዎችን እና የፍቃድ ምልክቶችን ይቀበሉ
 - ሜታዳታ ያከማቹ
-- እነዚያ ባህሪያት ሲነቁ ተለዋጭ ስም፣ ዳግም ኪይ፣ መልሶ ማግኛ እና Nexus የማንነት ፍሰቶች ውስጥ ይሳተፉ
+- ተዛማጅ ባህሪያት ሲነቁ በተለዋጭ ስም፣ ቁልፍ መቀየር፣ መልሶ ማግኛ እና የSORA Nexus ማንነት ሂደቶች መሳተፍ
 
 ## የማንነት ችግሮችን መላ መፈለግ {#troubleshooting-identity-issues}
 
@@ -96,4 +96,4 @@ PY
 - [ፈቃዶች](/am/blockchain/permissions.md)
 - [ሜዳዳታ](/am/blockchain/metadata.md)
 - [የደንበኛ ውቅር](/am/guide/configure/client-configuration.md)
-- [SORA Nexus የውሂብ ክፍተቶች](/am/get-started/sora-nexus-dataspaces.md)
+- [SORA Nexus የውሂብ ቦታዎች](/am/get-started/sora-nexus-dataspaces.md)

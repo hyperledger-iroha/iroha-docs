@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Glossário <!-- omit in toc --> {#glossary}
 
 Aqui você pode encontrar definições de todas as entidades relacionadas a Iroha.
@@ -42,7 +41,7 @@ Durante a época medieval, os livros de registros em blockchain eram abertos à 
 
 ## par de rede {#peer}
 
-Um par de rede em Iroha significa uma instância de processo Iroha à qual outros processos Iroha e aplicativos clientes podem se conectar. Uma única máquina pode hospedar vários pares de rede Iroha. os pares da rede são iguais em relação aos seus recursos e capacidades, com uma exceção importante: apenas um dos pares da rede executa o bloco gênese da blockchain na fase de inicialização da rede Iroha.
+Um nó par é um processo de nó Iroha que aceita conexões de outros nós pares e de aplicações cliente. Uma máquina pode hospedar vários nós pares com configuração e armazenamento separados. Cada nó par que inicia o consenso a partir de um estado vazio autentica e aplica o gênese assinado da rede; nós pares restaurados de instantâneos autenticados retomam a operação a partir desse estado.
 
 Outras blockchains podem se referir ao mesmo conceito como um nó ou um validador.
 
@@ -80,7 +79,7 @@ O [bloco gênese da blockchain](/pt/guide/configure/genesis.md) define essas inf
 
 ## Tolerância a falhas bizantinas (BFT) {#byzantine-fault-tolerance-bft}
 
-A propriedade de ser capaz de funcionar adequadamente em uma rede contendo uma certa porcentagem de agentes maliciosos. Iroha é capaz de funcionar com até 33% de agentes maliciosos em sua rede ponto a ponto.
+A propriedade de ser capaz de funcionar adequadamente em uma rede contendo uma certa porcentagem de agentes maliciosos. Um comitê do Sumeragi tem exatamente `3f + 1` validadores e tolera até `f` validadores bizantinos, menos de um terço do comitê.
 
 ## Iroha Componentes {#iroha-components}
 
@@ -92,7 +91,7 @@ O módulo Iroha responsável pelo consenso.
 
 ### Torii (Portão) {#torii-gate}
 
-Módulo com a lógica de manipulação de solicitações recebidas para o [par de rede](#peer). É usado para receber, aceitar e direcionar instruções recebidas e consultas HTTP, bem como atualizações de configuração em tempo de execução.
+Módulo com a lógica de tratamento das solicitações recebidas pelo [par](#peer). Ele recebe, aceita e encaminha instruções, consultas HTTP e solicitações de inspeção da configuração pelo operador.
 
 ### Kura (Armazém) {#kura-warehouse}
 
@@ -108,7 +107,7 @@ Uma estrutura de dados usada para validar e verificar o estado em cada altura de
 
 ### Contratos inteligentes {#smart-contracts}
 
-Contratos inteligentes são programas baseados em blockchain que são executados quando um conjunto específico de condições é atendido. Em Iroha, contratos inteligentes são implementados usando [operações de instrução núcleo Iroha](#core-iroha-special-instructions).
+Contratos inteligentes são programas baseados em blockchain que são executados quando um conjunto específico de condições é atendido. No Iroha 3, contratos inteligentes são escritos em Kotodama e compilados para bytecode IVM (`.to`); um contrato altera o estado emitindo [instruções especiais do Iroha](#core-iroha-special-instructions) por meio de chamadas ao host.
 
 ### Gatilhos {#triggers}
 
@@ -116,11 +115,11 @@ Um tipo de evento que permite invocar uma instrução especial Iroha em commit d
 
 ### Versionamento {#versioning}
 
-Cada solicitação é rotulada com a versão API à qual pertence. Isso permite uma combinação de diferentes versões binárias do software cliente/par Iroha para interoperar, o que por sua vez permite atualizações de software na rede Iroha.
+A primeira versão do Iroha 3 oferece suporte a uma única versão canônica do formato de transmissão de blocos. O endpoint `/v1/api/version` informa `SignedBlock::WIRE_VERSION` após a aplicação do gênese e retorna uma resposta de indisponibilidade antes disso. Essa informação descreve o formato de transmissão suportado; não negocia compatibilidade entre diferentes estruturas de protocolo nem autoriza uma atualização da rede.
 
 ### Hijiri (sistema de reputação de pares na rede) {#hijiri-peer-reputation-system}
 
-Sistema de reputação do Iroha. Ele permite priorizar a comunicação com [pares de rede](#peer) que têm um bom histórico e reduzir o dano que pode ser causado por [pares de rede](#peer) maliciosos.
+Sistema de reputação de pares de rede e contas do Iroha. Seus parâmetros, controlados pelo consenso, contêm a política de taxas do Hijiri e os registros de risco de contas, e registros governados de observadores emitem atestações de contas que ajustam a pontuação de risco de uma conta.
 
 ## Iroha Módulos {#iroha-modules}
 
@@ -132,7 +131,7 @@ Uma biblioteca de contratos inteligentes fornecida com Iroha. Eles podem ser inv
 
 #### Operações de instrução de utilitário Iroha {#utility-iroha-special-instructions}
 
-Este conjunto de [isi](#iroha-special-instructions-isi) contém instruções lógicas como `If`, relacionadas a E/S como `Notify` e composições como `Sequence`. Elas são usadas principalmente como [instruções personalizadas](#custom-iroha-special-instruction).
+Este conjunto de [isi](#iroha-special-instructions-isi) contém instruções que não alteram uma entidade específica de um domínio, como `Log`, `ExecuteTrigger`, `SetParameter` e `Upgrade`. O Iroha 3 não tem instruções `If`, `Notify` ou `Sequence`.
 
 ### Operações de instrução do Core Iroha {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ Representação na memória do estado atual da blockchain. O WSV contém os `Wor
 
 ## Líder {#leader}
 
-Em uma rede Iroha, um par de rede é selecionado aleatoriamente e concedido o privilégio especial de formar o próximo bloco. Este privilégio pode ser revogado em redes que atingem [Tolerância a falhas bizantinas](#byzantine-fault-tolerance-bft) por meio de [alteração de visualização](#view-change).
+Para cada altura e visão, o Sumeragi determina o proponente de forma determinística a partir do comitê, da semente autenticada de seleção do líder e do histórico confirmado de líderes ignorados. Uma [mudança de visão](#view-change) passa a vez ao próximo membro elegível do comitê sob as mesmas regras de [tolerância a falhas bizantinas](#byzantine-fault-tolerance-bft).

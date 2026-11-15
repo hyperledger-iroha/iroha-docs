@@ -1,19 +1,18 @@
 ---
 translation_locale: ru
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Работа с бинарными файлами Iroha {#working-with-iroha-binaries}
 
 Рабочий процесс оператора Iroha 3 сосредоточен вокруг четырёх основных бинарных компонентов:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) для запуска демона узла сети
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) для запуска демона узла сети
 - `iroha3d_taira` для канонического Taira процессора проверки
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) для CLI и команды оператора
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) для ключей, блокчейн-генезиса, локальных сетей и профилей
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) для CLI и команды оператора
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) для ключей, блокчейн-генезиса, локальных сетей и профилей
 
 ## Собрать из исходников {#build-from-source}
 
@@ -50,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Изображение {#docker-image}
 
-Верхнеуровневое рабочее пространство использует `kagami localnet` и `kagami docker` для генерации файлов Docker Compose, соответствующих проверенному коду. Изображение `hyperledger/iroha:dev` можно использовать с этими сгенерированными файлами.
-
-Запустите CLI в контейнере:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Запустите Kagami в контейнере:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Для запуска сетевого узла сначала сгенерируйте локальную сеть и файл Compose:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+В руководстве [Запуск Iroha 3](/ru/get-started/launch-iroha.md) описано, как собрать и запустить четыре валидатора в Docker, используя двоичные файлы одной ревизии.
 
 ## Какой бинарный файл мне использовать? {#which-binary-should-i-use}
 

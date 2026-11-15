@@ -1,7 +1,7 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: human-reviewed
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-SDK ཆ་ཚན་གཙང་མ་ནང་ལུ་ `npm run build:native` གིས་ དགོས་མཁོ་ཅན་གྱི་ Cargo སྒྲིག་གནས་མེད་ དེ་འབདཝ་ལས་ Iroha གཞི་རྟེན་ འབྱུང་ཁུངས་ཕབ་ལེན ནང་ SDK བསྒྱུར་བཅོས་འབད་བའི་ཤུལ་ལས་ ལོག་བཟོ་དགོ། ཡིག་ཐོག་ནང་ SDK གཞི་ཁུངས་འདི་ [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) ལུ་བཙུགས་ཡོདཔ་ཨིན།
+SDK ཆ་ཚན་གཙང་མ་ནང་ལུ་ `npm run build:native` གིས་ དགོས་མཁོ་ཅན་གྱི་ Cargo སྒྲིག་གནས་མེད་ དེ་འབདཝ་ལས་ Iroha གཞི་རྟེན་ འབྱུང་ཁུངས་ཕབ་ལེན ནང་ SDK བསྒྱུར་བཅོས་འབད་བའི་ཤུལ་ལས་ ལོག་བཟོ་དགོ། ཡིག་ཐོག་ནང་ SDK གཞི་ཁུངས་འདི་ [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) ལུ་བཙུགས་ཡོདཔ་ཨིན།
 
 ## མཐའན་མཇུག་གི་གནས་ཚད་ བརྟག་དཔྱད་འབད་ {#check-the-endpoint}
 

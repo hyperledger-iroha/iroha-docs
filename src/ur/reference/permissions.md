@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # اجازت ٹوکن {#permission-tokens}
 
 اس صفحے پر موجودہ Iroha ایگزیکٹر ڈیٹا ماڈل کے ذریعہ ظاہر کردہ ڈیفالٹ اجازت ٹوکن کی اقسام کی فہرست ہے۔ کردار اور اجازتوں کی تصوراتی رہنمائی کے لئے ، [Permissions](/ur/blockchain/permissions.md) دیکھیں۔
@@ -17,7 +16,6 @@ translation_engine: nllb-200-ct2
 |اجازت ٹوکن |زمرہ |آپریشن |
 | --- | --- | --- |
 |`CanManagePeers` |نیٹ ورک نوڈ |رجسٹر، غیر رجسٹریشن، یا دوسری صورت میں نیٹ ورک نوڈز کا انتظام. |
-|`CanManageLaneRelayEmergency` |نیٹ ورک نوڈ |ہنگامی لین ریلے کنٹرولز کا انتظام کریں. |
 |`CanRegisterDomain` |ڈومین |ایک ڈومین رجسٹر. |
 |`CanUnregisterDomain` |ڈومین |ایک ڈومین کو غیر رجسٹر کریں۔ |
 |`CanModifyDomainMetadata` |ڈومین |ڈومین میٹا ڈیٹا میں ترمیم کریں۔ |
@@ -29,7 +27,7 @@ translation_engine: nllb-200-ct2
 |`CanMintAssetWithDefinition` |اثاثہ |مخصوص تعریف کے لیے مائنٹ اثاثہ جات۔ |
 |`CanBurnAssetWithDefinition` |اثاثہ |مخصوص تعریف کے لیے اثاثے جلا دیں۔ |
 |`CanTransferAssetWithDefinition` |اثاثہ |ایک مخصوص تعریف کے لیے اثاثے منتقل کریں۔ |
-|`CanMintAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس بنانا۔ |
+|`CanMintAssetToAccount` |اثاثہ |ایک مخصوص اثاثہ بیلنس بنانا۔ |
 |`CanBurnAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس جلانے. |
 |`CanTransferAsset` |اثاثہ |ایک مخصوص اثاثہ بیلنس منتقل کریں۔ |
 |`CanRegisterNft` |NFT |ایک NFT رجسٹر کریں۔ |
@@ -44,8 +42,9 @@ translation_engine: nllb-200-ct2
 |`CanModifyTrigger` |ٹرگر |ٹرگر ترتیب کو تبدیل کریں. |
 |`CanModifyTriggerMetadata` |ٹرگر |ٹرگر میٹا ڈیٹا تبدیل کریں. |
 |`CanUpgradeExecutor` |کارروائی کرنے والا|رن ٹائم ایگزیکٹر کو اپ گریڈ کریں. |
-|`CanRegisterSmartContractCode` |ہوشیار معاہدہ |سمارٹ معاہدے کا کوڈ درج کریں. |
-|`CanUseFeeSponsor` |Nexus |ایک مخصوص اسپانسر اکاؤنٹ پر Nexus فیس وصول کریں۔ |
+| `CanManageSmartContractCode` | اسمارٹ کنٹریکٹ | غیر حوالہ شدہ کوڈ آرٹیفیکٹس ہٹانا اور کنٹریکٹ کے داخلی نقاط تفویض کرنا۔ رجسٹرڈ اکاؤنٹس اس کے بغیر تصدیق شدہ آرٹیفیکٹس بنا سکتے ہیں۔ |
+| `CanManageFeeSponsorProgram` | SORA Nexus | عین اسپانسر اکاؤنٹ کی ملکیت والے پروگراموں کا انتظام کرنا۔ |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | عین ایک اسپانسر پروگرام کے مستفید افراد کا انتظام کرنا۔ |
 
 ## ملکیت {#ownership}
 

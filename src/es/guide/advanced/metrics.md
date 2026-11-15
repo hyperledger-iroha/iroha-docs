@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rendimiento y Métricas {#performance-and-metrics}
 
 El rendimiento de Iroha depende de la carga de trabajo, la topología del validador, las condiciones de la red y la configuración del consenso. Por lo tanto, un solo número de TPS solo es útil cuando está asociado a una prueba de referencia con una configuración fija.
@@ -24,8 +23,8 @@ Utilice esta página para estimar si un despliegue se encuentra en un estado de 
 Comience con la vista de datos de punto en el tiempo del nodo público y el raspado de Prometheus, luego use el CLI para el estado de consenso autenticado por el operador. La clave del operador debe ser autorizada por el nodo objetivo y se carga únicamente en tiempo de ejecución del software:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 No utilices las observaciones de la red de prueba pública como cifras de capacidad de producción para tu propio despliegue.
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Candidatos y Límites de Ingreso {#candidate-and-ingress-bounds}
 
-Los límites locales del nodo Sumeragi determinan cuánto trabajo de candidato y recuperación puede retener un validador:
+El tamaño de los bloques y los límites de las transacciones proceden del génesis firmado y de los parámetros de cadena confirmados en el estado. La configuración local del nodo en `[sumeragi]` abarca el rol de participación, la custodia de las claves de firma, las rutas de los registros de seguridad y los ajustes locales documentados de tiempos de espera y sincronización.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` y `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` y `sumeragi.queues.ready_bodies`
-
-Los límites demasiado pequeños crean presión sobre la cola o la recuperación de la carga útil; los límites demasiado grandes aumentan la memoria retenida y la cantidad de trabajo disponible para una red abusiva pares. Compare la vista de datos de diagnóstico en un momento específico con la memoria del proceso, el manejo de mensajes y las métricas de cuerpo faltante antes de cambiar un límite a la vez:
+Los límites de entrada de la red y de la cola de transacciones controlan el trabajo retenido localmente. Compare la captura de diagnóstico con la memoria del proceso y las métricas de procesamiento de mensajes y de cuerpos ausentes antes de cambiar un límite operativo. Mantenga fijos los parámetros de cadena firmados al comparar ejecuciones de la misma red:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ Las señales comunes incluyen:
 | --- | --- | --- |
 |Rendimiento aceptado| `sum(rate(txs{type="accepted"}[5m]))` |Debe cumplir o superar el objetivo TPS en estado estable|
 |Rechazos| `sum(rate(txs{type="rejected"}[5m]))` |Debería poder explicarse mediante el plan de pruebas|
-|Latencia de confirmación| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Comparar p95/p99 con el presupuesto de latencia|
+|Latencia de confirmación| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |Comparar p95/p99 con el presupuesto de latencia|
 |Profundidad de la cola| `queue_size`, `sumeragi_tx_queue_depth` |Debe mantenerse limitado durante la carga máxima|
 |Saturación de la cola| `sumeragi_tx_queue_saturated` |Valores no nulos sostenidos significan sobrecarga|
-|Ver cambios| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Valores crecientes indican problemas de temporización, topología, carga útil o red|
-|Mensajes perdidos| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Las caídas durante la carga generalmente explican los picos de latencia|
-|Carga útil y recuperación de DA| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Las solicitudes persistentes, la edad creciente o los portones DA repetidos indican problemas de adquisición del cuerpo o del fragmento|
-|Quórum de comité| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Las firmas contadas deberían alcanzar el quórum requerido rápidamente|
+|Ver cambios| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Valores crecientes indican problemas de temporización, topología, carga útil o red|
+|Mensajes perdidos| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Las caídas durante la carga generalmente explican los picos de latencia|
+|Obtenciones de carga útil y de puesta al día| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Las obtenciones persistentes de cuerpos o de sincronización indican problemas de adquisición de la carga útil o de puesta al día|
+|Progreso de confirmación| `sumeragi_committed_height`, `sumeragi_applied_height` |Las alturas certificadas y aplicadas deberían avanzar juntas|
 
 Cuando una métrica existe solo en `/v1/sumeragi/status`, capture la vista de datos en un momento determinado JSON en los mismos artefactos de ejecución que el scrape de Prometheus.
 
@@ -244,7 +236,7 @@ Publica los números de rendimiento solo con suficiente contexto para reproducir
 - recuentos de validadores y observadores
 - modo de consenso, cadencia de bloques firmados y diseño DA
 - comité exacto `3f + 1`, quórum y lista de observadores
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, límites de entrada de red y de la cola de transacciones
+- parámetros de cadena firmados, ajustes locales de Sumeragi y límites de entrada de la red y de la cola de transacciones
 - perfil de telemetría
 - hardware, almacenamiento y detalles de OS
 - red RTT, jitter, pérdida y suposiciones de ancho de banda
@@ -253,7 +245,7 @@ Publica los números de rendimiento solo con suficiente contexto para reproducir
 - aceptado/rechazado TPS
 - latencia de commit p50/p95/p99
 - profundidad de cola y saturación
-- ver cambios, mensajes perdidos, recuperaciones de bloques faltantes y contadores de DA-gate
+- cambios de vista, votos de tiempo de espera, descartes de Sumeragi y obtenciones de cuerpos y de sincronización
 - CPU, utilización de memoria, disco y red por validador
 
 Sin estos detalles, un número TPS debe considerarse anecdótico.
@@ -261,6 +253,6 @@ Sin estos detalles, un número TPS debe considerarse anecdótico.
 ## Páginas relacionadas {#related-pages}
 
 - [Pruebas de caos con Izanami](./chaos-testing.md)
-- [Torii API puntos finales](../../reference/torii-endpoints.md)
+- [Puntos de acceso de Torii](../../reference/torii-endpoints.md)
 - [Operar Iroha 3 a través de CLI](../../get-started/operate-iroha-via-cli.md)
 - [referencia de configuración de par de red](../../reference/peer-config/params.md)

@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Segurança de Senha {#password-security}
 
 Senhas podem proteger consoles de operadores, armazenamentos secretos, backups e arquivos de chave locais. Uma senha é apenas um controle. Use-a junto com a custódia segura de chaves, controles de acesso e autenticação multifator onde estiver disponível.

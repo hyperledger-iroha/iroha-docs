@@ -1,20 +1,21 @@
 ---
 translation_locale: fr
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Installer Iroha 3 {#install-iroha-3}
 
 Cette page couvre le flux d'installation actuel pour la chaîne d'outils et les binaires Iroha 3 en utilisant l'espace de travail en amont `hyperledger-iroha/iroha`.
+
+Pour une installation native, suivez les instructions ci-dessous concernant Rust. Pour exécuter quatre validateurs avec Docker, commencez par [Démarrer Iroha 3](/fr/get-started/launch-iroha.md).
 
 ## 1. Prérequis {#_1-prerequisites}
 
 Installez ceux-ci en premier :
 
-- [rustup](https://www.rust-lang.org/tools/install), donc la chaîne d'outils `rust-toolchain.toml` épinglée (`1.93.1`) est installée automatiquement
+- [rustup](https://www.rust-lang.org/tools/install), donc la chaîne d'outils `rust-toolchain.toml` épinglée (`1.99.1`) est installée automatiquement
 - `git`
 - éventuellement, Docker et Docker Compose pour le démarrage rapide d’un réseau local à plusieurs pairs
 
@@ -64,7 +65,8 @@ Les quatre fichiers binaires que vous utiliserez habituellement sont :
 
 Le flux localnet actuel basé sur une source est généré par Kagami. Il écrit les configurations des pairs du réseau, les artefacts de genèse de la blockchain, la configuration du client, les scripts d'aide et un fichier Compose optionnel qui correspond au code extrait :
 
-- `kagami localnet` pour les scripts des pairs locaux natifs du réseau
+- `kagami localnet up` pour un réseau local géré que Kagami démarre et supervise
+- `kagami localnet generate` pour des scripts natifs de pairs locaux
 - `kagami docker` pour Docker Compose généré à partir d'un répertoire localnet
 
 Continuez avec [Lancer Iroha 3](/fr/get-started/launch-iroha.md).

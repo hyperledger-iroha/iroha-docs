@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 א Iroha NFT הוא אובייקט ספרים ייחודי עם בעל אחד. NFTs כאשר תיק זקוק לזהות משלו, מטא-נתונים, אירועים במחזור החיים, וסימנטיקה של העברת הבעלות, אבל לא צריך יתרה מספרי.
@@ -27,7 +26,7 @@ translation_engine: nllb-200-ct2
 בדוק אם ברשת המבחן הציבורית Taira יש כיום רשומות NFT:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-לדוגמה, `badge$docs.universal` מזהה את `badge` NFT בשטח הנתונים של `docs.universal`. אם חלל הנתונים נמנע, המבחן הנוכחי משתמש בחלל הנתנים של `universal`, כך ש`badge$docs` מתברר ל- `badge$docs.universal`
+לדוגמה, `badge$docs.universal` מזהה את ה־NFT ‏`badge` בדומיין `docs.universal`. אם מרחב הנתונים מושמט, המנתח הנוכחי משתמש במרחב הנתונים `universal`, ולכן `badge$docs` נפתר ל־`badge$docs.universal`.
 
 השתמש בשמות יציבים עבור NFT IDs. ה- ID הוא זהות האובייקט המשמשת בהוראות, בקשות, אישורים, פילטר אירועים ותייחסויות היישום.
 
@@ -68,17 +67,17 @@ name$domain.dataspace
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-הרשת המקומית שנוצרה כבר מערכת את `wonderland.universal` ואת החוזה של SNS שלה. כדי להשתמש בתחום אחר, ליצור אותו קודם עם זרם העבודה ההצהירתי `app alias setup plan` ו `app alias setup apply` המתואר ב [Domains](/he/blockchain/domains.md#registration).
+רשת מקומית שנוצרה אינה רושמת דומיין יישום עבור הלקוח שלה. הגדירו את `NFT_DOMAIN` לדומיין שבבעלות החשבון החותם, או שלחשבון יש עבורו הרשאת `CanRegisterNft`. כדי ליצור דומיין, השתמשו בתהליך ההצהרתי `app alias setup plan` ו־`app alias setup apply` המתואר ב־[דומיינים](/he/blockchain/domains.md#registration).
 
 רשום NFT. ההרשמה קוראת את התוכן הראשוני JSON מתוך הכניסה סטנדרטית:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 הוסף מפתח מטא נתונים ותקרא את NFT שוב:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 להסיר את מפתח הנתונים המתאים:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-בחופש להעביר את NFT. שימוש `ledger nft get` לקרוא את הבעלים הנוכחי `owned_by`, ושימוש `ledger account list all` כדי למצוא חשבון יעד ID.
+אפשר גם להעביר את ה־NFT. השתמשו ב־`ledger nft get` כדי לקרוא את הבעלים הנוכחי מתוך `owned_by`, וב־`account list --all` כדי למצוא מזהה חשבון יעד.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 להסיר את הדוגמה NFT לאחר המעבר. אם העברת אותה, או להעביר אותה חזרה או לשלוח את הפקודה לא להירשם עם הגדרת החשבון של הבעלים הנוכחי.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 
@@ -156,7 +155,7 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 - רשומות בקשות קשורות לזהות או שייך לחשבון
 - התייחסות לתקשורת, מסמכים או מניפסטים מחוץ למגוון
 
-השתמשו נכס מספר עבור סכומים פונגיביים, ושימשו מטא נתונים פשוטים [](/he/blockchain/metadata.md) כאשר הנתונים הם רק תכונה קומפקטת של אובייקט ספר גדול קיים.
+השתמשו בנכס מספרי לייצוג יתרות של יחידות בנות־החלפה. כאשר הנתון הוא רק מאפיין קטן של עצם קיים בספר החשבונות, השתמשו ב[מטא־נתונים](/he/blockchain/metadata.md).
 
 ראו גם:
 

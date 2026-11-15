@@ -1,27 +1,26 @@
 ---
 translation_locale: fr
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Clés pour le déploiement du réseau {#keys-for-network-deployment}
 
-Chaque réseau a besoin de matériel clé distinct pour les clients, les pairs du réseau, la signature de la genèse de la blockchain et, pour les profils NPoS ou Nexus, les identités des validateurs BLS.
+Chaque réseau nécessite des clés distinctes pour les clients, la signature de la genèse et les identités BLS-normal des validateurs accompagnées de leurs preuves de possession.
 
 ## Où les clés sont utilisées {#where-keys-are-used}
 
 - Les clés de signature des clients sont stockées dans `client.toml` sous `[account]`.
 - Les clés d'identité des pairs du réseau sont stockées dans chaque pair du réseau `config.toml` en tant que `public_key` et `private_key`.
 - La découverte des pairs réseau utilise la clé publique de chaque pair réseau dans `trusted_peers`.
-- BLS les preuves de possession des validateurs sont stockées dans `trusted_peers_pop` pour les profils NPoS.
+- Les preuves de possession BLS des validateurs sont stockées dans `trusted_peers_pop` pour chaque validateur, quel que soit le mode de consensus.
 - La signature de la genèse utilise le `[genesis].public_key` de la configuration du pair et la clé privée correspondante pour signer le manifeste.
 
 Pour les déploiements locaux ou de test, laissez Kagami générer tous ces fichiers ensemble :
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Pour un réseau ou un profil existant, utilisez le flux guidé :

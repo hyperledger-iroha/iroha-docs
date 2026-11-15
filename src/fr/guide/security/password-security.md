@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Sécurité des mots de passe {#password-security}
 
 Les mots de passe peuvent protéger les consoles des opérateurs, les magasins secrets, les sauvegardes et les fichiers de clés locaux. Un mot de passe n'est qu'un contrôle. Utilisez-le avec la garde sécurisée des clés, les contrôles d'accès et l'authentification multifactorielle lorsque cela est disponible.

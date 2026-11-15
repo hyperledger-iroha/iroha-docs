@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Интеграция мәселелерін түзету {#troubleshooting-integration-issues}
 
 Бұл бөлім Iroha 3 интеграциясы үшін ақауларды жою кеңестерін ұсынады. Егер сіз кездестіріп отырған мәселеңіз мұнда сипатталмаған болса, бізге [Телеграм](https://t.me/hyperledgeriroha) арқылы хабарласыңыз.
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI тексерістері үшін бір файлды нақты көрсетіп өтіңіз:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Егер желідегі серіктес Docker немесе Kubernetes-та жұмыс істесе, клиент процесінен қолжетімді хост немесе қызмет мекенжайын пайдаланыңыз. Контейнер ішіндегі `127.0.0.1` хост машинасы емес.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - клиент конфигурациясындағы есептік жазбаның ашық кілті қол қою үшін қолданылған жеке кілтпен сәйкес келмейді
 - шот блокчейн генезисінде немесе бұрынғы транзакция арқылы тіркелмеген
 - есептік жазбада бағдарламаны іске қосу ортасын тексеруші талап ететін рұқсат белгісі немесе рөл жоқ
-- доменнің идентификаторы оның деректер кеңістігінің біліктілігінсіз, мысалы, `domain.dataspace` жоқ
+- домен ID-інде `domain.dataspace` сияқты деректер кеңістігімен нақтылау жоқ
 
 CLI командаларын түзету кезінде қателерді оқуды жеңілдету үшін `--output-format text` пайдаланыңыз:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Сұраулар бос нәтижелер қайтарады {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 Доменді тексеру үшін ең жалпы сұраудан бастаңыз:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Оқиға немесе блок ағындары ерте тоқтайды {#event-or-block-streams-stop-early}

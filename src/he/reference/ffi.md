@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # אינטראפעסיות פונקציות זרות (FFI) {#foreign-function-interfaces-ffi}
 
 הקופסה `iroha_ffi` מספקת מקורים ותכונות לייצר קשרי C ABI מ- Rust APIs. היא משמשת כאשר סוגים Iroha צריכים לחצות גבול FFI, למשל על ידי קשרי SDK או אינטגרציות מארגנים.

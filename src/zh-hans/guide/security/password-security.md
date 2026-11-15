@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 密码安全 {#password-security}
 
 密码可以保护运营控制台、秘密存储、备份和本地密钥文件，但密码只是其中一道控制措施。应将其与安全的密钥保管、访问控制以及可用时的多因素认证结合使用。

@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Uyğunluq Matrisi {#compatibility-matrix}
 
 Uyğunluq matrisi qarşılıqlı göstərir-SDK mövcud üçün ssenari əhatəsi Iroha 3 sənədlər dəsti. Varsayılan olaraq, səhifə, möhkəmləndirilmişdən yaradılan paketlənmiş mövqe-vaxt məlumat görünüşünü yükləyir [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) təkrar baxış.

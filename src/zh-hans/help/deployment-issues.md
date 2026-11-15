@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 解决部署问题 {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 对于本地和测试部署,优先使用 Kagami 生成的构件而不是手写的对等节点文件:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 生成的目录包含对等节点配置,创世材料,启动脚本以及 README 为 Iroha 3 构建线.
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker 和复合 {#docker-and-compose}
 
-生成 从当前的 Kagami localnet输出中编写,以便命令行参数和配置文件与已检查出来的代码匹配:
+请参阅 [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)，使用同一版本的可执行文件，在 Docker 中构建并启动四个验证节点。
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+在工具包目录中运行 `python3 poc.py logs` 即可查看验证节点的日志。
 
 如果构建部署开始,然后停下来,请检查 daemon日志:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - 广告的 P2P 地址,仅在集装箱网络内工作
 - 在再生产后的本地体积重复使用
 
-在测试新创世时,在重新启动堆之前删除旧的 Kura 卷.将旧块存储到新的创世中会导致重播失败.
+使用新的创世区块时，节点的存储空间必须为空。 依次运行 `python3 poc.py down` 和 `python3 poc.py up` 以重启同一网络。请将 `state/` 与其四个 Docker 数据卷一起保留。
 
 ## 科伯尼特 {#kubernetes}
 
@@ -66,9 +62,9 @@ docker compose -f ./docker-compose.yml up
 
 如果一个模块重启一次,请将模块中的转载配置与预期的 [`peer.template.toml`](/zh-hans/reference/peer-config/index.md#template)进行比较,并检查对等节点是否正在播放旧的 Kura 数据.
 
-## 索拉的个人资料 {#sora-profile}
+## SORA Nexus 配置模式 {#sora-profile}
 
-使用 Nexus,SoraFS 或多行道流的私人或本地 Iroha 3 部署应启动标准大emon,Sora配置文件已实现:
+如果私有或本地 Iroha 3 部署使用 SORA Nexus、SoraFS 或多个通道，请启用此配置模式并启动标准守护进程。
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

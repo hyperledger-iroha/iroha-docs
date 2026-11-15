@@ -1,20 +1,19 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # النطاقات {#domains}
 
-النطاقات هي مساحات أسماء مسماة مسجلة في `World`. في نموذج البيانات الحالي Iroha 3 يتم تأهيل النطاق بواسطة مساحة البيانات الأصلية له، لذا فإن معرف البروتوكول القياسي الوحيد هو:
+النطاقات مساحات أسماء مسماة ومسجلة في `World`. في نموذج بيانات Iroha 3 الحالي، يُؤهّل النطاق بمساحة البيانات التي ينتمي إليها، ولذلك يكون المعرّف المعياري كما يلي:
 
 ```text
 domain.dataspace
 ```
 
-على سبيل المثال، `payments.universal` يسمي المجال `payments` داخل مساحة البيانات `universal`.
+مثلًا، يحدد `payments.universal` نطاق `payments` داخل مساحة البيانات `universal`.
 
 ## هيكل {#structure}
 
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-النوايا تحدد `payments.universal`, مساحتها الرقمية، بروتوكول واحد-القياسي I105 المالك، مدة استحواذ الإيجار، وصاحب السياسة الحالية/حارس التحقق من سعر الرسوم-الدفع. المخطط API نقطة النهاية هي `POST /v1/aliases/setup/plan`; الخطة المرجعة مرتبطة بالسلسلة، تفويض المعاملة الهوية، حالة دفتر سلسلة الكتل، والموعد النهائي. لا يزال استخدام إزالة النطاق [`Unregister`](/ar/blockchain/instructions.md#un-register).
+تحدد النية `payments.universal` والمعرّف الرقمي لمساحة بياناته والمالك بمعرّف I105 المعياري ومدة الحصول على الإيجار وشرط التحقق من السياسة الحالية وتسعير الدفع. نقطة نهاية المخطط هي `POST /v1/aliases/setup/plan`؛ وترتبط الخطة التي يعيدها بالسلسلة وجهة التفويض والحالة والموعد النهائي. تظل إزالة النطاق تتم باستخدام [`Unregister`](/ar/blockchain/instructions.md#un-register).
 
 إنشاء أو إزالة نطاق يتطلب إذن إدارة النطاق المناسب بموجب مدقق بيئة تنفيذ البرامج النشطة. يمكن تحديث بيانات وصف المجال مع [`SetKeyValue` و `RemoveKeyValue`](/ar/blockchain/instructions.md#setkeyvalue-removekeyvalue) عندما يكون للجهة المخوَّلة إذن لتعديل هذا النطاق.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-قم بتوصيل فهرس ممر الإعدام العام مرة أخرى بأسماء المستعارة لمساحة البيانات:
+اربط إدخالات كتالوج مسارات التنفيذ العامة بالأسماء المستعارة لمساحات البيانات:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-استخدم الأمر الأول عندما يحتاج التطبيق للتحقق مما إذا كان النطاق موجودًا. استخدم كتالوج مسار التنفيذ عندما تحتاج إلى التأكد مما إذا كانت مساحة البيانات عامة أو مقيدة أو متأخرة عن مسار التنفيذ الرئيسي.
+استخدم الأمر الأول عندما يحتاج التطبيق إلى التحقق مما إذا كان النطاق موجودًا. استخدم كتالوج مسارات التنفيذ لفحص مسارات التنفيذ المرتبطة بمساحة البيانات، بما في ذلك رؤية كل مسار تنفيذ سواء كانت عامة أو مقيدة وحالة مزامنته بالنسبة إلى مسار التنفيذ الأساسي.
 
-إعداد النطاق عملية كتابة تتطلب دفع رسوم. قبل تجربتها على Taira، احفظ أداة خدمة تمويل الاختبار من [الحصول على XOR لشبكة Taira التجريبية](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، وموّل الموقّع عبر خدمة التمويل العامة، ثم أرفق بيانات تعريف الرسوم:
+إعداد النطاق عملية كتابة تدفع رسومًا. قبل تجربتها على Taira، موّل الموقّع باتباع تدفق خدمة التمويل التجريبي ذي مرحلة الإعداد في [الحصول على XOR التجريبي على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)، ثم طبّق الخطة مع تحديد دافع الرسوم صراحة. تعرض CLI الرسوم الدقيقة قبل التوقيع:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

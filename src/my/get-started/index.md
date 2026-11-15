@@ -1,14 +1,13 @@
 ---
 translation_locale: my
 translation_source: /get-started/index.md
-translation_source_hash: 0c452291828ed262a2e9094c30def83e07f0b7b70060d47bbd0d32160559ac40
+translation_source_hash: cfd90fff9b7d2c4d217a09ba12b1d140d5b9fa1fdd20718e9c620187c68626dc
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
-
 # Iroha 3 {#iroha-3}
 
-Iroha 3 သည်ပထမဦးဆုံးထုတ်ဝေသော Hyperledger Iroha ပလက်ဖောင်းဖြစ်သည်။ ၎င်းသည်ကိုယ်ပိုင် တည်းခိုထားသောကွန်ရက်များနှင့် deterministic codebase တစ်ခုမှ multi-datapace SORA Nexus deployment model ကိုထောက်ခံသည်။
+Iroha 3 သည် ပထမထုတ်ဝေမှုဖြစ်သော Hyperledger Iroha ပလက်ဖောင်းဖြစ်သည်။ တစ်သမတ်တည်း ကုဒ်အခြေခံတစ်ခုတည်းမှ ကိုယ်တိုင် host လုပ်သော ကွန်ရက်များနှင့် data space အများအပြားပါသော SORA Nexus ဖြန့်ချိတပ်ဆင်မှုပုံစံကို ပံ့ပိုးသည်။
 
 မြင့်မားတဲ့ အဆင့်မှာ Iroha 3 ဟာ:
 
@@ -17,7 +16,7 @@ Iroha 3 သည်ပထမဦးဆုံးထုတ်ဝေသော Hyperled
 - Norito တစ်ခုတည်းသော ပရိုတိုကုတ်စံညွှန်း အစဉ်လိုက်ပုံစံအဖြစ်
 - Torii အတွက် ဖောက်သည်၊ လုပ်ငန်းရှင်နှင့် app ကို ဦးတည်သော APIs
 - Sumeragi အမိန့်ချမှတ်ထားသော ဒေတာရရှိနိုင်မှုနှင့် ယုံကြည်စိတ်ချရတဲ့ ထုတ်လွှင့်ခြင်းများအတွက် သဘောတူညီချက်
-- ကွဲပြားစွာ ချိတ်ဆက်ထားသော လူဖတ်လို့ရတဲ့ အမည်မဖော်လိုတဲ့ domainless single protocol standard account များ
+- Domain မပါသော စံအကောင့်များနှင့် သီးခြားချိတ်ဆက်ထားသော လူဖတ်လွယ်သည့် alias များ
 
 ## အမြန်စတင်ခြင်း {#quickstart}
 

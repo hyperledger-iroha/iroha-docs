@@ -5,7 +5,6 @@ translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b2364
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 <script setup>
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>
@@ -60,7 +59,7 @@ let query = FindAssetsByAccountId::new(alice_id);
 
 Жекелей сұраулар және кішігірім қайталанатын сұраулар үшін, сұрауды бірден жіберіп, нәтижені бірден алу үшін `client.request` қолдануға болады.
 
-Алайда, `FindAccounts`, `FindAssets` немесе `FindBlocks` сияқты кең ауқымды қайталанатын сұраулар үлкен нәтиже жиынтықтарын қайтара алады. Желідегі әріптес пен клиентке түсетін жүктемені азайту үшін беттік көрсетуді (pagination) пайдаланыңыз.
+Алайда, `FindAccounts`, `FindAssets` немесе `FindBlocks` сияқты нәтижелерін итерациямен қарап шығуға болатын кең ауқымды сұраулар үлкен нәтиже жиынтықтарын қайтара алады. Желідегі теңдес түйін мен клиентке түсетін жүктемені азайту үшін нәтижелерді беттеп алыңыз.
 
 `Pagination`-ны құру үшін, сіз `client.request_with_pagination(query, pagination)`-ді шақыруыңыз қажет, мұнда `pagination` келесі түрде құрылады:
 

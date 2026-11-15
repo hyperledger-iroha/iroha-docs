@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # عوامی اور نجی بلاکچینز {#public-and-private-blockchains}
 
 Iroha مختلف ترتیبوں میں چل سکتا ہے۔ اپنے نیٹ ورک کے ایڈمنسٹریٹر کی حیثیت سے ، آپ فیصلہ کرتے ہیں کہ کون سا عمل درآمد اور اجازت کی پالیسی ٹرانزیکشن کو قبول کیا جاتا ہے یا نہیں اس کا تعین کرتی ہے۔

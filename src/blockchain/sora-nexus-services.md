@@ -17,9 +17,9 @@ document, so probe those routes directly when checking a deployment.
 | Soracloud              | Application deployment, hosted services, private model/runtime state, and service lifecycle control.                                        | `/v1/soracloud/*`, `/api/*`, `iroha soracloud service ...`                                   |
 | Inrou                  | Soracloud hosted HTTP runtime for service revisions that need a live HTTP plane.                                                            | Soracloud runtime config, host capability adverts, replica runtime state                 |
 | SoraNet                | Privacy and transport overlay for circuits, relay traffic, VPN, Connect sessions, and streaming routes.                                     | `/v1/connect/*`, `/v1/vpn/*`, SoraNet route metadata                                     |
-| Data Availability (DA) | Availability evidence, commitment, and pin-intent layer for payloads that are referenced by Nexus lanes, SoraFS manifests, and proof flows. | `/v1/da/*`, `FindDaPinIntent*`, `[nexus.da]`                                             |
+| Data Availability (DA) | Availability evidence, commitment, and pin-intent layer for payloads that are referenced by SORA Nexus lanes, SoraFS manifests, and proof flows. | `/v1/da/*`, `FindDaPinIntent*`, `[nexus.da]`                                             |
 | SoraFS                 | Content-addressed storage fabric for manifests, CAR payloads, pinned content, gateway fetches, and proof-of-retrievability flows.           | `/v1/sorafs/*`, `/sorafs/*`, `FindSorafsProviderOwner`                                   |
-| SoraDNS                | Deterministic naming and resolver-attestation layer for SORA-hosted services and content.                                                   | `/v1/soradns/*`, `/soradns/*`, resolver directory events                                 |
+| SoraDNS                | Deterministic naming and resolver-attestation layer for SORA Nexus-hosted services and content.                                                   | `/v1/soradns/*`, resolver directory events                                 |
 | Aitai                  | App-level fiat and asset settlement corridor backed by native escrow records, not by a separate ledger.                                     | `OpenAssetEscrow`, `FindAssetEscrow*`, `EscrowEventFilter`, Kotodama `escrow_*` builtins |
 
 ```mermaid
@@ -91,7 +91,7 @@ SoraNet can sit in front of SoraFS or Soracloud:
 
 ## Aitai
 
-Aitai is the SORA app corridor for marketplace-style settlement where a
+Aitai is the SORA Nexus app corridor for marketplace-style settlement where a
 buyer and seller coordinate an off-chain payment while Iroha controls the
 on-chain asset custody. It should use the native escrow instruction family
 instead of a contract-owned escrow account for new numeric-asset custody
@@ -104,15 +104,14 @@ with `ReleaseAssetEscrow` or cancels before payment is marked. If buyer and
 seller disagree, either party can open a dispute and a resolver with
 `CanResolveEscrowDispute` can split the locked amount.
 
-For the full lifecycle, generic asset locks, anonymous escrow, queries,
+For the full lifecycle, generic asset locks, conditional escrow, queries,
 events, and Rust examples, see
 [Native Asset Escrow](/blockchain/escrow.md).
 
 | Aitai surface                                                                                                                                                 | Use it for                                                                                |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- |
 | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`                                                    | Transparent numeric asset offers, including XOR-denominated settlement flows.             |
-| `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`       | Shielded offers use proof attachments for funding and closing movements.                  |
-| `OpenEscrowDispute`, `ResolveEscrowDispute`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute`                                                    | Dispute entry and court-style resolution.                                                 |
+| `OpenEscrowDispute`, `ResolveEscrowDispute`                                                                                                                                | Dispute entry and court-style resolution.                                                 |
 | `FindAssetEscrowById`, `FindAssetEscrowsBySeller`, `FindAssetEscrowsByBuyer`, `FindAssetEscrowsByStatus`                                                      | App status pages, reconciliation jobs, and support tooling.                               |
 | `EscrowEventFilter`                                                                                                                                           | Live transparent escrow subscriptions by escrow id, seller, buyer, status, or event kind. |
 | Kotodama `escrow_open_offer`, `escrow_accept`, `escrow_mark_payment_sent`, `escrow_release`, `escrow_cancel`, `escrow_open_dispute`, `escrow_resolve_dispute` | Kotodama contract calls backed by the V1 escrow syscalls.                                 |
@@ -170,7 +169,7 @@ public local SoraFS routes directly before documenting them as available.
 
 ## Soracloud
 
-Soracloud is the SORA application control plane. It tracks deployment
+Soracloud is the SORA Nexus application control plane. It tracks deployment
 bundles, service revisions, routing, rollout state, authoritative config
 entries, encrypted service secrets, model registry records, private
 inference sessions, and runtime receipts.
@@ -407,33 +406,10 @@ or service. The transport design uses entry, middle, and exit relay roles,
 QUIC transport, a Noise-based hybrid handshake, capability negotiation,
 relay directory metadata, and fixed-size padded cells.
 
-In Nexus deployments, SoraNet can carry content fetches, gateway traffic,
+In SORA Nexus deployments, SoraNet can carry content fetches, gateway traffic,
 VPN or Connect sessions, and Norito streaming routes. Directory entries can
 mark relays that support `norito-stream`, which lets clients prefer routes
 suitable for Torii RPC or streaming traffic.
-
-### Streaming Configuration
-
-The Nexus profile enables SoraNet provisioning for streaming routes:
-
-```toml
-[streaming]
-feature_bits = 0b11
-
-[streaming.soranet]
-enabled = true
-exit_multiaddr = "/dns/torii/udp/9443/quic"
-padding_budget_ms = 25
-access_kind = "authenticated"
-provision_spool_dir = "./storage/streaming/soranet_routes"
-provision_spool_max_bytes = 0
-provision_window_segments = 4
-provision_queue_capacity = 256
-```
-
-Use `access_kind = "read-only"` for content routes that do not require
-viewer authentication. Use `authenticated` when the exit relay must enforce
-tickets or viewer identity before bridging to Torii or a hosted service.
 
 ### SoraNet-Aware SoraFS Fetch
 
@@ -506,7 +482,7 @@ DA does not replace Kura or SoraFS:
   that let those bytes be scheduled, audited, and linked back to ledger
   state.
 
-Use DA when an application or Nexus lane needs a ledger-visible promise
+Use DA when an application or SORA Nexus lane needs a ledger-visible promise
 that off-chain data remains retrievable. Common examples include lane
 payload commitments for settlement flows, SoraFS pin intents for published
 content, proof bundles that must be retained for later verification, and
@@ -525,7 +501,7 @@ full payload.
 A typical DA-backed publication flow is:
 
 1. Build or receive the payload outside the WSV, for example a SoraFS CAR
-   file or Nexus lane payload.
+   file or SORA Nexus lane payload.
 2. Hash and describe the payload in a Norito manifest or route-specific
    commitment record.
 3. Submit the manifest, pin intent, or commitment through `/v1/da/*` when
@@ -548,7 +524,7 @@ gateways can recompute the same digests from the same bytes.
    The node decompresses gzip, deflate, or Zstandard payloads when
    requested, then verifies that the canonical byte length equals
    `total_size`.
-2. **Validate lane and chunk parameters.** The lane must exist in the Nexus
+2. **Validate lane and chunk parameters.** The lane must exist in the SORA Nexus
    lane catalog. `chunk_size` must be a non-zero power of two, at least two
    bytes, and no larger than the configured maximum. The erasure profile
    must include data shards and at least two parity shards. The lane
@@ -705,7 +681,7 @@ profile and never derive it from the chain UUID. Taira's effective SoraFS
 settings are:
 
 - network ID:
-  `hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94`
+  `hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774`
 - gateway base URL: `https://taira.sora.org`
 - pin Torii URLs: `https://taira-validator-1.sora.org` through
   `https://taira-validator-4.sora.org`
@@ -718,16 +694,14 @@ settings are:
 ```toml
 [sorafs.storage]
 enabled = false
-max_capacity_bytes = 13743895347
+max_capacity_bytes = 2684354560
 
 [sorafs.discovery]
 discovery_enabled = true
 known_capabilities = ["torii_gateway", "chunk_range_fetch", "potr_mldsa"]
 
 [sorafs.discovery.admission]
-envelopes_dir = "configs/soranexus/taira/sorafs_admission"
-trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]
-signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"
+enabled = true
 
 [sorafs.discovery.publish]
 gateway_base_url = "https://taira.sora.org"
@@ -769,11 +743,12 @@ retention_grace_secs = 86400
 require_council_signatures = false
 ```
 
-The three top-level gateway values are inherited fail-closed defaults; all
-other values in the excerpt are explicit in Taira's checked-in profile. An
-operator must replace the discovery-admission placeholders with the signed
-deployment material. Every served request must carry a manifest envelope,
-pass provider admission, and use an advertised capability.
+The fragment selects native provider-admission authority. Its committed
+records determine admission; node-local council keys and envelope directories
+do not supply that authority. Every served request must carry a manifest
+envelope, pass provider admission, and use an advertised capability. Check
+the target deployment's current provider catalog before using these example
+endpoints.
 
 The Taira validators have embedded SoraFS storage, repair, and garbage
 collection disabled. Their configured capacity remains part of the
@@ -850,7 +825,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
   --summary-out=artifacts/site.car-summary.json
 
 : "${TAIRA_AUTHORITY:?set a funded Taira I105 account}"
-export TAIRA_NETWORK_ID='hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94'
+export TAIRA_NETWORK_ID='hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774'
 export TAIRA_PIN_TORII_URL=https://taira-validator-1.sora.org
 export TAIRA_PRIVATE_KEY_FILE="${TAIRA_PRIVATE_KEY_FILE:-./secrets/taira-authority.ed25519}"
 export TAIRA_RETENTION_EPOCH=$(( $(date -u +%s) + 86400 ))
@@ -937,7 +912,7 @@ cargo run -p sorafs_orchestrator --bin sorafs_cli -- \
 
 ## SoraDNS
 
-SoraDNS is the deterministic naming layer for SORA services and content. It
+SoraDNS is the deterministic naming layer for SORA Nexus services and content. It
 normalizes names, anchors resolver directory updates in Iroha, and
 distributes signed zone or resolver bundles through SoraFS. Resolvers and
 gateways verify resolver attestation documents before trusting discovery
@@ -945,8 +920,7 @@ metadata.
 
 For browser access, SoraDNS derives gateway hosts from a registered FQDN.
 The registered vanity host remains the canonical application origin, while
-deployed gateway profiles expose browser and Torii fallback routes for that
-origin.
+deployed gateway profiles expose browser routes for that origin.
 
 ### Host Forms
 
@@ -954,14 +928,11 @@ origin.
 | ---------------------- | ---------------------------------------------- | --------------------------------------------------------- |
 | Vanity origin          | `https://<fqdn>/<path>`                        | Canonical app URL recorded in manifests and release notes |
 | Taira browser gateway  | `https://<fqdn>.mon.taira.sora.net/<path>`     | Public browser gateway for an active alias                |
-| Torii fallback path    | `https://taira.sora.org/soradns/<fqdn>/<path>` | Torii debug and fallback route for an active alias        |
 | Canonical hash gateway | `<base32(blake3(name))>.gw.sora.id`            | Deterministic gateway identity and GAR verification       |
 
-The `/soradns/<alias>/...` fallback is not the preferred public URL.
-Tooling, app manifests, and frontend configuration should prefer the vanity
-host itself. If an alias is not active on Taira, the browser gateway or
-fallback path can return `404` or fail TLS before application routing
-starts.
+Tooling, app manifests, and frontend configuration should use the registered
+vanity host. If an alias is not active on Taira, the browser gateway can
+return `404` or fail TLS before application routing starts.
 
 ### Derive Gateway Hosts
 
@@ -1024,7 +995,7 @@ If a public DNS name should point at a SoraDNS gateway:
 
 ## FHE and UAID
 
-FHE-related surfaces available to Nexus services include:
+FHE-related surfaces available to SORA Nexus services include:
 
 - `iroha_crypto::fhe_bfv` implements deterministic BFV support for scalar
   ciphertext evaluation. Identifier resolution uses
@@ -1048,11 +1019,11 @@ digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids`
 fields. Runtime registration enforces a one-to-one UAID-to-account index,
 rejects duplicate or colliding opaque identifiers, and rejects opaque
 identifiers without a UAID. Whenever a UAID account binding changes, the
-runtime rebuilds Space Directory dataspace bindings for that UAID.
+runtime rebuilds Space Directory data space bindings for that UAID.
 
 Space Directory manifests attach capabilities to a UAID. An
-`AssetPermissionManifest` names the UAID, dataspace, activation and
-optional expiry epoch, and ordered allow/deny entries scoped by dataspace,
+`AssetPermissionManifest` names the UAID, data space, activation and
+optional expiry epoch, and ordered allow/deny entries scoped by data space,
 program, method, asset, and AMX role. Evaluation is deny-wins: the first
 matching deny rejects the request, otherwise the latest matching allow
 candidate is checked against any amount limit. Publishing, expiring, and
@@ -1080,7 +1051,7 @@ plaintext rows.
 
 UAID is not the ciphertext and not the FHE policy itself. It is the stable
 account capability anchor used to find the account, opaque identifier
-claims, and Space Directory bindings that authorize a service or dataspace
+claims, and Space Directory bindings that authorize a service or data space
 flow. FHE schemas govern encrypted payload admission and execution
 separately through parameter sets, execution policies, ciphertext
 commitments, and decryption authority policies.
@@ -1123,11 +1094,11 @@ records.
   missing-payload recovery, SoraFS gateway refusals, SoraDNS RAD freshness,
   and Soracloud rollout health.
 - For public testnet usage, use the Taira profile and start with
-  [Connect to SORA Nexus dataspaces](/get-started/sora-nexus-dataspaces.md).
+  [Connect to SORA Nexus data spaces](/get-started/sora-nexus-dataspaces.md).
 
 See also:
 
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Data event filters](/blockchain/filters.md#data-event-filters)
 - [Query reference](/reference/queries.md#nexus-data-availability-and-packages)
-- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)
+- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/configs/soranexus/taira/config.toml)

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/native-escrow.md
-translation_source_hash: 576e03924f19b63681cdfafa641b996672e35a992478fc9eaf5b83f0e7baa6da
+translation_source_hash: d399284a2baec507e4c979c762d6e216d8c3fbc5b4b4fe221b6bbb0049ee9fd9
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # རང་སོའི་རྒྱུ་དངོས་ཚུ་གི་ ཉེན་སྲུང་འབད་ཐབས། {#native-asset-escrow}
 
@@ -14,8 +14,8 @@ translation_engine: human-reviewed
 ## དགོས་མཁོ་ཚུ་ {#prerequisites}
 
 - ཨང་གྲངས་རྒྱུ་དངོས་ངེས་ཚིག་དང་ འབོར་ཚད་ལངམ་སྦེ་ཡོད་མི་ ཁ་ཕྱེ་མི་/བཙོང་མི་ཅིག།
-- དངུལ་རྐྱང་གི་ལྡེ་མིག་ I105 ལས་བྱེདཔ་ཚུ་གི་དོན་ལུ་ ཐབས་ལམ་འདི་བཙུགས་ཏེ་ ལག་ལེན་འཐབ་ཨིན། འབྲེལ་ཡོད་དབང་འཛིན་ཀྱིས་སྤྲོད་འོང་མི་ `fee_payment` དམིགས་གཏད་ལག་ལེན་དེ་ ལག་ལེན་འཐབ་ནི་ཨིནམ་དང་ རིན་གོང་དངུལ་ཀྲམ་དེ་ ད་ལྟོའི་ Taira བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གྱི་ལན་ཐོ་བཀོད་དང་འདྲན་འདྲ་ཨིན་; ཡིག་ཆ་ནང་ལས་ རྒྱུ་དངོས་ཅིག་ ID ནང་མ་སྦྲེལ་གཏང་།
-- ད་ལྟོའི་ Rust ཡང་ན་ Python SDK ལས་ Iroha ཁས་བླངས་འབད་ `0010c5a70039eac101a4846499ba9ceaf43eb65c`.
+- རིམ་པ་ཅིག་ ཕུལ་མི་ ཕྱོགས་རེ་རེ་གི་དོན་ལུ་ མ་དངུལ་བཙུགས་ཡོད་པའི་ ལྡེ་མིག་རྐྱང་པའི་ I105 ཞབས་ཏོག་ལེན་མི་ཚུ། དབང་འཛིན་གྱིས་སྤྲོད་མི་ ད་ལྟོའི་ `fee_payment` དམིགས་དོན་ཅིག་ ལག་ལེན་འཐབ། དེ་གི་འཐུས་རྒྱུ་དངོས་འདི་ ད་ལྟོའི་ Taira བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གི་སྲིད་བྱུས་ཀྱིས་ བཀྲམ་སྤེལ་འབད་མི་ འཐུས་རྒྱུ་དངོས་དང་ མཐུན་དགོ། ཡིག་ཆ་ནང་ལས་ རྒྱུ་དངོས་ ID ཅིག་ ནང་བཙུགས་མ་འབད།
+- ད་ལྟོའི་ Rust ཡང་ན་ Python SDK ལས་ Iroha ཁས་བླངས་འབད་ `c8c872461e92f04325c350cdd952f4276e96f9dc`.
 - གྱི་དོན་ལུ་ JavaScript དཔེ་སྒྲོམ་བཟོ་མི་ Node.js 24 དེ་ལས་ ས་གནས་ཀྱི་བཟོ་སྐྲུན་འབད་མི་ཅིག་ `@iroha/iroha-js` ཆ་ཚན་དང་ ཨའི་གི་ཐོན་ཁུངས་ `iroha_js_host`; ལྟ་རྟོག་འབད་ [JavaScript SDK འབྱུང་ཁུངས་-བཟོ་བསྐྲུན གཞི་སྒྲིག་འབདཝ་ཨིན།](/dz/guide/tutorials/javascript.md#build-from-source). བལྟ་བཤལཔ་གིས་བཟོ་སྐྲུན་འབད་དགོཔ་ཨིན། `compilerUrl` ས་གནས་ཀྱི་མགྲོན་པོ་ལུ་ བཀྲམ་སྤེལ་འབད་ནི་མེན་པར་
 - Taira གིས་ རྒྱུ་དངོས་གནས་སྤེལ་དང་ གཏན་འཁེལ་གྱི་བཀོད་རྒྱ་ཚུ་ ངོས་ལེན་འབད་དགོཔ་ཨིན། རྒྱུ་དངོས་གི་ཇོ་བདག་ཚུ་གིས་ རང་བཞིན་གྱི་ སྲིད་བྱུས་དེ་གིས་ དེ་གི་དོན་ལུ་ གོ་སྐབས་ཡོད་པ་ཅིན་ ཚེ་སྲོག་འཁོར་ལོའི་ལག་ལེན་འཐབ་ཚུགས། རྩོད་གཞི་འདི་ སེལ་ཐབས་ལུ་ འཛམ་གླིང་ཡོངས་ཀྱི་ `CanResolveEscrowDispute` གི་ཆོག་ཐམ་ དགོཔ་ཨིན། དགོས་མཁོ་ཅན་གྱི་ མི་མང་གི་དྲ་ལམ་དབང་འཛིན་མེད་པ་ཅིན་ ཐོན་སྐྱེད་འབད་མི་ ས་གནས་ཁ་ཐུག་གི་དྲ་ལམ་ལག་ལེན་འཐབ་འོང་།
 
@@ -30,7 +30,7 @@ translation_engine: human-reviewed
 ```rust
 use eyre::{Result, ensure};
 use iroha::{
-    client::Client,
+    blocking::Client,
     data_model::{
         isi::escrow::{
             AcceptAssetEscrow, MarkEscrowPaymentSent, OpenAssetEscrow,
@@ -50,7 +50,7 @@ fn complete_marketplace_escrow(
 ) -> Result<AssetEscrowRecord> {
     let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-    seller.submit_blocking(
+    seller.submit(
         OpenAssetEscrow::with_evidence_hashes(
             escrow_id,
             asset_definition,
@@ -59,11 +59,13 @@ fn complete_marketplace_escrow(
         ),
         fee.clone(),
     )?;
-    buyer.submit_blocking(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
-    buyer.submit_blocking(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
-    seller.submit_blocking(ReleaseAssetEscrow::new(escrow_id), fee)?;
+    buyer.submit(AcceptAssetEscrow::new(escrow_id), fee.clone())?;
+    buyer.submit(MarkEscrowPaymentSent::new(escrow_id), fee.clone())?;
+    seller.submit(ReleaseAssetEscrow::new(escrow_id), fee)?;
 
-    let record = seller.query_single(FindAssetEscrowById::new(escrow_id))?;
+    let record = seller
+        .client()
+        .query_single(FindAssetEscrowById::new(escrow_id))?;
     ensure!(record.status == AssetEscrowStatus::Released);
     Ok(record)
 }
@@ -73,7 +75,7 @@ fn complete_marketplace_escrow(
 
 ### ༢. Python གྱི་ཐོག་ལས་ སྤྱིར་བཏང་བཀག་སྡོམ་ཅིག་ཕྱེ་སྟེ་ ཆ་ཤས་ཅིག་སྦེ་བཏོན་དགོ། {#_2-open-and-partially-draw-a-generic-lock-with-python}
 
-བཀྲམ་སྤེལ་དབང་འཛིན་གྱིས་ ཡིག་ཆ་ཨེབ་གཏང་མ་འབད་བའི་ཧེ་མར་ ཐོ་བཀོད་འབད་ཡོད་པའི་ རང་བཞིན་གྱི་ཐོ་ཡིག་ཚུ་ དྲི་དཔྱད་འབདཝ་ཨིན། `remaining_amount` འདི་བདེན་པའི་མཐར་འཁྱོལ་ཅན་ཅིག་ཨིན་པ་ཅིན་ དུས་རྒྱུན་གྱི་མཉམ་འབྲེལ་ཞུ་ཡིག་འདི་ ཆ་མེད་གཏངམ་ཨིན། འདི་གིས་ བདག་ཉར ལས་དངུལ་ཐེངས་གཉིས་བཏོན་ནི་བཀགཔ་ཨིན།
+གློད་གྲོལ་དབང་འཛིན་གྱིས་ འཐེན་བཏོན་མ་འབད་བའི་ཧེ་མ་ མིང་རྟགས་བཀོད་ཡོད་པའི་ རང་སོའི་ཐོ་ཡིག་འདི་ དྲི་དཔྱད་འབདཝ་ཨིན། `remaining_amount` ངེས་བདེན་དེ་ བྱིན་མི་འདི་གིས་ རེ་བ་བཟང་པོའི་ དུས་མཉམ་ཚད་འཛིན་ (optimistic concurrency) བྱིནམ་ཨིན། རྙིངམ་འགྱོ་ཡོད་པའི་ མཉམ་རིམ་ཞུ་བ་ཅིག་ བདག་ཉར་ལས་ ཐེངས་གཉིས་ བཏོན་ནིའི་ཚབ་ལུ་ ངོས་ལེན་མི་འབད། `client` འདི་ `local_signing_context=LocalSigningContext(network_id)` དང་ དྲ་རྒྱའི་ `chain_discriminant` གིས་ བཟོ་ཡོད་པའི་ `ToriiClient` ཅིག་ཨིན། ཚོང་འབྲེལ་གྲོགས་རམ་པ་ཚུ་གིས་ དྲ་རྒྱའི་ངོ་རྟགས་འདི་ སྐབས་དོན་དེ་ལས་ ལེནམ་ཨིན། མིང་རྟགས་བཀོད་ཡོད་པའི་ དྲི་དཔྱད་ཚུ་གིས་ དེ་ `network_id` སྦེ་ ལེནམ་ཨིན།
 
 ```python
 import secrets
@@ -91,7 +93,6 @@ def escrow_status(record):
 def open_and_draw_lock(
     *,
     client,
-    chain_id,
     opener,
     opener_private_key,
     release_authority,
@@ -101,9 +102,9 @@ def open_and_draw_lock(
     fee_payment,
 ):
     escrow_id = f"cookbook_lock_{secrets.token_hex(12)}"
+    network_id = client.local_signing_context.network_id
 
     client.open_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=opener,
         private_key=opener_private_key,
         fee_payment=fee_payment,
@@ -119,10 +120,10 @@ def open_and_draw_lock(
     before = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
     client.drawdown_asset_lock_and_wait(
-        chain_id=chain_id,
         authority=release_authority,
         private_key=release_private_key,
         fee_payment=fee_payment,
@@ -134,6 +135,7 @@ def open_and_draw_lock(
     after = client.get_asset_escrow(
         escrow_id=escrow_id,
         authority=release_authority,
+        network_id=network_id,
         private_key=release_private_key,
     )
 
@@ -149,8 +151,10 @@ Python SDK གིས་ `expected_remaining_amount` བརྗོད་མ་ཚ�
 Rust བཀག་སྡོམ་གི་རྒྱུན་འགྲུལ་ཚུ་གི་དོན་ལུ་ ད་ལྟོའི་བཟོ་སྐྲུན་འབད་མི་ཚུ་གིས་ བརྟག་ཞིབ་འབད་ཡོད་པའི་གདམ་ཁ་དེ་ཡང་ དགོཔ་ཨིན།
 
 ```rust
-let before = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-release_authority.submit_blocking(
+let before = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+release_authority.submit(
     DrawdownAssetLock::new(
         lock_id,
         Quantity::from(4_u64),
@@ -159,23 +163,26 @@ release_authority.submit_blocking(
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 
-let current = opener.query_single(FindAssetEscrowById::new(lock_id))?;
-opener.submit_blocking(
+let current = opener
+    .client()
+    .query_single(FindAssetEscrowById::new(lock_id))?;
+opener.submit(
     CancelAssetLock::new(lock_id, current.remaining_amount),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
 
-`DrawdownAssetLock::new` གིས་ གནས་གོང་གསུམ་ལེནམ་ཨིན། `CancelAssetLock::new` གིས་གཉིས་འབགཔ་ཨིན། རེ་བ་བསྐྱེད་ཡོད་པའི་ལྷག་ལུས་དངུལ་བསྡོམས་འདི་བཏོན་བཏང་མི་འདི་གིས་ ཉེན་སྲུང་མེད་པའི་འབོད་བརྡའི་དབྱིབས་རྙིངམ་ཅིག་འགྲེལ་བཤད་རྐྱབ་ཨིན།
+`DrawdownAssetLock::new` གིས་ བཀག་སྡོམ་དང་ འབོར་ཚད་ དེ་ལས་ མཐོང་ཡོད་པའི་ ལྷག་ལུས་འབོར་ཚད་ ལེནམ་ཨིན། `CancelAssetLock::new` གིས་ བཀག་སྡོམ་དང་ མཐོང་ཡོད་པའི་ ལྷག་ལུས་འབོར་ཚད་ ལེནམ་ཨིན། ལྷག་ལུས་འབོར་ཚད་འདི་ ཧེ་མ་ལས་ར་ འགྱུར་བ་འོང་ཡོད་པ་ཅིན་ རྩིས་དེབ་ཀྱིས་ བཀོད་རྒྱ་ ག་འདི་ཨིན་རུང་ ངོས་ལེན་མི་འབད།
 
 ### ༣. Kotodama གི་བར་གཏོགས་བདག་ཉརའི་ས་ཁོངས་འདི་ JavaScript ལས་ བསྡུ་སྒྲིག་འབད་དགོ། {#_3-compile-the-kotodama-escrow-surface-from-javascript}
 
-JavaScript གིས་ རང་ལུགས་ཀྱི་བསླབ་བྱ་ཚུ་བཟོ་མི་དགོ་། ད་ལྟོའི་ཡིག་འབྲུ་བསྡུ་སྒྲོམ་འདི་གིས་ ལེ་ཌཇར་ཨེགསརོཨའི་ནང་བཙུགས་ཡོད་པའི་ Kotodama ལུ་བཏོན་གཏངམ་ཨིན། བགོ་བཀྲམ་འབད་ནི་དང་འབོ་ནི་ དེ་ལས་ [ བཟོ་ཞིནམ་ལས་ གློག་རིག་གི་འཆམ་ཡིག་](./smart-contracts.md) གཞི་བཙུགས་འབདཝ་ཨིན།
+JavaScript གིས་ དབྱེ་བ་མ་བཀོད་པའི་ རང་སོའི་བཀོད་རྒྱ་ཚུ་ གསརཔ་ བཟོ་མི་དགོ། ད་ལྟོའི་ བསྡུ་སྒྲིག་མཉེན་ཆས་ཀྱིས་ རྩིས་དེབ་ཀྱི་ བར་གཏོགས་བདག་ཉར་གྱི་ ནང་བཙུགས་ལས་འགན་ཚུ་ Kotodama ལུ་ ལག་ལེན་འཐབ་ཚུགསཔ་བཟོཝ་ཨིན། དེ་ལས་ བཀྲམ་སྤེལ་འདི་ [རིག་རྩལ་ཅན་གྱི་ཆིངས་ཡིག་ བཟོ་ནི་དང་ བཀྲམ་སྤེལ་འབད་ནི་](./smart-contracts.md) ལུ་ བརྟེན་ཏེ་ འབདཝ་ཨིན། `open_offer` འཛུལ་སྒོ་འདི་ `authorize(Admin)` ཨིནམ་ལས་ ལག་བསྟར་པ་ (executor) གིས་ དེ་ལུ་འབོད་མི་འདི་གིས་ བཀྲམ་སྤེལ་འབད་ཡོད་པའི་ཁ་བྱང་གི་དོན་ལུ་ `CanUseContractPermission` དང་ `permission: "Admin"` འཛིན་དགོཔ་ཨིན།
 
 འདི་ `native_escrow.ko` སྦེ་སྲུང་བཞག་འབད།
 
 ```kotodama
 seiyaku NativeEscrowAitai {
+    permission Admin;
     error enum EscrowError {
         NonPositiveAmount = 1,
     }
@@ -184,7 +191,7 @@ seiyaku NativeEscrowAitai {
         Name offer,
         AssetDefinitionId asset_definition,
         quantity amount
-    ) authorize("Admin") {
+    ) authorize(Admin) {
         require(amount > 0, EscrowError::NonPositiveAmount);
         ledger::escrow::open_offer(
             offer: offer,
@@ -229,6 +236,7 @@ node ./compile-native-escrow.mjs
 record = client.get_asset_escrow(
     escrow_id=escrow_id,
     authority=release_authority,
+    network_id=client.local_signing_context.network_id,
     private_key=release_private_key,
 )
 assert escrow_status(record) == "Locked"
@@ -240,7 +248,7 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
 - `Not permitted` སྒོ་བསྡམས་པའི་སྐབས་ལུ་ དབང་འཛིན་གྱིས་ བཙག་འཐུ་འབད་ཡོད་མི་ རྒྱུ་དངོས་ཚུ་ ཉེན་སྲུང་གི་གནས་སྟངས་ནང་ བཏང་མི་ཚུགས་ཟེར་ཨིན་མས། རྩོད་གཞི་འདི་ སེལ་ཐབས་ལུ་ ཕྱོགས་སོ་སོ་སྦེ་ ཡོངས་འབྲེལ་སྒོ་ར་ `CanResolveEscrowDispute` ཡོདཔ་ཨིན།
-- `expected remaining amount` བཀག་ཆ་འདི་ རེ་བ་བཟང་པོ་-དུས་མཉམ་གྱི་འཁྲུག་རྩོད་ཅིག་ཨིན། དྲན་ཐོ་འདི་ལོག་སྟེ་འདྲི་དཔྱད་འབད་ཞིནམ་ལས་ གཞན་མི་འཐེན་བཏོན་/ཆ་མེད་གཏང་ནི་འདི་ དམིགས་གཏད་བསྐྱེད་ཡོདཔ་ཨིན་ན་མེན་ན་ ཐག་བཅད་ཞིནམ་ལས་ གནས་སྟངས་གསརཔ་འདི་ངོས་ལེན་འབད་ཚུགས་པ་ཅིན་རྐྱངམ་ཅིག་ བཀོད་རྒྱ་གསརཔ་ཅིག་ལུ་མིང་རྟགས་བཀོད།
+- `asset lock remaining amount changed since the drawdown was prepared` (ཡང་ན་ `...since the cancellation was prepared`) འདི་ རེ་བ་བཟང་པོའི་ དུས་མཉམ་ཚད་འཛིན་གྱི་ འགལ་བ་ཅིག་ཨིན། ཐོ་ཡིག་འདི་ ལོག་སྟེ་ དྲི་དཔྱད་འབད་ཞིནམ་ལས་ འཐེན་བཏོན་/ཆ་མེད་ གཞན་དེ་ དམིགས་ཡུལ་བཟུང་སྟེ་ འབད་ཡོདཔ་ཨིན་ན་མེན་ན་ ཐག་བཅད། གནས་སྟངས་གསརཔ་འདི་ ངོས་ལེན་འབད་ཚུགས་པ་ཅིན་རྐྱངམ་ཅིག་ བཀོད་རྒྱ་གསརཔ་ཅིག་ལུ་ མིང་རྟགས་བཀོད།
 - ཐོ་བཀོད་འབད་ཡོད་པའི་དབང་འཛིན་རྐྱངམ་གཅིག་གིས་ ཡིད་ཆེས་ལྡན་པའི་བཀག་སྡོམ་ཅིག་བཏོན་ཚུགས། འགྲོ་འགྲུལ་འབད་སའི་ས་ཁོངས་དེ་ དངུལ་ཕོགས་ཐོབ་པའི་དོན་ལས་རྐྱངམ་གཅིག་ལུ་ བཏོན་གཏང་མི་ཚུགས་འོང་།
 - ཁྲོམ་ཁའི་གསར་བཏོན་འདི་ ངོས་ལེན་དང་ དངུལ་སྤྲོད་བཏང་པའི་གནས་སྟངས་ཀྱི་ཤུལ་ལས་རྐྱངམ་ཅིག་ ཆ་གནས་ཡོདཔ་ཨིན། ཆ་མེད་གཏང་ནི་འདི་ ཧེ་མའི་མི་ཚེ་འཁོར་རིམ་གནས་སྟངས་ཚུ་ལུ་ཚད་འཛིན་འབད་ཡོདཔ་ཨིན།
 - དུས་ཡུན་རྫོགས་མི་འདི་གིས་ དབང་ཚད་ཅན་གྱི་རྩིས་ཐོའི་དུས་ཚོད་ལག་ལེན་འཐབ་ཨིན། ཉེ་གནས་གྱང་ཆུ་ཚོད་དུས་ཚོད་མཇུག་བསྡུ་མི་འདི་ `ExpireAssetLock` འདི་འགྱོ་འོང་ཟེར་བའི་བདེན་ཁུངས་སྦེ་མ་བརྩི།
@@ -248,10 +256,10 @@ assert Decimal(str(record["remaining_amount"])) == Decimal("6")
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [རང་ལུགས་ཀྱི་བར་གཏོགས་བདག་ཉརའི་བརྡ་སྟོན་གྱི་རྣམ་གཞག་ ཚོད་བསྲེ་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/isi/escrow.rs)
-- [རང་ལུགས་ཀྱི་བར་གཏོགས་བདག་ཉརའི་མཐུན་འབྲེལ་གྱི་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་གི་བཅའ་ཁྲིམས་ནང་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/native_escrow.rs)
-- [Python ཟད་འགྲོ་ཕབ་ལེན་འབད་ནིའི་ ཐབས་ལམ་ཚུ་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/python/iroha_python/src/iroha_python/client.py)
-- [Kotodama རང་སོའི་བར་གཏོགས་བདག་ཉར་གྱི་དཔེ་རྙིཊ་ཚུ་ ཕབ་ལེན་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/kotodama_lang/src/samples/native_escrow.ko)
+- [རང་ལུགས་ཀྱི་བར་གཏོགས་བདག་ཉརའི་བརྡ་སྟོན་གྱི་རྣམ་གཞག་ ཚོད་བསྲེ་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/isi/escrow.rs)
+- [རང་ལུགས་ཀྱི་བར་གཏོགས་བདག་ཉརའི་མཐུན་འབྲེལ་གྱི་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་གི་བཅའ་ཁྲིམས་ནང་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/native_escrow.rs)
+- [Python ཟད་འགྲོ་ཕབ་ལེན་འབད་ནིའི་ ཐབས་ལམ་ཚུ་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/python/iroha_python/src/iroha_python/client.py)
+- [Kotodama རང་སོའི་བར་གཏོགས་བདག་ཉར་གྱི་དཔེ་རྙིཊ་ཚུ་ ཕབ་ལེན་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/kotodama_lang/src/samples/native_escrow.ko)
 - [རང་སོའི་རྒྱུ་དངོས་གི་གཏའ་མ་](/dz/blockchain/escrow.md)
 - [དངུལ་རྐྱང་གི་རྒྱུ་དངོས་ཚུ་](./fungible-assets.md)
 - [འཁྲུན་ཆོད་དང་ འགན་ཁུར་ཚུ་](./permissions-and-roles.md)

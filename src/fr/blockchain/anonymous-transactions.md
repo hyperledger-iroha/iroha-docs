@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Transactions anonymes {#anonymous-transactions}
 
 Les transactions anonymes dans Iroha sont construites à partir d'opérations d'actifs confidentielles. Au lieu d'écrire des transferts publics de compte à compte avec des montants publics, un portefeuille déplace la valeur dans un grand livre blockchain protégé, puis dépense des notes opaques avec des preuves à divulgation nulle de connaissance.
@@ -47,7 +46,7 @@ Une définition d'actif comporte également un [`AssetConfidentialPolicy`](/fr/r
 4. Protégez les fonds publics avec `Shield`. Le portefeuille crée un engagement de note et une charge utile chiffrée pour le destinataire avant de soumettre la transaction.
 5. Transférez en privé avec `ZkTransfer`. Le portefeuille crée une preuve qu'il possède les notes d'entrée, que les valeurs d'entrée et de sortie sont équilibrées, et que chaque note dépensée est ancrée dans un arbre d'engagement récent.
 6. Déprotéger uniquement lorsque la politique d'actifs le permet. `Unshield` révèle le montant public et le compte du destinataire, dépense le nullificateur de note privée et peut créer des sorties de change privées.
-7. Audit en lisant des événements confidentiels, des enregistrements de preuve, l'état du neutralisateur et des enregistrements de séquestre anonymes via des requêtes tapées et les points de terminaison Torii API.
+7. Audit en lisant les événements confidentiels, les enregistrements de preuve et l'état des nullificateurs via des requêtes typées et les points de terminaison Torii.
 
 ## CLI Exemples {#cli-examples}
 
@@ -151,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## Compte séquestre d'actifs anonyme {#anonymous-asset-escrow}
-
-L'entiercement d'actifs anonyme utilise le même mécanisme de transfert protégé pour la valeur en dépôt. Les parties et l'état de l'entiercement sont toujours enregistrés dans l'acte d'entiercement, mais les étapes de financement, de libération, d'annulation et de résolution utilisent des nullificateurs protégés et des engagements de sortie.
-
-Pour le comportement détaillé de l'entiercement ISI et des exemples, voir [Compte séquestre d'actifs natifs](/fr/blockchain/escrow.md#anonymous-escrow).
-
-Le cycle de vie est :
-
-1. `OpenAnonymousAssetEscrow` dépense des notes de financement protégées et crée un engagement en séquestre.
-2. `AcceptAnonymousAssetEscrow` enregistre l'acheteur.
-3. `MarkAnonymousEscrowPaymentSent` enregistre que l'acheteur a envoyé le paiement hors chaîne.
-4. `ReleaseAnonymousAssetEscrow` utilise l'engagement de séquestre pour les engagements de sortie de l'acheteur.
-5. `CancelAnonymousAssetEscrow` renvoie l'engagement de séquestre vers les engagements de sortie du vendeur lorsque le paiement n'a pas été marqué.
-6. `OpenAnonymousEscrowDispute` et `ResolveAnonymousEscrowDispute` gèrent les dépôts contestés avec des hachages cryptographiques comme preuves et un partage contrôlé par un résolveur.
-
-Utilisez les requêtes d'entiercement anonymes listées dans [Requêtes](/fr/reference/queries.md#escrow-and-proof-records) pour inspecter les dossiers et les statuts d'entiercement.
-
 ## Mathématiques {#math}
 
 La notation ci-dessous décrit le flux d'actifs confidentiels. Les implémentations utilisent le circuit actif et les identifiants de paramètres provenant de la politique d'actifs et du registre des vérificateurs, de sorte que les clients doivent considérer les engagements, les nullificateurs et les octets de preuve comme des sorties opaques du portefeuille/proveur.
@@ -236,7 +218,6 @@ Les transactions anonymes ne rendent pas chaque fait observable privé. Les donn
 - annulateurs et engagements de sortie
 - preuves des hachages cryptographiques, références de clés de vérification, et hachages cryptographiques facultatifs des conteneurs de données
 - montant public et compte du bénéficiaire pour `Unshield`
-- vendeur en séquestre anonyme, acheteur, statut, horodatages et hachages cryptographiques des preuves
 
 Concevez des applications de manière à ce que ces métadonnées publiques ne révèlent pas la relation commerciale que vous essayez de protéger.
 

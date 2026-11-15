@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Орнату мәселелерін шешу {#troubleshooting-deployment-issues}
 
 Бұл бөлім Iroha 3 енгізулеріне арналған ақауларды жою кеңестерін ұсынады. Егер сізге туындаған мәселе мұнда сипатталмаған болса, бізбен [Телеграм](https://t.me/hyperledgeriroha) арқылы хабарласыңыз.
@@ -15,7 +14,7 @@ translation_engine: bing-translator-llm
 Жергілікті және тестілеу орнатылымдары үшін қолмен жазылған желілік түйін файлдарына қарағанда Kagami жасаған артефактілерді таңдаңыз:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Жасалған каталог желілік түйін конфигурацияларын, блокчейннің басын материалдарын, бастау скрипттерін және Iroha 3 жинақ желісі үшін README қамтиды.
@@ -39,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker және Құрастыру {#docker-and-compose}
 
-Ағымдағы Kagami localnet нәтижесінен Compose жасаңыз, сонда командалық жол аргументтері мен конфигурация файлдары тексерілген кодқа сәйкес болады:
+Docker ішінде бір нұсқадан жиналған екілік файлдармен төрт валидаторды құрып, іске қосу үшін [Iroha 3 іске қосу](/kk/get-started/launch-iroha.md) нұсқаулығын қараңыз.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Валидаторлардың журналдарын көру үшін жинақ каталогында `python3 poc.py logs` пәрменін орындаңыз.
 
 Егер compose орналастыру басталып, кейін тоқтап қалса, демон журналдарын тексеріңіз:
 
@@ -54,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - тек контейнер желісінің ішінде жұмыс істейтін жарнамаланған P2P мекенжайлар
 - блокчейн генезисін қалпына келтіргеннен кейін жергілікті көлемді қайта пайдалану
 
-Жаңа блокчейн генезисін тестілеу кезінде стекті қайта іске қоспас бұрын ескі Kura көлемдерін алып тастаңыз. Ескі блок сақтауын жаңа блокчейн генезисімен сақтау ойнатуды сәтсіз қылады.
+Жаңа генезис блогы үшін түйін қоймасы бос болуы керек. Сол желіні қайта іске қосу үшін алдымен `python3 poc.py down`, содан кейін `python3 poc.py up` пәрменін орындаңыз. `state/` каталогын желінің төрт Docker томымен бірге сақтаңыз.
 
 ## Kubernetes {#kubernetes}
 
@@ -67,9 +62,9 @@ Kubernetes үшін әрбір валидациялаушыны күйге тә�
 
 Егер под үздіксіз қайта іске қосылса, подтағы көрсетілген конфигурацияны күтілгенімен салыстырыңыз [`peer.template.toml`](/kk/reference/peer-config/index.md#template) және желідегі әріптестің ескілерін қайта ойнатып жатқанын тексеру Kura деректер.
 
-## Сора профилі {#sora-profile}
+## SORA Nexus профилі {#sora-profile}
 
-Жеке немесе жергілікті Iroha 3 орналастырулар, Nexus, SoraFS немесе көпжолақты ағындарды қолданатын болса, стандартты демонды Sora профилімен қосылған түрде іске қосуы керек:
+SORA Nexus, SoraFS немесе бірнеше жолақ пайдаланылатын жеке не жергілікті Iroha 3 ортасында стандартты фондық қызметті осы профильді қосып іске қосыңыз.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

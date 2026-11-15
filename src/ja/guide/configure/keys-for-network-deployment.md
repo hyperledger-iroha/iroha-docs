@@ -1,27 +1,26 @@
 ---
 translation_locale: ja
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ネットワーク展開のための鍵 {#keys-for-network-deployment}
 
-すべてのネットワークは、クライアント、ネットワークピア、ブロックチェーンのジェネシス署名、そしてNPoSまたは Nexus プロファイルの場合は BLS バリデータの識別情報のために、異なる鍵素材を必要とします。
+どのネットワークでも、クライアント、ジェネシス署名、および所有証明を伴う BLS-normal バリデーター識別子には、それぞれ別の鍵素材が必要です。
 
 ## キーが使用される場所 {#where-keys-are-used}
 
 - クライアントの署名鍵は `[account]` の下の `client.toml` に保存されます。
 - ネットワークピアの識別キーは、各ネットワークピア `config.toml` に `public_key` および `private_key` として保存されます。
 - ネットワークピアの検出は、各ネットワークピアの公開鍵を`trusted_peers`で使用します。
-- BLS バリデーターの保有証明は、NPoS プロファイルのために `trusted_peers_pop` に保存されます。
+- BLS バリデーターの所有証明は、コンセンサスモードにかかわらず、すべてのバリデーターについて `trusted_peers_pop` に保存されます。
 - ブロックチェーンのジェネシス署名は、ネットワークピアの設定にある`[genesis].public_key`と、テクニカルマニフェストを署名する際の対応する秘密鍵を使用します。
 
 ローカルまたはテスト環境へのデプロイの場合、Kagami にこれらすべてのファイルを一緒に生成させてください:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 既存のネットワークまたはプロファイルの場合は、ガイド付きフローを使用してください。

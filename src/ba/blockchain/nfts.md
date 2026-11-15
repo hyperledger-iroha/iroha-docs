@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT - бер хужаһы булған уникаль иҫәп-хисап объекты. Файҙаланырға кәрәк саҡта NFTs ҡулланығыҙ, әгәр яҙма үҙ идентификацияһына, метамәғлүмәттәренә, йәшәү циклы ваҡиғаларына һәм милек хоҡуғын тапшырыу семантикаһына мохтаж булһа, әммә һан балансы кәрәкмәй.
@@ -20,14 +19,14 @@ Iroha NFT - бер хужаһы булған уникаль иҫәп-хисап 
 - `content`: NFT миҡдары тураһында метамәғлүмәттәр.
 - `owned_by`: NFT иҫәбенә эйә булған иҫәп
 
-`content` яланы - `Metadata` картаһы. Уны компактлы һаҡлағыҙ: унда тасуирлау майҙансыҡтарын, тотороҡло белешмәләрҙе, хештарҙы, URIs йәки SoraFS юлдарын һаҡлау. Ҙур документтар, медиа йә юғары килемле ҡушымталар дәүләтен ситтә һаҡлағыҙ һәм бары тик тикшереү мөмкин булған белешмәне генә һаҡлағыҙ NFT.
+`content` яланы — `Metadata` асҡыс-ҡиммәт картаһы. Унда ҡыҫҡа тасуирламаларҙы, тотороҡло һылтанмаларҙы, хештарҙы, URIs йәки SoraFS юлдарын һаҡлағыҙ. Ҙур документтарҙы, медиафайлдарҙы һәм ҡушымтаның йыш үҙгәргән хәлен сылбырҙан тыш һаҡлағыҙ; NFT эсендә тикшереп булған һылтанма ғына ҡалһын.
 
 ## Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 
 Йәмәғәт Taira тест селтәрендә әлеге ваҡытта NFT яҙмалары бармы-юҡмы икәнен тикшерегеҙ:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
@@ -38,7 +37,7 @@ curl -fsS https://taira.sora.org/openapi.json \
   | jq -r '.paths | keys[] | select(startswith("/v1/nfts") or startswith("/v1/explorer/nfts"))'
 ```
 
-Буш `items` массивы - асыҡ тест селтәрендә ғәмәлдә булған яуап. Был ағымдағы биттә NFTs юҡ тигәнде аңлатмай, ә NFT күрһәтмәләре юҡ.
+Буш `items` массивы асыҡ тест селтәрендә дөрөҫ яуап булып тора. Был NFT күрһәтмәләре мөмкин түгеллеген түгел, ә хәҙерге биттә NFTs юҡлығын аңлата.
 
 ## NFT IDs {#nft-ids}
 
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-Мәҫәлән, `badge$docs.universal` билдәләй `badge` NFT ҡаҙнаһында `docs.universal` Әгәр мәғлүмәттәр арауығы ситтә ҡалһа, ағымдағы анализлаусы `universal` мәғлүмәт киңлеге, шуға күрә `badge$docs` хәл итә `badge$docs.universal`.
+Мәҫәлән, `badge$docs.universal` — `docs.universal` доменындағы `badge` NFT-һының идентификаторы. Мәғлүмәт киңлеге күрһәтелмәһә, ағымдағы анализатор `universal` мәғлүмәт киңлеген ҡуллана, шуға күрә `badge$docs` ҡиммәте `badge$docs.universal` итеп асыҡлана.
 
 NFT IDs өсөн даими исемдәр ҡулланығыҙ. ID - инструкциялар, һорауҙар, рөхсәттәр, ваҡиға фильтрҙары һәм ҡушымта һылтанмалары менән ҡулланылған объект идентификацияһы.
 
@@ -68,17 +67,17 @@ NFT ғүмере циклы операциялары ҡулланыу Iroha Ма
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-Булдырылған локаль селтәр инде ҡуйыла `wonderland.universal` һәм уның SNS аренда. башҡа доменды ҡулланыу өсөн, тәүҙә уны декларатив менән `app alias setup plan` һәм `app alias setup apply` эш процесы [Домендар](/ba/blockchain/domains.md#registration).
+Булдырылған урындағы селтәр үҙ клиенты өсөн ҡушымта доменын теркәмәй. `NFT_DOMAIN` ҡиммәтен ҡул ҡуйыусы иҫәпкә ҡараған йәки шул иҫәп `CanRegisterNft` рөхсәтенә эйә булған доменға ҡуйығыҙ. Домен булдырыу өсөн [Домендар](/ba/blockchain/domains.md#registration) бүлегендә тасуирланған декларатив `app alias setup plan` һәм `app alias setup apply` эш ағымын ҡулланығыҙ.
 
 NFT теркәлеү стандарт кертеүҙән башланғыс йөкмәтке JSON уҡый:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 Метамәғлүмәт асҡысын өҫтәп, NFT ҡабаттан уҡығыҙ:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 Метамәғлүмәттәр асҡысын алып ташлау:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-NFT вариантын күсереү. `ledger nft get` ҡулланып, ағымдағы хужаны `owned_by`нан уҡырға һәм `ledger account list all` менән тәғәйенләнештәге иҫәпте ID табырға.
+Теләк буйынса NFT-ны күсерегеҙ. Ағымдағы хужаны `owned_by` яланынан уҡыу өсөн `ledger nft get`, ә алыусы иҫәп идентификаторын табыу өсөн `account list --all` ҡулланығыҙ.
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 NFT өлгөһөн күсереүҙән һуң алып ҡалдырығыҙ. Әгәр күсергән булһағыҙ, уны кире күсерегеҙ йәки әлеге хужаның иҫәп яҙмаһы конфигурацияһы менән теркәүҙән баш тартыу командаһын тапшырығыҙ.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 
@@ -152,7 +151,7 @@ NFT-ҡа хас билдәләр булған рөхсәт өҫкө йөҙө:
 Үҙенсәлек һәм милек әһәмиәтенә эйә булған яҙмалар өсөн NFT ҡулланығыҙ:
 
 - сертификаттар, билдәләр, лицензиялар һәм танытмалар
-- ағзалыҡ йәки инеү яҙмалары
+- ағзалыҡ йәки инеү хоҡуғы яҙмалары
 - Идентификация менән бәйләнгән йәки иҫәпкә алынған ғаризалар тураһында яҙмалар
 - Сылтанмалар, документтар йәки манифестар
 

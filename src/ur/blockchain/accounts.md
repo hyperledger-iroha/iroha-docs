@@ -1,14 +1,13 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # اکاؤنٹس {#accounts}
 
-ایک اکاؤنٹ ایک ایسی اتھارٹی ہے جو لین دین پر دستخط کرسکتی ہے اور اپنی لیجر کی حیثیت رکھتی ہے۔ موجودہ Iroha 3 ڈیٹا ماڈل میں ، `AccountId` کینیکل اور ڈومینلیس ہے: یہ اکاؤنٹ کنٹرولر سے اخذ کیا جاتا ہے اور کینیکل طور پر [I105](/ur/reference/i105.md) کے طور پر کوڈ ہوتا ہے۔ انسانی پڑھنے کے قابل ڈومین اور ڈیٹا اسپیس کا تناظر علیحدہ اکاؤنٹ عرفی پابندیاں سے تعلق رکھتا ہے۔
+اکاؤنٹ ایک بااختیار شناخت ہے جو لین دین پر دستخط کر سکتی ہے اور لیجر کی حالت کی مالک ہو سکتی ہے۔ موجودہ Iroha 3 ڈیٹا ماڈل میں `AccountId` کینونیکل اور ڈومین سے آزاد ہے: یہ اکاؤنٹ کے کنٹرولر سے اخذ ہوتا ہے اور [I105](/ur/reference/i105.md) کی کینونیکل صورت میں انکوڈ کیا جاتا ہے۔ انسانوں کے لیے قابلِ مطالعہ ڈومین اور ڈیٹا اسپیس کا سیاق الگ اکاؤنٹ عرفی ناموں کی وابستگیوں میں رکھا جاتا ہے۔
 
 ## ڈھانچہ {#structure}
 
@@ -17,12 +16,12 @@ translation_engine: nllb-200-ct2
 - `id`: کینونیکل `AccountId`
 - `metadata`: تعمیری اکاؤنٹ میٹا ڈیٹا
 - `label`: ایک اختیاری مستحکم عرف
-- `uaid`: ایک اختیاری یونیورسل اکاؤنٹ ID جو Nexus کے بہاؤ میں استعمال ہوتا ہے۔
+- `uaid`: ایک اختیاری یونیورسل اکاؤنٹ ID جو SORA Nexus کے عمل میں استعمال ہوتا ہے
 - `opaque_ids`: اکاؤنٹ کے UAID سے منسلک غیر شفاف شناخت کنندہ
 
 اکاؤنٹ بنانے کے لئے استعمال ہونے والے لین دین کا payload `NewAccount` ہے۔ اس میں شناختی ، میٹا ڈیٹا ، لیبل ، UAID ، اور غیر شفاف ID فیلڈز شامل ہیں جو رجسٹرڈ اکاؤنٹ کے ذریعہ استعمال ہوتے ہیں۔
 
-`uaid` کینیکل `AccountId` کی تکمیل کرتا ہے۔ یہ اس کی جگہ نہیں لیتا ہے۔ جب Nexus خدمات کو ڈیٹا اسپیس ، رازداری کو برقرار رکھنے والے اندراج ، یا سروس کی صلاحیت تلاش میں مستحکم صارف یا تنظیم کے انتظام کی ضرورت ہو تو اسے استعمال کریں۔ رن ٹائم ایک سے ایک UAID کے اکاؤنٹ انڈیکس کو برقرار رکھتا ہے ، اس کی ضرورت ہوتی ہے کہ غیر شفاف شناخت کنندگان کو UAID کے ذریعہ منسلک کیا جائے ، اور ڈپلیکیٹ یا ٹکرانے والے غیر شفاف شناخت کنندہ کو مسترد کرتا ہے۔ [FHE اور UAID](/ur/blockchain/sora-nexus-services.md#fhe-and-uaid) کے لئے ملاحظہ کریں Nexus سروس پرت بہاؤ۔
+`uaid` کینونیکل `AccountId` کی تکمیل کرتا ہے، اس کی جگہ نہیں لیتا۔ اسے اس وقت استعمال کریں جب SORA Nexus کی خدمات کو مختلف ڈیٹا اسپیسز میں صارف یا ادارے کا مستقل شناختی حوالہ، رازداری محفوظ رکھنے والا اندراج، یا خدمت کی صلاحیت تلاش کرنے کی ضرورت ہو۔ رن ٹائم UAID اور اکاؤنٹ کا ایک بہ ایک اشاریہ رکھتا ہے، غیر شفاف شناخت کنندگان کو UAID کے ذریعے منسلک کرنا لازم کرتا ہے، اور مکرر یا متصادم غیر شفاف شناخت کنندگان مسترد کرتا ہے۔ SORA Nexus کی خدماتی تہہ کے عمل کے لیے [FHE اور UAID](/ur/blockchain/sora-nexus-services.md#fhe-and-uaid) دیکھیں۔
 
 ## اکاؤنٹ کنٹرولرز {#account-controllers}
 
@@ -32,8 +31,9 @@ translation_engine: nllb-200-ct2
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 موجودہ کلیدی فارمیٹس کے لئے [کلائنٹ ترتیب ](/ur/guide/configure/client-configuration.md) اور [کیج جنریشن ](/ur/guide/security/generating-cryptographic-keys.md) دیکھیں.
@@ -44,7 +44,7 @@ private_key = { digest_function = "ed25519", payload = "..." }
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 اکاؤنٹ اثاثوں کا معائنہ کرنے کے لئے، پہلی کال سے ایک اکاؤنٹ ID کو کاپی کریں اور اسے راستے میں ڈالنے سے پہلے URL کوڈ کریں۔ یہ Python ٹکڑا پہلے درج کردہ اکاؤنٹ کے لئے ایسا کرتا ہے:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-یہ عوامی پڑھنے ہیں۔ اکاؤنٹ بنانا یا اپ ڈیٹ کرنا ایک دستخط شدہ لین دین ہے اور Taira سیٹ اپ کی ضرورت ہوتی ہے جو [ میں بیان کیا گیا ہے۔ SORA Nexus ڈیٹا بیسوں سے رابطہ کریں](/ur/get-started/sora-nexus-dataspaces.md).
+یہ عوامی پڑھنے کی کارروائیاں ہیں۔ اکاؤنٹ بنانا یا تبدیل کرنا ایک دستخط شدہ لین دین ہے اور اس کے لیے [Taira اور Minamoto کے ساتھ SORA Nexus پر ایپلیکیشن تیار کرنا](/ur/get-started/sora-nexus-dataspaces.md) میں بیان کردہ، فوسیٹ سے فنڈ شدہ Taira سیٹ اپ درکار ہے۔
 
 ## رجسٹریشن اور اجازت {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ PY
 - اپنے ڈومینز
 - رولز اور اجازت ٹوکن وصول کریں
 - ذخیرہ شدہ میٹا ڈیٹا
-- جب یہ خصوصیات فعال ہوں تو alias، rekey، recovery، اور Nexus شناخت کے بہاؤ میں حصہ لیں
+- متعلقہ خصوصیات فعال ہونے پر عرفی نام، کلید کی تبدیلی، بازیابی اور SORA Nexus کی شناخت کے عمل میں حصہ لینا
 
 ## شناخت کے مسائل کو حل کرنا {#troubleshooting-identity-issues}
 
@@ -96,4 +96,4 @@ PY
 - [اجازت نامے](/ur/blockchain/permissions.md)
 - [میٹا ڈیٹا](/ur/blockchain/metadata.md)
 - [کلائنٹ کی ترتیب](/ur/guide/configure/client-configuration.md)
-- [SORA Nexus ڈیٹا بیسز](/ur/get-started/sora-nexus-dataspaces.md)
+- [SORA Nexus ڈیٹا اسپیسز](/ur/get-started/sora-nexus-dataspaces.md)

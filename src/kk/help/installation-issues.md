@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Орнату мәселелерін шешу {#troubleshooting-installation-issues}
 
 Бұл бөлім Iroha 3 орнату үшін ақауларды жою кеңестерін ұсынады. Егер сізге туындаған мәселе мұнда сипатталмаған болса, бізбен [Телеграм](https://t.me/hyperledgeriroha) арқылы хабарласыңыз.

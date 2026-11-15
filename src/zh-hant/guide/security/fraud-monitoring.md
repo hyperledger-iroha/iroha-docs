@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 欺詐監測 {#fraud-monitoring}
 
 Iroha 部署的欺詐監控是圍繞帳本事件,查詢,許可權和應用背景構建的操作控制. Iroha 記錄了提交,接受,拒絕和提交的內容.監控系統決定哪些模式對您的業務流程有疑問,並將這些案例轉向審查者或自動響應控制.

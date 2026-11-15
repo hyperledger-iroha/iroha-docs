@@ -1,0 +1,2 @@
+# An empty context line in a unified diff is a single space.
+examples/iroha-trade-poc/build-support/*.patch whitespace=-blank-at-eol

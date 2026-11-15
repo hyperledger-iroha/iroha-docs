@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # تعیناتی کے مسائل کا حل {#troubleshooting-deployment-issues}
 
@@ -14,7 +14,7 @@ translation_engine: nllb-200-ct2
 مقامی اور ٹیسٹ کی تعیناتی کے لئے، ہاتھ سے تحریری نیٹ ورک نوڈ فائلوں کے بجائے Kagami کی طرف سے پیدا کردہ آثار کو ترجیح دیں:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 جنریٹڈ ڈائرکٹری میں نیٹ ورک نوڈ تشکیلات، ابتداء مواد، شروع اسکرپٹس، اور README کی تعمیر لائن کے لئے ایک Iroha 3 شامل ہے.
@@ -38,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker اور کمپوز {#docker-and-compose}
 
-تخلیق کریں موجودہ Kagami لوکل نیٹ آؤٹ پٹ سے تحریر کریں تاکہ کمانڈ لائن کی دلیلیں اور ترتیب فائلیں چیک آؤٹ کوڈ سے ملیں:
+ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+کٹ کی ڈائریکٹری میں `python3 poc.py logs` چلائیں تاکہ توثیقی نوڈز کے لاگ دیکھ سکیں۔
 
 اگر کمپوز کی تعیناتی شروع ہوتی ہے اور پھر اسٹال ہوجاتی ہے تو ، ڈیمون لاگس کو چیک کریں تاکہ:
 
@@ -53,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - P2P ایڈریسز جو صرف کنٹینر نیٹ ورک کے اندر کام کرتی ہیں۔
 - regenerating genesis کے بعد مقامی حجم کا دوبارہ استعمال
 
-ایک نئی جینیس کی جانچ کرتے وقت ، اسٹیک کو دوبارہ شروع کرنے سے پہلے پرانے Kura حجم کو ہٹا دیں۔ نئے جینیس کے ساتھ پرانے بلاک اسٹوریج رکھنے سے دوبارہ پلے ناکام ہوجائے گا۔
+نئے جینیسس بلاک کے لیے نوڈ کا ذخیرہ خالی ہونا چاہیے۔ اسی نیٹ ورک کو دوبارہ شروع کرنے کے لیے پہلے `python3 poc.py down` اور پھر `python3 poc.py up` چلائیں۔ `state/` کو اس کے چاروں Docker والیومز کے ساتھ محفوظ رکھیں۔
 
 ## کوبرنیٹس {#kubernetes}
 
@@ -66,9 +62,9 @@ Kubernetes کے لیے، ہر توثیق کنندہ کو حالت برقرار �
 
 اگر ایک پوڈ بار بار دوبارہ شروع ہوتا ہے تو ، پوڈ میں پیش کردہ ترتیب کو متوقع [`peer.template.toml`](/ur/reference/peer-config/index.md#template) کے ساتھ موازنہ کریں اور چیک کریں کہ آیا ہم منصب پرانے Kura ڈیٹا کو دوبارہ کھیل رہا ہے۔
 
-## سورہ پروفائل {#sora-profile}
+## SORA Nexus پروفائل {#sora-profile}
 
-نجی یا مقامی Iroha 3 تعیناتی جو Nexus، SoraFS، یا کثیر لین کے بہاؤ کا استعمال کرتے ہیں، کو سورا پروفائل فعال ہونے کے ساتھ معیاری ڈییمون شروع کرنا چاہئے:
+اگر Iroha 3 کی نجی یا مقامی تنصیب میں SORA Nexus، SoraFS یا متعدد لین استعمال ہوتی ہیں تو معیاری پس منظر سروس کو اس پروفائل کے ساتھ چلائیں۔
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

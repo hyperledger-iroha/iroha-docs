@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Sécurité {#security}
 
 Sécurisez un déploiement Iroha comme vous le feriez pour tout système qui traite des données sensibles et des valeurs. Protégez les clés de signature, l'accès au réseau, les opérations des nœuds, la surveillance et la réponse aux incidents. Un registre blockchain n'élimine pas le besoin de ces contrôles.

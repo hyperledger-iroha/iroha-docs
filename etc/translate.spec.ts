@@ -240,7 +240,7 @@ describe('Markdown translation protection', () => {
         'The runtime sends peers through one lane to the ledger endpoint after genesis, charges gas, advances the pacemaker, and stores a quorum certificate plus a commit certificate. Keep `runtime`, /peer, and LaneId unchanged.',
       ),
     ).toBe(
-      'The software execution environment sends network peers through one execution lane to the blockchain ledger API endpoint after blockchain genesis, charges transaction execution cost, advances the consensus pacemaker, and stores a consensus quorum certificate plus a consensus finalization certificate. Keep `runtime`, /peer, and LaneId unchanged.',
+      'The software execution environment sends network peers through one execution lane to the blockchain ledger network endpoint after blockchain genesis, charges transaction execution cost, advances the consensus pacemaker, and stores a consensus quorum certificate plus a consensus finalization certificate. Keep `runtime`, /peer, and LaneId unchanged.',
     )
   })
 
@@ -299,6 +299,19 @@ describe('Markdown translation protection', () => {
 
     expect(clarifyTechnicalTranslationSource(source)).toBe(source)
     expect(clarifyTechnicalTranslationSource(clarifyTechnicalTranslationSource(source))).toBe(source)
+  })
+
+  test('preserves technical link labels and the number of API identifiers during clarification', () => {
+    const source = '[Norito crate README](/reference/norito.md) lists an endpoint and an API endpoint.'
+    const clarified = clarifyTechnicalTranslationSource(source)
+    expect(clarified).toBe('[Norito crate README](/reference/norito.md) lists a network endpoint and an API endpoint.')
+    expect(technicalIdentifiers(clarified).get('API')).toBe(technicalIdentifiers(source).get('API'))
+  })
+
+  test('counts emphasized and soft-wrapped technical names in prose', () => {
+    expect(technicalIdentifiers('_Kura_ on SORA\nNexus').get('Kura')).toBe(1)
+    expect(technicalIdentifiers('_Kura_ on SORA\nNexus').get('SORA Nexus')).toBe(1)
+    expect(technicalIdentifiers('`internal_Kura_count`').has('Kura')).toBe(false)
   })
 
   test('does not disambiguate technical words inside fenced code', async () => {
@@ -517,18 +530,30 @@ describe('Markdown translation protection', () => {
 
   test('repairs Armenian asset false friends only when the aligned source discusses assets', () => {
     const mistranslation = 'Գրանցեք գործիքների սահմանումները և ստուգեք արտոնության ID-ն։'
-    expect(normalizeMachineTranslationArtifacts(mistranslation, armenian, 'Register asset definitions and check the asset ID.')).toBe(
-      'Գրանցեք ակտիվների սահմանումները և ստուգեք ակտիվի ID-ն։',
+    expect(
+      normalizeMachineTranslationArtifacts(
+        mistranslation,
+        armenian,
+        'Register asset definitions and check the asset ID.',
+      ),
+    ).toBe('Գրանցեք ակտիվների սահմանումները և ստուգեք ակտիվի ID-ն։')
+    expect(normalizeMachineTranslationArtifacts(mistranslation, armenian, 'Inspect the CLI tooling.')).toBe(
+      mistranslation,
     )
-    expect(normalizeMachineTranslationArtifacts(mistranslation, armenian, 'Inspect the CLI tooling.')).toBe(mistranslation)
   })
 
   test('repairs Kazakh ledger false friends only when the aligned source discusses a ledger', () => {
     const mistranslation = 'Блокчейн журналының күйі журналда сақталады.'
-    expect(normalizeMachineTranslationArtifacts(mistranslation, kazakh, 'The blockchain ledger state is stored in the ledger.')).toBe(
-      'Блокчейн тізілімінің күйі тізілімде сақталады.',
+    expect(
+      normalizeMachineTranslationArtifacts(
+        mistranslation,
+        kazakh,
+        'The blockchain ledger state is stored in the ledger.',
+      ),
+    ).toBe('Блокчейн тізілімінің күйі тізілімде сақталады.')
+    expect(normalizeMachineTranslationArtifacts(mistranslation, kazakh, 'Inspect the application log.')).toBe(
+      mistranslation,
     )
-    expect(normalizeMachineTranslationArtifacts(mistranslation, kazakh, 'Inspect the application log.')).toBe(mistranslation)
   })
 
   test('repairs Kazakh authority, explorer, and lot false friends only in aligned contexts', () => {
@@ -549,12 +574,12 @@ describe('Markdown translation protection', () => {
   })
 
   test('repairs Russian blockchain-explorer false friends only in aligned contexts', () => {
-    expect(normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Use the explorer route.')).toBe(
-      'Маршрут обозревателя и обозревателя.',
-    )
-    expect(normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Read a travel guide.')).toBe(
-      'Маршрут исследователя и проводника.',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Use the explorer route.'),
+    ).toBe('Маршрут обозревателя и обозревателя.')
+    expect(
+      normalizeMachineTranslationArtifacts('Маршрут исследователя и проводника.', russian, 'Read a travel guide.'),
+    ).toBe('Маршрут исследователя и проводника.')
   })
 
   test('repairs Mongolian domain, asset-definition, and instruction false friends in aligned contexts', () => {
@@ -581,9 +606,7 @@ describe('Markdown translation protection', () => {
         azerbaijani,
         'The peers use the validator profile with the node/runtime build command.',
       ),
-    ).toBe(
-      'şəbəkə həmkarları təsdiqləyici profili ilə şəbəkə qovşağı/proqram icra mühiti qurma əmri istifadə edir.',
-    )
+    ).toBe('şəbəkə həmkarları təsdiqləyici profili ilə şəbəkə qovşağı/proqram icra mühiti qurma əmri istifadə edir.')
     expect(normalizeMachineTranslationArtifacts('peer validator runtime build', azerbaijani, 'A music review.')).toBe(
       'peer validator runtime build',
     )
@@ -593,24 +616,22 @@ describe('Markdown translation protection', () => {
     expect(normalizeMachineTranslationArtifacts('გამოკითხვის შედეგი', georgian, 'Return the query result.')).toBe(
       'მოთხოვნის შედეგი',
     )
-    expect(normalizeMachineTranslationArtifacts('მონაცემთა ბაზის საიდუმლო', georgian, 'Bind the dataspace alias.')).toBe(
-      'მონაცემთა სივრცის ალიასი',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('მონაცემთა ბაზის საიდუმლო', georgian, 'Bind the dataspace alias.'),
+    ).toBe('მონაცემთა სივრცის ალიასი')
     expect(normalizeMachineTranslationArtifacts('წიგნის მასპინძელი', georgian, 'Restart the ledger host.')).toBe(
       'რეესტრის ჰოსტი',
     )
-    expect(normalizeMachineTranslationArtifacts('წიგნის მასპინძელი', georgian, 'Read the library host biography.')).toBe(
-      'წიგნის მასპინძელი',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('წიგნის მასპინძელი', georgian, 'Read the library host biography.'),
+    ).toBe('წიგნის მასპინძელი')
   })
 
   test('repairs Amharic cooking and digestion false friends only in aligned documentation contexts', () => {
-    expect(normalizeMachineTranslationArtifacts('የምግብ አሰራር የምግብ መፍጫ እሴት', amharic, 'The recipe verifies the digest.')).toBe(
-      'የተግባር መመሪያ ዳይጀስት',
-    )
-    expect(normalizeMachineTranslationArtifacts('የምግብ አሰራር', amharic, 'Prepare dinner.')).toBe(
-      'የምግብ አሰራር',
-    )
+    expect(
+      normalizeMachineTranslationArtifacts('የምግብ አሰራር የምግብ መፍጫ እሴት', amharic, 'The recipe verifies the digest.'),
+    ).toBe('የተግባር መመሪያ ዳይጀስት')
+    expect(normalizeMachineTranslationArtifacts('የምግብ አሰራር', amharic, 'Prepare dinner.')).toBe('የምግብ አሰራር')
     expect(
       normalizeMachineTranslationArtifacts(
         'መስቀለኛ መንገድ በመቆጣጠሪያ አውሮፕላን ላይ የብሎክቼይን ደብተርን በአክሲዮን ማረጋገጫ ያስኬዳል።',
@@ -631,9 +652,7 @@ describe('Markdown translation protection', () => {
     expect(normalizeMachineTranslationArtifacts('ክፍያ የሚከፍል ጽሑፍ', amharic, 'Submit a fee-paying write.')).toBe(
       'ክፍያ የሚከፍል የመጻፍ ክዋኔ',
     )
-    expect(normalizeMachineTranslationArtifacts('ጽሁፉን ያረጋግጡ', amharic, 'Prove the write.')).toBe(
-      'የመጻፍ ክዋኔውን ያረጋግጡ',
-    )
+    expect(normalizeMachineTranslationArtifacts('ጽሁፉን ያረጋግጡ', amharic, 'Prove the write.')).toBe('የመጻፍ ክዋኔውን ያረጋግጡ')
     expect(normalizeMachineTranslationArtifacts('የጽሁፍ ፋይል', amharic, 'It writes a file.')).toBe('የጽሁፍ ፋይል')
   })
 
@@ -656,9 +675,7 @@ describe('Markdown translation protection', () => {
         amharic,
         'The fixtures and artifacts preserve lineage for the authority principal. Homomorphic encryption is a readiness blocker when the rounding mode differs in the stock Iroha CLI.',
       ),
-    ).toBe(
-      'የሙከራ አብነቶች፣ አርቲፋክቶች፣ ተከታታይነቱ፣ ባለቤት፣ ሆሞሞርፊክ ምስጠራ፣ እንቅፋት፣ የማጠጋጋት ሁነታ፣ መደበኛው Iroha CLI።',
-    )
+    ).toBe('የሙከራ አብነቶች፣ አርቲፋክቶች፣ ተከታታይነቱ፣ ባለቤት፣ ሆሞሞርፊክ ምስጠራ፣ እንቅፋት፣ የማጠጋጋት ሁነታ፣ መደበኛው Iroha CLI።')
 
     expect(
       normalizeMachineTranslationArtifacts(
@@ -720,13 +737,9 @@ describe('Markdown translation protection', () => {
         'Check nullifiers, the vanity host, and fallback values, then disable curl buffering.',
       ),
     ).toBe('ናሊፋየሮችን፣ ብጁ የአስተናጋጅ ስምን፣ ተተኪ እሴቶችን ይፈትሹ እና curl ቋት አጠቃቀምን ያሰናክሉ።')
-    expect(
-      normalizeMachineTranslationArtifacts(
-        'መመሪያ WebRTC ውድቀት',
-        amharic,
-        'Manual WebRTC fallback',
-      ),
-    ).toBe('በእጅ የሚደረግ WebRTC ተተኪ አማራጭ')
+    expect(normalizeMachineTranslationArtifacts('መመሪያ WebRTC ውድቀት', amharic, 'Manual WebRTC fallback')).toBe(
+      'በእጅ የሚደረግ WebRTC ተተኪ አማራጭ',
+    )
   })
 
   test('does not normalize protected code, paths, URLs, or wire-format identifiers', () => {
@@ -824,26 +837,6 @@ describe('Markdown translation protection', () => {
     )
   })
 
-  test('uses reviewed Hebrew wording for the FastPQ limb packing rule', () => {
-    expect(
-      curatedExactTranslation(
-        'Byte strings are packed into 7-byte little-endian limbs so every limb is strictly below `p`:',
-        hebrew,
-      ),
-    ).toBe('מחרוזות בתים נארזות ליחידות של 7 בתים בסדר little-endian, כך שכל יחידה קטנה ממש מ־`p`:')
-  })
-
-  test('uses reviewed Myanmar wording where NLLB mixes Devanagari into a replay lead-in', () => {
-    expect(
-      curatedExactTranslation(
-        'Challenge calls append the full digest to the transcript state. The replay order is:',
-        myanmar,
-      ),
-    ).toBe(
-      'စိန်ခေါ်တန်ဖိုးကို တွက်ချက်သည့် ခေါ်ဆိုမှုများက ဟက်ရှ်အနှစ်ချုပ်တန်ဖိုး အပြည့်အစုံကို မှတ်တမ်းအခြေအနေထဲသို့ နောက်ဆက်တွဲ ပေါင်းထည့်သည်။ ပြန်လည်လုပ်ဆောင်သည့် အစီအစဉ်မှာ အောက်ပါအတိုင်းဖြစ်သည်-',
-    )
-  })
-
   test('uses reviewed Myanmar wording where NLLB inserts an Oriya mark into the domain row', () => {
     expect(
       curatedExactTranslation(
@@ -867,7 +860,7 @@ describe('Markdown translation protection', () => {
   })
 
   test('uses reviewed exact units for newly observed cross-script provider output', () => {
-    expect(curatedExactTranslation('Run Atomic Private Cross-Dataspace Settlement', hebrew)).toBe(
+    expect(curatedExactTranslation('Run Atomic Private Cross-Data Space Settlement', hebrew)).toBe(
       'הפעלת סליקה פרטית אטומית בין מרחבי נתונים',
     )
     expect(curatedExactTranslation('- the transaction entrypoint hash used as the batch hash', armenian)).toBe(
@@ -875,10 +868,10 @@ describe('Markdown translation protection', () => {
     )
     expect(
       curatedExactTranslation(
-        'Pipeline events are emitted when transactions are submitted, executed, or committed to a block. A pipeline event contains the following information: the kind of entity that caused an event (transaction or block), its hash and status. The status can be either `Validating` (validation in progress), `Rejected`, or `Committed`. If an entity was rejected, the reason for the rejection is provided.',
+        'Pipeline events are emitted as transactions and blocks move through the pipeline. A transaction event carries the transaction hash, block height, lane and data space IDs, and a status: `Queued`, `Expired`, `Approved`, or `Rejected` with the rejection reason. A block event carries the block header and a status: `Created`, `Approved`, `Rejected` with the reason, `Committed`, or `Applied`.',
         urdu,
       ),
-    ).toContain('اس کا کرپٹوگرافک ہیش، اور اس کی حالت')
+    ).toContain('بلاک کا واقعہ بلاک ہیڈر اور ایک حالت رکھتا ہے')
     expect(
       curatedExactTranslation('| `Account` | Account lifecycle, metadata, alias, and identity events |', bashkir),
     ).toBe('| `Account` | Иҫәп яҙмаһының тормош циклы, метадатаһы, ҡушаматы һәм идентификация ваҡиғалары |')
@@ -908,13 +901,7 @@ describe('Markdown translation protection', () => {
         locale: bashkir,
         source:
           'An empty `items` array is a valid response on a public testnet. It means there are no NFTs in the current page, not that NFT instructions are unavailable.',
-        expected: 'хәҙерге биттә NFT-лар юҡлығын аңлата',
-      },
-      {
-        locale: armenian,
-        source:
-          'Lane relay envelopes also carry compact FastPQ proof material. The material is a digest over the lane id, dataspace id, block height, verification height, block header hash, settlement hash, and manifest root. A relay is merge admissible only when it has both a QC and valid FastPQ proof material.',
-        expected: 'Վերահաղորդումը միավորման համար ընդունելի է միայն այն դեպքում',
+        expected: 'хәҙерге биттә NFTs юҡлығын аңлата',
       },
       {
         locale: hebrew,
@@ -930,8 +917,8 @@ describe('Markdown translation protection', () => {
       {
         locale: georgian,
         source:
-          'In an Iroha network, a peer is selected randomly and granted the special privilege of forming the next block. This privilege can be revoked in networks that achieve [Byzantine fault tolerance](#byzantine-fault-tolerance-bft) via [view change](#view-change).',
-        expected: '[ბიზანტიური ხარვეზებისადმი მედეგობას](#byzantine-fault-tolerance-bft)',
+          'For each height and view, Sumeragi derives the proposer deterministically from the committee, authenticated leader seed, and committed skipped-leader history. A [view change](#view-change) rotates to the next eligible committee member under the same [Byzantine fault tolerance](#byzantine-fault-tolerance-bft) rules.',
+        expected: '[ბიზანტიური შეცდომებისადმი მდგრადობის](#byzantine-fault-tolerance-bft)',
       },
       {
         locale: japanese,
@@ -954,8 +941,8 @@ describe('Markdown translation protection', () => {
       {
         locale: japanese,
         source:
-          '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.',
-        expected: 'すべての決済区間について Prepare 証明書',
+          '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Have the manifest sponsor submit it in one `RegisterAtomicPrivateSettlementPrepareV1` control carrier and wait for finality; Commit voters consult that replicated lock. Then request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.',
+        expected: '4. すべての決済区間について Prepare 証明書がそろ',
       },
       {
         locale: japanese,
@@ -1050,18 +1037,20 @@ describe('Markdown translation protection', () => {
       },
       {
         locale: simplifiedChinese,
-        source: 'The runtime configuration builds three pieces of lane state:',
-        expected: '软件执行环境配置构建三部分执行通道状态：',
+        source:
+          'For public global execution, lane `0` is sequenced by the global Sumeragi instance. Each other active lane incarnation runs a separate instance of the same Sumeragi core with its pinned committee and consensus parameters. Its certified block contains an ordered transaction batch checked for admission against a committed global anchor. Lane certification does not mutate the global State.',
+        expected: '同一 Sumeragi 核心的独立实例',
       },
       {
         locale: traditionalChinese,
-        source: 'The runtime configuration builds three pieces of lane state:',
-        expected: '軟體執行環境設定會建構三部分的執行通道狀態：',
+        source:
+          'For public global execution, lane `0` is sequenced by the global Sumeragi instance. Each other active lane incarnation runs a separate instance of the same Sumeragi core with its pinned committee and consensus parameters. Its certified block contains an ordered transaction batch checked for admission against a committed global anchor. Lane certification does not mutate the global State.',
+        expected: '同一 Sumeragi 核心的獨立實例',
       },
       {
         locale: kazakh,
         source:
-          'The option summary above is verified against the current `iroha3d` argument definitions. The checked-in generated help snapshot is intentionally not rendered while its provenance status is pending. To inspect the exact help for your checkout, run:',
+          'The option summary above follows the `iroha3d` argument definitions at the pinned Iroha commit. To inspect the exact help for your checkout, run:',
         expected: 'Жұмыс көшірмеңіздегі дәл анықтаманы көру үшін',
       },
       {
@@ -1431,8 +1420,30 @@ describe('Markdown translation protection', () => {
     expect(curatedExactTranslation('Supported', simplifiedChinese)).toBeUndefined()
   })
 
-  test('counts Nexus identifiers consistently across soft wrapping', () => {
-    expect(technicalIdentifiers('SORA\nNexus, SORA Nexus, and Nexus.').get('Nexus')).toBe(3)
+  test('counts SORA Nexus identifiers consistently across soft wrapping', () => {
+    const identifiers = technicalIdentifiers('SORA\nNexus, SORA Nexus, and Nexus.')
+    expect(identifiers.get('Nexus')).toBe(3)
+    expect(identifiers.get('SORA Nexus')).toBe(2)
+  })
+
+  test('counts emphasized technical names without changing literal identifiers', () => {
+    expect(technicalIdentifiers('_Kura_ and __AccountId__ with _NFTs_.')).toEqual(
+      technicalIdentifiers('Kura and AccountId with NFTs.'),
+    )
+    expect(technicalIdentifiers('`_Kura_` and `some_Kura_name`')).toEqual(new Map())
+    expect(() => assertGeneratedMarkdownStructure('_Kura_', 'Autre', french)).toThrow('technical identifier Kura drift')
+  })
+
+  test('clarifies service prose without introducing technical identifiers or changing protected link labels', () => {
+    const source =
+      'Use the API endpoint and another endpoint for read-only calls and service calls. See [Norito crate README](/reference/norito.md) and [Norito crate README][norito].'
+    const clarified = clarifyTechnicalTranslationSource(source)
+
+    expect(clarified).toBe(
+      'Use the API endpoint and another network endpoint for read-only service requests and service requests. See [Norito crate README](/reference/norito.md) and [Norito crate README][norito].',
+    )
+    expect(technicalIdentifiers(clarified)).toEqual(technicalIdentifiers(source))
+    expect(clarifyTechnicalTranslationSource(clarified)).toBe(clarified)
   })
 
   test('leaves generic ID prose translatable while preserving concrete identifier names', () => {
@@ -1446,8 +1457,8 @@ describe('Markdown translation protection', () => {
   })
 
   test('applies reviewed heading translations after stable anchors are added', () => {
-    expect(curatedExactTranslation('## Anonymous Asset Escrow {#anonymous-asset-escrow}', myanmar)).toBe(
-      '## အမည်မဖော် ပိုင်ဆိုင်မှု အာမခံအပ်နှံမှု {#anonymous-asset-escrow}',
+    expect(curatedExactTranslation('### Carbon Credit Retirement {#carbon-credit-retirement}', georgian)).toBe(
+      '### ნახშირბადის კრედიტის გამოყენებიდან ამოღება {#carbon-credit-retirement}',
     )
   })
 
@@ -1467,6 +1478,16 @@ describe('Markdown translation protection', () => {
     expect(failures).toEqual([])
   })
 
+  test('reviewed endpoint translations preserve the source API acronym count', () => {
+    for (const locale of TRANSLATED_LOCALES) {
+      for (const [source, translated] of curatedExactTranslationEntries(locale)) {
+        expect(technicalIdentifiers(translated).get('API') ?? 0, `${locale.key}: ${source}`).toBe(
+          technicalIdentifiers(source).get('API') ?? 0,
+        )
+      }
+    }
+  })
+
   test('preserves protocol-family link labels while keeping localized destinations', () => {
     expect(
       synchronizeTechnicalLinkLabels(
@@ -1479,11 +1500,7 @@ describe('Markdown translation protection', () => {
 
   test('rejects generated prose whose link label escaped the brackets', () => {
     expect(() =>
-      assertGeneratedMarkdownStructure(
-        'Use [Transfer](#transfer).',
-        'Utilisez [](#transfer) Transférer.',
-        french,
-      ),
+      assertGeneratedMarkdownStructure('Use [Transfer](#transfer).', 'Utilisez [](#transfer) Transférer.', french),
     ).toThrow('Markdown link label became empty for destination #transfer')
   })
 

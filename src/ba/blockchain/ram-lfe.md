@@ -1,14 +1,13 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # RAM-LFE {#ram-lfe}
 
-RAM-LFE — Random-Access Machine Laconic Function Evaluation. Iroha-ла ул public policy-һы сылбырҙа булған, әммә evaluator логикаһы, серҙәре йәки сей input-тары донъя торошона яҙылырға тейеш булмаған программалар өсөн дөйөм йәшерен функциялар ҡатламы. Уны шәхси телефон йәки email эҙләү кеүек SORA Nexus идентификатор ағымдары ҡуллана; node profile ҡушымтаға йүнәлтелгән маршруттарҙы ҡушһа, ул Torii программаһын үтәү өсөн дөйөм ярҙамсы итеп тә асылырға мөмкин.
+RAM-LFE тулыһынса Random-Access Machine Laconic Function Evaluation тип атала. Iroha-ла был дөйөм йәшерен функциялар ҡатламы: программаның асыҡ ҡағиҙәләре сылбырҙа урынлаша, ә баһалаусының логикаһы, сере йәки эшкәртелмәгән инеш мәғлүмәте дөйөм реестр хәленә яҙылырға тейеш түгел. Уны SORA Nexus идентификаторҙары менән эшләгәндә, мәҫәлән, телефон йәки электрон почтаны йәшерен эҙләүҙә ҡулланалар. Төйөн профилендә ҡушымта өсөн маршруттар асылһа, был ҡатлам Torii аша программа башҡарыу өсөн дә ҡулланыла ала.
 
 Сылбыр сәйәсәт йөкләмәһе һәм квитанция раҫлау метамәғлүмәттәрен һаҡлай. Резолютор йәки Torii йүгереү ваҡыты йәшерен программаны баһалай, рөхсәт ителгән продукцияны ғына ҡайтарып бирә һәм клиенттарҙың, ярҙам инструменттары йәки бухгалтер инструкциялары теркәлгән сәйәсәткә ҡаршы тикшереп була торған квитанцияны ҡуша.
 
@@ -764,6 +763,5 @@ Torii-ның процесста эшләү ваҡыты RAM-LFE `torii.ram_lfe.p
 
 ## Төрлө темалар {#related-topics}
 
-- [Шәхси мәғлүмәттәр биләмәһе өсөн спонсорлыҡ түләүҙәре](/ba/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
 - [Torii Оҙаҡҡы һыҙаттар](/ba/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Аноним транзакциялар](/ba/blockchain/anonymous-transactions.md)

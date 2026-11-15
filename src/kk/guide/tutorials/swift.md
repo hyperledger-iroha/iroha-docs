@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift және iOS {#swift-and-ios}
 
 Жоғары деңгейлі жұмыс кеңістігі арқылы жіберілген Swift SDK — бұл `IrohaSwift/` астындағы `IrohaSwift` Swift пакеті. Оның пакет техникалық манифесті үш кітапхана өнімін анықтайды — `IrohaSwift`, `IrohaSwiftMobileTransports` және `IrohaSwiftTransferUI` — және iOS 15+ және macOS 12+ нұсқаларына Swift құралдар 5.9 көмегімен бағытталған.
@@ -30,20 +29,16 @@ targets: [
 ]
 ```
 
-Қосымшаңыз үшін жолды реттеңіз. Ағымдағы `examples/ios/ConnectMinimalApp` жолын сол күйінде көшірмеңіз; сол техникалық манифест `../../IrohaSwift`-ді `examples/IrohaSwift`-ге шешеді.
+Қосымшаңыз үшін жолды реттеңіз. `examples/ios/ConnectMinimalApp/Package.swift` дәл сол тәуелділікті `../../../IrohaSwift` салыстырмалы жолымен көрсетеді.
 
-Пакетті шешер алдында көпірдің жұмыс алаңының түбірінде бар екеніне көз жеткізіңіз:
+Пакетті шешер алдында ағымдағы нативті көпірді құрастырыңыз. Жергілікті әзірлеу және тесттер үшін мұны жұмыс алаңының түбірінен іске қосыңыз:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-Бұл `dist/NoritoBridge.xcframework` тудырады; `IrohaSwift/Package.swift` оны `../dist/NoritoBridge.xcframework` ретінде көрсетеді.
-
-## CocoaPods {#cocoapods}
-
-Код базасында сондай-ақ `IrohaSwift/IrohaSwift.podspec` бар. Ол `IrohaSwift` подын, Swift 5.9 және iOS 15 жариялайды. Podspec негізгі репозиторийден Swift көздерін тартады; транзакцияны кодтау, Ed25519 емес қолтаңба және Connect криптосы үшін жергілікті көпір әлі де болуы және қосылуы керек.
+Шығарылым құрастырулары `make bridge-xcframework` арқылы `dist/NoritoBridge.xcframework` жасайды; бұл команда `SOURCE_DATE_EPOCH`, `NORITO_BRIDGE_OUT_DIR`, `NORITO_BRIDGE_BUILD_DIR`, `NORITO_BRIDGE_ARCHIVE_OUTPUT` және `MOBILE_SDK_CARGO_LOCKFILE` айнымалыларын талап етеді. `IrohaSwift/Package.swift` көпірді `../dist/NoritoBridge.xcframework` ретінде көрсетеді.
 
 ## Жылдам бастау {#quickstart}
 
@@ -52,20 +47,20 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
 
 ## Сынап көріңіз Taira Тек оқу үшін {#try-taira-read-only}
 
-Құрылғы немесе симулятор қоғамдық Taira API соңғы нүктеге жете алатынын растау үшін қарапайым HTTP зондпен бастаңыз:
+Құрылғы не симулятор ашық Taira соңғы нүктесіне жете алатынын растау үшін қарапайым HTTP тексеруінен бастаңыз:
 
 ```swift
 import Foundation
@@ -89,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -103,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest` және `UnshieldRequest` қол қоймас бұрын бір протоколдық стандарттағы есеп-шот идентификаторларын және бір протоколдық стандарттағы префикссіз Base58 актив анықтамасы идентификаторларын тексереді.
+`TransferRequest`, `MintRequest` және `BurnRequest` қол қою алдында канондық есептік жазба идентификаторларын және канондық, префикссіз Base58 актив анықтамасы идентификаторларын тексереді.
 
 ## Табиғи сенімгерлік есеп {#native-escrow}
 
-Swift нарық алаңын және анонимді депозит нұсқауларын `NativeEscrowInstructionBuilders` немесе сәйкес `IrohaSDK.build*Escrow*` көмекшілері арқылы Norito JSON жүктемелері ретінде жасайды. Мысалдар, анонимді дәлел өрістері және дауды шешуші рұқсат токені үшін [Туынды активтерді сенімхатта сақтау](/kk/blockchain/escrow.md#swift-and-ios)-ге қараңыз.
+Swift нарықтық эскроу нұсқауларын `NativeEscrowInstructionBuilders` немесе сәйкес `IrohaSDK.build*Escrow*` көмекшілері арқылы Norito JSON жүктемелері ретінде жасайды. Мысалдар және дауды шешуші рұқсат токені үшін [Туынды активтерді сенімхатта сақтау](/kk/blockchain/escrow.md#swift-and-ios)-ге қараңыз.
 
 ## Қол қою {#signing}
 
@@ -144,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` ашу және жабу басқару элементтерін, шифрланған деректер контейнерін оқу, бағыттау кілттерін, ағынды басқаруды, оқиға ағындарын, баланс ағындарын және диагностикалық журналдарды басқарады.
@@ -155,13 +156,13 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Swift көзі қазіргі уақытта мыналарды қамтиды:
 
 - `ToriiClient` HTTP есеп-шоттар, активтер, лақап аттар, шолушы беттері, RWA, келісімшарттар, көп қолды, басқару, жазылымдар, деректер қолжетімділігі, құпия активтер, түйін/жүру уақыты күйі, денсаулық, көрсеткіштер, және SSE ағындары үшін көмекшілер
-- `IrohaSDK` транзакцияны құрастырушылар және аудару, шығару, жою, қорғау, қорғауды алу, ZK аудару, ZK активті тіркеу, метадеректер, идентификатор талаптары, көпқосымша тіркеу және басқару нұсқауларын жіберу/сұрау көмегін көрсететін құралдар
+- `IrohaSDK` аудару, шығару, жою, ZK активін тіркеу, метадеректер, идентификатор талаптары, көпқолтаңбалы тіркеу, келісімшарт орналастыру және басқару бюллетеньдері үшін транзакция құрастырушылары мен жіберу/сұрау көмекшілері
 - `PendingTransactionQueue` және `FilePendingTransactionQueue` арқылы күтуші транзакциялар кезегін қолдау
 - тіркелгі-мекенжай және I105 көмекшілері арқылы `AccountAddress` және `AccountId`
 - Ed25519, secp256k1, ML-DSA, BLS, GOST, және SM2 қолтаңба беттері, қажет болған жағдайда жергілікті көпірді қолдаумен
 - нарық және анонимді эскроу үшін жергілікті эскроу нұсқаулығының жүктемесін құрастыру құралдары
 - WebSocket, frame, crypto, session, queue, replay және диагностика көмекшілерін қосу
-- Kagemusha дайындық, терілген қайта толтыру және өтеу, операция статусі, ескерту, желілік әріптес пакеті, протокол нәтижесі жазбасы және QR ағын үлгілері
+- KAGEMUSHA V1 сым пішімінің көмекші құралдары және нативті әмиянның Advance провайдері, тіркелу, қалпына келтіру мен қабылданған алмасу шақыруларына арналған iPhone платформа адаптері
 - SoraFS, мәліметтердің қолжетімділігі және дәлел-қосымша көмекшілері
 
 ## API Мысалдар {#api-examples}
@@ -171,7 +172,6 @@ Swift көзі қазіргі уақытта мыналарды қамтиды:
 ## Дерек көздері {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

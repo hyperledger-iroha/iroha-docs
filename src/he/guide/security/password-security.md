@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # אבטחת סיסמה {#password-security}
 
 סיסמאות יכולות להגן על קונסולות המפעילים, חנויות סודיות, גיבויים וקובצי מפתח מקומיים. סיסמה היא רק שליטה אחת. השתמש בה יחד עם אחסון מפתח מאובטח, שלילי גישה ואהנות רב-פקטור כאשר זמין.

@@ -128,8 +128,10 @@ function countIssues(issues: LinkIssues): number {
   return count
 }
 
-async function scan(options: Options): Promise<LinkIssues> {
-  const files = await findFiles(options.root)
+export async function scan(options: Options): Promise<LinkIssues> {
+  const builtFiles = await globby(path.join(options.root, '**/*'), { onlyFiles: true })
+  const files = builtFiles.filter((file) => file.endsWith('.html'))
+  const assets = new Set(builtFiles.filter((file) => !file.endsWith('.html')))
 
   const entries = await Promise.all(
     files.map(async (file) => {
@@ -141,7 +143,7 @@ async function scan(options: Options): Promise<LinkIssues> {
       }
 
       const parsedLinks = links
-        .map((x) => parseLink({ root: options.root, source: file, href: x, publicPath: options.publicPath }))
+        .map((x) => parseLink({ root: options.root, source: file, href: x, publicPath: options.publicPath, assets }))
         .filter((x): x is Exclude<ParsedLink, LinkExternal> => x.type !== 'external')
 
       return { file, links: parsedLinks, anchors }
@@ -153,11 +155,7 @@ async function scan(options: Options): Promise<LinkIssues> {
     return acc
   }, new Map())
 
-  return findIssuesInGraph(graph)
-}
-
-async function findFiles(root: string): Promise<string[]> {
-  return globby(path.join(root, '**/*.html'))
+  return findIssuesInGraph(graph, assets)
 }
 
 const ANCHORS_QUERY = cssSelect.compile('[id]')
@@ -243,7 +241,13 @@ export function assertUrlWithinPublicPath(url: string, publicPath?: string): voi
 }
 
 // export for tests
-export function parseLink(opts: { root: string; source: string; href: string; publicPath?: string }): ParsedLink {
+export function parseLink(opts: {
+  root: string
+  source: string
+  href: string
+  publicPath?: string
+  assets?: ReadonlySet<string>
+}): ParsedLink {
   const relative = path.relative(opts.root, opts.source)
   const DUMMY_ORIGIN = 'http://dummy.dummy'
   const url = new URL(opts.href, DUMMY_ORIGIN + (opts.publicPath ?? '/') + `${relative}`)
@@ -260,7 +264,7 @@ export function parseLink(opts: { root: string; source: string; href: string; pu
           pathProcessed = pathProcessed.slice(opts.publicPath.length)
         }
         let file = path.join(opts.root, pathProcessed)
-        if (path.extname(file) !== '.html') file = path.join(file, 'index.html')
+        if (path.extname(file) !== '.html' && !opts.assets?.has(file)) file = path.join(file, 'index.html')
 
         if (path.normalize(file) === path.normalize(opts.source)) {
           if (!anchor) return { type: 'other', file }
@@ -286,7 +290,7 @@ export function parseLink(opts: { root: string; source: string; href: string; pu
 
 type Graph = Map<string, { links: Exclude<ParsedLink, LinkExternal>[]; anchors: Set<string> }>
 
-function findIssuesInGraph(graph: Graph): LinkIssues {
+function findIssuesInGraph(graph: Graph, assets: ReadonlySet<string>): LinkIssues {
   const issues: LinkIssues = new Map()
 
   for (const [file, { links, anchors: selfAnchors }] of graph) {
@@ -303,6 +307,7 @@ function findIssuesInGraph(graph: Graph): LinkIssues {
             })
         })
         .with({ type: 'other' }, ({ file: otherFile, anchor }) => {
+          if (assets.has(otherFile)) return
           const otherFileInGraph = graph.get(otherFile)
           if (!otherFileInGraph) {
             fileIssues.push({

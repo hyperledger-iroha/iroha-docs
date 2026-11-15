@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Сит функциялар интерфейстары (FFI) {#foreign-function-interfaces-ffi}
 
 Ҡоролтай `iroha_ffi` crate C сығарыу өсөн макролар һәм һыҙаттар бирә ABI бәйләнештәр Rust APIs. Унда ҡулланыла: Iroha Типтар аша сығырға кәрәк FFI сиктәре, мәҫәлән: SDK бәйләнештәр йәки ҡабул итеүсе интеграциялар.

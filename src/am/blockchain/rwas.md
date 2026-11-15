@@ -5,7 +5,6 @@ translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb957
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የገሃዱ ዓለም ንብረቶች {#real-world-assets}
 
 የገሃዱ ዓለም ንብረቶች (RWAs) ባለቤትነታቸው ወይም ቁጥጥራቸው በሰንሰለት ላይ ክትትል የሚደረግባቸው ከሰንሰለት ውጪ ያሉ ንብረቶችን ሞዴል። በ Iroha፣ RWA የተፈጠረ መለያ፣ የባለቤት መለያ፣ ብዛት፣ የንግድ ሜታዳታ፣ አመጣጥ እና አማራጭ የህይወት ዑደት መቆጣጠሪያዎች ያለው የተመዘገበ የብሎክቼይን መዝገብ ዕጣ ነው።

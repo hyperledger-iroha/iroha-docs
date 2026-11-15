@@ -1,24 +1,22 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Բնական ակտիվների վարկավճար {#native-asset-escrow}
 
 Native escrow- ը թվային ակտիվների պահեստավորման մեխանիզմ է, որը կառավարվում է գլխավոր գրասենյակում: Փոխարենը ակտիվները ուղարկելու համար հավելվածի սեփական հաշվին եւ դիմման կոդի վրա հիմնվելով այդ հաշիվը պաշտպանելու համար, escrow ISIs փոխանցում է արժեքը դետերմինիստական արձանագրության պահպանումի հաշիվ եւ գրանցում է escrow կյանքի ցիկլը համաշխարհային վիճակում:
 
-Օգտագործեք ներքին պահպանումներ շուկայական կարգավորման համար, Aitai ոճի արտահոսքային վճարների համակարգում, կարեւորագույն փակիչներ եւ պաշտպանված պահպանումների աշխատանքային հոսքեր, որոնք պահանջում են գլխավոր գրասենյակի տեսանելի կենսաշրջանային վիճակը:
+Օգտագործեք բնիկ էսկրոուն շուկայական հաշվարկների, Aitai ոճի արտաշղթայական վճարումների համակարգման, փուլային արգելափակումների և հավաստողին կապված այնպիսի պայմանական ազատումների համար, որոնց կյանքի ցիկլի վիճակը պետք է տեսանելի լինի մատյանում։
 
 ## Գլխավոր գաղափարներ {#concepts}
 
 |Գլխավոր |Նկարագրություն |
 | --- | --- |
-|`EscrowId` |Ուղարկողի ընտրած նույնացուցիչը ներառվում է հեշում։ Այն պետք է եզակի լինի թափանցիկ և անանուն էսկրոուների միջև։ |
+|`EscrowId` |Կանչողի ընտրած նույնացուցիչ, որը փաթաթում է հեշ։ Այն պետք է եզակի լինի էսկրոուի բոլոր գրառումների միջև։ |
 |`AssetEscrowRecord` |Թվային ակտիվների թափանցիկ պահպանումը կամ փակումը: |
-|`AnonymousAssetEscrowRecord` |Պաշտպանված էսկրոուի գրառում, որը հիմնավորվում է nullifier-ներով, պարտավորություններով և ապացույցների հավելվածներով։ |
 |Պահպանության հաշիվ |Դիտերմինիստական արձանագրության հաշիվ, որը ստացվել է շղթայից ID, պահպանումից ID եւ ակտիվի սահմանումից: |
 |Բացադրիչներ |Բացադրիչները կարող են բացահայտել հաշիվներ, դատավճիռներ, հաղորդագրություններ, պահեստային մանիֆեսներ կամ այլ ապացույցներ դուրս շղթայից: Ապացույցների օգտակար բեռնվածքը չի պահվում գրասենյակում:|
 
@@ -100,7 +98,7 @@ fn release_marketplace_escrow(
 
 ## Գնացական ակտիվների կոճակները {#generic-asset-locks}
 
-Աշունների կողպեքները օգտագործում են նույն պահեստային արձանագրության տեսակը, բայց դրանք չեն գնորդ-վաճառողի առաջարկներ: Նրանք արգելափակում են միջոցները նպատակակետային հաշիվի համար եւ ընտրանքային կերպով պահանջում են առանձին թողարկման մարմին ՝ գումարները հանելու համար:
+Ակտիվի արգելափակման համար օգտագործվում է պահառության նույն տեսակի գրառումը։ Սա գնորդի և վաճառողի միջև առաջարկ չէ։ Միջոցներն արգելափակվում են նպատակային հաշվի օգտին, և դրանք ստանալու համար կարող է պահանջվել առանձին իրավասու կողմի թույլտվությունը։
 
 |ISI |Ո՞վ է ներկայացնում այն:|Արդյունք |
 | --- | --- | --- |
@@ -174,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python ներկայումս բաց է թողնում բարձր մակարդակի օգնականները գեներիկ փակիչների համար. `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, եւ `expire_asset_lock`. Վաճառքի վայրերի եւ անանուն գրավի համար Python, օգտագործման քանոնիկ `InstructionBox` JSON միջով SDK Էս JSON փախուստի խցիկ, կամ անցնել մի SDK որը բացահայտում է առաջին դասի հանձնառուների շինարարներին:
+Python-ը ներկայումս տրամադրում է բարձր մակարդակի օգնականներ ընդհանուր արգելափակումների համար՝ `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` և `expire_asset_lock`։ Python-ից շուկայական և պայմանական էսկրոուի համար օգտագործեք կանոնական `InstructionBox` JSON՝ SDK-ի JSON-ի ուղղակի մուտքի միջոցով, կամ ներկայացրեք գործարքը այնպիսի SDK-ի միջոցով, որը տրամադրում է էսկրոուի լիարժեք կառուցիչներ։
 
 ## Վեճեր {#disputes}
 
@@ -226,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Անանուն վարձակալություն {#anonymous-escrow}
+## Պայմանական էսկրոու {#conditional-escrow}
 
-Անանուն պահապանը օգտագործում է նույն շուկայական կյանքի ցիկլը, բայց ֆինանսավորման եւ փակման ակտիվների շարժումը պաշտպանված են: Հանրային արձանագրությունը դեռեւս պահում է վաճառողին, գնորդին, կարգավիճակը, ապացույցների հաշեսները, ժամային տպիչները եւ ապացույցների հետ կապված շարժումների արձանագրությունները: Պաշտպանված գրքերի մեջ գտնվող գումարներն ու ստացողները ներկայացվում են պարտավորություններով, չեղյալ հայտարարողների եւ ապացույցների հավելվածներով:
+Պայմանական էսկրոուն արգելափակում է թվային ակտիվը շահառուի համար և այն ազատում է միայն այն բանից հետո, երբ բոլոր պայմանները հերթականությամբ բավարարվում են։ Յուրաքանչյուր պայման նշում է հավաստողի հաշիվը, մատյանի կողմից գնահատվող պրեդիկատը (`Equals` տիպավորված արժեքին կամ `QuantityAtMost` սահմանին) և իր՝ մեկից սկսվող հերթական համարը։ Մատյանի ժամանակի ընտրովի պատուհանը սահմանափակում է բոլոր հավաստումները։
 
-|թափանցիկ ISI |Անանուն ISI |
-| --- | --- |
-|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
-|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
-|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
-|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
-|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
-|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
-|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
-
-Պարապիկ կամ պրով գործիքները պետք է կառուցեն ապացույցի հավելվածը եւ հանրային ներմուծումները: Բացումը ստեղծում է մեկ պահեստային պարտավորություն: Ազատումը, չեղարկումը եւ անանուն վեճերի լուծումը պետք է ծախսեն ճիշտ մեկ պահեստական պարտավորությունը եւ ստեղծեն գնորդին, վաճառողին կամ բաժանել արտադրանքի պարտավորությունները, որոնք պահանջվում են գործողության համար:
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-Հիմնական պաշտպանված գործարքի մոդելի համար տես [ Անանուն գործարքներ ](/hy/blockchain/anonymous-transactions.md):
+| ISI | Կանչող | Ազդեցություն |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Բացող | Գումարն արգելափակում է արձանագրության պահառության ներքո՝ անփոփոխ պայմաններով և ժամկետի բացարձակ ավարտով։ |
+| `AttestEscrowCondition` | Պայմանի հավաստողը | Հաջորդ պայմանի համար տրամադրում է `Bool`, `Text` կամ `Quantity` արժեք։ Երբ վերջին պայմանը բավարարվում է, էսկրոուն ազատվում է հօգուտ շահառուի։ |
+| `ExpireConditionalEscrow` | Ցանկացած հաշիվ | Ժամկետի ավարտից հետո գումարը վերադարձնում է բացողին, եթե էսկրոուն չի ազատվել։ |
 
 ## SDK Օգտագործում {#sdk-usage}
 
-Հաշվարկային աջակցության ցուցանիշը տարբերվում է SDKs. Rust ունի կանոնիկ տիպված տվյալների մոդելը: Python Ներկայումս բաց է թողնում գեներիկ ակտիվների արգելափակումի օգնականները: JavaScript եւ TypeScript օգտագործումը Kotodama Վարկային հյուրընկալողների զանգերը: Kotlin/JVM եւ Swift ապահովել շուկայական եւ անանուն պահպանումների համար տիպավորված օգտակար բեռներ կառուցողներ:
+Էսկրոուի աջակցությունը տարբեր SDKs-ում տարբեր կերպ է տրամադրվում։ Rust-ն ունի կանոնական տիպավորված տվյալների մոդել։ Python-ը ներկայումս տրամադրում է ակտիվների ընդհանուր արգելափակման օգնականներ։ JavaScript-ը և TypeScript-ը օգտագործում են Kotodama-ի էսկրոուի հոսթ կանչեր։ Kotlin/JVM-ը և Swift-ը տրամադրում են տիպավորված օգտակար բեռի կառուցիչներ շուկայական էսկրոուի համար։
 
 |SDK |Օգտագործեք այս մակերեսը:|Հասարակություն |
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Շուկայի պահպանումներ, ընդհանուր փակումներ, անանուն պահպանումեր, հարցումներ եւ իրադարձություններ: |
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, եւ հաճախորդի `*_and_wait` օգնականներ |Թվային ակտիվների կողպումներ. շուկայական և անանուն էսկրոուի օգնականները դեռ առաջին կարգի Python մեթոդներ չեն։ |
+| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |Շուկայական էսկրոու, ընդհանուր արգելափակումներ, պայմանական էսկրոու, հարցումներ և իրադարձություններ։ |
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` և հաճախորդի `*_and_wait` օգնականներ |Ակտիվների ընդհանուր արգելափակումներ։ Շուկայական և պայմանական էսկրոուի օգնականները դեռ Python-ի լիարժեք մեթոդներ չեն։ |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram`ից `@iroha/iroha-js/kotodama-compiler` |Kotodama պայմանագրերի ներսում պահպանումների հյուրընկալող զանգեր: |
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` դասերը `org.hyperledger.iroha.sdk.core.model.instructions` |Շուկայական և անանուն էսկրոուի հատուկ հրահանգների ձևանմուշներ։ |
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` եւ `IrohaSDK.build*Escrow*` օգնականներ |Շուկայական և անանուն էսկրոուի Norito JSON հրահանգների օգտակար բեռնվածքներ։ |
+| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` դասերը `org.hyperledger.iroha.sdk.core.model.instructions`-ում |Շուկայական էսկրոուի հատուկ հրահանգների ձևանմուշներ։ |
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` և `IrohaSDK.build*Escrow*` օգնականներ |Շուկայական էսկրոուի Norito JSON հրահանգների օգտակար բեռներ։ |
 
 Ստորեւ բերված օրինակները կենտրոնանում են հրահանգների կառուցման վրա: Հաշվի ֆինանսավորումը, ստորագրությունների կառավարումը եւ գործարքի ներկայացումը հետեւում են յուրաքանչյուրի համար սովորական հոսքին SDK.
 
 ### Rust SDK {#rust-sdk}
 
-Օգտագործեք Rust SDK, երբ ձեզ անհրաժեշտ է լիարժեք ներքին ծածկույթ կամ հարցումներ / իրադարձությունների աջակցություն: Վերոնշյալ օրինակները ցույց են տալիս շուկայում թողարկումը, ընդհանուր փակման դուրսբերումը, վեճերի լուծումը եւ անանուն պահպանումների կառուցումը `iroha::data_model::isi::escrow`:
+Օգտագործեք Rust SDK-ն, երբ ձեզ անհրաժեշտ է լիարժեք բնիկ ծածկույթ կամ հարցումների/իրադարձությունների աջակցություն։ Վերևի օրինակները ցույց են տալիս շուկայական էսկրոուի ազատումը, ընդհանուր արգելափակումից միջոցների դուրսբերումը և վեճի լուծումը `iroha::data_model::isi::escrow`-ի միջոցով։
 
 ```rust
 use iroha::{
@@ -326,7 +275,7 @@ fn open_and_read(
 }
 ```
 
-### Python Աշունների կողպեքներ {#python-asset-locks}
+### Ակտիվների արգելափակումը Python-ով {#python-asset-locks}
 
 Python SDK-ը բացահայտում է առաջին դասի օգնականները գեներիկ ակտիվների փակման համար: Օգտագործեք դրանք կարեւորագույն վճարումների, ազատագրման մարմնի կողմից դուրսբերումների, բացողի կողմից չեղարկման եւ ժամկետով վերադարձերի համար:
 
@@ -397,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Վեճերի համար օգտագործեք `escrow_open_dispute(offer, evidence)` եւ `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`. Անանուն պահպանումների հյուրընկալող զանգերը ընդունում են Norito խնդրանքային բեռի բայթները, օրինակ, `anonymous_escrow_open_offer(request)`.
+Վեճերի համար օգտագործեք `escrow_open_dispute(offer, evidence)` և `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`։
 
 ### Kotlin եւ JVM {#kotlin-and-jvm}
 
@@ -431,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Անանուն ձեւանմուշներ հասանելի են որպես `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, եւ `ResolveAnonymousEscrowDisputeInstruction`. Android Java- ի զանգահարողները կարող են օգտագործել համապատասխանեցումը `NativeEscrowInstructions.*` շինարարներ Android արվեստի գործարք:
-
 ### Swift եւ iOS {#swift-and-ios}
 
 Swift SDK կառուցում է գրավման հրահանգները որպես Norito JSON օգտակար բեռնվածքներ: Օգտագործեք `NativeEscrowInstructionBuilders` անմիջապես կամ զանգահարեք հավասար `IrohaSDK.build*Escrow*` օգնականը, երբ ձեր ծրագիրը արդեն ունի `IrohaSDK` օրինակ:
@@ -463,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Անանուն Swift ստեղծողները վերցնում են չեղարկիչների ցուցակներ, արտադրանքի պարտավորությունների ցուցակներ, ապացուցման բառարան եւ ընտրանքային `rootHint` արժեքներ: Վեճի լուծման թույլտվության տոմենը հասանելի է որպես `NativeEscrowPermissions.canResolveEscrowDispute`.
+Վեճը լուծողի թույլտվության տոկենը հասանելի է որպես `NativeEscrowPermissions.canResolveEscrowDispute`։
 
 ## Հարցումներ եւ իրադարձություններ {#queries-and-events}
 
@@ -476,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 |`FindAssetEscrowsBySeller` |Թողարկեք վաճառողի կամ բանտի բացողի կողմից բացված գրառումները: |
 |`FindAssetEscrowsByBuyer` |Ցուցադրել գնորդի կողմից ընդունված շուկայական պահուստները կամ փակել նպատակակետին ուղղված բանալիները: |
 |`FindAssetEscrowsByStatus` |`AssetEscrowStatus` հաշվետվությունների ցուցակը: |
-|`FindAnonymousAssetEscrowById` |Կարդացեք `EscrowId` կողմից մեկ անանուն պահպանում: |
-|`FindAnonymousAssetEscrows*` |Անանուն գրավյալների ցանկը բոլոր գրանցումների, վաճառողի, գնորդի կամ կարգավիճակի համաձայն: |
 
-`EscrowEventFilter` կարող է բաժանորդագրվել թափանցիկ ներքին պահպանումների եւ փակման միջոցառումներին ՝ պահպանումներով ID, վաճառող, գնորդ, կարգավիճակ եւ իրադարձությունների հավաքածու դիմակը: `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, եւ `Resolved`. Անհայտ պահապանների արձանագրությունները ստուգվում են անանուն պահապաների հարցումների միջոցով:
+`EscrowEventFilter`-ը կարող է բաժանորդագրվել թափանցիկ բնիկ էսկրոուի և արգելափակումների իրադարձություններին՝ ըստ էսկրոուի ID-ի, վաճառողի, գնորդի, կարգավիճակի և իրադարձությունների հավաքածուի դիմակի։ Իրադարձությունների ընտանիքը ներառում է `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` և `Resolved` իրադարձությունները։
 
 ## Գործառական գրառումներ {#operational-notes}
 

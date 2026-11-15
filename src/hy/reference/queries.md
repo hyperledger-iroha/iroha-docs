@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Հարցումներ {#queries}
 
 Iroha հարցումները կարդում են գլխավոր գրքի վիճակը ՝ առանց դրա մուտացիայի: Ներկայիս տվյալների մոդելը բացահայտում է երկու լայն հարցման ձեւեր.
@@ -52,12 +51,12 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindDomainCommittee` |Վերադարձ տիրույթի հանձնաժողովը: |
 |`FindPeers` |Հաշվապահական գրքում հայտնի վստահելի հանգույցների ցանկ։ |
 
-## Գործիքներ, NFTs եւ RWAs {#assets-nfts-and-rwas}
+## Ակտիվներ, NFTs և RWAs {#assets-nfts-and-rwas}
 
 |Հարցում |Նպատակ |
 | --- | --- |
 |`FindAssets` |Նշեք ակտիվների հաշվեկշիռները: |
-|`FindAssetsDefinitions` |Նշեք ակտիվների սահմանումները: |
+|`FindAssetDefinitions` |Նշեք ակտիվների սահմանումները: |
 |`FindAssetsByAccountId` |Հաշվեի կողմից պահվող ակտիվների ցուցակում: |
 |`FindAssetById` |Գտեք մեկ ակտիվի մնացորդը `AssetId`: |
 |`FindAssetDefinitionById` |Գտեք ID կողմից ակտիվի մեկ սահմանումը: |
@@ -67,7 +66,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 
 ## Գանձման եւ ապացույցների փաստաթղթերը {#escrow-and-proof-records}
 
-Պահպանման հարցումները ստուգում են [նացիոն ակտիվների պահպանման ISIs](/hy/blockchain/escrow.md) կողմից ստեղծված արձանագրությունները, ներառյալ շուկայական պահպանումները, ընդհանուր ակտիվների փակիչները եւ անանուն պահպանակային արձանագրություններն։
+Էսկրոուի հարցումները ստուգում են [ակտիվների բնիկ էսկրոուի ISIs](/hy/blockchain/escrow.md)-ի կողմից ստեղծված գրառումները, ներառյալ շուկայական էսկրոուները, ակտիվների ընդհանուր արգելափակումները և պայմանական էսկրոուները։
 
 |Հարցում |Նպատակ |
 | --- | --- |
@@ -76,29 +75,23 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindAssetEscrowsBySeller` |Հաշվարկեք վաճառողի կողմից ստացված ակտիվները: |
 |`FindAssetEscrowsByBuyer` |Գնորդի կողմից գրավված ակտիվների ցուցակը: |
 |`FindAssetEscrowsByStatus` |Հաշվարկային ակտիվների ցուցակը ըստ վիճակի: |
-|`FindAnonymousAssetEscrows` |Գրանցեք անանուն ակտիվների պահպանակային գրառումները: |
-|`FindAnonymousAssetEscrowById` |Գտեք մեկ անանուն ակտիվի պահապան ID. |
-|`FindAnonymousAssetEscrowsBySeller` |Գրանցեք անանուն գրավիչները վաճառողի համաձայն: |
-|`FindAnonymousAssetEscrowsByBuyer` |Գնորդի կողմից անանուն գրավյալների ցանկը: |
-|`FindAnonymousAssetEscrowsByStatus` |Անանուն գրավյալների ցուցակը ըստ վիճակի: |
 |`FindProofRecordById` |Գտեք մեկ ապացույցի արձանագրություն ID: |
 |`FindProofRecords` |Ցուցադրեք ապացույցների փաստաթղթերը: |
 |`FindProofRecordsByBackend` |Ցուցադրեք ապացույցների փաստաթղթերը ապացույցի հետագա վերջի համար: |
 |`FindProofRecordsByStatus` |Թողարկեք ապացույցների փաստաթղթերը ըստ վիճակի: |
 
-## Nexus, Տվյալների մատչելիությունը եւ փաթեթները {#nexus-data-availability-and-packages}
+## SORA Nexus, Տվյալների մատչելիությունը եւ փաթեթները {#nexus-data-availability-and-packages}
 
 |Հարցում |Նպատակ |
 | --- | --- |
-|`FindRepoAgreements` |Ցուցահանդես պահեստային պայմանագրեր, որոնք պահպանվում են շղթայով: |
+|`FindRepoAgreements` |Թվարկեք շղթայում պահվող ռեպո և հակադարձ ռեպո համաձայնագրերը։ |
 |`FindTwitterBindingByHash` |Հաշշի միջոցով լուծեք Twitter- ի կապը: |
 |`FindDaPinIntentByTicket` |Գտեք տվյալների մատչելիության փոստի մտադրությունը տոմսով: |
 |`FindDaPinIntentByManifest` |Գտեք փայտի մտադրությունը բացատրական հղումով:|
 |`FindDaPinIntentByAlias` |Գտեք մետաղադրույքի մտադրություն կեղծ անունով:|
 |`FindDaPinIntentByLaneEpochSequence` |Գտեք գոտի, ժամանակաշրջանի եւ հաջորդականության համաձայն փաթեթավորման նպատակ: |
-|`FindLaneRelayEnvelopeByRef` |Գտեք վավերացված երթուղային ռելե փաթեթ: |
 |`FindSorafsProviderOwner` |Բացահայտել SoraFS մատակարարի սեփականատիրոջը: |
-|`FindDataspaceNameOwnerById` |Բացահայտեք տվյալների տարածքի անվանումի սեփականատերը: |
+|`FindDataspaceNameOwnerById` |Որոշել տվյալների տարածքի այլանվան ակտիվ SNS սեփականատիրոջը։ |
 |`FindMusubiExactPackageV1` |Կարդացեք մեկ ճշգրիտ փաթեթային արձանագրությունը եւ դրա ներկայիս վերանայմանները: |
 |`FindMusubiExactReleaseV1` |Կարդացեք մեկ ճշգրիտ արձանագրություն: |
 |`FindMusubiProviderBundleAttestationV1` |Կարդացեք մեկ մատակարարի արխիվային փաթեթավորման վկայականը: |
@@ -118,7 +111,7 @@ Iroha հարցումները կարդում են գլխավոր գրքի վիճ�
 |`FindActiveTriggerIds` |Բացրեք ակտիվ գործարկիչը IDs. |
 |`FindTriggers` |Թողարկիչները. |
 |`FindTriggerById` |Գտեք մեկ գործարկիչ մինչեւ ID. |
-|`FindContractManifestByCodeHash` |Գտեք խելացի պայմանագրերի մանիֆեսը կոդով: |
+|`FindContractManifestByArtifactId` |Գտնել խելացի պայմանագրի մանիֆեստն իր տվյալների տարածքի արտեֆակտի ID-ով։ |
 |`FindTransactions` |Վավերացված գործարքների ցուցակը: |
 |`FindBlocks` |Ցուցակի բլոկներ: |
 |`FindBlockHeaders` |Ցուցադրեք բլոկի գլխավորությունները: |

@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # פילטרים {#filters}
 
 מסנן זרימות אירועים צרות ותנאי ההצלה. מסנן אירועי רמה העליונה הנוכחי הוא `EventFilterBox`, אשר יכול להתאים למשפחות אירועים אלה:
@@ -44,7 +43,7 @@ translation_engine: nllb-200-ct2
 |`Sorafs` |SoraFS אירועי אימות שערות |
 |`SpaceDirectory` |תיקיית החלל מופשטת אירועים מחזור החיים |
 |`Escrow` |אירועי מחזור החיים של נכסים מקומיים שחשופים |
-|`Offline` |אירועים של הסדרים מקוונים |
+| `Offline` | אירועי סליקה לא מקוונת |
 |`Oracle` |אירועי תזמון Oracle |
 |`Social` |אירועים מעודדים ויראליים |
 |`Bridge` |אירועי גשר |

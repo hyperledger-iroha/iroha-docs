@@ -5,7 +5,6 @@ translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b60
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # میٹا ڈیٹا {#metadata}
 
 میٹا ڈیٹا ایک چیک شدہ کلیدی قدر کا نقشہ ہے جو لیجر اشیاء سے منسلک ہے۔ کلیدیں `Name` اقدار ہیں اور اقدار JSON (`Json`) پے لوڈ ہیں۔

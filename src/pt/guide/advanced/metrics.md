@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Desempenho e Métricas {#performance-and-metrics}
 
 O desempenho do Iroha depende da carga de trabalho, da topologia do validador, das condições da rede e das configurações de consenso. Um único número TPS é, portanto, útil apenas quando está vinculado a uma execução de benchmark com uma configuração fixa.
@@ -24,8 +23,8 @@ Use esta página para estimar se uma implantação está em um estado de alto, m
 Comece com a visualização de dados de ponto no tempo do nó público e coleta do Prometheus, então use o CLI para o estado de consenso autenticado pelo operador. A chave do operador deve ser permitida pelo nó de destino e é carregada apenas em tempo de execução do software:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Não use observações de testnet pública como números de capacidade de produção para sua própria implantação.
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Candidatos e Limites de Ingresso {#candidate-and-ingress-bounds}
 
-Os limites locais do nó Sumeragi determinam quanto trabalho de candidato e de recuperação um validador pode reter:
+O tamanho dos blocos e os limites de transação vêm da gênese assinada e dos parâmetros confirmados da cadeia. As configurações locais do nó em `[sumeragi]` abrangem a função de participação, a custódia das chaves de assinatura, os caminhos dos registros de segurança e os ajustes locais documentados de tempo limite e sincronização.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` e `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` e `sumeragi.queues.ready_bodies`
-
-Limites muito pequenos criam pressão na fila ou na recuperação de carga útil; limites grandes demais aumentam a memória retida e a quantidade de trabalho disponível para uma rede abusiva par. Compare a visualização dos dados de diagnóstico em um dado momento com a memória do processo, o manuseio de mensagens e as métricas de corpo ausente antes de alterar um limite de cada vez:
+Os limites de entrada da rede e da fila de transações controlam o trabalho retido localmente. Compare o instantâneo de diagnósticos com a memória do processo, o tratamento de mensagens e as métricas de corpos ausentes antes de alterar um limite operacional. Mantenha fixos os parâmetros assinados da cadeia ao comparar execuções da mesma rede:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ Sinais comuns incluem:
 | --- | --- | --- |
 |Taxa de transferência aceita| `sum(rate(txs{type="accepted"}[5m]))` |Deve atender ou exceder a meta TPS em estado estacionário|
 |Rejeições| `sum(rate(txs{type="rejected"}[5m]))` |Deve ser explicável pelo plano de teste|
-|Latência de commit| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |Compare p95/p99 com o orçamento de latência|
+|Latência de commit| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |Compare p95/p99 com o orçamento de latência|
 |Profundidade da fila| `queue_size`, `sumeragi_tx_queue_depth` |Deve permanecer limitado durante a carga máxima|
 |Saturação da fila| `sumeragi_tx_queue_saturated` |Valores sustentados diferentes de zero significam sobrecarga|
-|Ver alterações| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Valores crescentes indicam problemas de temporização, topologia, carga útil ou rede|
-|Mensagens perdidas| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Quedas durante a carga geralmente explicam picos de latência|
-|Carga útil e recuperação DA| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Pedidos persistentes, idade crescente ou portões DA repetidos indicam problemas na aquisição de corpo ou bloco|
-|Quórum de commit| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |As assinaturas contadas devem alcançar rapidamente o quórum necessário|
+|Ver alterações| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Valores crescentes indicam problemas de temporização, topologia, carga útil ou rede|
+|Mensagens perdidas| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Quedas durante a carga geralmente explicam picos de latência|
+|Buscas de carga útil e de recuperação de atraso| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Buscas persistentes de corpo ou de sincronização indicam problemas na aquisição da carga útil ou na recuperação de atraso|
+|Progresso do commit| `sumeragi_committed_height`, `sumeragi_applied_height` |As alturas certificadas e aplicadas devem avançar juntas|
 
 Quando uma métrica existir apenas em `/v1/sumeragi/status`, capture o instantâneo JSON nos mesmos artefatos de execução que a coleta do Prometheus.
 
@@ -244,7 +236,7 @@ Publique os números de desempenho apenas com contexto suficiente para reproduzi
 - contagens de validadores e observadores
 - modo de consenso, cadência de blocos assinados e layout DA
 - comitê `3f + 1` exato, quórum e lista de observadores
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, limites de entrada de rede e de fila de transações
+- parâmetros assinados da cadeia, ajustes locais de Sumeragi e limites de entrada da rede e da fila de transações
 - perfil de telemetria
 - hardware, armazenamento e detalhes OS
 - rede RTT, jitter, perda e suposições de largura de banda
@@ -253,7 +245,7 @@ Publique os números de desempenho apenas com contexto suficiente para reproduzi
 - aceito/rejeitado TPS
 - latência de commit p50/p95/p99
 - profundidade da fila e saturação
-- ver alterações, mensagens descartadas, buscas de blocos ausentes e contadores DA-gate
+- mudanças de visão, votos de tempo limite, descartes do Sumeragi e buscas de corpo e de sincronização
 - CPU, utilização de memória, disco e rede por validador
 
 Sem esses detalhes, um número TPS deve ser tratado como anedótico.

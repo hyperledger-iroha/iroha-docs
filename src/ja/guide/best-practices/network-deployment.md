@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ネットワーク展開 {#network-deployment}
 
 Iroha ネットワークを調整されたシステムとして扱います。バリデーターは、ネットワークが開始されブロックを最終確定し続ける前に、ブロックチェーンのジェネシス、トポロジー、信頼できるネットワークピア、コンセンサス関連の設定について合意する必要があります。
@@ -25,6 +24,8 @@ Iroha ネットワークを調整されたシステムとして扱います。�
 - 最小のビザンチン障害許容デプロイメントには、少なくとも4つのバリデータを使用してください。
 - キャパシティ計画において、バリデーターをオブザーバーから分離する。オブザーバーは投票、提案、収集を行わないが、それでもストレージ、ブロック同期、ネットワーク帯域を消費する。
 - ブロックチェーンのジェネシス、エグゼキューター、およびトポロジーの変更は、単一ノードの編集ではなく、協調されたマイグレーションとして扱うべきです。
+
+[4台のバリデータを起動する手順](/ja/get-started/launch-iroha.md)に従って Docker でネットワークを起動し、1台を停止した後に復旧できることを確認してください。
 
 見る [ブロックチェーンのジェネシス](/ja/reference/genesis.md), [ネットワークピア管理](/ja/guide/configure/peer-management.md), そして [パフォーマンスと指標](/ja/guide/advanced/metrics.md#node-count-and-quorum).
 

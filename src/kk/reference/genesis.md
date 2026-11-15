@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/genesis.md
-translation_source_hash: ac6bad693ed382dede0818132b8649fe14726283508da897a32eea417e5bbb28
+translation_source_hash: dda17468f39573a1fcf43474351bd01c4fea38e8b603fd4d8b21780b273c8649
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # блокчейн генезис сілтемесі {#genesis-reference}
 
 Қазіргі Iroha 3 жұмыс ағынында `genesis.json` техникалық манифест желі іске қосылған кезде қолданылатын алғашқы транзакциялар мен параметрлерді сипаттайды.
@@ -17,11 +16,15 @@ translation_engine: bing-translator-llm
 Блокчейннің алғашқы техникалық манифесі мынаны анықтай алады:
 
 - `chain` тізбек идентификаторы үшін
+- манифесттегі есептік жазба литералдарын кодтайтын I105 желі префиксіне арналған `chain_discriminant`
 - `executor` опциялы орындаушы жаңарту байткод жолы үшін
 - `ivm_dir` триггерлер мен жаңартулар қолданатын IVM кітапханалар үшін
 - `consensus_mode` техникалық манифестте жарнамаланған бастапқы режим үшін
+- `wire_protocol_version` бірінші шығарылымның консенсус тасымалдау хаттамасының нұсқасы үшін
+- `consensus_fingerprint` консенсус параметрлерінің міндетті емес типтелген саусақ ізі үшін; JSON манифесттері оны нақты көрсетеді
 - `transactions` тапсырыс берілген параметр жаңартулары, нұсқаулар, триггерлер және топология үшін
-- `crypto` бастапқы крипто уақытша деректер көзқарасы үшін
+- қол қойылған Sumeragi биіктік контекстінің параметрлеріне арналған `sumeragi_context`
+- тізбек қабылдайтын, `allowed_algorithms` ішінде тізілген нақты қол қою және контроллер алгоритмдеріне арналған `crypto_admission_policy`
 
 `transactions` аясында топология жазбалары желі серіктестерінің идентификаторларын және PoPs бірге жұптайды:
 
@@ -34,16 +37,19 @@ translation_engine: bing-translator-llm
 
 ## Техникалық манифест жасаңыз {#generate-a-manifest}
 
-Kagami пайдаланып үлгіні жасаңыз:
+Үлгі жасау үшін Kagami пайдаланыңыз. Әр қабылданған алгоритмге `--allowed-signing` параметрін канондық өсу ретімен қайталаңыз; Kagami көрсетілмеген алгоритмдерді өзі қоспайды:
 
 ```bash
 cargo run -p iroha_kagami -- genesis generate \
+  --chain-id <CHAIN_ID> \
   --consensus-mode npos \
   --ivm-dir defaults \
-  --genesis-public-key <PUBLIC_KEY> > genesis.json
+  --genesis-public-key <PUBLIC_KEY> \
+  --allowed-signing ed25519 \
+  --allowed-signing bls_normal > genesis.json
 ```
 
-Қоғамдық SORA Nexus деректер кеңістігі үшін, `npos` күтілетін консенсус режимі болып табылады. Басқа Iroha 3 орналастырулар мақсатты профильге байланысты рұқсатталған немесе NPoS қолдануы мүмкін.
+Ашық SORA Nexus деректер кеңістігі үшін күтілетін консенсус режимі — `npos`. Өзге Iroha 3 орналастырулары нысаналы профильге қарай рұқсаттық режимді немесе NPoS қолдана алады.
 
 ## Техникалық манифесті қол қою {#sign-the-manifest}
 
@@ -52,19 +58,21 @@ JSON өңделіп, тексерілгеннен кейін, оны орнал�
 ```bash
 cargo run -p iroha_kagami -- genesis sign genesis.json \
   --private-key-file <MODE_0600_PRIVATE_KEY_FILE> \
-  --out-file genesis.signed.nrt
+  --out-file genesis.signed.nrt \
+  --expected-hash-out genesis.expected_hash
 ```
 
-`kagami genesis sign` техникалық манифесттен блокчейннің бастапқы қоғамдық кілтін оқып, пайдаланушы иелігінде жатқан бір сілтемелі қарапайым файлдан жеке кілтті пайдаланып, орналастыруға болатын қол қойылған блокты шығарады. Файл бір протокол-стандартты жеке кілт мультихэштен тұруы керек және жаңа жолмен аяқталуы тиіс; Kagami символдық сілтемелерді және `0600`-ден өзгеше режимдерді қабылдамайды. Жеке кілттердің жаңа жолда командалық жолда көрсетілуі қабылданбайды. Нәтиже – бұл желідегі әріптестер өз конфигурацияларынан сілтеме жасауға тиіс файл.
+`kagami genesis sign` орналастыруға болатын қол қойылған блокты шығару үшін генезис кілт жұбын иесі ұстайтын бір сілтемелі қарапайым файлдағы жеке кілттен шығарады. Оның жарияланған генезис ашық кілтіне сәйкес келуін талап ету үшін `--expected-public-key` беріңіз. Файл бір протокол-стандартты жеке кілт мультихэштен тұруы керек және жаңа жолмен аяқталуы тиіс; Kagami символдық сілтемелерді және `0600`-ден өзгеше режимдерді қабылдамайды. Командалық жолда шикі жеке кілттер қабылданбайды. Нәтиже – бұл желідегі әріптестер өз конфигурацияларынан сілтеме жасауға тиіс файл.
 
 ## `iroha3d` баптау {#configure-iroha3d}
 
-Деманды қол қойылған блокчейннің алғашқы блогына бағыттаңыз:
+Демонға қол қойылған генезис блогын және оның күтілетін хэшін бекітетін файлды көрсетіңіз. Бұл файлды `kagami genesis sign --expected-hash-out` жазады; түйін оны алғаш іске қосқанда да, қайта іске қосқанда да талап етеді:
 
 ```toml
 [genesis]
 file = "genesis.signed.nrt"
 public_key = "<PUBLIC_KEY>"
+expected_hash_file = "genesis.expected_hash"
 ```
 
 ## Қатысты құралдар {#related-tools}
@@ -72,7 +80,7 @@ public_key = "<PUBLIC_KEY>"
 - `kagami genesis validate`
 - `kagami genesis normalize`
 - `kagami genesis embed-pop`
-- `kagami localnet`
+- `kagami localnet generate`
 - `cargo xtask kagami-profiles`
 
-Генераторды іске асыру және командалық мәліметтер үшін [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami/README.md) қараңыз.
+Генераторды іске асыру және командалық мәліметтер үшін [Kagami README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami/README.md) қараңыз.

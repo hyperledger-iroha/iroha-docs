@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ベアメタル上で Iroha を実行する {#running-iroha-on-bare-metal}
 
 ネットワークピアを Docker Compose 経由ではなくホスト上で直接実行したい場合は、このワークフローを使用してください。現在のソースツリーには、ブロックチェーンのジェネシス、ネットワークピアの設定、クライアント設定、起動/停止スクリプトに対応する Kagami ジェネレーターが用意されています。
@@ -32,10 +31,10 @@ cargo build --release \
 4ピアの Iroha 3 ローカルネットを生成する:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-出力ディレクトリには、生成された`genesis.json`、`genesis.signed.nrt`、ネットワークピア`config.toml`ファイル、`client.toml`、ヘルパースクリプト、およびそのバンドルの正確なコマンドを含む生成された`README.md`が含まれています。
+出力ディレクトリには、生成された`genesis.json`、`genesis.signed.nrt`、`genesis.expected_hash`、バリデーターごとに 1 つの`peerN.toml`、`client.toml`、`start.sh` と `stop.sh` のスクリプト、およびそのバンドルの正確なコマンドを含む生成された`README.md`が含まれています。
 
 ## 3. ネットワークピアを開始する {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-各ネットワークピアを systemd のようなプロセスマネージャに接続する必要がある場合は、各ネットワークピアのために `./localnet/README.md` に記録された起動コマンドを使用してください。各ネットワークピアの `config.toml`、秘密鍵、ストレージディレクトリ、およびポートは別々に保管してください。
+各ネットワークピアを systemd のようなプロセスマネージャに接続する必要がある場合は、`./localnet/start.sh` にあるピアごとのコマンドに従ってください。`<bundle>/state/peerN` から `iroha3d --config <bundle>/peerN.toml` を実行し、`--sumeragi-assert-fresh-key` はそのピアの初回起動時にのみ渡します。各ネットワークピアの `peerN.toml`、秘密鍵、ストレージディレクトリ、およびポートは別々に保管してください。
 
 ## 4. ネットワークを操作する {#_4-operate-the-network}
 
 生成されたクライアント設定を使用してください:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

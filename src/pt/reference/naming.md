@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Convenções de Nomenclatura {#naming-conventions}
 
 Ao nomear contas, domínios ou ativos, você deve ter em mente as seguintes convenções usadas em Iroha:
@@ -16,10 +15,9 @@ Ao nomear contas, domínios ou ativos, você deve ter em mente as seguintes conv
    - `#` é reservado para aliases de definição de ativos e literais de saldo de ativos
    - `::` é reservado para apelidos de contrato
    - `.` é reservado para qualificação de domínio e espaço de dados
-   - `$` é reservado para formas textuais com escopo de gatilho
-   - `%` é reservado para formas textuais com escopo de validador
+   - `$` é reservado para identificadores de NFT como `name$domain.dataspace`
 
-2. O número máximo de caracteres (incluindo os caracteres UTF-8) que um nome pode ter é limitado por dois fatores: `[0, u32::MAX]` e o espaço de pilha atualmente alocado.
+2. Um nome não pode ser vazio, deve estar na forma Unicode NFC, ter no máximo 255 bytes UTF-8 e não conter espaços em branco, caracteres de controle nem caracteres de controle bidirecional.
 
 ## Experimente em Taira {#try-it-on-taira}
 

@@ -1,18 +1,17 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Նմուշներ եւ բաղադրատոմսեր {#samples-and-recipes}
 
 Iroha աղբյուրի պահեստը պարունակում է SDK բաղադրատոմսեր եւ փորձարկման հավաքածուներ, որոնք հետեւում են նույն վերանորոգմանը, ինչպես բջիջը:
 
 ## JavaScript բաղադրատոմսեր {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) պարունակում է դետերմինիստական գործարքների խմբավորման կենտրոնացված օրինակներ, Nexus հավելվածների փոխանցում, NFT եւ հաշիվների կրկնությունը, ISO կամուրջի հոսքեր, եւ Torii Յուրաքանչյուր բաղադրատոմս փաստագրում է, թե արդյոք այն աշխատում է անջատ կամ կարիք ունի կենդանի Torii վերջնական կետ:
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) պարունակում է դետերմինիստական գործարքների խմբավորման կենտրոնացված օրինակներ, SORA Nexus հավելվածների փոխանցում, NFT եւ հաշիվների կրկնությունը, ISO կամուրջի հոսքեր, եւ Torii Յուրաքանչյուր բաղադրատոմս փաստագրում է, թե արդյոք այն աշխատում է անջատ կամ կարիք ունի կենդանի Torii վերջնական կետ:
 
 ## Swift եւ iOS {#swift-and-ios}
 
@@ -20,4 +19,4 @@ Iroha աղբյուրի պահեստը պարունակում է SDK բաղադր
 
 ## Android {#android}
 
-Android նոր աշխատանքների համար օգտագործեք Kotlin- ի առաջին `core-jvm`, `client-android` եւ `offline-wallet-android` մոդուլները, որոնք նկարագրված են [Kotlin, Android եւ Java](/hy/guide/tutorials/kotlin-java.md): Kotlin SDK -ը հանդիսանում է Android սպառողների համար կանոնական ելքային կետը։
+Android նոր աշխատանքների համար օգտագործեք Kotlin- ի առաջին `core-jvm`, `client-android` եւ `kagemusha-wallet-android` մոդուլները, որոնք նկարագրված են [Kotlin, Android եւ Java](/hy/guide/tutorials/kotlin-java.md): Kotlin SDK -ը հանդիսանում է Android սպառողների համար կանոնական ելքային կետը։

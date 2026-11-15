@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: 59147443b612bef0cdd1b7cf2124d168c692a9488d8c38f723187e5ae8d3ba65
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 
 outline: [ 2, 3 ]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-نیٹ ورک نوڈ کی نجی کلید۔ اسے `public_key` سے مماثل ہونا چاہیے؛ اتفاقِ رائے کے توثیق کنندہ نوڈز کو BLS-Normal کلیدیں استعمال کرنا ضروری ہے۔
+پیئر کی نجی کلید۔ `private_key` یا `private_key_file` میں سے عین ایک ترتیب دیں؛ مؤخر الذکر صرف مالک کی رسائی والی کلید فائل کا راستہ ہے۔ کلید `public_key` سے ملنی چاہیے؛ اتفاقِ رائے کے ویلیڈیٹر پیئرز BLS-Normal کلیدیں استعمال کرتے ہیں۔
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## پیدائش {#genesis}
+
+پہلے آغاز اور دوبارہ آغاز کے لیے جینیسس کے ٹرسٹ روٹ کا عین ایک ماخذ لازم ہے: `genesis.expected_hash` یا `genesis.expected_hash_file`۔ تیار کردہ پیئر ترتیبات مؤخر الذکر استعمال کرتی ہیں، جو دستخط شدہ بلاک کے ساتھ موجود `genesis.expected_hash` کی طرف اشارہ کرتا ہے۔ تیار کردہ پروفائل نقل کرتے وقت یہ وابستگی برقرار رکھیں۔
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-بلاک کی تعداد جو ایک ہی ہم وقت سازی کے پیغام میں بھیجا جا سکتا ہے.
+بلاک ہم وقت سازی کے گوسپ، یعنی پیئر نمونوں اور بلاک ہم وقت سازی کی تازہ کاریوں، کے وصول کنندگان کی زیادہ سے زیادہ تعداد۔
 
 <param-table type=number default-value=4 />
 
@@ -412,7 +414,7 @@ query_store_capacity_per_user = 128
 - `WARN`: انتباہات جو ممکنہ مسائل کی نشاندہی کرتی ہیں۔
 - `ERROR`: ایسی غلطیاں جو معمول کے کام میں خلل ڈالتی ہیں لیکن کام جاری رکھنے کی اجازت دیتی ہیں۔
 
-اس سطح کا انتخاب کریں جو آپ کے استعمال کے معاملے میں سب سے زیادہ مناسب ہو۔ [اسٹیک اوور فلو](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) لاگ کی مختلف سطحوں کا استعمال کرنے کے بارے میں مزید تفصیلات حاصل کریں۔
+اپنے استعمال کے لیے سب سے موزوں سطح منتخب کریں۔ مختلف لاگ سطحوں کے استعمال کی مزید تفصیلات کے لیے [Stack Overflow](https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels) دیکھیں۔
 
 </template>
 </param-table>
@@ -427,12 +429,6 @@ level = "INFO"
 ```shell [Environment]
 LOG_LEVEL=INFO
 ```
-
-:::
-
-::: tip رن ٹائم اپ ڈیٹ
-
-اس پیرامیٹر کو Torii آپریٹر کے اختتام پوائنٹس کے ذریعے رن ٹائم ترتیب کی تازہ کاری کے تابع ہے.
 
 :::
 
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter` [`logger.level`](#param-logger-level) کے ساتھ مل کر کام کرتا ہے اور کوئی بھی دوسرے کو اوور رائٹ نہیں کرتا ہے۔
 
 مثال کے طور پر، `logger.level` مقرر کیا گیا ہے `INFO` اور `logger.filter` مقرر کیا گیا ہے `iroha_core=debug`, حاصل فلٹر سیٹ ہو جائے گا `info,iroha_core=debug` (یعنی `info` تمام ماڈیولز کے لئے، `debug` کے لئے `iroha_core`).
-
-:::
-
-::: tip رن ٹائم اپ ڈیٹ
-
-اس پیرامیٹر کو Torii آپریٹر کے اختتام پوائنٹس کے ذریعے رن ٹائم ترتیب کی تازہ کاری کے تابع ہے.
 
 :::
 
@@ -547,7 +537,7 @@ Kura شروع کرنے کا موڈ۔ `strict` معمول اور ڈیفالٹ م�
 
 `fast` ایک ہنگامی، محدود خدمت کا موڈ ہے جو اس وقت عملی مشاہدہ بحال کرتا ہے جب آغاز کا مکمل آڈٹ بندش کا خطرہ بن جائے۔ اس کے لیے ایسا اسٹوریج درکار ہے جسے پہلے `strict` نے شروع کیا ہو اور موجودہ snapshot generation میں عین پانچ artifacts ہوں: `snapshot.data`، `snapshot.sha256`، `snapshot.sig`، `snapshot.fast.norito` اور `snapshot.merkle.json`۔ ڈومین سے جدا آپریٹر دستخط مشتہر پے لوڈ digest اور محدود مینی فیسٹ کو باندھتا ہے؛ مینی فیسٹ پے لوڈ کی لمبائی، chain/network شناخت، آخری height/hash، SCCP پالیسی ہیش اور bootstrap lineage کی موجودگی کو باندھتا ہے۔ Fast ایسی bootstrap lineage رد کرتا ہے اور پائیدار Kura سے عین وہی marker/count/tip حد درکار کرتا ہے۔ پہلی ریلیز کے نوڈ صرف انہی پانچ artifacts کو قبول اور کسی دوسری artifact تعداد یا فائل ناموں کے مجموعے کو رد کرتے ہیں۔
 
-Fast ان پانچ ناموں کی فہرست بناتا اور پے لوڈ و Merkle فائلیں میٹا ڈیٹا سے باندھتا ہے، مگر ان کا مواد پڑھتا، ہیش، parse یا decode نہیں کرتا۔ یہ دستخط شدہ مینی فیسٹ سے کم سے کم World/Nexus بناتا، Kura کا عین hash prefix صرف پڑھنے کے لیے map کرتا اور snapshot World، block-hash array، ٹرانزیکشن history، derived indexes اور پائیدار recovery journals کھولتا نہیں۔ Merkle، کینونیکل اور معنوی snapshot audits، تاریخی block/finality/SCCP reconciliation، Sumeragi active-height recovery، merge اور query journals، lane manifest/compliance sources، Kura-backed SoraFS archives، recursive storage accounting اور اختیاری service reconcilers مؤخر رہتے ہیں۔ مقامی ٹرانزیکشن admission، proposals، voting، کینونیکل writes اور معاون producers غیر فعال رہتے ہیں۔ Kura خود writer startup اور پائیدار تبدیلیاں رد کرتا ہے؛ pipeline اور FASTPQ persistence queues کام محفوظ یا encode کرنے کے بجائے فوراً رد کرتی ہیں۔ Kura read APIs مرمت اور durability-sync بھی بند رکھتے ہیں: عارضی ضمنی ریکارڈ promote نہیں ہوتے، غائب lane artifacts شائع نہیں ہوتے اور progress barriers کو fsync نہیں کیا جاتا۔ Sumeragi اور ٹرانزیکشن gossip شروع نہیں ہوتے۔ Torii صرف health، liveness، readiness، peer اور configuration operations ظاہر کرتا ہے؛ API-version، status، metrics اور تمام معمول کے state/history راستے دستیاب نہیں ہوتے۔ `strict` کے ساتھ دوبارہ آغاز تک readiness دستیاب نہیں رہتی۔
+Fast ان پانچ ناموں کی فہرست بناتا اور پیلوڈ و مرکل فائلوں کو میٹاڈیٹا سے باندھتا ہے، لیکن ان کا مواد نہ پڑھتا، ہیش کرتا، پارس کرتا اور نہ ڈیکوڈ کرتا ہے۔ یہ دستخط شدہ مانیفیسٹ سے World اور SORA Nexus کی کم سے کم حالت بناتا ہے، Kura ہیش کے عین سابقے کو صرف پڑھنے کے لیے میپ کرتا ہے، اور اسنیپ شاٹ World، بلاک ہیش ارے، لین دین کی تاریخ، اخذ کردہ اشاریے اور پائیدار بازیابی جرنلز نہیں کھولتا۔ مرکل، کینونیکل اور معنوی اسنیپ شاٹ آڈٹس، تاریخی بلاک/حتمیت/SCCP کی مطابقت، Sumeragi کی فعال اونچائی کی بازیابی، انضمام اور کوئری جرنلز، لین مانیفیسٹ/تعمیل کے ماخذ، Kura پر مبنی SoraFS آرکائیوز، ذخیرے کا تکراری حساب اور اختیاری خدماتی مطابقت کے کام مؤخر رہتے ہیں۔ مقامی لین دین کا داخلہ، تجاویز، ووٹنگ، کینونیکل تحریر اور معاون پیداکار غیر فعال رہتے ہیں۔ Kura خود رائٹر کا آغاز اور پائیدار تبدیلیاں مسترد کرتا ہے؛ پائپ لائن اور FASTPQ کی محفوظ کرنے والی قطاریں کام کو رکھنے یا انکوڈ کرنے کے بجائے فوراً مسترد کرتی ہیں۔ Kura کے پڑھنے والے APIs مرمت اور پائیداری کی ہم وقت سازی بھی غیر فعال کرتے ہیں: عارضی ضمنی ریکارڈ مستقل نہیں بنتے، غائب لین آرٹفیکٹس شائع نہیں ہوتے اور پیش رفت کی رکاوٹوں پر fsync نہیں ہوتا۔ Sumeragi اور لین دین کا گوسپ شروع نہیں کیے جاتے۔ Torii صرف صحت، زندہ ہونے، تیاری، پیئر اور ترتیب کی کارروائیاں فراہم کرتا ہے؛ API ورژن، حیثیت، میٹرکس اور حالت/تاریخ کے تمام عام راستے غیر دستیاب رہتے ہیں۔ Strict میں دوبارہ آغاز تک تیاری غیر دستیاب رہتی ہے۔
 
 `fast` صرف کسی واقعے کے دوران استعمال کریں۔ خدمت مستحکم ہونے پر نوڈ روکیں، `strict` بحال کریں اور دوبارہ آغاز کریں تاکہ پیداوار بحال ہونے سے پہلے ہر مؤخر جانچ اور اشاریے کی تعمیرِ نو چل جائے۔ Fast موڈ کو مؤخر merge log درکار نہیں اور وہ کینونیکل اسٹوریج بناتا، مرمت، مختصر یا درآمد نہیں کرتا؛ غیر شائع شدہ suffixes اور زیرِ التوا معاون recovery stages کو پڑھے یا بدلے بغیر نظر انداز کر کے Strict recovery کے لیے چھوڑ دیتا ہے۔ درآمد شدہ، صرف ہیش پر مشتمل snapshot lineage دستیاب نہیں رہتی۔ موجودہ snapshot غائب یا نامعتبر ہو تو آغاز فوراً ناکام ہوتا ہے؛ Fast کبھی خالی world یا تاریخی replay rebuild پر واپس نہیں جاتا۔
 
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` میں نوڈ کی مقامی شرکت، دستخطی مواد کی تحویل، حفاظتی ریکارڈ کے راستے اور دستاویزی ٹائم آؤٹ و ہم وقت سازی کی تبدیلیاں ہوتی ہیں۔ اتفاقِ رائے کا موڈ، کمیٹی کی ساخت، کورم، بلاک کا حجم اور لین دین کی حدود دستخط شدہ جینیسس اور کمیٹ شدہ حالت سے آتی ہیں۔ خرابیوں کا داخل کرنا متعین سمولیٹر کا کام ہے۔
 
-Sumeragi سافٹ فورک ہینڈلنگ کے راستوں کی مشق کے لئے صرف ڈیبگ سوئچ۔ اس کو کنٹرول شدہ ٹیسٹوں سے باہر غیر فعال کردیں؛ اسے چلنے والے پروڈکشن نیٹ ورک پر تبدیل کرنے سے نیٹ ورک نوڈ اتفاق رائے کے رویے کے بارے میں متفق نہیں ہوسکتے ہیں۔
+معاونت یافتہ فیلڈز کے لیے [ترتیب](/ur/guide/configure/overview.md) اور مقررہ [ترتیب کا حوالہ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md) دیکھیں۔
 
-<param-table type=bool default-value=false />
+## SORA Nexus ایٹمی نجی تصفیہ {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` ایک نوڈ پر خفیہ کردہ ضمنی ریکارڈز کی تحویل ترتیب دیتا ہے۔ اس میں ذخیرے کی عین دو مقامی حدود ہیں:
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`: محفوظ خفیہ کردہ تصفیہ ریکارڈز کی زیادہ سے زیادہ تعداد۔
+- `sidecar_max_total_bytes`: محفوظ کینونیکل بائٹس کی زیادہ سے زیادہ مقدار۔
 
-:::
+فعالیت، ثبوت کے پروفائلز، ادائیگی کی حدود، میعاد اور آڈیٹر پالیسی کمیٹ شدہ رازداری کی پالیسی سے آتی ہیں۔ نوڈ کی ترتیب درست ہونے کے ان قواعد کو فعال یا تبدیل نہیں کر سکتی۔
 
-## Nexus ایٹمی نجی تصفیہ {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` علیحدہ `AtomicPrivateSettlementV1` راستے کو کنٹرول کرتا ہے۔ یہ بطور ڈیفالٹ غیر فعال ہے۔ `enabled = true` مقرر کرنے کے لیے `activation_height` بھی درکار ہے؛ اگر on-chain capability، نوٹس کی مدت، fixed proof profile اور pool/audit گورننس فعال نہ ہوں تو admission پھر بھی fail closed ہوتا ہے۔
-
-اہم حدود یہ ہیں `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, اور `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` کو سختی سے بڑھتی ہوئی ذیلی سیٹ ہونا ضروری ہے V1 پیڈنگ کلاسز. `permitted_policy_versions` صرف قبول کرتا ہے V1.
-
-`max_capsule_bytes` مکمل `PrivateSettlementAuditCapsuleV1` کے کینونیکل Norito بائٹس کی پیمائش کرتا ہے، بشمول AAD ، نونس، شفر ٹیکسٹ، ویکٹر فریمنگ، اور ہر آڈیٹر کو لپیٹ دیا گیا-DEK صف؛ یہ صرف شفرٹیکسٹ حد نہیں ہے. ہر فعال بھرنے والے طبقے کو کم از کم `default_min_auditor_approvals` آڈیٹرز کے لئے قدامت پسند پورے کیپسول لفافہ میں فٹ ہونا چاہئے۔ یہ منظوری کی ترتیب بھی ایک زیر انتظام منزل ہے: Torii کم `min_approvals` قدر کے ساتھ ایک نئے منظور شدہ پالیسی کو مسترد کرتا ہے اور کسی بھی حقیقی کیپسول کو منسوخ کر دیتا ہے جو کینونیکل بائٹ کی حد سے زیادہ ہے۔
-
-ان ترتیبات میں کوئی پیداوار کے ماحول متغیر سرگرمی بائی پاس نہیں ہے. [ایٹمی نجی کراس ڈیٹا اسپیس سیٹ اپ چلائیں](/ur/get-started/atomic-private-settlement) مکمل ترتیب کی مثال اور آپریشنل ضروریات کے لئے. راستہ پیداوار کے لئے اہل نہیں ہے جب تک کہ دستاویزی بیرونی ریلیز گیٹس گزر نہ جائیں۔
+تحویل کی ترتیب اور عملی تقاضوں کے لیے [ڈیٹا اسپیسز کے درمیان ایٹمی نجی تصفیہ چلائیں](/ur/get-started/atomic-private-settlement.md) دیکھیں۔ اجزا کی عمل کاری صنعتی استعمال کی اہلیت ثابت نہیں کرتی۔
 
 ## اسنیپ شاٹ {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## ٹیلی میٹری {#telemetry}
 
-ٹیلی میٹری بیرونی ٹیلی میٹری مجموعہ میں نیٹ ورک نوڈ تشخیص برآمد کرتا ہے۔ `telemetry.name` اور `telemetry.url` دونوں کو ترتیب دیں جب ایک نیٹ ورک نوڈ کو جمع کرنے والے کو رپورٹ کرنا چاہئے۔ جب ٹیلی میٹر استعمال نہیں کیا جاتا ہے تو سیکشن کو چھوڑ دیں.
-
-`name` اور `url` کو جوڑا ہونا چاہئے۔
-
-تمام `telemetry` سیکشن اختیاری ہے.
-
-### `telemetry.name` {#param-telemetry-name}
-
-ٹیلی میٹری پر نوڈ کا نام ظاہر کیا جائے۔
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+ٹیلی میٹری پیئر کی تشخیصی معلومات بیرونی ٹیلی میٹری جمع کنندہ کو بھیجتی ہے۔ جب پیئر کو جمع کنندہ کو رپورٹ کرنا ہو تو `telemetry.url` ترتیب دیں؛ جمع کنندہ نہ ہو تو یہ حصہ چھوڑ دیں۔ دوبارہ کوشش کے اوقات اسی اختیاری جدول میں ترتیب دیے جاتے ہیں۔
 
 ### `telemetry.url` {#param-telemetry-url}
 

@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # مطابقت میٹرکس {#compatibility-matrix}
 
 مطابقت میٹرکس موجودہ Iroha 3 دستاویزات سیٹ کے لئے کراس-SDK سناریو کی کوریج کو ظاہر کرتا ہے۔ ڈیفالٹ کے طور پر ، صفحہ پنڈ [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ترمیم سے تیار کردہ بنڈل اسنیپ شاٹ لوڈ کرتا ہے۔

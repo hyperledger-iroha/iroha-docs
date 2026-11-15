@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Հանդիպման սանձազերծող օրինակ {#event-trigger-example}
 
 Այս օրինակում օգտագործվում է IDs կանոնիկ դոմեյնային հաշիվ եւ Iroha 3 տվյալների մոդելում կանխատեսված ակտիվների սահմանումները:
@@ -29,7 +28,7 @@ asset definition projection: tea in wonderland.universal
 holder accounts: AccountId(controller=alice_key), AccountId(controller=mad_hatter_key)
 ```
 
-Աշունների սահմանումը դեռեւս ունի կանոնիկ անբացատրելի հասցե: Գրանցվելուց հետո պահպանեք կամ կատարեք հարցում այդ հասցեն եւ օգտագործեք այն գործարկման գործողության մեջ:
+Ակտիվի սահմանումն ունի կանոնական հասցե, որի ներքին կառուցվածքը մեկնաբանելու կարիք չկա։ Գրանցումից հետո պահեք այդ հասցեն կամ ստացեք այն հարցման միջոցով և օգտագործեք ազդակի գործողության մեջ։
 
 ## 2. Ընտրեք գործարկիչի լիազոր հաշիվը {#_2-choose-the-trigger-authority}
 

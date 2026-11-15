@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # དྲི་བཀོད་ཚུ་ {#queries}
 
@@ -56,7 +56,7 @@ SDK ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི�
 | འདྲི་དཔྱད་ | དམིགས་ཡུལ། |
 | --- | --- |
 | `FindAssets` | རྒྱུ་དངོས་ལྷག་ལུས་ཚུ་ཐོ་བཀོད་འབད། |
-| `FindAssetsDefinitions` | རྒྱུ་དངོས་ངེས་ཚིག་ཚུ་ཐོ་བཀོད་འབད། |
+| `FindAssetDefinitions` | རྒྱུ་དངོས་ངེས་ཚིག་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindAssetsByAccountId` | རྩིས་ཐོ་ཅིག་གིས་བདག་འཛིན་འཐབ་ཡོད་པའི་རྒྱུ་དངོས་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindAssetById` | `AssetId` གིས་ རྒྱུ་དངོས་ལྷག་ལུས་གཅིག་འཚོལ། |
 | `FindAssetDefinitionById` | ID གི་ཐོག་ལས་ རྒྱུ་དངོས་ངེས་ཚིག་གཅིག་འཚོལ། |
@@ -66,7 +66,7 @@ SDK ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི�
 
 ## བར་གཏོགས་བདག་ཉར དང་བདེན་ཁུངས་ཡིག་ཆ་ཚུ་ {#escrow-and-proof-records}
 
-[རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར་ ISIs](/dz/blockchain/escrow.md)གིས་བཟོ་མི་ཐོ་ཡིག་ཚུ་ བརྟག་ཞིབ་འབད་དོ་ཡོདཔ་ད་ དེ་ནང་ཚོང་ཁྲོམ་གྱི་བར་གཏོགས་བདག་ཉར་ཐོ་བཀོད་དང་ སྤྱིར་བཏང་གི་བར་གཏོགས་བདག་ཉར་བཀག་སྡོམ་ དེ་ལས་མིང་མེད་ཡོད་པའི་བར་གཏོགས་བདག་ཉར་ཐོ་ཡིག་ཚུ་ཡང་ཡོདཔ་ཨིན།
+བར་གཏོགས་བདག་ཉར་གྱི་དྲི་བཀོད་ཚུ་གིས་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར་ ISIs](/dz/blockchain/escrow.md) གིས་བཟོ་མི་ཐོ་ཡིག་ཚུ་ བརྟག་ཞིབ་འབདཝ་ཨིན། དེ་ནང་ ཚོང་ཁྲོམ་གྱི་བར་གཏོགས་བདག་ཉར་དང་ སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ དེ་ལས་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་ཚུ་ཡང་ཚུདཔ་ཨིན།
 
 | འདྲི་དཔྱད་ | དམིགས་ཡུལ། |
 | --- | --- |
@@ -75,29 +75,23 @@ SDK ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི�
 | `FindAssetEscrowsBySeller` | བཙོང་མི་གིས་ རྒྱུ་དངོས་ བར་གཏོགས་བདག་ཉར་ཚུ ཐོ་བཀོད་འབད། |
 | `FindAssetEscrowsByBuyer` | ཉོ་མི་གིས་ རྒྱུ་དངོས་ བར་གཏོགས་བདག་ཉར་ཚུ ཐོ་བཀོད་འབད། |
 | `FindAssetEscrowsByStatus` | གནས་ཚད་དང་འཁྲིལ་ཏེ་ རྒྱུ་དངོས་ཨེསི་ཀོརཝ་ཚུ་ཐོ་བཀོད་འབད། |
-| `FindAnonymousAssetEscrows` | མིང་མེད་རྒྱུ་དངོས་བཀག་སྡོམ་དྲན་ཐོ་ཚུ་ཐོ་བཀོད་འབད། |
-| `FindAnonymousAssetEscrowById` | ID གིས་ མིང་མེད་རྒྱུ་དངོས་ བར་གཏོགས་བདག་ཉར གཅིག་འཚོལ། |
-| `FindAnonymousAssetEscrowsBySeller` | བཙོང་མི་གིས་ མིང་མེད་ བར་གཏོགས་བདག་ཉར་ཚུ ཐོ་བཀོད་འབད། |
-| `FindAnonymousAssetEscrowsByBuyer` | ཉོ་མི་གིས་ མིང་མེད་པའི་ བར་གཏོགས་བདག་ཉར་ཚུ ཐོ་བཀོད་འབད། |
-| `FindAnonymousAssetEscrowsByStatus` | གནས་རིམ་དང་འཁྲིལ་ཏེ་ མིང་མེད་ཨེསི་ཀོརོ་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindProofRecordById` | ID གིས་ བདེན་ཁུངས་དྲན་ཐོ་གཅིག་འཚོལ། |
 | `FindProofRecords` | བདེན་དཔང་དྲན་ཐོ་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindProofRecordsByBackend` | བདེན་ཁུངས་རྒྱབ་གཞི་ཅིག་གི་དོན་ལུ་ བདེན་ཁུངས་དྲན་ཐོ་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindProofRecordsByStatus` | གནས་ཚད་དང་འཁྲིལ་ཏེ་ བདེན་ཁུངས་དྲན་ཐོ་ཚུ་ཐོ་བཀོད་འབད། |
 
-## Nexus ཌའི་ཊ་གི་ཐོབ་ཐངས་དང་ ཅ་ཆས་ཚུ་ {#nexus-data-availability-and-packages}
+## SORA Nexus ཌའི་ཊ་གི་ཐོབ་ཐངས་དང་ ཅ་ཆས་ཚུ་ {#nexus-data-availability-and-packages}
 
 | འདྲི་དཔྱད་ | དམིགས་ཡུལ། |
 | --- | --- |
-| `FindRepoAgreements` | རྒྱུན་རིམ་གུ་གསོག་འཇོག་འབད་ཡོད་པའི་ མཛོད་ཁང་ཆིངས་ཡིག་ཚུ་ཐོ་བཀོད་འབད། |
+| `FindRepoAgreements` | སྡེབ་ཐག་གུ་གསོག་འཇོག་འབད་ཡོད་པའི་ ལོག་ཉོ་བའི་གན་རྒྱ་དང་ ཕྱིར་ལོག་ལོག་ཉོ་བའི་གན་རྒྱ་ཚུ་ ཐོ་བཀོད་འབད། |
 | `FindTwitterBindingByHash` | ཧེཤི་གིས་ ཊུ་ཊར་བཱའིན་ཌིང་ཅིག་སེལ་འཐུ་འབད། |
 | `FindDaPinIntentByTicket` | ཤོག་བྱང་གིས་ གནད་སྡུད་ཐོབ་ཚུགས་པའི་ པིན་དམིགས་ཡུལ་འཚོལ། |
 | `FindDaPinIntentByManifest` | གསལ་སྟོན་གཞི་བསྟུན་གྱིས་ པིན་དམིགས་ཡུལ་འཚོལ། |
 | `FindDaPinIntentByAlias` | མིང་གཞན་གྱིས་ པིན་དམིགས་ཡུལ་འཚོལ། |
 | `FindDaPinIntentByLaneEpochSequence` | ལམ་དང་དུས་སྐབས་ དེ་ལས་ གོ་རིམ་གྱི་ཐོག་ལས་ པིན་དམིགས་ཡུལ་འཚོལ། |
-| `FindLaneRelayEnvelopeByRef` | བདེན་དཔྱད་འབད་ཡོད་པའི་ ལེན་-རི་ལེ་ཡིག་ཤུབས་ཅིག་འཚོལ། |
 |`FindSorafsProviderOwner` |SoraFS ཞབས་ཏོག་བྱིན་མི་གི་ཇོ་བདག་ལུ་ སེལ་འཐུ་འབད། |
-| `FindDataspaceNameOwnerById` | གནད་སྡུད་ས་སྟོང་-མིང་ཇོ་བདག་ཅིག་སེལ་འཐུ་འབད། |
+| `FindDataspaceNameOwnerById` | གནད་སྡུད་ས་སྟོང་གི་མིང་གཞན་ཅིག་གི་ ཤུགས་ལྡན་ SNS ཇོ་བདག་ ཐག་གཅོད་འབད། |
 |`FindMusubiExactPackageV1` |སྒྲིག་གཞི་ཅིག་དང་ ད་ལྟོའི་བསྐྱར་བཅོས་ཚུ་ ཀློག་ཐེངས།|
 | `FindMusubiExactReleaseV1` | གསར་བཏོན་པར་རིས་གཅིག་ངེས་བདེན་ལྷག། |
 | `FindMusubiProviderBundleAttestationV1` འཚོལ། | བྱིན་མི་གཅིག་གི་གཏན་མཛོད་-བང་སྒྲིག་བདེན་བཤད་ལྷག། |
@@ -117,7 +111,7 @@ SDK ཡིག་སྣོད་བཟོ་སྐྲུན་འབད་མི�
 | `FindActiveTriggerIds` | ཤུགས་ལྡན་འབྱུང་ཁུངས་ཨའི་ཌི་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindTriggers` | འབྱུང་ཁུངས་ཚུ་ཐོ་ཡིག་འབད། |
 | `FindTriggerById` | ID གིས་ ཊི་གར་གཅིག་འཚོལ། |
-| `FindContractManifestByCodeHash` | གསང་གྲངས་ཧེཤ་གིས་ ཨིསི་མཱརཊ་-གན་རྒྱ་གསལ་བསྒྲགས་ཅིག་འཚོལ། |
+| `FindContractManifestByArtifactId` | རིག་པ་ཅན་གན་རྒྱའི་གསལ་བསྒྲགས་ཅིག་ དེའི་གནད་སྡུད་ས་སྟོང་ཐོན་དངོས་ཀྱི་ངོས་འཛིན་གྱིས་ འཚོལ། |
 | `FindTransactions` | ཁས་བླངས་འབད་ཡོད་པའི་ཚོང་འབྲེལ་ཚུ་ཐོ་བཀོད་འབད། |
 | `FindBlocks` | སྡེབ་ཚན་ཚུ་ཐོ་ཡིག་འབད། |
 | `FindBlockHeaders` | སྡེབ་ཚན་མགོ་ཡིག་ཚུ་ཐོ་ཡིག་འབད། |

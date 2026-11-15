@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Արտաքին գործառույթների ինտերֆեյսներ (FFI) {#foreign-function-interfaces-ffi}
 
 Գլխավոր էջ `iroha_ffi` C-ի արտադրության համար տուփը ապահովում է մակրոներ եւ հատկանիշներ ABI պարտավորություններ Rust APIs. Այն օգտագործվում է, երբ Iroha տեսակները պետք է անցնել FFI սահմանը, օրինակ՝ SDK կապեր կամ հյուրընկալող ինտեգրումներ:

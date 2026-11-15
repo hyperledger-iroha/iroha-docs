@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Exemple de déclencheur d'événement {#event-trigger-example}
 
 Cet exemple utilise des identifiants de compte sans domaine canoniques et des définitions d'actifs projetées dans le modèle de données Iroha 3.

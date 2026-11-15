@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama Пакеттар {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ namespace/package
 namespace/package@version
 ```
 
-Исемдәр арауығы алдынан `@` билдәһе юҡ. Исемдәр арауығы йәки мәғлүмәт арауығы тамыр, мәҫәлән: `universal` йәки домен-квалификациялы мәғлүмәт базаһы, мәҫәлән: `dex.universal`. Букмекер был структуралы исемдәр киңлеген бер тотороҡло төп мәғлүмәт киңлеге менән бәйләй, пакетты талап итеү мөмкин тиклем.
+Исемдәр киңлеге алдында `@` билдәһе ҡуйылмай. Исемдәр киңлеге йә `universal` кеүек мәғлүмәт киңлеге тамыры, йә `dex.universal` кеүек домен менән квалификацияланған исемдәр киңлеге була. Пакетҡа хоҡуҡ алыу мөмкин булғансы, реестр был структур исемдәр киңлеген бер тотороҡло төп мәғлүмәт киңлегенә бәйләй.
 
 ## Манифест һәм бикләү файлы {#manifest-and-lockfile}
 
@@ -62,15 +62,15 @@ version = "^1.0.0"
 
 ## Конфигурация Taira SoraFS Ашырыу {#configure-taira-sorafs-fetching}
 
-Taira — был эш ағымы өсөн асыҡ testnet. Checked-in chain һәм хәҙерге pinned genesis-derived network identity булған Taira client configuration-ынан башлап, аҫтағы provider-specific authenticated fetch bindings-ты өҫтәгеҙ. Taira reset `NetworkId`-ны үҙгәртә ала; уны stable chain UUID-нан сығармағыҙ, signed deployment profile-дан яңыртығыҙ. Иҫәпкә ҡултамға ҡуйыу материалы һәм провайдер оператор асҡыстары хужа ғына уҡый алған runtime файлдарында һаҡланырға тейеш.
+Был эш барышы өсөн Taira асыҡ һынау селтәре булып тора. Теркәлгән сылбырҙы һәм ағымдағы башланғыс блоктан сығарылған аныҡ селтәр идентификаторын күрһәткән Taira клиент көйләүҙәренән башлағыҙ. Аҙаҡ аҫта бирелгән, провайдерға хас аутентификацияланған уҡыу бәйләнештәрен өҫтәгеҙ. Taira яңыртылғас, `NetworkId` үҙгәрергә мөмкин. Уны тотороҡло сылбыр UUID ҡиммәтенән фаразламағыҙ, ҡултамғалы урынлаштырыу профиленән яңыртығыҙ. Иҫәп ҡултамғаһы серҙәре һәм провайдер операторының асҡыстары эш барышында тик хужаһы уҡый алған файлдарҙа һаҡланырға тейеш.
 
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 
@@ -88,7 +88,7 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-Провайдер каталогы провайдер идентификацияларын һәм рекламаланған һуңғы нөктәләрҙе тәьмин итә. һайланған провайдерҙан тапҡан операторға рөхсәт алыу. Runtime был асҡысты сикләнгән ағым токендәрен һорап ҡуллана; токендар CLI аргументтары ла түгел, ә бикләү файлы йөкмәткеһе лә түгел.
+Провайдер каталогы провайдер идентификаторҙарын һәм иғлан ителгән нөктәләрҙе бирә. Һайланған провайдерҙан тап килгән оператор рөхсәтен алығыҙ. Башҡарыу мөхите был асҡыс ярҙамында сикләнгән ағым токендарын һорай; токендар CLI аргументтары ла, бәйлелектәрҙе беркетеү файлының йөкмәткеһе лә түгел.
 
 Ҡулланырға ярамай Taira раҫлаусы штрих URL тип `url`. Теркәлгән валидаторҙар индерелгән SoraFS Һаҡлау һәләте һүндерелгән. `https://taira-validator-{1,2,3,4}.sora.org` һуңғы нөктәләр PIN теркәү ҡабул итә, ә архив уҡыуҙар һайлап алынған рөхсәт ителгән провайдерҙың HTTPS сығышы.
 
@@ -150,7 +150,7 @@ cargo run --manifest-path ../../Cargo.toml -p musubi -- \
 
 `package` яҙа `target/package/<namespace>-<name>-<version>.car`. CAR каноник пакет манифест, семантик сығарыу манифест бәйләй, теүәл тикшереү бикләү, сығанаҡ ағасы, интерфейс. digest һәм SoraFS архив йөкләмәһе. Тәүге сығарылышта `pack`, `--car-out`, `--sorafs-manifest-out` йәки `--source-plan-out` бойороҡтары юҡ CLI.
 
-Баҫтырып сығарыу — ҡултамғалы һәм дауам иттерелә алған network workflow. Һайланған `client.toml` талап ителгән `[musubi.publication]` binding-тарын, account һәм Taira network configuration-ды үҙ эсенә алырға тейеш. Workspace-тың тап бер member-ын package итегеҙ:
+Баҫтырып сығарыу — ҡултамға талап иткән һәм өҙөлгән урындан дауам итә алған селтәр процедураһы. Һайланған `client.toml` эсендә мотлаҡ `[musubi.publication]` бәйләнештәре, иҫәп һәм Taira селтәренең көйләүҙәре булырға тейеш. Эш киңлегенең бер генә ағзаһын пакетҡа индерегеҙ:
 
 ```bash
 cargo run --manifest-path ../../Cargo.toml -p musubi -- \

@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Permisos {#permissions}
 
 Las cuentas necesitan tokens de permiso para varias acciones en una cadena de bloques, por ejemplo, para emitir o quemar activos.
@@ -73,14 +72,20 @@ Después de que se registre el rol, Mouse puede otorgárselo a Alice:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Validadores de permisos {#permission-validators}
 
-Los permisos existen para que solo las cuentas con el token de permiso requerido puedan realizar una acción protegida. El ejecutor predeterminado verifica los permisos durante la ejecución de instrucciones, consultas y expresiones.
+Los permisos existen para que solo las cuentas con el token de permiso requerido puedan realizar una acción protegida. El ejecutor predeterminado verifica los permisos durante la ejecución de transacciones e instrucciones y durante la validación de consultas.
 
 La superficie de validación predeterminada está agrupada por área del libro mayor de la blockchain:
 
@@ -89,7 +94,7 @@ La superficie de validación predeterminada está agrupada por área del libro m
 - activos, NFTs, y cuentas de depósito en garantía
 - desencadenantes
 - roles y permisos
-- ejecutor/tiempo de ejecución, pruebas, puentes y módulos SORA/Nexus
+- ejecutor/tiempo de ejecución, pruebas, puentes y módulos SORA Nexus
 
 La lista exacta de tokens está respaldada por la fuente en el [Referencia de Tokens de Permiso](/es/reference/permissions.md).
 
@@ -97,7 +102,7 @@ La lista exacta de tokens está respaldada por la fuente en el [Referencia de To
 
 Las comprobaciones de permisos son aplicadas por el ejecutor activo. El ejecutor predeterminado proporciona los validadores de permisos integrados y las definiciones de tokens, y una red puede cambiar la política al actualizar el ejecutor que utiliza.
 
-Los validadores devuelven un veredicto de validación. Un validador puede permitir una operación, denegarla con una razón, o saltarla si la operación está fuera del ámbito de ese validador. El juez seleccionado combina esos veredictos para decidir si la instrucción, consulta o expresión puede continuar.
+El ejecutor permite una operación o la rechaza con un motivo `ValidationFail`. Una instrucción rechazada provoca el rechazo de su transacción, y una consulta rechazada devuelve el error al llamante.
 
 ## Consultas compatibles {#supported-queries}
 

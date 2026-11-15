@@ -1,7 +1,7 @@
-# Run Atomic Private Cross-Dataspace Settlement
+# Run Atomic Private Cross-Data Space Settlement {#run-atomic-private-cross-dataspace-settlement}
 
 `AtomicPrivateSettlementV1` coordinates one confidential settlement leg in
-each of 2 to 255 SORA Nexus dataspaces and finalizes every leg in one
+each of 2 to 255 SORA Nexus data spaces and finalizes every leg in one
 global state transaction. A rejected, expired, or aborted bundle applies no
 leg. Transparent Native AMX DvP/PvP remains a separate protocol path.
 
@@ -25,7 +25,7 @@ accepts one approval from the governed auditor set.
 The public carrier and receipt deliberately reveal:
 
 - the network and bundle identifiers
-- participant dataspace routes and participant count
+- participant data space routes and participant count
 - timing and expiry heights
 - stable opaque pool identifiers, roots, nullifiers, commitments, and fixed
   ciphertext slots
@@ -34,8 +34,8 @@ The public carrier and receipt deliberately reveal:
 - sponsor, public network fee, and terminal status
 
 This is content confidentiality, not traffic-flow anonymity. Timing,
-participant count, dataspace identity, and stable-pool activity remain
-public. A dataspace that hosts only one CBDC may also make the asset
+participant count, data space identity, and stable-pool activity remain
+public. A data space that hosts only one CBDC may also make the asset
 inferable from the route even though no literal asset identifier is
 published.
 
@@ -43,17 +43,17 @@ published.
 
 Before activation, operators need all of the following:
 
-1. exactly four validators for every participating dataspace, with distinct
+1. exactly four validators for every participating data space, with distinct
    BLS consensus keys and proofs of possession
 2. mandatory Sumeragi DA/RBC enabled for every height
 3. a governed confidential settlement pool and initial root in every
-   dataspace
-4. an active V1 private-note capability and the separate settlement proof
-   profile
+   data space
+4. the available native `IrohaIvmPrivateNoteStarkV1` implementation,
+   committed private-settlement limits, and V1 policy permission
 5. at least one governed local `PrivateSettlementAuditPolicyV1`, including
    distinct auditor signing and hybrid-encryption keys, a key epoch, height
    validity, and an approval threshold
-6. enough private sidecar storage for the configured retention period
+6. enough private sidecar storage for the committed retention period
 7. a neutral sponsor account able to submit the final public carrier
 
 An auditor may also operate a validator, but must use separate consensus,
@@ -63,68 +63,36 @@ before retiring them.
 
 The four-validator authority is state anchored, not supplied by the client.
 At the manifest's `authority_context_height`, every validator resolves the
-exact ordered lane/dataspace roster and active lane incarnation from consensus
+exact ordered lane/data space roster and active lane incarnation from consensus
 state, requires the resolved height to match, and verifies the four BLS keys
 and proofs of possession. Upload, Prepare, and final receipt admission all use
 that same historical authority.
 
-## Configure admission
+## Configure sidecar custody
 
-All production behavior comes from the node configuration. Environment
-variables cannot activate this path. The shipped default is
-`enabled = false`; leaving the feature disabled requires no
-settlement-specific configuration.
+Committed privacy policy sets the proof, capsule, and carrier limits, participant
+limits, expiry, retention, and auditor requirements. Admission also needs the
+pool-policy governance notice period and current on-chain pool and audit
+records. There is no node enable flag or service activation height.
 
-After governance has registered the required capability and chosen an
-activation height with adequate notice, configure every relevant node
-consistently:
+Node configuration controls only the encrypted sidecar store's local capacity:
 
 ```toml
 [nexus.atomic_private_settlement]
-enabled = true
-activation_height = 500000
-minimum_activation_notice_blocks = 7200
-proof_profile_version = 1
-max_participants = 255
-max_expiry_blocks = 7200
-audit_timeout_blocks = 1200
-prepare_timeout_blocks = 1200
-commit_timeout_blocks = 1200
-capsule_padding_classes_bytes = [4096, 16384, 65536, 262144]
-max_proof_bytes = 8388608
-max_capsule_bytes = 1048576
-max_carrier_bytes = 4194304
-sidecar_retention_blocks = 1000000
 sidecar_max_records = 256
 sidecar_max_total_bytes = 3221225472
-default_min_auditor_approvals = 1
-permitted_policy_versions = [1]
 ```
 
-The example uses the shipped V1 limits, not a performance recommendation.
-Measure storage, proof, capsule, carrier, and latency envelopes on the
-intended hardware before choosing operational bounds. The three phase
-timeouts must fit inside `max_expiry_blocks`, and sidecar retention must be
-at least that expiry window.
+These are the shipped storage bounds. Measure retained records and canonical
+bytes on the intended hardware before choosing local capacity. Capacity alone
+does not activate settlement or change its committed validity policy.
 
-`max_capsule_bytes` limits the canonical Norito encoding of the whole
-`PrivateSettlementAuditCapsuleV1`: AAD, nonce, ciphertext, vector framing,
-auditor identities, and every wrapped-DEK row. It is not a ciphertext-only
-limit. Each configured padding class must fit the conservative whole-capsule
-envelope for at least `default_min_auditor_approvals` auditors. Torii also
-rejects a newly admitted policy whose `min_approvals` is below that governed
-floor, and rejects any actual capsule whose complete canonical encoding is too
-large.
-
-`max_carrier_bytes` limits the complete canonical sponsor-signed transaction,
-not just the certified bundle. The count includes the registered instruction
-framing, transaction authority and metadata, fee intent, and signature. The
-ordinary network transaction limits still apply as an independent upper bound.
-
-Activation fails closed unless the governed capability is active, its state
-and activation heights satisfy the notice period, the compiled proof
-profile matches V1, and the on-chain pool and audit records are current.
-Enabling the configuration flag alone is insufficient.
+The committed capsule limit measures the complete canonical Norito encoding
+of `PrivateSettlementAuditCapsuleV1`: AAD, nonce, ciphertext, vector framing,
+auditor identities, and every wrapped-DEK row. The committed carrier limit
+measures the complete sponsor-signed transaction, including instruction
+framing, authority, metadata, fee intent, and signature. Ordinary network
+transaction limits also apply.
 
 ## Settlement workflow
 
@@ -150,12 +118,14 @@ For each canonical leg, the coordinator then performs this sequence:
    Persist the canonical 3-of-4 Prepare certificate on every staged
    responder.
 4. After every leg has a Prepare certificate, build the immutable complete
-   Prepare barrier. Request and persist canonical 3-of-4 Commit
-   certificates. If the coordinator restarts, query participant nodes for
+   Prepare barrier. Have the manifest sponsor submit it in one
+   `RegisterAtomicPrivateSettlementPrepareV1` control carrier and wait for
+   finality; Commit voters consult that replicated lock. Then request and
+   persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for
    their locally durable Prepare and Commit certificates, select a canonical
    quorum-equivalent certificate, and re-fan it out before continuing; never
    reconstruct a certificate from an unauthenticated local cache.
-5. Have the manifest sponsor sign and submit exactly one global carrier.
+5. Have the manifest sponsor sign and submit the global finalization carrier.
    The carrier contains one `FinalizeAtomicPrivateSettlementV1` instruction
    and the exact complete certified bundle. Coordinator and WSV preflight
    measure the complete boxed finalization instruction, including registered
@@ -171,6 +141,7 @@ For each canonical leg, the coordinator then performs this sequence:
 The Rust client exposes this flow through methods including
 `certify_and_upload_private_settlement_legs_v1`,
 `prepare_private_settlement_bundle_v1`,
+`register_private_settlement_prepare_and_wait_v1`,
 `commit_private_settlement_bundle_v1`, and
 `submit_private_settlement_bundle_v1`. Restart-safe coordination uses
 `recover_or_prepare_private_settlement_bundle_v1` and
@@ -192,7 +163,7 @@ rejects that boundary.
 
 The public pool projection retains the complete superseded policy-revision
 lineage. A receipt finalized before rotation therefore remains valid after
-restart, and replaying that exact receipt remains idempotent. The lineage does
+restart, and an exact replay of that receipt is rejected without changing state. The lineage does
 not authorize unfinished work: any old-policy bundle that crosses the
 activation boundary fails closed before global state changes. Retain every old
 decryption key needed to open stored capsules, or complete a governed and
@@ -206,6 +177,7 @@ behavior.
 
 | Operation          | Method and path                                                            | Principal                   |
 | ------------------ | -------------------------------------------------------------------------- | --------------------------- |
+| Authority context  | `POST /v1/nexus/private-settlements/context/{height}`                      | canonical account signature |
 | Upload leg         | `POST /v1/nexus/private-settlements/legs`                                  | canonical account signature |
 | Availability share | `POST /v1/nexus/private-settlements/legs/availability-shares`              | canonical account signature |
 | Prepare vote       | `POST /v1/nexus/private-settlements/phases/prepare-votes`                  | canonical account signature |
@@ -214,9 +186,9 @@ behavior.
 | Recover phase QCs  | `GET /v1/nexus/private-settlements/legs/{payload_digest}/phase-certificates` | manifest sponsor            |
 | Leg status         | `GET /v1/nexus/private-settlements/legs/{payload_digest}/status`           | canonical account signature |
 | Committee proof    | `GET /v1/nexus/private-settlements/legs/{payload_digest}/committee-proof`  | exact roster validator      |
-| Audit capsule      | `GET /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    | governed auditor            |
+| Audit capsule      | `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-capsule`    | governed auditor            |
 | Auditor approval   | `POST /v1/nexus/private-settlements/legs/{payload_digest}/audit-approvals` | governed auditor            |
-| Submit final/abort | `POST /v1/nexus/private-settlements/bundles`                               | manifest sponsor            |
+| Submit carrier     | `POST /v1/nexus/private-settlements/bundles`                               | manifest sponsor            |
 | Bundle status      | `GET /v1/nexus/private-settlements/bundles/{bundle_id}`                    | public                      |
 | Receipt or abort   | `GET /v1/nexus/private-settlements/bundles/{bundle_id}/receipt`            | public                      |
 
@@ -225,8 +197,8 @@ In particular, ordinary leg status does not reveal approval counts or the
 governed auditor threshold. Restricted reads intentionally collapse missing,
 unauthorized, and retention-expired material into the same unavailable
 response class.
-The submit route accepts exactly one direct sponsor-signed finalization or
-abort instruction. Its `202` response contains the bundle ID, observed
+The submit route accepts exactly one direct sponsor-signed Prepare-lock
+registration, finalization, or abort instruction. Its `202` response contains the bundle ID, observed
 admission height, and carrier hash only; it does not claim a queued abort is
 already final. The SDKs require both identifiers to be canonical checksummed
 Norito `Hash` JSON literals and the height to be an exact unsigned 64-bit
@@ -255,9 +227,9 @@ durable records, then reconcile immutable global receipts, abort markers,
 or expiry. The supervised reconciler also runs terminal retention pruning at
 the synchronously observed authoritative height even when there is no terminal
 candidate to reconcile, and it fails closed on a pruning error. Only an
-authoritative global terminal record releases staged locks. Replaying an
-identical finalized receipt is idempotent; a conflicting replay fails
-deterministically.
+authoritative global terminal record releases staged locks. An exact
+replay of a finalized receipt is rejected without changing state; a
+conflicting replay fails deterministically.
 
 Reservation identity includes the complete route. Pool heads use
 `(route, pool_id, epoch, root)`, nullifiers use
@@ -277,7 +249,7 @@ evidence that covers:
 
 - adversarial proof, capsule, policy, key-rotation, reimbursement, and
   replay cases
-- real four-validator processes for 2, 3, 4, 8, and 16 dataspaces,
+- real four-validator processes for 2, 3, 4, 8, and 16 data spaces,
   including validator and coordinator restarts, authenticated 5%, 10%, and
   20% message loss, phase partitions, recovery, and persistence-boundary
   crashes
@@ -294,7 +266,7 @@ evidence that covers:
   configurations, with fault budgets independent per committee
 - independent review of the proof relation, dummy-slot selectors, asset and
   capsule bindings, reimbursement relation, cryptography, and
-  cross-dataspace state machine
+  cross-data space state machine
 
 Publish the raw and sanitized evidence, threat model, protocol argument,
 limitations, commit ID, hardware description, and audit reports in an
@@ -329,7 +301,7 @@ the SHA-256 of one structured pinned-hardware description, and the SHA-256
 of its exact participant-count configuration. Archive one canonical
 configuration manifest covering N=2,3,4,8,16; each entry must reference the
 retained configuration bytes and assert exactly four validators per
-dataspace, a 3-of-4 quorum, and mandatory signed RS16 DA/RBC. The release
+data space, a 3-of-4 quorum, and mandatory signed RS16 DA/RBC. The release
 verifier rejects summaries produced on a different build, hardware profile,
 or network configuration. Every individual loss, phase-cut, and persistence-
 crash row must additionally name globally non-reusable exact JSONL record

@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # انسٹالیشن کے مسائل کا حل {#troubleshooting-installation-issues}
 
 اس سیکشن میں Iroha 3 تنصیب کے لئے خرابیوں کا سراغ لگانے کی تجاویز پیش کی جاتی ہیں۔ اگر آپ کو جو مسئلہ درپیش ہے وہ یہاں بیان نہیں کیا گیا ہے تو ، ہم سے رابطہ کریں [ٹیلیگرام](https://t.me/hyperledgeriroha).

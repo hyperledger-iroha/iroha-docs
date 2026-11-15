@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Seguridad de la contraseña {#password-security}
 
 Las contraseñas pueden proteger las consolas de operador, los almacenes secretos, las copias de seguridad y los archivos de claves locales. Una contraseña es solo un control. Úsela junto con la custodia segura de claves, los controles de acceso y la autenticación multifactor donde esté disponible.

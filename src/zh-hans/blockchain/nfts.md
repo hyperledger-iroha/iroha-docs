@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT 是一个具有一个所有者的独特账本对象. 使用 NFTs 当记录需要自己的身份,元数据,生命周期事件和所有权转移语义时,但不需要数字余额时.
@@ -27,7 +26,7 @@ Iroha NFT 是一个具有一个所有者的独特账本对象. 使用 NFTs 当�
 检查公开 Taira 测试网是否目前拥有 NFT 记录:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-例如, `badge$docs.universal` 在 `docs.universal` 域中识别`badge` NFT.如果遗漏数据空间,当前的解析器使用`universal` 数据空间,因此 `badge$docs` 解决为`badge$docs.universal`.
+例如，`badge$docs.universal` 标识 `docs.universal` 域中的 `badge` NFT。如果省略数据空间，当前解析器会使用 `universal` 数据空间，因此 `badge$docs` 会解析为 `badge$docs.universal`。
 
 使用 NFT IDs 的稳定名称. ID 是指令,查询,权限,事件过滤器和应用参考所使用的对象身份.
 
@@ -68,17 +67,17 @@ NFT 生命周期运营使用 Iroha 特殊指示:
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-生成的本地网络已经设置了 `wonderland.universal` 和其 SNS 要使用不同的域名,首先用声明符创建一个域名 `app alias setup plan` 和 `app alias setup apply` 工作流程 [域名](/zh-hans/blockchain/domains.md#registration).
+生成的本地网络不会为其客户端注册应用域。请将 `NFT_DOMAIN` 设为签名账户拥有的域，或该账户具有 `CanRegisterNft` 权限的域。要创建域，请使用[域](/zh-hans/blockchain/domains.md#registration)中介绍的声明式 `app alias setup plan` 和 `app alias setup apply` 工作流。
 
 注册一个 NFT.注册从标准输入中读取初始内容 JSON:
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,14 +88,14 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
 添加一个元数据键,然后再次读取 NFT:
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
@@ -106,27 +105,27 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
 删除元数据密钥:
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-选择地转移 NFT.使用`ledger nft get`来读取当前所有者从 `owned_by`,并使用`ledger account list all`找到目的地账户 ID.
+可选择转移 NFT。使用 `ledger nft get` 从 `owned_by` 读取当前所有者，并使用 `account list --all` 查找目标账户 ID。
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
 通过后删除例 NFT. 如果您将其转移,则要么将它转移回来,要么提交与当前所有者帐户配置的非注册命令.
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 

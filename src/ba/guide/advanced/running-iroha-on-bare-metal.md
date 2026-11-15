@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha Яланғас металл менән эшләй {#running-iroha-on-bare-metal}
 
 Был эш ағымды хосттар аша түгел , ә туранан-тура пирҙары менән идара итергә теләһәгеҙ ҡулланығыҙ Docker Compose. Хәҙерге сығанаҡ ағасы бирә Kagami генераторҙар тап килә торған генезистарҙы, пир конфигурацияларын, клиент конфигурацияһын һәм старт/стоп сценарийҙарын яҙа.
@@ -32,10 +31,10 @@ cargo build --release \
 Дүрт парлы Iroha 3 локаль селтәр булдырыу:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Сығарылыш каталогында `genesis.json`, `genesis.signed.nrt`, peer `config.toml` файлдары, `client.toml`, ярҙамсы скрипттар һәм был пакет өсөн теүәл командалар менән генерированный `README.md` тупланған.
+Сығыш каталогында булдырылған `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, һәр валидатор өсөн бер `peerN.toml`, `client.toml`, `start.sh` һәм `stop.sh` скрипттары һәм ошо тупланма өсөн теүәл командалар яҙылған, булдырылған `README.md` бар.
 
 ## 3. Пирҙарҙы эшләтеп ебәрегеҙ {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Әгәр һеҙ һәр Peer-ты systemd кеүек процестар менеджерына тоташтырырға кәрәк икән, һәр Peer өсөн `./localnet/README.md` -та теркәлгән старт командаһын ҡулланығыҙ. Һәр Peer-тың `config.toml`, шәхси асҡысын, һаҡлау каталогын һәм порттарын айырым һаҡлағыҙ.
+Һәр тиңдәште systemd кеүек процестар идара итеүсеһенә тоташтырырға кәрәк булһа, `./localnet/start.sh` эсендәге һәр тиңдәш өсөн командаға эйәрегеҙ: `<bundle>/state/peerN` каталогынан `iroha3d --config <bundle>/peerN.toml` эшләтегеҙ һәм `--sumeragi-assert-fresh-key` параметрын шул тиңдәштең тәүге эшләтелешендә генә бирегеҙ. Һәр тиңдәштең `peerN.toml` файлын, шәхси асҡысын, һаҡлау каталогын һәм порттарын айырым тотоғоҙ.
 
 ## 4. Сеть менән идара итеү {#_4-operate-the-network}
 
 Булдырылған клиент конфигурацияһын ҡулланығыҙ:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

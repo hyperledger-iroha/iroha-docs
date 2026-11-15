@@ -1,19 +1,18 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 使用 Iroha 二进制程序 {#working-with-iroha-binaries}
 
 Iroha 3 操作员的工作流程围绕四个主要二进制:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad)用于运行一个对等节点守护进程
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad)用于运行一个对等节点守护进程
 - `iroha3d_taira` 对于规范 Taira 验证器启动器
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)用于 CLI 和操作员指令
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami)用于密钥,创世,局域网和个人资料
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli)用于 CLI 和操作员指令
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami)用于密钥,创世,局域网和个人资料
 
 ## 建立从源头 {#build-from-source}
 
@@ -50,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker 图像 {#docker-image}
 
-上游工作空间使用 `kagami localnet` 和 `kagami docker` 产生 Docker Compose 文件与检查出来的代码相匹配. `hyperledger/iroha:dev` 图像可以与生成的文件一起使用.
-
-运行 CLI 在一个容器中:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-在容器中运行 Kagami:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-为对等节点启动,先生成一个本地网,然后编写文件:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+请参阅 [启动 Iroha 3](/zh-hans/get-started/launch-iroha.md)，使用同一版本的可执行文件，在 Docker 中构建并启动四个验证节点。
 
 ## 我应该使用哪个二进制程序？ {#which-binary-should-i-use}
 

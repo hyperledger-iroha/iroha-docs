@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # Мәғлүмәт моделе {#data-model}
 
 Iroha иҫәп-хисап ҡаҙнаһын `World` иҫәбендә һаҡлай. Уның тәүге сығарылыш мәғлүмәттәр моделе түбәндәге каноник шәхестәрҙе һәм субъекттарҙы ҡуллана:
@@ -122,9 +121,9 @@ Alias-тар — каноник реестр идентификаторҙары 
 |Активтар билдәләмәһе |`AssetDefinitionId` Base58 адресы |`name#domain.dataspace` йәки `name#dataspace` |`AssetDefinitionAlias` актив билдәләмәһе менән бәйле |
 |Килешеү |Canonical Bech32m `ContractAddress` |`name::domain.dataspace` йәки `name::dataspace` |`ContractAlias` ҡулланылған контракт адресына бәйләнгән |
 |Домен исеме |`DomainId` формаһында `domain.dataspace` |`domain.dataspace` |SNS `domain` исемдәр арауығы рекорды |
-|Мәғлүмәт биҫтәһе исеме |`DataSpaceId` актив Nexus каталогынан һанлы |`universal`, `paynet` йәки `zk` кеүек мәғлүмәт киңлектәре исемдәре. |SNS `dataspace` исемдәр арауығы рекорды һәм актив мәғлүмәттәр арауығы каталогы |
+| Мәғлүмәт киңлеге исеме | әүҙем SORA Nexus каталогындағы һанлы `DataSpaceId` | `universal` йәки `paynet` кеүек мәғлүмәт киңлеге псевдонимы | SNS системаһының `dataspace` исемдәр киңлегендәге яҙмаһы һәм мәғлүмәт киңлектәренең әүҙем каталогы |
 
-Иҫәп alias-тары — ҡулланыусы күргән иҫәп исемдәре. Alias world-state индекстары һәм account rekey яҙмалары аша active account ID-ға күрһәтеүе арҡаһында, account rekeying-тан һуң да һаҡлана. Төп label өсөн `SetPrimaryAccountAlias`, өҫтәмә non-primary alias-тар өсөн `SetAccountAliasBinding`, уҡыу өсөн `FindAccountByAlias` йәки `FindAliasesByAccountId` ҡулланығыҙ. Account alias-ҡа ғәҙәттә `AcquireAccountAliasLease` менән алынған һәм `RenewAccountAliasLease` менән яңыртылған active SNS account-alias lease кәрәк.
+Иҫәп псевдонимдары — ҡулланыусыға күренгән иҫәп исемдәре. Псевдоним донъя торошо индекстары һәм иҫәп асҡыстарын алмаштырыу яҙмалары аша әүҙем иҫәп идентификаторына күрһәткәнлектән, иҫәптең асҡыстары алмаштырылғандан һуң да һаҡлана. Иҫәп псевдонимы арендаһын алыу һәм псевдонимды бәйләү өсөн `EnsureAlias` (ғәҙәттә `app alias setup` планлаштырыу һәм ҡулланыу ағымы аша), төп билдәне үҙгәртеү өсөн `CompareAndSetPrimaryAccountAlias`, псевдонимды башҡа иҫәпкә күсереү өсөн `RebindAccountAlias`, ә уҡыу өсөн `FindAccountByAlias` йәки `FindAliasesByAccountId` ҡулланығыҙ. Арендаларҙы `RenewAliasLease` менән яңыртығыҙ йәки `ConfigureAliasAutoRenew` менән автоматик яңыртыуҙы көйләгеҙ.
 
 Asset alias-тары айырым иҫәп балансын түгел, asset definition-ды атай. Asset һәм contract alias-тары уҡыла торған исемдән булған canonical target-ҡа тура binding булып тора. Asset alias `SetAssetDefinitionAlias` менән билдәләнә; alias name segment asset-definition display name йәки projected definition name менән тап килергә тейеш. Contract alias `SetContractAlias` менән билдәләнә; alias dataspace contract address-та кодланған dataspace менән тап килергә тейеш. Ике binding та `lease_expiry_ms` йөрөтә ала; expiry-ҙан һуң grace window тамамланғас, улар resolve булыуҙан туҡтай һәм world-state индекстарынан алына.
 

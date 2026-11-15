@@ -5,7 +5,6 @@ translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b60
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # מטאדאטה {#metadata}
 
 מטאדאטה היא מפה של ערך מפתח מבוקש הקשורת לאובייקטים במספר. המפתחות הן ערכים `Name` והערכים הם מטענים JSON (`Json`).
@@ -85,6 +84,6 @@ MetadataChanged --> DomainMetadataChanged
 
 ## שאילתות {#queries}
 
-מטא-נתונים מוחזרים כחלק מהאובייקט שעליו בוצעה השאילתה. לדוגמה, השתמשו ב-[`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), ב-[`FindDomainById`](/he/reference/queries.md#domains-and-peers) או ב-[`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמשו ב-[`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או ב-[`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, וב-[`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור אצוות RWA. לאחר מכן קראו את שדה הנתונים המתאים של האובייקט. תשובות לשאילתות NFT חושפות את מפת ה-`content` של ה-NFT כמטא-נתונים רשומים.
+מטא-נתונים מוחזרים כחלק מהאובייקט שעליו בוצעה השאילתה. לדוגמה, השתמשו ב-[`FindAccountById`](/he/reference/queries.md#accounts-and-permissions), ב-[`FindDomainById`](/he/reference/queries.md#domains-and-peers) או ב-[`FindAssetDefinitionById`](/he/reference/queries.md#assets-nfts-and-rwas). השתמשו ב-[`FindNfts`](/he/reference/queries.md#assets-nfts-and-rwas) או ב-[`FindNftsByAccountId`](/he/reference/queries.md#assets-nfts-and-rwas) עבור NFTs, וב-[`FindRwas`](/he/reference/queries.md#assets-nfts-and-rwas) עבור אצוות RWA. לאחר מכן קראו את שדה המטא־נתונים של האובייקט. תשובות לשאילתות NFT חושפות את מפת ה-`content` של ה-NFT כמטא־נתונים של הרשומה.
 
 מפתחות המטא-נתונים הם חלק ממצב הספרים, אז לשמור אותם יציבים ולהימנע מקודד גרסה ספציפית יישום ל-churn לתוך שם המפתח כאשר ערך JSON יכול לשאת את הגרסה הזו באופן בולט.

@@ -1,14 +1,13 @@
 ---
 translation_locale: my
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # အကောင့်များ {#accounts}
 
-Iroha 3 ဒေတာပုံစံတွင်, `AccountId` သည် single protocol-standard နှင့် domainless ဖြစ်သည်။ အကောင့်ထိန်းချုပ်ရေးမှူးထံမှ ရယူထားပြီး [I105](/my/reference/i105.md) အဖြစ် Single Protocol Standard ပုံစံတွင် ကုဒ်သွင်းထားသည်။ လူသားဖတ်ရှုနိုင်သော Domain နှင့် Data Space အခြေအနေသည် သီးခြား Account-alias ချုပ်နှောင်ချက်များထဲ ပါဝင်သည်။
+အကောင့်သည် transaction များကို လက်မှတ်ထိုးနိုင်ပြီး လယ်ဂျာ အခြေအနေကို ပိုင်ဆိုင်နိုင်သော authority ဖြစ်သည်။ လက်ရှိ Iroha 3 ဒေတာမော်ဒယ်တွင် `AccountId` သည် စံသတ်မှတ်ထားသော တစ်သမတ်တည်းပုံစံဖြစ်ပြီး domain မပါဝင်ပါ။ ၎င်းကို အကောင့်ထိန်းချုပ်သူမှ ဆင်းသက်ရယူပြီး [I105](/my/reference/i105.md) အဖြစ် စံပုံစံအတိုင်း ကုဒ်သွင်းသည်။ လူဖတ်ရှုနိုင်သော domain နှင့် data space ဆိုင်ရာ အကြောင်းအရာသည် သီးခြား အကောင့် alias ချိတ်ဆက်မှုများတွင် ရှိသည်။
 
 ## ဖွဲ့စည်းပုံ {#structure}
 
@@ -17,26 +16,27 @@ Iroha 3 ဒေတာပုံစံတွင်, `AccountId` သည် single pr
 - `id`: Single Protocol Standard `AccountId`
 - `metadata`: အလိုလိုစာရင်း metadata များ
 - `label`: ရွေးချယ်စရာ stable alias
-- `uaid`: ရွေးချယ်စရာ Universal Account ID ကို Nexus စီးဆင်းမှုအတွက် အသုံးပြုသည်။
+- `uaid`: SORA Nexus လုပ်ငန်းစဉ်များတွင် အသုံးပြုသော မဖြစ်မနေမဟုတ်သည့် Universal Account ID
 - `opaque_ids`: အကောင့်၏ UAID သို့ ချိတ်ဆက်ထားသော မရှင်းလင်းသော မှတ်သားချက်များ
 
-အကောင့်တစ်ခု ဖန်တီးရန် အသုံးပြုသော ငွေချေးမှု အသုံးဝင်မှုသည် `NewAccount` ဖြစ်သည်။ ၎င်းတွင် မှတ်ပုံတင်ထားသည့် အကောင့်က သုံးသော Identity, Metadata, Label, UAID နှင့် opaque ID ကွင်းများနှင့်အတူတူပါသည်။
+အကောင့်ဖန်တီးရန် သုံးသည့် transaction payload သည် `NewAccount` ဖြစ်သည်။ မှတ်ပုံတင်ပြီး အကောင့်တွင် သုံးသည့် အထောက်အထား၊ metadata၊ အညွှန်း၊ UAID နှင့် အတွင်းအဓိပ္ပာယ်မဖော်ပြသော သတ်မှတ်နံပါတ် အကွက်များကိုပင် ၎င်းက သယ်ဆောင်သည်။
 
-`uaid` သည် Single Protocol-Standard `AccountId` ကိုဖြည့်စွက်ပေးသည်၊ ၎င်းကိုအစားထိုးခြင်းမဟုတ်ပါ။ Nexus ဝန်ဆောင်မှုများအတွက်ဒေတာနေရာများအကြား တည်ငြိမ်သောအသုံးပြုသူ သို့မဟုတ် အဖွဲ့အစည်းကိုင်တွယ်မှုလိုအပ်တဲ့အခါ အသုံးပြုပါ ဆော့ဖ်ဝဲ အကောင်အထည်ဖော်မှု ပတ်ဝန်းကျင်သည် တစ်မှတစ်ဆင့် UAID-ကောင့်ညွှန်းကိန်းကို ထိန်းသိမ်းထားသည်၊ ပွင့်လင်းမြင်သာမှုမရှိသော မှတ်သားစရာများကို UAID မှတစ်ဆင့် ချိတ်ဆက်ရန်လိုအပ်ပြီး နှစ်ထပ် သို့မဟုတ် တိုက်မိသည့် ပွင့်လင်းမမြင်သာတဲ့ မှတ်သားစရာတွေကို ငြင်းပယ်သည်။ Nexus ဝန်ဆောင်မှု အလွှာ စီးဆင်းမှုအတွက် [FHE နှင့် UAID](/my/blockchain/sora-nexus-services.md#fhe-and-uaid) ကိုကြည့်ပါ။
+`uaid` သည် စံသတ်မှတ်ထားသော `AccountId` ကို ဖြည့်စွက်ပေးခြင်းဖြစ်ပြီး အစားထိုးခြင်း မဟုတ်ပါ။ SORA Nexus ဝန်ဆောင်မှုများတွင် data space များအကြား တည်ငြိမ်သော အသုံးပြုသူ သို့မဟုတ် အဖွဲ့အစည်း handle၊ ကိုယ်ရေးလုံခြုံမှုကို ထိန်းသိမ်းသော စာရင်းသွင်းမှု သို့မဟုတ် ဝန်ဆောင်မှုစွမ်းရည် ရှာဖွေမှု လိုအပ်သောအခါ ၎င်းကို အသုံးပြုပါ။ လုပ်ဆောင်မှုစနစ်သည် UAID နှင့် အကောင့်အကြား တစ်ခုနှင့်တစ်ခု ကိုက်ညီသော အညွှန်းကို ထိန်းသိမ်းပြီး အတွင်းအဓိပ္ပါယ် မဖော်ပြသော identifier များကို UAID မှတစ်ဆင့် ချိတ်ဆက်ရန် လိုအပ်ကာ ထပ်နေသော သို့မဟုတ် တိုက်ဆိုင်နေသော identifier များကို ငြင်းပယ်သည်။ SORA Nexus ဝန်ဆောင်မှုအလွှာ၏ လုပ်ငန်းစဉ်ကို [FHE နှင့် UAID](/my/blockchain/sora-nexus-services.md#fhe-and-uaid) တွင် ကြည့်ပါ။
 
 ## Account controller များ {#account-controllers}
 
-Controller က အကောင့်က လုပ်ဆောင်ချက်တွေကို ဘယ်လို ခွင့်ပြုတယ်ဆိုတာကို သတ်မှတ်ပါတယ်။ Default client flow မှာ Ed25519 key pair ကိုသုံးပေမဲ့ data model ကလည်း multisignature policy controller တွေလို ချမ်းသာတဲ့ controllers တွေကို ထောက်ပံ့ပါတယ်။
+အကောင့်က လုပ်ဆောင်ချက်များကို မည်သို့ခွင့်ပြုမည်ကို controller က သတ်မှတ်သည်။ ပုံမှန် client လုပ်ငန်းစဉ်တွင် Ed25519 ကီးအတွဲကို သုံးသော်လည်း ဒေတာမော်ဒယ်သည် လက်မှတ်များစွာလိုအပ်သည့် မူဝါဒ controller ကဲ့သို့ ပိုမိုစုံလင်သော controller များကိုလည်း ပံ့ပိုးသည်။
 
-Client Configuration က Signature Authorization Principle ကို Network Peer Configuration နဲ့ သီးခြား သိမ်းထားတယ်။
+Client ပြင်ဆင်သတ်မှတ်မှုတွင် လက်မှတ်ထိုးသည့် authority အကောင့်ကို peer ပြင်ဆင်သတ်မှတ်မှုနှင့် သီးခြား သိမ်းဆည်းသည်။
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
-[Client ဖွဲ့စည်းမှု](/my/guide/configure/client-configuration.md) နှင့် [အဓိကမျိုးဆက်](/my/guide/security/generating-cryptographic-keys.md) တို့ကို ကြည့်ပါ။
+လက်ရှိ ကီးပုံစံများအတွက် [client ပြင်ဆင်သတ်မှတ်မှု](/my/guide/configure/client-configuration.md) နှင့် [ကီးထုတ်လုပ်ခြင်း](/my/guide/security/generating-cryptographic-keys.md) ကို ကြည့်ပါ။
 
 ## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
@@ -44,7 +44,7 @@ private_key = { digest_function = "ed25519", payload = "..." }
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Account assets တွေကို စစ်ဆေးဖို့ ပထမဦးဆုံး Technical invocation ကနေ account ID ကို ကူးယူပြီး path ထဲမထည့်ခင် URL-encode လုပ်ပါ။ ဒီ Python snippet ကတော့ ပထမဆုံးစာရင်းတင်ထားတဲ့ account အတွက် ဒီလိုလုပ်ပါတယ်။
@@ -67,11 +67,11 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-အကောင့်တစ်ခု ဖန်တီးခြင်း (သို့) မွမ်းမံခြင်းသည် လက်မှတ်ထိုးထားသော ငွေပေးချေမှုဖြစ်ပြီး [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင်ဖော်ပြထားသည့် testnet မှထောက်ပံ့သော Taira setup ကိုလိုအပ်သည်။
+ဤလုပ်ဆောင်ချက်များသည် အများပြည်သူ ဖတ်ရှုနိုင်သော လုပ်ဆောင်ချက်များဖြစ်သည်။ အကောင့်ဖန်တီးခြင်း သို့မဟုတ် အပ်ဒိတ်လုပ်ခြင်းသည် လက်မှတ်ထိုးထားသော transaction ဖြစ်ပြီး [Taira နှင့် Minamoto ကို အသုံးပြု၍ SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင် ဖော်ပြထားသည့် faucet မှ ငွေဖြည့်ထားသော Taira ပြင်ဆင်မှု လိုအပ်သည်။
 
 ## မှတ်ပုံတင်ခြင်းနှင့် ခွင့်ပြုချက်များ {#registration-and-permissions}
 
-စာရင်းမှတ်ပုံတင်ထားပြီး မှတ်ပုံတင်မထားသေးတဲ့စာရင်း [`Register` နှင့် `Unregister`](/my/blockchain/instructions.md#un-register) ညွှန်ကြားချက်များ။ Active software execution environment ကို validator က ဆုံးဖြတ်ပေးတယ်။ မည်သူက အကောင့်တွေ ဖန်တီးနိုင်ပြီး ဘယ်ခွင့်ပြုချက် လက်မှတ်များ (သို့) အခန်းကဏ္ဍများ လိုအပ်လဲ။
+အကောင့်များကို ယေဘုယျ [`Register` နှင့် `Unregister`](/my/blockchain/instructions.md#un-register) ညွှန်ကြားချက်များဖြင့် မှတ်ပုံတင်ခြင်းနှင့် မှတ်ပုံတင်ပယ်ဖျက်ခြင်း ပြုလုပ်သည်။ လက်ရှိ runtime ၏ စစ်ဆေးသူ က မည်သူသည် အကောင့်ဖန်တီးနိုင်ကြောင်းနှင့် မည်သည့် ခွင့်ပြုချက် token များ သို့မဟုတ် role များ လိုအပ်ကြောင်းကို ဆုံးဖြတ်သည်။
 
 မှတ်ပုံတင်ပြီးနောက် အကောင့်တစ်ခုမှာ:
 
@@ -80,13 +80,13 @@ PY
 - ကိုယ်ပိုင်ဒေသများ
 - အခန်းကဏ္ဍများနှင့် ခွင့်ပြုချက် လက်မှတ်များကို ရရှိရန်
 - သိုလှောင်ထားသော metadata
-- Nexus အမည်မဖော်လိုသူ၊ rekey၊ ပြန်လည်ထူထောင်ရေးနှင့် ကိုယ်ပိုင်လက္ခဏာ စီးဆင်းမှုများတွင် ပါဝင်ပါသည်
+- သက်ဆိုင်ရာလုပ်ဆောင်ချက်များ ဖွင့်ထားသောအခါ alias၊ ကီးအစားထိုးခြင်း၊ ပြန်လည်ရယူခြင်းနှင့် SORA Nexus အထောက်အထား လုပ်ငန်းစဉ်များတွင် ပါဝင်ရန်
 
 ## ကိုယ်ပိုင်လက္ခဏာပြဿနာများ ဖြေရှင်းခြင်း {#troubleshooting-identity-issues}
 
 ရောင်းဝယ်မှုကို မမျှော်လင့်ဘဲ ပယ်ချလိုက်ရင်:
 
-- client public key သည် လက်မှတ်ရေးထိုးရန် အသုံးပြုသည့် private key နှင့် ကိုက်ညီသည်
+- client ၏ အများသုံးကီးသည် လက်မှတ်ထိုးရန် သုံးသည့် ကိုယ်ပိုင်ကီးနှင့် ကိုက်ညီရမည်
 - အကောင့်က blockchain genesis မှာ မှတ်ပုံတင်ထားတယ် (သို့) ပြီးဆုံးသွားတဲ့ ငွေပေးချေမှုတစ်ခုမှာ
 - ခွင့်ပြုချက်ရသူမှာ ညွှန်ကြားချက်အရ လိုအပ်တဲ့ ခွင့်ပြုချက်တွေရှိတယ်
 - stringent account field တွေမှာ single protocol-standard I105 account ID ကိုသုံးပြီး ဖတ်လို့ရတဲ့ နာမည်တွေကို active account alias binding နဲ့ ဖြေရှင်းပေးပါတယ်။
@@ -96,4 +96,4 @@ PY
 - [ခွင့်ပြုချက်များ](/my/blockchain/permissions.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)
 - [Client ဖွဲ့စည်းမှု](/my/guide/configure/client-configuration.md)
-- [SORA Nexus ဒေတာနေရာများ](/my/get-started/sora-nexus-dataspaces.md)
+- [SORA Nexus data space များ](/my/get-started/sora-nexus-dataspaces.md)

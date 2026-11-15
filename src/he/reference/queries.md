@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # שאילתות {#queries}
 
 דרישות Iroha קוראים את מצב הספר הגדול ללא שינוי בו. מודל הנתונים הנוכחי חושף שני צורות חיפוש רחבות:
@@ -57,7 +56,7 @@ translation_engine: nllb-200-ct2
 |שאילתה |מטרה.|
 | --- | --- |
 |`FindAssets` |רשימה של סולציות נכסים. |
-|`FindAssetsDefinitions` |רשימה של הגדרות נכסים. |
+|`FindAssetDefinitions` |רשימה של הגדרות נכסים. |
 |`FindAssetsByAccountId` |רשימה של נכסים שנחזיקו בחשבון. |
 |`FindAssetById` |מצא סכום נכס אחד על ידי `AssetId`. |
 |`FindAssetDefinitionById` |מצא הגדרה אחת של נכס על ידי ID. |
@@ -67,7 +66,7 @@ translation_engine: nllb-200-ct2
 
 ## רשומות נאמנות והוכחה {#escrow-and-proof-records}
 
-שאילתות נאמנות בודקות את הרשומות שנוצרו על ידי [ה־ISIs של נאמנות מובנית לנכסים](/he/blockchain/escrow.md), ובהן נאמנויות של זירת מסחר, נעילות נכסים כלליות ורשומות נאמנות אנונימיות.
+שאילתות נאמנות בודקות את הרשומות שנוצרו על ידי [ה־ISIs של נאמנות מובנית לנכסים](/he/blockchain/escrow.md), ובהן נאמנויות של זירת מסחר, נעילות נכסים כלליות ונאמנויות מותנות.
 
 |שאילתה |מטרה.|
 | --- | --- |
@@ -76,29 +75,23 @@ translation_engine: nllb-200-ct2
 |`FindAssetEscrowsBySeller` |מציג נאמנויות נכסים לפי מוכר. |
 |`FindAssetEscrowsByBuyer` |מציג נאמנויות נכסים לפי קונה. |
 |`FindAssetEscrowsByStatus` |מציג נאמנויות נכסים לפי מצב. |
-|`FindAnonymousAssetEscrows` |מציג רשומות נאמנות אנונימית לנכסים.|
-|`FindAnonymousAssetEscrowById` |מוצא נאמנות אנונימית אחת לנכסים לפי ID. |
-|`FindAnonymousAssetEscrowsBySeller` |מציג נאמנויות אנונימיות לפי מוכר.|
-|`FindAnonymousAssetEscrowsByBuyer` |מציג נאמנויות אנונימיות לפי קונה.|
-|`FindAnonymousAssetEscrowsByStatus` |מציג נאמנויות אנונימיות לפי מצב. |
 |`FindProofRecordById` |מוצא רשומת הוכחה אחת לפי ID. |
 |`FindProofRecords` |מציג רשומות הוכחה.|
 |`FindProofRecordsByBackend` |מציג רשומות הוכחה עבור מנגנון הוכחה. |
 |`FindProofRecordsByStatus` |מציג רשומות הוכחה לפי מצב. |
 
-## Nexus, זמינות הנתונים וארכיבים {#nexus-data-availability-and-packages}
+## SORA Nexus, זמינות הנתונים וארכיבים {#nexus-data-availability-and-packages}
 
 |שאילתה |מטרה.|
 | --- | --- |
-|`FindRepoAgreements` |רשימה של הסכמי אחסון שמוצאים על שרשרת. |
-|`FindTwitterBindingByHash` |לפתור קישור טוויטר באמצעות האש. |
+|`FindRepoAgreements` |הצגת הסכמי ריפו וריפו הפוך השמורים על השרשרת. |
+| `FindTwitterBindingByHash` | איתור קישור Twitter לפי גיבוב. |
 |`FindDaPinIntentByTicket` |תמצאו כוונה של קישור זמינות נתונים לפי כרטיס.|
 |`FindDaPinIntentByManifest` |תמצאו כוונה של סימן על ידי התייחסות מפורשת. |
 |`FindDaPinIntentByAlias` |תמצאי כוונה של סימן תחת השם.|
 |`FindDaPinIntentByLaneEpochSequence` |תמצאו כוונה של סינור לפי שדה, תקופה וסדר. |
-|`FindLaneRelayEnvelopeByRef` |תמצא מעטפה מאושרת.|
 |`FindSorafsProviderOwner` |לפתור את הבעלים של ספק SoraFS. |
-|`FindDataspaceNameOwnerById` |לפתור בעל שמות חלל נתונים. |
+|`FindDataspaceNameOwnerById` |איתור הבעלים הפעיל ב־SNS של כינוי מרחב נתונים. |
 |`FindMusubiExactPackageV1` |קראו רישום מסגר מדויק אחד ושינויים הנוכחיים בו. |
 |`FindMusubiExactReleaseV1` |קורא תמונת מצב מדויקת אחת של הפצה.|
 |`FindMusubiProviderBundleAttestationV1` |קראו את תעודת האריכיון של ספקית אחת. |
@@ -118,7 +111,7 @@ translation_engine: nllb-200-ct2
 |`FindActiveTriggerIds` |מציג IDs של טריגרים פעילים. |
 |`FindTriggers` |מציג טריגרים. |
 |`FindTriggerById` |מוצא טריגר אחד לפי ID. |
-|`FindContractManifestByCodeHash` |מצא מסמך חוזים חכמים על ידי קוד האש.|
+| `FindContractManifestByArtifactId` | חיפוש מניפסט של חוזה חכם לפי מזהה התוצר שלו במרחב הנתונים. |
 |`FindTransactions` |רשימה של עסקאות commit. |
 |`FindBlocks` |בלוקים של רשימה.|
 |`FindBlockHeaders` |רשימה כותרות בלוק. |

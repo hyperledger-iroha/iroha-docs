@@ -5,7 +5,6 @@ translation_source_hash: 234c831c97bb93996e6cf51505921ff509e233408cf2faf6a9b2364
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 <script setup>
 import WarningFatQuery from './WarningFatQuery.vue'
 </script>
@@ -14,7 +13,7 @@ import WarningFatQuery from './WarningFatQuery.vue'
 
 ایونٹ کے صارفین اور فلٹرز بلاکچین کی حالت میں ہونے والی تبدیلیوں کو ٹریک کرسکتے ہیں۔ جب آپ کو موجودہ حالت کا براہ راست نظارہ درکار ہو تو استفسار استعمال کریں۔
 
-استفسارات instruction جیسے مختصر objects ہیں۔ کسی Iroha peer کو ایک استفسار بھیجیں تاکہ اس کے موجودہ World State View سے تفصیلات حاصل ہوں۔
+استفسار ایک چھوٹی شے ہے جس کی ساخت ہدایت سے ملتی جلتی ہے۔ اسے Iroha کے کسی ساتھی نوڈ کو بھیج کر اس کے پاس موجود لیجر کی موجودہ حالت کی تفصیل حاصل کریں۔
 
 ایک نیٹ ورک دوسری معلومات کو بے نقاب کر سکتا ہے۔ مطلوبہ عالمی حالت کی معلومات ہر Iroha نیٹ ورک پر دستیاب ہونے کی ضمانت دی جانے والی واحد قسم ہے.
 
@@ -74,7 +73,7 @@ let pagination = Pagination::new(Some(starting_result), Some(limit));
 
 جب آپ ایک استفسار بناتے ہیں تو، آپ صرف ان نتائج کو واپس کرنے کے لئے فلٹر کا استعمال کرسکتے ہیں جو مخصوص فلٹر سے ملتے ہیں.
 
-filters ہر استفسار کے لیے مخصوص ہیں۔ مثال کے طور پر account استفسارات کو account identity یا metadata کے مطابق، اور asset استفسارات کو asset definition، holder account یا domain projection کے مطابق محدود کیا جا سکتا ہے۔ جہاں ممکن ہو SDK کے typed query builders استعمال کریں تاکہ filter type، query output type سے میل کھائے۔
+filters ہر استفسار کے لیے مخصوص ہیں۔ مثال کے طور پر account استفسارات کو اکاؤنٹ کی شناخت یا metadata کے مطابق، اور asset استفسارات کو اثاثے کی تعریف، مالک کا اکاؤنٹ یا domain projection کے مطابق محدود کیا جا سکتا ہے۔ جہاں ممکن ہو SDK کے typed query builders استعمال کریں تاکہ filter type، query output type سے میل کھائے۔
 
 ## درجہ بندی {#sorting}
 

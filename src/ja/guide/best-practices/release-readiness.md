@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # リリース準備 {#release-readiness}
 
 昇進させる前に Iroha アプリケーションまたはネットワークの変更に関して、関連するリスクを明らかにできる最小の環境でその挙動を証明してください。 それから、意図的に共有テストネットおよび本番ゲートを通過する。
@@ -21,12 +20,12 @@ translation_engine: bing-translator-llm
 
 ## 共有テストネットゲート {#shared-testnet-gate}
 
-- API エンドポイントの動作、手数料、アカウントへの資金供給、レイテンシ、および運用リハーサルのために、Taira またはその他の共有テストネットを使用してください。
+- エンドポイントの動作、手数料、アカウントへの資金供給、レイテンシ、および運用リハーサルのために、Taira またはその他の共有テストネットを使用してください。
 - 通常のテスト実行がネットワークの可用性に依存したり、テストネットの資金を消費したりしないように、ライブテストネットの書き込みはオプトインにしておく。
 - 各ライブテスト取引を送信する前に、暗号署名者の資金、手数料資産のメタデータ、認可プリンシパルの権限、および予想される状態を確認してください。
 - 終了状態を待ってから、読み取り専用クエリで結果の状態を確認してください。
 
-[SORA 3 を基に構築する: Taira と Minamoto](/ja/get-started/sora-nexus-dataspaces.md) を参照してください。
+[SORA Nexus 上で開発する：Taira と Minamoto](/ja/get-started/sora-nexus-dataspaces.md)を参照してください。
 
 ## メインネットまたは本番ゲート {#mainnet-or-production-gate}
 
@@ -46,7 +45,7 @@ translation_engine: bing-translator-llm
 
 - 設定は環境ごとに異なり、テスト専用の秘密情報は含まれていません。
 - トランザクションの再試行動作は冪等性があるか、明示的に制限されています。
-- このアプリケーションは、拒否、期限切れ、タイムアウト、そして API エンドポイントの可用性の失敗を識別できます。
+- アプリケーションは、拒否、有効期限切れ、タイムアウト、エンドポイントの利用不能による障害を区別できます。
 - モニタリングは、スループット、レイテンシ、キューの深さ、拒否、ビューの変更、および関連するビジネスイベントをカバーします。
 - オペレーターは、予想される故障モードのための運用手順書を持っています。
 - セキュリティレビューは、鍵の管理、権限、ネットワークの露出、および自動化の認可プリンシパルを対象としました。

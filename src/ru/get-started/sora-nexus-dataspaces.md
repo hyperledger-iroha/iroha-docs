@@ -1,16 +1,15 @@
 ---
 translation_locale: ru
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# Разработка на SORA Nexus с использованием Taira и Minamoto {#build-on-sora-3-taira-and-minamoto}
 
-# Основываться на SORA 3: Taira и Minamoto {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus работает на базе Iroha 3. Сначала разработайте и протестируйте приложение в сети Taira. Переносите конфигурацию клиента в Minamoto, только когда у вас есть отдельные ключи основной сети, реальные XOR для оплаты комиссий и разрешение на работу в промышленной среде.
 
-SORA 3 — это публичная версия для пользователей приложения, построенная на Iroha 3 и SORA Nexus. Сначала собирайте и репетируйте на Taira, затем переносите тот же клиентский формат на Minamoto только если у вас есть отдельные ключи основной сети, реальные XOR для комиссий и одобрение для производства.
-
-Этот учебник показывает, как настроить клиент Iroha для публичных сетей SORA 3:
+В этом руководстве описана настройка клиента Iroha для двух публичных сетей SORA Nexus.
 
 - Taira тестовая сеть на `https://taira.sora.org`
 - Minamoto основная сеть на `https://minamoto.sora.org`
@@ -24,15 +23,15 @@ SORA 3 — это публичная версия для пользовател�
 
 |Шаг| Taira Тестовая сеть                                                | Minamoto Основная сеть                                   |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Начать чтение состояния сети|Запрос `/status` без ключей|Запрос `/status` без ключей|
-|Выберите пространство данных|Используйте публичный `universal`, если вашему приложению не нужна управляемая полоса выполнения|Используйте одно и то же пространство данных только после одобрения основной сети|
+|Начать чтение состояния сети|Запрос `/status` без ключей| Сначала проверьте адрес сервиса и его сертификат TLS |
+|Выберите пространство данных|Используйте публичный `universal`, если вашему приложению не нужно собственное управляемое пространство данных|Используйте одно и то же пространство данных только после одобрения основной сети|
 |Получить актив для оплаты комиссии|Используйте публичный сервис финансирования тестовой сети Taira|Получить XOR с финансируемого аккаунта Minamoto или утвержденного казначейского потока|
 |Тест пишет|Используйте финансируемый тестнетом тест XOR|Не используйте тестовые инструменты; реальные XOR тратятся|
 |Продвигать|Сохраняйте логику повторных попыток, мониторинг и обработку криптографических подписей|Используйте отдельные ключи, финансирование и контроль выпуска|
 
 Практический процесс таков:
 
-1. Соберите клиентскую программу для Taira и используйте общедоступное пространство данных `universal`.
+1. Разрабатывайте клиент для Taira и используйте публичное пространство данных `universal`.
 2. Добавьте криптографического подписанта и профинансируйте его с помощью сервисa тестовой сети Taira.
 3. Проверяйте логику вашего приложения на Taira, пока ошибки не станут скучными и заметными.
 4. Создайте отдельного криптографического подписанта Minamoto, профинансируйте его реальными XOR и переносите на mainnet только те же проверенные операции.
@@ -53,24 +52,22 @@ SORA 3 — это публичная версия для пользовател�
 
 ## 1. Поймите, что вы настраиваете {#_1-understand-what-you-are-setting-up}
 
-В SORA Nexus пространство данных является частью линии выполнения сети и каталога маршрутизации. Клиент не создаёт новое публичное пространство данных просто изменяя `client.toml`. Настройка клиента выполняет две задачи:
+В SORA Nexus каталог пространств данных определяет пространства данных. Каталог линий отдельно определяет линии: каждая линия ссылается на одно пространство данных, а пространство данных может содержать несколько линий. Клиент не создаёт новое публичное пространство данных простым изменением `client.toml`. Настройка клиента выполняет две задачи:
 
-1. указивает клиенту правильную конечную точку Torii API
-2. выбирает домен и контекст маршрутизации пространства данных для своей канонической учетной записи
+1. указывает клиенту правильную конечную точку Torii
+2. выбирает сетевой контекст и ключ подписи для своей канонической учётной записи
 
-`AccountId` всегда канонический и бездоменный. Значение `[account].domain` в `client.toml` задает контекст маршрутизации и псевдонимов; оно не становится частью идентичности учетной записи. Для большинства приложений начните с публичного пространства данных `universal`. Контекст домена использует форму `domain.dataspace`, например:
+`AccountId` всегда является каноническим и не содержит домена, а в `client.toml` нет настройки домена: `[account].profile` выбирает только сетевой префикс I105. Доменный контекст принадлежит псевдонимам и объектам, принадлежащим домену. Для большинства приложений начните с публичного пространства данных `universal`. Доменный контекст использует форму `domain.dataspace`, например:
 
 ```text
 wonderland.universal
 ```
 
-Если вам нужно новое организационное пространство данных, подготовьте каталог и предложение по маршрутизации вместо того, чтобы пытаться зарегистрировать его из обычной учетной записи клиента. См. [Создание нового пространства данных](#_8-provision-a-new-dataspace) ниже.
+Если вам нужно новое пространство данных организации, подготовьте предложение по каталогам и маршрутизации вместо попытки зарегистрировать его с обычной клиентской учётной записи. См. раздел [Создание нового пространства данных](#_8-provision-a-new-dataspace) ниже.
 
-## 2. Проверьте публичную конечную точку Torii API {#_2-check-the-public-torii-endpoint}
+## 2. Проверьте публичную конечную точку Torii {#_2-check-the-public-torii-endpoint}
 
-Проверьте, что целевой API конечный узел активен, прежде чем настраивать криптографический подпись.
-
-Для Taira:
+Проверьте состояние тестовой сети Taira с помощью `curl` и `jq`. Для этой проверки не нужны ключи или локальный узел.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -78,15 +75,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Для Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Проверьте представление пространства данных и канала выполнения, предоставляемое узлом:
+Просмотрите представление пространств данных и линий, предоставляемое узлом:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Используйте ту же команду с `https://minamoto.sora.org/status` для основной сети.
+Перед использованием Minamoto уточните у оператора адрес сервиса основной сети и убедитесь, что его сертификат TLS соответствует имени хоста.
 
 ## Taira MCP для агентов {#taira-mcp-for-agents}
 
@@ -102,17 +91,21 @@ Taira также предоставляет мост протокола конт
 
 |Настройка|Значение|
 | --- | --- |
-| MCP API конечная точка | `https://taira.sora.org/v1/mcp` |
+| Конечная точка MCP | `https://taira.sora.org/v1/mcp` |
 |Корень сети| `https://taira.sora.org` |
 |Предназначение|Taira чтения тестовой сети и репетиции записи, финансируемые тестовой сетью|
-|Производственный эквивалент|Не указывайте эту запись на Minamoto, если основной сетевой MCP API конечный пункт и контроль выпусков явно не одобрены|
+| Эквивалент для промышленной эксплуатации | Не направляйте эту запись на Minamoto без явного одобрения конечной точки MCP основной сети и процедур контроля выпуска |
 
-Проверьте метаданные моста перед добавлением подписывающего материала:
+Мост принимает только запросы JSON-RPC `POST` без состояния. Проверьте его метаданные обнаружения перед добавлением средств подписи:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 Настройте URL как локальный для пользователя сервер MCP в среде выполнения программного обеспечения агента. Не сохраняйте в системе контроля версий конфигурацию агента MCP, токены API, пересылаемые заголовки аутентификации, `authority` или значения `private_key` в этом репозитории документации или в репозитории приложения.
@@ -133,7 +126,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 
 1. Попросите агента проверить соответствующие документы, код SDK, команду CLI или схему инструмента MCP перед написанием кода.
 2. Пусть агент сначала напишет наименьший путь клиента: проверка статуса, поиск аккаунта, разрешение псевдонима или проверка баланса.
-3. Добавляйте код построения транзакций только после того, как запросы только для чтения API будут работать с Taira.
+3. Добавляйте код построения транзакций только после того, как запросы только для чтения будут работать с Taira.
 4. Оставляйте тесты в реальной сети по желанию, например за `TAIRA_LIVE=1`, чтобы обычный запуск модульных тестов никогда не тратил средства тестовой сети и не зависел от доступности сети.
 5. Требовать от агента отчет о корне сети, цепочке, аккаунте основного уполномоченного, кратком содержании инструкции, плате за транзакцию и ожидаемом изменении состояния до того, как он отправит любую транзакцию.
 6. Проверьте сгенерированный код на обработку секретов, поведение повторных попыток, идемпотентность и обработку отклонений перед его продвижением в CI или основные рабочие процессы сети.
@@ -171,7 +164,7 @@ say "submit this transaction".
 - статус терминала, такой как `Committed`, `Applied`, `Rejected` или `Expired`
 - блок или подробности обозревателя, когда доступны
 - проверка результатов чтения
-- сообщение об отклонении и указание на то, похожа ли ошибка на проблему с разрешениями, сборами, проверкой, устаревшим состоянием или доступностью конечной точки API
+- сообщение об отклонении и указание на то, похожа ли ошибка на проблему с разрешениями, сборами, проверкой, устаревшим состоянием или доступностью конечной точки
 
 Пример защищённого запроса:
 
@@ -193,40 +186,19 @@ state with read-only iroha.* tools and report the hash, status, and
 verification result.
 ```
 
-Рассматривайте Taira MCP как публичную тестовую сетевую контрольную поверхность. Ключи Taira, тестовая сеть XOR, учетные записи сервисов для тестового финансирования и канарейочные криптографические подписанты являются одноразовыми и должны оставаться отдельно от ключей Minamoto и рабочих процессов выпуска в производство.
+Рассматривайте Taira MCP как интерфейс управления публичной тестовой сетью. Ключи Taira, тестовые XOR, учётные записи крана и подписанты контрольных транзакций предназначены для временного использования и должны храниться отдельно от ключей Minamoto и процессов выпуска в промышленную эксплуатацию.
 
 ## Примеры игрушек, которые вы можете попробовать прямо сейчас {#toy-examples-you-can-try-now}
 
-Эти примеры доступны только для чтения, если не указано иное. Они работают до того, как вы сгенерируете ключи, и безопасны для использования в публичных сетях.
+Эти примеры запрашивают данные Taira в режиме чтения без ключей учётной записи.
 
-Сравните состояние testnet Taira и mainnet Minamoto:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
-
-Перечислите общедоступные каналы выполнения пространства данных, предоставляемые Taira:
+Выведите все линии Taira с их пространствами данных и видимостью:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Запустите ту же команду для Minamoto, когда вам нужен обзор основной сети:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -270,10 +234,11 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+# The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -284,12 +249,12 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Верхнеуровневый `chain` является точным идентификатором цепочки транзакций Taira. Настройка `[account].profile = "taira"` независимо выбирает дискриминант цепочки Taira I105. Идентификатор цепочки не выбирает профиль аккаунта.
+Поле `chain` верхнего уровня — точный идентификатор цепочки транзакций Taira, а `network_id` — точный идентификатор сети, к которому привязана каждая подпись. Настройте ровно одно из полей: `network_id` или `network_id_file`. Настройка `[account].profile = "taira"` независимо выбирает сетевой дискриминант Taira для I105. Идентификатор цепочки не выбирает профиль учётной записи.
 
 Выполните проверку только для чтения:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 Запустите публичную диагностику Taira перед написанием тестов:
@@ -298,28 +263,24 @@ iroha --config ./taira.client.toml --output-format text ops sumeragi status
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Пополните счет Taira через сервис финансирования тестовой сети перед выполнением записей с оплатой комиссии. Прямой процесс финансирования через сервис тестовой сети описан в [Получить тестовую сеть XOR на Taira](#_4-get-testnet-xor-on-taira).
+Пополните учётную запись Taira через кран перед операциями записи с оплатой комиссии. Процесс с предварительной подготовкой запроса к крану описан в разделе [Получение тестовых XOR в Taira](#_4-get-testnet-xor-on-taira).
 
-После того как запрос на финансирование тестовой сети будет принят и счет пополнен, Taira canary является необязательным тестом на запись:
+После пополнения учётной записи можно выполнить необязательную проверку записи подписанной инструкцией журнала. Каждая отправляемая транзакция указывает плательщика комиссии, а CLI запрашивает точную комиссию перед подписанием:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-Канарейка отправляет подписанный пинг, ждет подтверждения и записывает конфигурацию криптографической подписи времени выполнения программного обеспечения, когда предоставлен `--write-config`. Taira — это публичная тестовая сеть, так что насыщение очереди может привести к сбою подписанного пинга, даже если сам сервис финансирования тестовой сети работает. Если `taira doctor` сообщает о насыщенной очереди или канарейка возвращает `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, подождите и повторите попытку, прежде чем воспринимать это как ошибку конфигурации клиента.
+Команда ожидает подтверждения. Taira — публичная тестовая сеть, поэтому переполнение очереди может привести к отказу ping, даже если сам кран работает. Если `taira doctor` сообщает о переполнении очереди или ping возвращает `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, подождите и повторите попытку, прежде чем считать это ошибкой конфигурации клиента.
 
-Для автоматических тестов на наличие дыма оберните канареечный тест в ограниченный цикл повторов:
+Для автоматических проверок оберните ping в цикл с ограниченным числом повторных попыток:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -331,7 +292,7 @@ test "$ok" = true
 
 ## Создать идентификатор учетной записи SORA Nexus {#generate-a-sora-nexus-account-id}
 
-Идентификатор аккаунта SORA Nexus является каноническим адресом I105, полученным из публичного ключа аккаунта и префикса целевой сети. Это не значение `[account].domain` в клиент TOML. Один и тот же открытый ключ кодируется в разные идентификаторы на Taira и Minamoto, и пользователям в производственной среде следует сгенерировать отдельную пару ключей для Minamoto.
+Идентификатор учётной записи SORA Nexus — канонический адрес I105, полученный из открытого ключа учётной записи и префикса целевой сети. Один и тот же открытый ключ кодируется разными идентификаторами в Taira и Minamoto; для промышленной работы пользователям следует создавать отдельную пару ключей Minamoto.
 
 Создайте или загрузите пару ключей Ed25519, которая будет контролировать аккаунт:
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Используйте полученный идентификатор учетной записи везде, где команда Nexus, API или CLI запрашивает канонический идентификатор учетной записи, например, в тестовой сети службы финансирования Taira `account_id`. запросы баланса, строгие поля учетной записи или привязки псевдонимов. Храните соответствующий приватный ключ в конфигурации клиента и выберите ту же публичную сеть с `[account].profile = "taira"` или `[account].profile = "minamoto"`.
+Используйте полученный идентификатор везде, где API SORA Nexus или команда CLI запрашивает канонический идентификатор учётной записи: например, в запросах баланса, строгих полях учётной записи или привязках псевдонимов. Храните соответствующий закрытый ключ в конфигурации клиента и выбирайте ту же публичную сеть через `[account].profile = "taira"` или `[account].profile = "minamoto"`.
 
 Генерация идентификатора сама по себе не создает финансируемый аккаунт в блокчейне. На Taira сервис финансирования тестовой сети может создать и профинансировать аккаунт для записей в тестовой сети. На Minamoto используйте одобренный процесс подключения к основной сети или казначейский поток.
 
@@ -372,188 +333,72 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 
 ## 4. Получите Testnet XOR на Taira {#_4-get-testnet-xor-on-taira}
 
-Используйте службу финансирования публичной тестовой сети напрямую. Порядок действий следующий:
+Запросите тестовые XOR через процесс CLI с предварительной подготовкой запроса к крану. Кран пополняет учётную запись из `taira.client.toml` и сначала регистрирует её, если она ещё не существует. Последовательность действий:
 
-1. Создайте или загрузите криптографический подпись и вычислите его канонический идентификатор аккаунта Taira.
-2. Получите текущую головоломку сервиса финансирования тестовой сети.
-3. Решите задачу, если `difficulty_bits` больше, чем `0`.
-4. Отправьте заявку на получение финансирования тестовой сети.
-5. Подождите, пока баланс счета или актива не станет видимым, прежде чем отправлять записи с оплатой комиссии.
+1. Прочитайте публичную политику крана: субъект полномочий крана, комиссионный актив и сумму.
+2. Подготовьте запрос. CLI выполняет доказательство работы, проверяет точную транзакцию, подготовленную и подписанную Torii, и сохраняет её в закрытом каталоге журнала без отправки.
+3. Один раз отправьте сохранённую транзакцию.
+4. Дождитесь появления баланса актива перед отправкой операций записи с оплатой комиссии.
 
-Преобразуйте открытый ключ в Taira I105 идентификатор аккаунта, ожидаемый сервисом финансирования тестовой сети:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-Возьмите головоломку:
+Прочитайте политику:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-Сервис финансирования тестовой сети является публичным сервисом тестовой сети. Если конечная точка головоломки или запроса API возвращает `502`, тайм-аут или другую ошибку на уровне шлюза, подождите и повторите попытку прежде чем менять ваши ключи или конфигурацию клиента.
 
 Ответ имеет такую форму:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-Когда `difficulty_bits` является `0`, отправляйте только идентификатор аккаунта:
+Политика — неподписанные данные обнаружения. Автоматизация должна закреплять ожидаемые субъект полномочий, определение актива и сумму, а не доверять каждому ответу. Команда `prepare` отклоняет подготовленную транзакцию, если она отличается от переданных вами значений.
+
+Подготовьте и отправьте запрос:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-Когда `difficulty_bits` больше `0`, решите головоломку и включите высоту якоря плюс значение криптографического нонса:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-Алгоритм головоломки следующий:
-
-1. Постройте вызов как SHA-256 над:
-   - байты `iroha:accounts:faucet:pow:v2`
-   - ID учетной записи UTF-8
-   - `anchor_height` в формате big-endian `u64`
-   - `anchor_block_hash_hex` декодировано в байты
-   - `challenge_salt_hex` декодируется как байты, когда присутствует
-2. Попробуйте значения криптографических одноразовых чисел `u64`, закодированные в формате big-endian как 8-байтные значения.
-3. Для каждого значения криптографического nonce выполните scrypt с:
-   - пароль: 8-байтовое криптографическое значение nonce
-   - соль: 32-байтовый вызов
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - длина вывода: 32 байта
-4. Победное значение криптографического нонса — это первое значение криптографического дайджеста с как минимум `difficulty_bits` начальными нулевыми битами.
-
-Ответ сервиса финансирования тестовой сети включает предоставленный актив и криптографический хеш поставленной в очередь транзакции:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-Ответ в настоящее время возвращается с HTTP `202 Accepted`. Его `asset_definition_id` является текущим Taira активом комиссии, финансируемым публичным тестнет-сервисом финансирования; выводите это из ответа, вместо того чтобы копировать пример идентификатора. Сервис финансирования тестовой сети принял запрос, когда он возвращает `tx_hash_hex` и `status: "QUEUED"`.
+Команда `prepare` создаёт закрытый каталог журнала и отказывается заменять существующий, поэтому для каждого запроса используйте новый каталог. Кран — публичный сервис тестовой сети. Если `submit` сообщает `Pending`, завершается по тайм-ауту или получает `502`, выполните `taira account faucet resume` с той же конфигурацией и журналом вместо подготовки нового запроса. Устаревшая опорная точка доказательства работы приводит к отказу `prepare`; подготовьте запрос заново в новом каталоге журнала.
 
 Затем опросите финансируемый актив перед отправкой собственных транзакций с оплатой комиссии:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-Если запрос на финансирование через тестовую сеть был принят, но аккаунт или актив еще не видны, транзакция все еще находится в обработке очереди публичной тестовой сети. Подождите и попробуйте снова прочитать перед отправкой записей.
+Если запрос применён, но актив пока не виден, подождите и повторите чтение перед отправкой операций записи.
 
-Для готовой к запуску прямой проверки API сохраните это как `taira_faucet_claim.py` и передайте Taira I105 идентификатор учетной записи:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
-
-Сервис финансирования тестнета предназначен только для тестнет-фондов Taira. Не используйте тестнет XOR, аккаунты сервиса финансирования тестнета или криптографические подписанты канарейки Taira в потоках Minamoto.
+Кран выдаёт средства только для тестовой сети Taira. Не используйте тестовые XOR, учётные записи крана или подписантов контрольных транзакций Taira в операциях Minamoto.
 
 ## 5. Создайте конфигурацию клиента Minamoto {#_5-create-a-minamoto-client-config}
+
+Перед использованием Minamoto уточните у оператора адрес сервиса основной сети и убедитесь, что его сертификат TLS соответствует имени хоста.
 
 Используйте отдельную пару ключей для Minamoto. Не используйте ключи Taira повторно для основной сети.
 
@@ -561,10 +406,11 @@ with urllib.request.urlopen(request) as res:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -575,7 +421,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Верхнеуровневый `chain` — это текущий Nexus идентификатор цепочки основной сети. `[account].profile = "minamoto"` выбирает Minamoto различитель цепочки I105; конечная точка API и идентификатор цепочки не выбирают её автоматически.
+Поле `chain` верхнего уровня — текущий идентификатор цепочки основной сети SORA Nexus, а `network_id` — точный идентификатор сети Minamoto; прочитайте его из маршрута возможностей перед первой подписанной операцией. `[account].profile = "minamoto"` выбирает сетевой дискриминант Minamoto для I105; имя хоста конечной точки и идентификатор цепочки не выбирают его неявно.
 
 Преобразуйте публичный ключ Minamoto в его канонический идентификатор аккаунта I105 с префиксом основной сети:
 
@@ -586,10 +432,10 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 Выполняйте только проверки на стороне чтения, пока аккаунт не будет создан и пополнен через процесс онбординга в основной сети или через механизм управления:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
-Не запускайте сервис финансирования тестовой сети Taira или помощник write-canary против Minamoto.
+Не выполняйте команды крана Taira или проверочные команды записи в Minamoto.
 
 ## 6. Пополните счет Minamoto на XOR {#_6-fund-a-minamoto-account-with-xor}
 
@@ -601,7 +447,7 @@ Taira XOR не может оплатить сборы Minamoto. Балансы �
 
 ## 7. Работа внутри существующего пространства данных {#_7-work-inside-an-existing-dataspace}
 
-Используйте полностью квалифицированные доменные имена для распределённых объектов реестра блокчейна, которые находятся внутри пространства данных. Например, домен проекта в публичном пространстве данных должен использовать:
+Используйте полностью квалифицированные доменные имена для объектов реестра внутри пространства данных. Например, домен проекта в публичном пространстве данных должен иметь вид:
 
 ```text
 apps.universal
@@ -615,8 +461,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -628,11 +473,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Псевдонимы учетной записи используют тот же суффикс пространства данных:
+Псевдонимы учётных записей используют тот же суффикс пространства данных:
 
 ```text
 alice@apps.universal
@@ -641,9 +486,9 @@ alice@universal
 
 Поля строгого учета по-прежнему используют канонические идентификаторы учетной записи I105. Обращайтесь с псевдонимами как с удобочитаемыми связками, которые соответствуют каноническим идентификаторам учетной записи.
 
-## 8. Обеспечить новый пространственный раздел данных {#_8-provision-a-new-dataspace}
+## 8. Создание нового пространства данных {#_8-provision-a-new-dataspace}
 
-Новый датапространство — это изменение оператора и управления. Публичный Torii API конечный пункт может маршрутизировать трафик к настроенным датапространствам, но он будет отклонять неизвестные псевдонимы датапространства.
+Новое пространство данных требует изменений на уровне оператора и управления сетью. Публичная конечная точка Torii может направлять трафик в настроенные пространства данных, но отклоняет неизвестные псевдонимы пространств данных.
 
 Прежде чем готовить изменение, зафиксируйте текущий рабочий каталог:
 
@@ -659,15 +504,15 @@ curl -fsS https://taira.sora.org/status \
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-Не продвигайте новый псевдоним, если идентификатор линии выполнения, идентификатор пространства данных, набор валидаторов, отказоустойчивость, технический манифест, правила маршрутизации и операционный владелец не были рассмотрены вместе. Обычная учетная запись пользователя с необходимыми правами может получить домен и его аренду SNS внутри существующего пространства данных через планировщик псевдонимов; она не может безопасно добавить новое публичное пространство данных.
+Не вводите новый псевдоним в эксплуатацию, пока идентификатор линии, идентификатор пространства данных, состав валидаторов, отказоустойчивость, манифест, правила маршрутизации и ответственный оператор не проверены совместно. Обычная пользовательская учётная запись с нужными разрешениями может через планировщик псевдонимов получить домен и его аренду SNS внутри существующего пространства данных; она не может безопасно добавить новое публичное пространство данных.
 
-Для частного или организационного пространства данных подготовьте изменение каталога с:
+Для приватного пространства данных или пространства организации подготовьте изменение каталога, включающее:
 
 - уникальный псевдоним пространства данных и числовой `id`
 - соответствующая запись в канале исполнения или существующее назначение канала исполнения
-- пространство данных `fault_tolerance`
+- `fault_tolerance` пространства данных
 - правила маршрутизации для инструкций или областей аккаунта, которые должны там оказаться
-- технический манифест космического справочника или эквивалентное доказательство развертывания, когда пространство данных раскрывает возможности UAID
+- манифест каталога пространств или эквивалентные свидетельства внедрения, если пространство данных предоставляет возможности UAID
 - утверждение управления для валидатора, соответствия, урегулирования финансовых транзакций и политики мониторинга
 
 Фрагмент конфигурации, который можно просмотреть, выглядит следующим образом:
@@ -684,23 +529,23 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments data space"
 ```
 
 Принятие оператором должно включать эти ворота:
 
-- `iroha3d --sora --config <config.toml> --trace-config` передаёт разрешённую конфигурацию узла
+- `iroha3d --sora --config <config.toml> --check-config` передаёт разрешённую конфигурацию узла
 - сгенерированный или проверенный технический манифест архивируется с криптографическими хешами и подписями
 - дымовые тесты проходят на Taira до любой Minamoto промоции
-- каталог после изменений `/status` показывает предполагаемую полосу выполнения и область данных
+- каталог `/status` после изменения показывает нужные линию и пространство данных
 - `iroha app nexus lane-report --summary` не сообщает о недостающих обязательных технических манифестах
 
 ```bash
@@ -709,12 +554,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Продвигайте тот же дата-пространство на Minamoto только после завершения развертывания Taira, дымового тестирования, мониторинга и подтверждения управления.
+Переносите то же пространство данных в Minamoto только после завершения развёртывания Taira, проверок работоспособности, мониторинга и подготовки подтверждающих материалов по управлению сетью.
 
 ## Связанные страницы {#related-pages}
 
 - [Установите Iroha 3](/ru/get-started/install-iroha.md)
 - [Управлять Iroha 3 через CLI](/ru/get-started/operate-iroha-via-cli.md)
-- [Плата спонсора за частное пространство данных](/ru/get-started/private-dataspace-fee-sponsor.md)
-- [Torii API конечные точки](/ru/reference/torii-endpoints.md)
+- [Спонсирование комиссий приватного пространства данных](/ru/get-started/private-dataspace-fee-sponsor.md)
+- [Конечные точки Torii](/ru/reference/torii-endpoints.md)
 - [генезисная ссылка блокчейна](/ru/reference/genesis.md)

@@ -1,14 +1,13 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript եւ TypeScript {#javascript-and-typescript}
 
-Ներկայումս JavaScript SDK-ը `@iroha/iroha-js` փաթեթն է Iroha աղբյուրի ծառում: Այն Node.js-ի առաջին SDK է Torii, Norito շինարարների համար, ստորագրություն, էջավորումը, Connect նախադասությունները եւ Kagemusha հրաման տրանսպորտի համար:
+Ընթացիկ JavaScript SDK-ն Iroha-ի սկզբնական կոդի ծառում գտնվող `@iroha/iroha-js` փաթեթն է։ Այն Node.js-ին ուղղված SDK է Torii-ի, Norito կառուցիչների, ստորագրման, էջավորման և Connect-ի նախադիտումների համար։
 
 ## Կառուցեք աղբյուրից {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ SDK կենտրոնանում է հետեւյալ վրա.
 - Ed25519 ստորագրում եւ առանցքային սերունդ
 - pagination եւ retry օգնականներ
 - Կապացրեք բրաուզերների bootstrap օգնականները
-- Kagemusha- ի պատրաստակամություն, լրացում, փոխհատուցում եւ շահագործման կարգավիճակի տրանսպորտային օգնականներ
 
 ## Վերածննդային հղումներ {#upstream-references}
 

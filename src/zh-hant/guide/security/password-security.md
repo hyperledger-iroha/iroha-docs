@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 密碼安全性 {#password-security}
 
 密碼可保護維運主控臺、機密資訊儲存庫、備份與本機金鑰檔案。密碼只是其中一項控制措施；它必須搭配安全的金鑰保管、存取控制，以及在可用時採用多因素驗證。

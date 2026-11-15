@@ -1,26 +1,25 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ڈومینز {#domains}
 
-ڈومینز کو `World` میں رجسٹرڈ ناموں کی جگہ کا نام دیا جاتا ہے۔ موجودہ Iroha 3 ڈیٹا ماڈل میں ایک ڈومین کو اس کے والدین ڈیٹا اسپیس کے ذریعہ اہل بنایا گیا ہے ، لہذا کینونیکل شناخت کنندہ یہ ہے:
+ڈومینز نام والے نیم اسپیسز ہیں جو `World` میں رجسٹر ہوتے ہیں۔ موجودہ Iroha 3 ڈیٹا ماڈل میں ڈومین کی شناخت اس کی بنیادی ڈیٹا اسپیس کے ساتھ متعین ہوتی ہے، اس لیے کینونیکل شناخت کنندہ یہ ہے:
 
 ```text
 domain.dataspace
 ```
 
-مثال کے طور پر، `payments.universal` `universal` ڈیٹا اسپیس کے اندر `payments` ڈومین کا نام دیتا ہے۔
+مثلاً `payments.universal`، `universal` ڈیٹا اسپیس کے اندر `payments` ڈومین کا نام ہے۔
 
 ## ڈھانچہ {#structure}
 
 ایک رجسٹرڈ `Domain` میں شامل ہیں:
 
-- `id`: ڈیٹا اسپیس کے لئے اہل `DomainId`
+- `id`: ڈیٹا اسپیس سے مکمل طور پر متعین `DomainId`
 - `logo`: ایک ڈومین لوگو کے لئے اختیاری `SoraFS` URI
 - `metadata`: تعمیری کلیدی قدر میٹا ڈیٹا۔
 - `owned_by`: اکاؤنٹ جو ڈومین کا مالک ہے، عام طور پر اس اکاؤنٹ جس نے اسے رجسٹر کیا
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-ارادے `payments.universal` کی نشاندہی کرتا ہے، اس کے عددی ڈیٹا اسپیس، کینونیکل I105 مالک، لیز حاصل کرنے کی مدت، اور موجودہ پالیسی / ادائیگی کوٹ گارڈ. منصوبہ ساز کے اختتامی نقطہ `POST /v1/aliases/setup/plan` ہے۔ اس کا واپس آنے والا منصوبہ سلسلہ ، اتھارٹی ، ریاست اور آخری تاریخ پر پابند ہے۔ ڈومین ہٹانا اب بھی استعمال کرتا ہے [`Unregister`](/ur/blockchain/instructions.md#un-register).
+ارادہ `payments.universal`، اس کی عددی ڈیٹا اسپیس، کینونیکل I105 مالک، لیز حاصل کرنے کی مدت، اور موجودہ پالیسی/ادائیگی کے تخمینے کی حفاظتی شرط متعین کرتا ہے۔ منصوبہ ساز اینڈ پوائنٹ `POST /v1/aliases/setup/plan` ہے؛ اس کا واپس کردہ منصوبہ چین، اختیار، حالت اور آخری وقت سے بندھا ہوتا ہے۔ ڈومین ہٹانے کے لیے اب بھی [`Unregister`](/ur/blockchain/instructions.md#un-register) استعمال ہوتا ہے۔
 
 ڈومین بنانے یا ہٹانے کے لئے فعال رن ٹائم ویلیڈیٹر کے تحت مناسب ڈومین مینجمنٹ اجازت کی ضرورت ہوتی ہے۔ ڈومین میٹا ڈیٹا کو [`SetKeyValue` اور `RemoveKeyValue`](/ur/blockchain/instructions.md#setkeyvalue-removekeyvalue) کے ساتھ اپ ڈیٹ کیا جاسکتا ہے جب اتھارٹی کو اس ڈومین میں ترمیم کرنے کا اختیار حاصل ہو۔
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-پبلک لین کیٹلاگ کا نقشہ واپس ڈیٹا اسپیس کے ناموں میں:
+عوامی لین کیٹلاگ کو ڈیٹا اسپیس کے عرفی ناموں سے ملائیں:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-پہلا کمانڈ استعمال کریں جب کسی ایپ کو یہ چیک کرنے کی ضرورت ہو کہ آیا ڈومین موجود ہے یا نہیں۔ لین کیٹلاگ کا استعمال کریں جب آپ کو اس بات کی تصدیق کرنے کی ضرورت ہو۔ ڈیٹا اسپیس پبلک ، محدود یا بنیادی لین کے پیچھے پیچھے ہے۔
+جب ایپ کو جانچنا ہو کہ ڈومین موجود ہے یا نہیں تو پہلی کمانڈ استعمال کریں۔ کسی ڈیٹا اسپیس سے منسلک لینز، ہر لین کی عوامی یا محدود مرئیت، اور بنیادی لین کے مقابل اس کی ہم وقت سازی کی حیثیت دیکھنے کے لیے لین کیٹلاگ استعمال کریں۔
 
-Domain setup فیس ادا کرنے والی write ہے۔ اسے Taira پر آزمانے سے پہلے [Taira پر Testnet XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) سے faucet helper کو `taira_faucet_claim.py` کے نام سے محفوظ کریں، public faucet کے ذریعے signer کو فنڈ دیں، اور fee metadata منسلک کریں:
+ڈومین کی ترتیب فیس ادا کرنے والی تحریری کارروائی ہے۔ Taira پر اسے آزمانے سے پہلے [Taira پر ٹیسٹ نیٹ XOR حاصل کریں](/ur/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) میں پیشگی تیاری والے فوسیٹ عمل سے دستخط کنندہ کو فنڈ کریں، پھر واضح فیس ادا کنندہ کے ساتھ منصوبہ لاگو کریں۔ CLI دستخط سے پہلے درست فیس معلوم کرتا ہے:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

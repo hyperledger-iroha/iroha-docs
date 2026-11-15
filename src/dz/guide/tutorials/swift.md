@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # Swift དང་ iOS {#swift-and-ios}
 
@@ -29,20 +29,16 @@ targets: [
 ]
 ```
 
-ཁྱོད་རའི་གློག་རིམ་གྱི་དོན་ལུ་འགྲུལ་ལམ་བདེ་སྒྲིག་འབད། ད་ལྟོའི་`examples/ios/ConnectMinimalApp` འགྲུལ་ལམ་འདི་ ག་དེ་སྦེ་ཡོདཔ་ཨིན་ན་ འདྲ་བཤུས་མ་རྐྱབ། དེ་གིས་ `../../IrohaSwift` འདི་ `examples/IrohaSwift` ལུ་སེལ་འཐུ་འབདཝ་ཨིན།
+ཁྱོད་རའི་གློག་རིམ་གྱི་དོན་ལུ་ འགྲུལ་ལམ་བདེ་སྒྲིག་འབད། `examples/ios/ConnectMinimalApp/Package.swift` གིས་ རྟེན་འབྲེལ་གཅིག་པ་དེ་ འབྲེལ་ཡོད་འགྲུལ་ལམ་ `../../../IrohaSwift` དང་གཅིག་ཁར་ སྟོནམ་ཨིན།
 
-ཐུམ་སྒྲིལ་འདི་སེལ་འཐུ་མ་འབད་བའི་ཧེ་མ་ ཟམ་འདི་ལཱ་གི་ས་སྒོ་རྩ་བ་ལུ་ཡོདཔ་ངེས་གཏན་བཟོ།
+ཐུམ་སྒྲིལ་འདི་སེལ་འཐུ་མ་འབད་བའི་ཧེ་མ་ ད་ལྟོའི་ནང་སྐྱེས་ཟམ་འདི་ བཟོ། ས་གནས་གོང་འཕེལ་དང་ བརྟག་དཔྱད་ཀྱི་དོན་ལུ་ འདི་ ལཱ་གི་ས་སྒོ་རྩ་བ་ལས་ གཡོག་བཀོལ་:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-འདི་གིས་ `dist/NoritoBridge.xcframework` ཐོན་སྐྱེད་འབདཝ་ཨིན། `IrohaSwift/Package.swift` གིས་ `../dist/NoritoBridge.xcframework` སྦེ་གཞི་བསྟུན་འབདཝ་ཨིན།
-
-## CocoaPods {#cocoapods}
-
-གཞི་རྟེན་ ལས་རིམ་ཨང་ཡིག འདི་ནང་ལུ་ཡང་ཡོདཔ་ཨིན། `IrohaSwift/IrohaSwift.podspec`. འདི་གིས་གསལ་བསྒྲགས་འབདཝ་ཨིན། `IrohaSwift` ཀེ་བ་ཚུ་ Swift ༥.༩ དང་ iOS ༡༥ ཨིན། གློག་རིག་དཔྱད་ཡིག་འདི་ འཐེན Swift གཞི་རྟེན་རྫས་ནང་ལས་འབྱུང་ཁུངས་ཚུ་; རང་ལུགས་ཀྱི་ཟམ་དེ་ ད་ལྟོ་ཡང་ཡོད་དགོཔ་ཨིན། འབྲེལ་མཐུད་འབད་ཡོདཔ་ད་ བརྒྱུད་འཕྲིན་ཨེབ་གཏང་འབད་ནི་དང་ Ed25519མེན་པའི་རྟགས་བཀོད་ དེ་ལས་ མཐུད་སྦྲེལ གསང་བཟོགི་དོན་ལུ་ཨིན།
+གསར་བཏོན་བཟོ་བསྐྲུན་ཚུ་གིས་ `make bridge-xcframework` གིས་ `dist/NoritoBridge.xcframework` ཐོན་སྐྱེད་འབདཝ་ཨིན། དེ་ལུ་ `SOURCE_DATE_EPOCH`, `NORITO_BRIDGE_OUT_DIR`, `NORITO_BRIDGE_BUILD_DIR`, `NORITO_BRIDGE_ARCHIVE_OUTPUT`, དང་ `MOBILE_SDK_CARGO_LOCKFILE` དགོཔ་ཨིན། `IrohaSwift/Package.swift` གིས་ ཟམ་འདི་ `../dist/NoritoBridge.xcframework` སྦེ་གཞི་བསྟུན་འབདཝ་ཨིན།
 
 ## མགྱོགས་པ་རང་འགོ་བཙུགས་ {#quickstart}
 
@@ -51,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -88,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -102,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, དང་ `UnshieldRequest` གིས་ ཚད་ལྡན་རྩིས་ཐོ་ཨའི་ཌི་ཚུ་དང་ ཚད་ལྡན་སྔོན་སྒྲིག་མེད་པའི་ གཞི་རྟེན་༥༨ རྒྱུ་དངོས་ངེས་ཚིག་ཨའི་ཌི་ཚུ་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ བདེན་དཔྱད་འབདཝ་ཨིན།
+`TransferRequest`, `MintRequest`, དང་ `BurnRequest` གིས་ ཚད་ལྡན་རྩིས་ཐོ་ཨའི་ཌི་ཚུ་དང་ ཚད་ལྡན་སྔོན་སྒྲིག་མེད་པའི་ གཞི་རྟེན་༥༨ རྒྱུ་དངོས་ངེས་ཚིག་ཨའི་ཌི་ཚུ་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ བདེན་དཔྱད་འབདཝ་ཨིན།
 
 ## རང་ལུགས་ཀྱི་ བར་གཏོགས་བདག་ཉར {#native-escrow}
 
-Swift གིས་ཚོང་ཁྲོམ་དང་མིང་མ་ཤེསཔ་གི་རྒྱབ་སྐྱོར་གྱི་བཀོད་རྒྱ་ཚུ་ བཟོ་ནི་ཨིནམ་ད་ Norito JSON ནང་དོན་གནད་སྡུད་ཚུ སྦེ `NativeEscrowInstructionBuilders` ཡང་ན་ དེ་འདྲ་མཉམ་ཨིན་པའི་ `IrohaSDK.build*Escrow*` ཆ་རོགས་ཚུ་གི་ཐོག་ལས་ བཟོ་དོ་ཡོདཔ་ཨིན། དཔེ་འབད་བ་ཅིན་ [ རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md#swift-and-ios) ལུ་བལྟ་ཚུགས། མིང་མ་ཤེསཔ་ཀྱི་རྒྱབ་སྐྱོར་ ས་སྒོ་ཚུ དང་ རྩོད་གཞི་སེལ་ནིའི་ཆོག་ཐམ་ ཊོ་ཀེན འདི་ཡང་མཐོང་འོང་།
+Swift གིས་ ཚོང་རའི་བར་གཏོགས་བདག་ཉར་གྱི་བཀོད་རྒྱ་ཚུ་ `NativeEscrowInstructionBuilders` ཡང་ན་ དེ་དང་འདྲ་མཉམ་གྱི་ `IrohaSDK.build*Escrow*` ཆ་རོགས་ཚུ་གི་ཐོག་ལས་ Norito JSON ནང་དོན་གནད་སྡུད་ཚུ་སྦེ་ བཟོཝ་ཨིན། དཔེ་ཚུ་དང་ རྩོད་གཞི་སེལ་མིའི་གནང་བའི་ཊོ་ཀེན་གྱི་དོན་ལུ་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md#swift-and-ios) ལུ་བལྟ།
 
 ## རྟགས་མཚན་བཀོད་ཐབས། {#signing}
 
@@ -143,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` གིས་ ཁ་ཕྱེ་ནི་དང་ཁ་བསྡམ་ཚད་འཛིན་ཚུ་ གསང་བཟོས་ཡིག་ཤུབས་ལྷག་ནི་ ཁ་ཕྱོགས་ལྡེ་མིག་ རྒྱུན་འགྲུལ་ཚད་འཛིན་ བྱུང་ལས་རྒྱུན་ལམ་ ཚད་གཞི་རྒྱུན་ལམ་ དེ་ལས་ བརྟག་དཔྱད་དུས་དེབ་ཚུ་ འཛིན་སྐྱོང་འཐབ་ཨིན།
@@ -154,13 +156,13 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Swift ཐོན་ཁུངས་འདི་ ད་ལྟོ་གི་ནང་ཚུགསཔ།
 
 - `ToriiClient` HTTP རྩིས་ཐོ་དང་རྒྱུ་དངོས་ མིང་གཞན་ འཚོལ་ཞིབ་ཤོག་ལེབ་ RWA གན་རྒྱ་ མལ་ཊི་སིག་ གཞུང་སྐྱོང་ མཐུན་རྐྱེན་ གནས་སྡུད་ཐོབ་ཚུགས་མི་ གསང་བའི་རྒྱུ་དངོས་/དུས་ཚོད་མེད་མི་ཚུ་གི་དོན་ལུ་ གྲོགས་རམ་འབད་མི་ཚུ། SSE ཆུ་བོ།
-- `IrohaSDK` ཚོང་འབྲེལ་བཟོ་མི་དང་ བཙུགས་/འོས་བསྡུའི་གྲོགས་རམ་འབད་མི་ཚུ་ བརྗེ་སོར་དང་ མིན་ཊི་ མེ་བཏང་མི་ གདོང་ཁེབས་ གདོང་ཁེབས་མེད་མི་ ZK སྤོ་བཤུད་ ZK རྒྱུ་དངོས་ཐོ་བཀོད་ མེ་ཊ་ཌེ་ཊ་ ངོས་འཛིན་ཐོབ་བརྗོད་ མལ་ཊི་སིག་ཐོ་བཀོད་དང་ གཞུང་སྐྱོང་བཀོད་རྒྱ་ཚུ་གི་དོན་ལུ་
+- `IrohaSDK` ཚོང་འབྲེལ་བཟོ་མི་དང་ སྤོ་བཤུད་ བཟོ་སྐྲུན་ རྩ་མེད་ ZK རྒྱུ་དངོས་ཐོ་བཀོད་ མེ་ཊ་ཌེ་ཊ་ ངོས་འཛིན་ཐོབ་བརྗོད་ མལ་ཊི་སིག་ཐོ་བཀོད་ གན་རྒྱ་བཙུགས་སྒྲིག་ དེ་ལས་ གཞུང་སྐྱོང་འོས་ཤོག་ཚུ་གི་དོན་ལུ་ བཙུགས་/འདྲི་དཔྱད་ཀྱི་ གྲོགས་རམ་འབད་མི་ཚུ
 - `PendingTransactionQueue`དང་ `FilePendingTransactionQueue`བརྒྱུད་དེ་ ཕྱིར་ཚོང་གི་གྲལ་རིམ་རྒྱབ་སྐྱོར་མ་བྱིན་པར་བཞག་ཡོདཔ་ཨིན།
 - རྩིས་ཐོ་-ཁ་བྱང་དང་ `AccountAddress` དང་ `AccountId` བརྒྱུད་དེ་ I105 གྲོགས་རམ་འབད་མི་ཚུ།
 - Ed25519, secp256k1, ML-DSA, BLS, GOST, དང་ SM2 མཚན་རྟགས་བཀོད་པའི་ཁ་ཐོག དགོས་མཁོ་ཡོད་སར་ས་གནས་ཀྱི་ཟམ་རྒྱབ་སྐྱོར་དང་མཉམ་དུ།
 - ཁྲོམ་ཁར་དང་མིང་མེད་བཀག་སྡོམ་གྱི་དོན་ལུ་ ས་གནས་ཀྱི་བཀག་སྡོམ་བཀོད་རྒྱ་ པེ་ལོཌ་བཟོ་བསྐྲུན་པ་ཚུ།
 - མཐུད WebSocket, གཞི་ཁྲམ་, ཀིརིཔ་ཊོ་, ལཱ་ཡུན་, བང་རིམ་, བསྐྱར་རྩེད་, དང་ བརྟག་དཔྱད་རོགས་རམ་པ།
-- Kagemusha གྲ་སྒྲིག་འབད་ནི་དང་ ཨེབ་གཏང་འབད་ཡོད་པའི་ལོག་སྣོད་དང་གླར་ལེན་, ལག་ལེན་འཐབ་ནིའི་གནས་གོང་, ཐོ་བཀོད་, མཉམ་འབྲེལ་མཐུན་རྐྱེན་, ངོས་ལེན་ དེ་ལས་ QR རྒྱུན་ལམ་གྱི་རྣམ་ཐར།
+- KAGEMUSHA V1 སྐུད་ལམ་ལས་རོགས་དང་ རང་བྱུང་དངུལ་ཁུག་གི་སྔོན་སྤྲོད་ཞབས་ཏོག་སྤྲོད་མི་ ཐོ་བཀོད་ སླར་གསོ་ དང་ཞུགས་ཆོག་པའི་བརྗེ་སོར་འབོ་བ་ཚུའི་དོན་ལུ་ iPhone མ་ལག་མཐུད་ཆས།
 - SoraFS ཌའི་ཊ་གི་ཐོབ་ཐངས་དང་ བརྟག་དཔྱད་འབད་ནི་ལུ་ གྲོགས་རམ་འབད་མི་ཚུ་
 
 ## API དཔེ་སྟོན་ཚུ་ {#api-examples}
@@ -170,7 +172,6 @@ Swift ཐོན་ཁུངས་འདི་ ད་ལྟོ་གི་ནང�
 ## གཞི་རྟེན་ཁ་བྱང་ཚུ་ {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

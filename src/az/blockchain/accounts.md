@@ -1,14 +1,13 @@
 ---
 translation_locale: az
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Hesablar {#accounts}
 
-Hesab, əməliyyatları imzalaya bilən və blokçeyn reyestrindəki vəziyyətə sahib ola bilən səlahiyyət sahibidir. Mövcud Iroha 3 məlumat modelində `AccountId` kanonikdir və domen daşımır: o, hesab nəzarətçisindən törədilir və [I105](/az/reference/i105.md) kimi kanonik kodlanır. İnsan tərəfindən oxuna bilən domen və məlumat məkanı konteksti ayrıca hesab ləqəbi bağlamalarına aiddir.
+Hesab əməliyyatları imzalaya və reyestr vəziyyətinə sahib ola bilən səlahiyyət sahibidir. Hazırkı Iroha 3 məlumat modelində `AccountId` kanonikdir və domen daşımır: hesabın nəzarətçisindən törədilir və [I105](/az/reference/i105.md) kimi kanonik şəkildə kodlanır. İnsanların oxuya bildiyi domen və məlumat məkanı konteksti ayrıca hesab ləqəbi bağlamalarına aiddir.
 
 ## Struktur {#structure}
 
@@ -17,12 +16,12 @@ Qeydiyyatdan keçmiş `Account` aşağıdakıları ehtiva edir:
 - `id`: tək protokol-standart `AccountId`
 - `metadata`: ixtiyari hesab metadatası
 - `label`: isteğe bağlı sabit ləqəb
-- `uaid`: Nexus axınları tərəfindən istifadə edilən seçimli Universal Hesab ID-si
+- `uaid`: SORA Nexus axınlarında istifadə olunan, məcburi olmayan Universal Hesab ID-si
 - `opaque_ids`: hesabın UAID ilə bağlı şəffaf olmayan identifikatorlar
 
 Hesab yaratmaq üçün istifadə olunan əməliyyat yükü `NewAccount` şəklindədir. O, qeydiyyatdan keçmiş hesab tərəfindən istifadə olunan eyni şəxsiyyət, metaveri, etiket, UAID və qeyri-şəffaf ID sahələrini daşıyır.
 
-`uaid` kanonik `AccountId`-ni tamamlayır, onu əvəz etmir. Nexus xidmətlərində məlumat məkanları arasında sabit istifadəçi və ya təşkilat identifikatoru, məxfiliyi qoruyan qeydiyyat və ya xidmət imkanlarının axtarışı tələb olunduqda ondan istifadə edin. İcra mühiti UAID ilə hesab arasında bir-bir uyğunluqlu indeks saxlayır, qeyri-şəffaf identifikatorların UAID vasitəsilə qoşulmasını tələb edir və təkrarlanan və ya toqquşan qeyri-şəffaf identifikatorları rədd edir. Nexus xidmət səviyyəsi axını üçün [FHE və UAID](/az/blockchain/sora-nexus-services.md#fhe-and-uaid) bölməsinə baxın.
+`uaid` kanonik `AccountId`-ni tamamlayır, onu əvəz etmir. SORA Nexus xidmətlərinə məlumat məkanları arasında sabit istifadəçi və ya təşkilat identifikatoru, məxfiliyi qoruyan qeydiyyat və ya xidmət imkanlarının axtarışı lazım olduqda ondan istifadə edin. İcra mühiti UAID ilə hesab arasında birə-bir uyğunluq indeksini saxlayır, qeyri-şəffaf identifikatorların UAID vasitəsilə bağlanmasını tələb edir və təkrarlanan və ya toqquşan qeyri-şəffaf identifikatorları rədd edir. SORA Nexus xidmət səviyyəsinin axını üçün [FHE və UAID](/az/blockchain/sora-nexus-services.md#fhe-and-uaid) bölməsinə baxın.
 
 ## Hesab nəzarətçiləri {#account-controllers}
 
@@ -32,8 +31,9 @@ Müştəri konfiqurasiyası imzalama səlahiyyətini şəbəkə yoldaşı konfiq
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 Cari açar formatları üçün [müştəri konfiqurasiyası](/az/guide/configure/client-configuration.md) və [açarin yaradılması](/az/guide/security/generating-cryptographic-keys.md)-ə baxın.
@@ -44,7 +44,7 @@ Cari açar formatları üçün [müştəri konfiqurasiyası](/az/guide/configure
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 Hesab aktivlərini yoxlamaq üçün, ilk texniki çağırışdan bir hesab ID-sini kopyalayın və yolu daxil etməzdən əvvəl onu URL-kodlayın. Bu Python parçası siyahıda ilk olan hesab üçün bunu edir:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-Bunlar ictimai oxumalardır. Hesab yaratmaq və ya yeniləmək imzalanmış əməliyyatdır və [SORA Nexus Məlumat Məkanlarına qoşulun](/az/get-started/sora-nexus-dataspaces.md)-da təsvir olunan testnet tərəfindən maliyyələşdirilmiş Taira qurğusunu tələb edir.
+Bunlar açıq oxuma əməliyyatlarıdır. Hesabın yaradılması və ya yenilənməsi imzalanmış əməliyyatdır və [Taira və Minamoto ilə SORA Nexus üzərində tətbiq hazırlamaq](/az/get-started/sora-nexus-dataspaces.md) bölməsində təsvir olunan, test vəsaiti paylama xidməti vasitəsilə maliyyələşdirilmiş Taira quruluşunu tələb edir.
 
 ## Qeydiyyat və icazələr {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ Qeydiyyatdan sonra hesab edə bilər:
 - öz domenlər
 - rol və icazə tokenlərini almaq
 - metadataları saxlamaq
-- bu xüsusiyyətlər aktiv olduqda alias, rekey, bərpa və Nexus kimlik axınlarında iştirak edin
+- müvafiq funksiyalar aktiv olduqda ləqəb, açarın dəyişdirilməsi, bərpa və SORA Nexus identifikasiya axınlarında iştirak etmək
 
 ## Şəxsiyyət problemlərinin aradan qaldırılması {#troubleshooting-identity-issues}
 

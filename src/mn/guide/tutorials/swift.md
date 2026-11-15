@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Swift ба iOS {#swift-and-ios}
 
 Дээд түвшний ажлын орчмоор илгээсэн Swift SDK нь `IrohaSwift/`-ны дорх `IrohaSwift` Swift багц юм. Түүний багцын техникийн жагсаалтад гурван сангийн бүтээгдэхүүн тодорхойлогдсон—`IrohaSwift`, `IrohaSwiftMobileTransports`, ба `IrohaSwiftTransferUI`—мөн iOS 15+ ба macOS 12+-ийг Swift хэрэгслээр 5.9 хувилбартай чиглүүлдэг.
@@ -30,20 +29,16 @@ targets: [
 ]
 ```
 
-Таны апп-д зориулсан замыг тохируулна уу. Одоогийн `examples/ios/ConnectMinimalApp` замыг яг таг хуулбарлаж болохгүй; энэ техникийн манифест нь `../../IrohaSwift`-ийг `examples/IrohaSwift` болгон шийддэг.
+Аппдаа тохируулан замыг өөрчилнө үү. `examples/ios/ConnectMinimalApp/Package.swift` нь ижил хамаарлыг `../../../IrohaSwift` харьцангуй замаар харуулдаг.
 
-Сав багцыг шийдэхээсээ өмнө гүүр нь ажлын өрөөний үндсэн хавтсанд буй эсэхийг шалгаарай:
+Багцыг шийдвэрлэхээс өмнө одоогийн native гүүрийг бүтээнэ үү. Локал хөгжүүлэлт болон тестийн хувьд үүнийг ажлын орчны үндсэн хавтсаас ажиллуулна уу:
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-Энэ нь `dist/NoritoBridge.xcframework` үүсгэдэг; `IrohaSwift/Package.swift` үүнийг `../dist/NoritoBridge.xcframework` гэж дурдсан байдаг.
-
-## CocoaPods {#cocoapods}
-
-Кодын сан нь бас `IrohaSwift/IrohaSwift.podspec` агуулсан. Энэ нь `IrohaSwift` pod-ийг, Swift 5.9 болон iOS 15-ийг зарлан мэдээлдэг. Podspec нь үндсэн репозитороос Swift эх үүсвэрүүдийг татдаг; төрөлх гүүр нь гүйлгээ кодлох, Ed25519 бус гарын үсэг, Connect криптографийн хувьд байж холбогдсон байх шаардлагатай.
+Хувилбарын бүтээлтүүд `make bridge-xcframework`-ээр `dist/NoritoBridge.xcframework`-ийг үүсгэх бөгөөд үүнд `SOURCE_DATE_EPOCH`, `NORITO_BRIDGE_OUT_DIR`, `NORITO_BRIDGE_BUILD_DIR`, `NORITO_BRIDGE_ARCHIVE_OUTPUT` болон `MOBILE_SDK_CARGO_LOCKFILE` шаардлагатай. `IrohaSwift/Package.swift` гүүрийг `../dist/NoritoBridge.xcframework` гэж заадаг.
 
 ## Хурдан эхлэлт {#quickstart}
 
@@ -52,20 +47,20 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
 
 ## Оролдоно уу Taira Зөвхөн унших {#try-taira-read-only}
 
-Төхөөрөмж эсвэл симулятор олон нийтийн Taira API төгсгөлийн цэгт хүрч чадах эсэхийг баталгаажуулахын тулд энгийн HTTP илрүүлэгчээр эхлүүлээрэй:
+Төхөөрөмж эсвэл симулятор нийтэд нээлттэй Taira төгсгөлийн цэгт хүрч байгааг батлахын тулд энгийн HTTP шалгалтаас эхэлнэ:
 
 ```swift
 import Foundation
@@ -89,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -103,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, ба `UnshieldRequest` гарын үсэг зурхаас өмнө ганц протоколын стандарттай дансны ID болон ганц протоколын стандартгүй Base58 хөрөнгийн тодорхойлолтын ID-ийг баталгаажуулдаг.
+`TransferRequest`, `MintRequest` болон `BurnRequest` нь гарын үсэг зурахаас өмнө каноник дансны ID болон угтваргүй каноник Base58 хөрөнгийн тодорхойлолтын ID-г шалгана.
 
 ## Оршин суугаа хүн болон итгэмжлэгдсэн хадгаламж {#native-escrow}
 
-Swift нь Norito JSON payload-уудыг `NativeEscrowInstructionBuilders` эсвэл тэнцүү `IrohaSDK.build*Escrow*` туслах хэрэгслийн тусламжтайгаар зах зээл болон нэргүй хадгалах заавруудыг бүтээдэг. Жишээ, нэргүй нотолгооны талбарууд, маргаан шийдвэрлэх зөвшөөрлийн токеныг үзэхийн тулд [Уугуул хөрөнгийн хадгаламж](/mn/blockchain/escrow.md#swift-and-ios)-ыг үзнэ үү.
+Swift нь зах зээлийн эскроугийн зааврыг `NativeEscrowInstructionBuilders` эсвэл түүнтэй адил `IrohaSDK.build*Escrow*` туслах функцүүдээр дамжуулан Norito JSON payload хэлбэрээр бүтээдэг. Жишээнүүд болон маргаан шийдвэрлэгчийн зөвшөөрлийн токеныг [Уугуул хөрөнгийн эскроу](/mn/blockchain/escrow.md#swift-and-ios)-гаас үзнэ үү.
 
 ## Гарын үсэг зурах {#signing}
 
@@ -144,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession` нь нээлт, хаалт удирдлагууд, кодлогдсон өгөгдлийн хадгалах савыг унших, чиглэлийн түлхүүрүүд, урсгалын хяналт, үйл явдлын урсгалууд, тэнцлийн урсгалууд, оношлогооны сэтгүүлүүдийг удирддаг.
@@ -155,13 +156,13 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 Одоогийн байдлаар Swift эх сурвалж нь дараахуудыг агуулж байна:
 
 - `ToriiClient` HTTP данс, хөрөнгө, овог нэр, хайлтын хуудсууд, RWA, гэрээ, олон гарын үсэг, захиргаа, захиалга, өгөгдлийн хүртээмж, нууцлаг хөрөнгө, зангилаа/гэрэгээний төлөв, эрүүл мэнд, хэмжилт, болон SSE урсгалд туслах хэрэгслүүд
-- `IrohaSDK` шилжүүлэг, гаргах, устгах, хамгаалах, хамгаалалтыг арилгах, ZK шилжүүлэг, ZK хөрөнгийн бүртгэл, метадата, таних тэмдэг шаардлага, олон гарын үсгийн бүртгэл, удирдлагын зааварчилгааны гүйлгээний бүтээгчид болон илгээх/асуух туслахууд
+- шилжүүлэг, шинээр гаргах, шатаах, ZK хөрөнгийн бүртгэл, метадата, таних тэмдгийн нэхэмжлэл, multisig бүртгэл, гэрээ байршуулах болон засаглалын саналын хуудсанд зориулсан `IrohaSDK` гүйлгээ үүсгэгчид болон илгээх/хүлээн шалгах туслах функцүүд
 - `PendingTransactionQueue` ба `FilePendingTransactionQueue` дамжуулан хийгдэж буй гүйлгээний дарааллын дэмжлэг
 - account-address ба I105 туслахуудыг `AccountAddress` болон `AccountId`-ийн дамжуулан
 - Ed25519, secp256k1, ML-DSA, BLS, GOST, ба SM2 гарын үсгийн гадаргуу, шаардлагатай тохиолдолд уугуул гүүрийн дэмжлэгтэй
 - зах зээл ба нэргүй эскроугаар дамжуулан байгалийн эх үүсвэрийн эскроу зааврын өгөгдлийн бүтээгчид
 - Холбох WebSocket, хүрээ, крипто, сесс, дараалал, дахин тоглуулах, болон оношилгооны туслахууд
-- Kagemusha бэлэн байдал, төрөлжсөн нөхөх болон худалдаж авах, ажиллагааны төлөв, тэмдэглэл, сүлжээний хамтрагч багц, протоколын үр дүнгийн бүртгэл, болон QR урсгалын загварууд
+- KAGEMUSHA V1 дамжуулах форматын туслахууд болон платформ дээр шууд ажиллах хэтэвчийн Advance үйлчилгээ, бүртгэл, сэргээх ажиллагаа, зөвшөөрөгдсөн солилцооны дуудлагуудад зориулсан iPhone платформын адаптер
 - SoraFS, өгөгдлийн боломжтой байдал, баталгааны хавсралтын тэтгэгчид
 
 ## API Жишээ {#api-examples}
@@ -171,7 +172,6 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 ## Эх үүсвэрийн лавлагаа {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

@@ -1,23 +1,22 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # 世界 {#world}
 
 `World`是包含其他實體的全球實體. `World`由:
 
-- Iroha [配置引數](/zh-hant/guide/configure/client-configuration.md)
+- 鏈上的鏈參數，由[創世](/zh-hant/reference/genesis.md)設定，也可透過 `SetParameter` 設定
 - 已註冊的對等節點
 - 已註冊域名
 - 已註冊的[觸發器](/zh-hant/blockchain/triggers.md)
 - 註冊的 [角色](/zh-hant/blockchain/permissions.md#permission-groups-roles)
 - 已註冊的 [許可證代幣定義](/zh-hant/blockchain/permissions.md#permission-tokens)
 - 所有帳戶的許可權代幣
-- [執行階段驗證器鏈](/zh-hant/blockchain/permissions.md#runtime-validators)
+- [目前生效的執行階段執行器](/zh-hant/blockchain/permissions.md#runtime-validators)
 
 當域名,對等節點或角色已註冊或未註冊時, `World` 是 (非) 註冊 [指示](/zh-hant/blockchain/instructions.md)的目標.
 
@@ -36,7 +35,7 @@ WSV 比`World`物件更廣泛,實際上它包含:
 - 在查詢和收據中使用的交易到區塊索引
 - 透過共識使用的當前和以前的提交拓
 - 從承諾區塊中獲得的記憶體索引,例如資料可用性承諾,回執緩衝器,釘選意圖和查詢投影標記
-- 對於確定性區塊執行所需的執行階段配置快照,例如加密,治理,管道,內容,結算和 Nexus 設定
+- 確定性區塊執行所需的執行期設定快照，例如密碼學、治理、處理流程、內容、結算及 SORA Nexus 設定
 
 查詢通常在這些結構上只能讀取 `StateView`.一個檢視是查詢執行的一致的快照;它不允許直接突變 WSV.
 
@@ -58,22 +57,19 @@ WSV 變更會在提交前暫存。區塊執行會建立區塊範圍的狀態覆�
 
 Kura 是 Iroha 的持久區塊儲存.它儲存簽署的區塊和恢復後設資料.它不儲存 WSV 的第二份可變複製.
 
-Kura 儲存器根植於[`kura.store_dir`](/zh-hant/reference/peer-config/params.md#param-kura-store-dir).在該根內,區塊資料被分為通道或段.一個段的主要檔案是:
+Kura 儲存以 [`kura.store_dir`](/zh-hant/reference/peer-config/params.md#param-kura-store-dir) 為根目錄。全域鏈的區塊位於鏈範圍的 `blocks/canonical` 目錄中，通道實例則各自維護獨立的通道區塊儲存區。主要的標準檔案包括：
 
 |路徑|目的|
 | --- | --- |
-|`blocks/<segment>/blocks.data`|連線式 Norito 框架的簽署區塊有效載荷. |
-|`blocks/<segment>/blocks.index`|固定尺寸的 `(start, length)`輸入,該地圖塊高度為 `blocks.data` 中的位元組.|
-|`blocks/<segment>/blocks.hashes`|為快速查詢和啟動驗證,按高度阻止雜湊.|
-|`blocks/<segment>/blocks.count.norito`|具有耐用性的提交標記,記錄了安全使用的區塊索引項. |
-|`blocks/<segment>/da_blocks/`|當磁碟預算執法將舊區塊體從熱檔案中移動時,被排除在 `blocks.data`之外的塊實用載荷. |
-|`blocks/<segment>/pipeline/sidecars.norito`和 `sidecars.index` |按區塊高度調節的管道恢復輔助記錄. |
-|`blocks/<segment>/pipeline/roster_sidecars.norito`和 `roster_sidecars.index` |在區塊同步和重播中使用的近期提交列表輔助記錄.|
-|`merge_ledger/<segment>.log`|結合賬本的條目與提交區塊一致.|
-|`commit-rosters.norito`|保留近期區塊的提交證書和驗證器檢查站. |
+|`blocks/canonical/blocks.data`|連線式 Norito 框架的簽署區塊有效載荷. |
+|`blocks/canonical/blocks.index`|固定尺寸的 `(start, length)`輸入,該地圖塊高度為 `blocks.data` 中的位元組.|
+|`blocks/canonical/blocks.hashes`|為快速查詢和啟動驗證,按高度阻止雜湊.|
+|`blocks/canonical/blocks.count.norito`|具有耐用性的提交標記,記錄了安全使用的區塊索引項. |
+|`blocks/canonical/da_blocks/`|當磁碟預算執法將舊區塊體從熱檔案中移動時,被排除在 `blocks.data`之外的塊實用載荷. |
+|`blocks/canonical/pipeline/sidecars.norito`和 `sidecars.index` |按區塊高度調節的管道恢復輔助記錄. |
 
 Kura 為鏈維護一個緊湊的記憶體向量：每個高度都包含區塊雜湊，並可選地包含區塊體。創世區塊始終保留在快取中，最近的 [`kura.blocks_in_memory`](/zh-hant/reference/peer-config/params.md#param-kura-blocks-in-memory) 個非創世區塊會將其區塊體保留在記憶體中。較舊的區塊體會從記憶體中移除，並在需要時從 Kura 檔案重新載入。
 
-在啟動過程中, `strict` 模式驗證儲存的區塊從區塊有效載荷和重寫雜湊檔案如果需要. `fast` 模式從儲存開始.如果 Kura 檢測到損壞的尾巴,它將儲存量調整至最後一個驗證區塊.
+初始化期間，`strict` 模式（預設）會驗證每個標準區塊本體及其父連結。`fast` 是一種緊急模式，適用於已由 `strict` 完成初始化的儲存：它信任目前的簽署快照以及持久保存的計數與鏈頂，並在節點以 `strict` 模式重新啟動之前，讓 Sumeragi、交易傳播與區塊產生保持離線。啟動時會拒絕已停用的 `merge_ledger`、`roster_sidecars` 與 `commit-rosters.norito` 產物。若 Kura 偵測到尾端損毀，會將儲存修剪至最後一個已驗證的區塊。
 
 Kura 透過背景編寫器編寫新區塊. 作者新增區塊有效載荷,雜湊和索引輸入,然後根據配置的fsync政策推進持久計數標記.當磁碟預算執行活動時, Kura 可以清除已停用的分段或將舊區塊體移入 `da_blocks/`,同時保留雜湊和索引項以供驗證和搜尋.

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # クエリ {#queries}
 
 Iroha は、ブロックチェーンの台帳状態を変更せずに読み取るクエリです。現在のデータモデルでは、2つの大まかなクエリ形態が公開されています。
@@ -57,7 +56,7 @@ Iroha は、ブロックチェーンの台帳状態を変更せずに読み取�
 |クエリ|目的|
 | --- | --- |
 | `FindAssets` |資産残高を一覧表示します。|
-| `FindAssetsDefinitions` |資産定義の一覧を表示します。|
+| `FindAssetDefinitions` |資産定義の一覧を表示します。|
 | `FindAssetsByAccountId` |アカウントが保有する資産を一覧表示する。|
 | `FindAssetById` |`AssetId`によって1つの資産残高を見つける。|
 | `FindAssetDefinitionById` |IDで資産の定義を1つ見つける。|
@@ -67,7 +66,7 @@ Iroha は、ブロックチェーンの台帳状態を変更せずに読み取�
 
 ## エスクローおよび証明記録 {#escrow-and-proof-records}
 
-エスクローの照会は、マーケットプレイスのエスクロー、一般的な資産ロック、匿名エスクロー記録を含む、[ネイティブ資産エスクロー ISIs](/ja/blockchain/escrow.md) によって作成された記録を調査します。
+エスクローの照会は、マーケットプレイスのエスクロー、一般的な資産ロック、条件付きエスクローを含む、[ネイティブ資産エスクロー ISIs](/ja/blockchain/escrow.md) によって作成された記録を調査します。
 
 |クエリ|目的|
 | --- | --- |
@@ -76,29 +75,23 @@ Iroha は、ブロックチェーンの台帳状態を変更せずに読み取�
 | `FindAssetEscrowsBySeller` |売り手ごとに資産エスクローを一覧表示する。|
 | `FindAssetEscrowsByBuyer` |買い手ごとに資産エスクローを一覧表示する。|
 | `FindAssetEscrowsByStatus` |ステータス別に資産エスクローを一覧表示する。|
-| `FindAnonymousAssetEscrows` |匿名資産エスクロー記録を一覧表示する。|
-| `FindAnonymousAssetEscrowById` |IDで1つの匿名資産エスクローを探す。|
-| `FindAnonymousAssetEscrowsBySeller` |売り手ごとに匿名エスクローをリストする。|
-| `FindAnonymousAssetEscrowsByBuyer` |購入者ごとに匿名のエスクローをリストする。|
-| `FindAnonymousAssetEscrowsByStatus` |ステータス別に匿名エスクローを一覧表示します。|
 | `FindProofRecordById` |IDで1つの証明記録を見つける。|
 | `FindProofRecords` |証明記録を一覧表示します。|
 | `FindProofRecordsByBackend` |プルーフバックエンドのプルーフ記録を一覧表示する。|
 | `FindProofRecordsByStatus` |ステータスごとに証明書の記録を一覧表示します。|
 
-## Nexus、データの利用可能性、及びパッケージ {#nexus-data-availability-and-packages}
+## SORA Nexus、データの利用可能性、及びパッケージ {#nexus-data-availability-and-packages}
 
 |クエリ|目的|
 | --- | --- |
-| `FindRepoAgreements` |チェーン上に保存されているリポジトリ契約を一覧表示します。|
+| `FindRepoAgreements` |チェーン上に保存されているレポ契約とリバースレポ契約を一覧表示します。|
 | `FindTwitterBindingByHash` |暗号ハッシュによってTwitterの連携を解決する。|
 | `FindDaPinIntentByTicket` |チケットでデータ利用可能ピンの意図を見つける。|
 | `FindDaPinIntentByManifest` |技術マニフェストの参照によってピンの意図を検索する。|
 | `FindDaPinIntentByAlias` |エイリアスでピン意図を見つける。|
 | `FindDaPinIntentByLaneEpochSequence` |実行レーン、エポック、およびシーケンスによってピンの意図を見つけます。|
-| `FindLaneRelayEnvelopeByRef` |認証済みのレーンリレー用データコンテナを見つけてください。|
 | `FindSorafsProviderOwner` |SoraFS プロバイダーの所有者を特定する。|
-| `FindDataspaceNameOwnerById` |データスペース名の所有者を解決する。|
+| `FindDataspaceNameOwnerById` |データスペースエイリアスの現在有効な SNS 所有者を解決する。|
 | `FindMusubiExactPackageV1` |1つの正確なパッケージ記録とその現在の改訂版を読み取ります。|
 | `FindMusubiExactReleaseV1` |正確なリリーススナップショットを1つ読み取ります。|
 | `FindMusubiProviderBundleAttestationV1` |あるプロバイダのアーカイブバンドル証明を読む。|
@@ -118,7 +111,7 @@ Iroha は、ブロックチェーンの台帳状態を変更せずに読み取�
 | `FindActiveTriggerIds` |アクティブなトリガーIDを一覧表示します。|
 | `FindTriggers` |トリガーをリストする。|
 | `FindTriggerById` |IDでトリガーを1つ見つける。|
-| `FindContractManifestByCodeHash` |コードの暗号ハッシュによってスマートコントラクトの技術マニフェストを見つける。|
+| `FindContractManifestByArtifactId` |データスペースのアーティファクト ID によってスマートコントラクトの技術マニフェストを見つける。|
 | `FindTransactions` |確定した取引を一覧表示します。|
 | `FindBlocks` |ブロックを一覧表示します。|
 | `FindBlockHeaders` |ブロックヘッダーを一覧表示する。|

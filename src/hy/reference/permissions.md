@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Թույլտվության տոքեր {#permission-tokens}
 
 Այս էջում ցուցակում են ներկայիս Iroha կատարողի տվյալների մոդելի կողմից բացահայտված թույլտվությունների նախնական տոկենների տեսակները: Դասերի եւ թույլտվության հասկացական ուղեցույցի համար դիտեք [Թույլտվություններ](/hy/blockchain/permissions.md).
@@ -17,19 +16,18 @@ translation_engine: nllb-200-ct2
 |թույլտվության նշան|Կատեգորիա|Օպերացիա|
 | --- | --- | --- |
 |`CanManagePeers` |Հանգույցներ|Գրանցվել, չգրանցվել կամ այլ կերպ կառավարել հանգույցները: |
-|`CanManageLaneRelayEmergency` |Հանգույցներ|Կառավարեք շտապ ճամփորդի ռեալի վերահսկողությունը: |
 |`CanRegisterDomain` |Դոմեյն |Գրանցեք դոմեյն:|
 |`CanUnregisterDomain` |Դոմեյն |Դոմենի գրանցումը չեղարկեք: |
 |`CanModifyDomainMetadata` |Դոմեյն |Փոխել դոմեյնային մետադատա: |
 |`CanRegisterAccount` |Հաշիվ |Գրանցեք հաշիվ:|
 |`CanUnregisterAccount` |Հաշիվ |Անհամապատասխանեք հաշիվը:|
 |`CanModifyAccountMetadata` |Հաշիվ |Փոխել հաշիվի մետադատները: |
-|`CanUnregisterAssetDefinition` |Աշունների սահմանումը|Բաց թողնել ակտիվի սահմանումը: |
-|`CanModifyAssetDefinitionMetadata` |Աշունների սահմանումը|Փոխել ակտիվի սահմանման մետադատները: |
+| `CanUnregisterAssetDefinition` | Ակտիվի սահմանում | Հանել ակտիվի սահմանումը գրանցումից։ |
+| `CanModifyAssetDefinitionMetadata` | Ակտիվի սահմանում | Փոփոխել ակտիվի սահմանման մետատվյալները։ |
 |`CanMintAssetWithDefinition` |Գույք |Մինետային ակտիվներ՝ հատուկ սահմանման համար: |
 |`CanBurnAssetWithDefinition` |Գույք |Սառել ակտիվները հատուկ սահմանման համար: |
 |`CanTransferAssetWithDefinition` |Գույք |Տրանսֆերային ակտիվներ՝ հատուկ սահմանման համար: |
-|`CanMintAsset` |Գույք |Տեղադրեք որոշակի ակտիվների մնացորդ: |
+|`CanMintAssetToAccount` |Գույք |Տեղադրեք որոշակի ակտիվների մնացորդ: |
 |`CanBurnAsset` |Գույք |Պարզ ակտիվների մնացորդը այրեք:|
 |`CanTransferAsset` |Գույք |Տեղափոխել հատուկ ակտիվների մնացորդը: |
 |`CanRegisterNft` |NFT |Գրանցել NFT: |
@@ -44,8 +42,9 @@ translation_engine: nllb-200-ct2
 |`CanModifyTrigger` |Աջակցող |Փոփոխեք գործարկիչի կարգավորումը: |
 |`CanModifyTriggerMetadata` |Աջակցող |Փոփոխեք գործարկիչի մետադատները: |
 |`CanUpgradeExecutor` |Կատարող |Բարձրացրեք վազման ժամանակի գործարկիչը: |
-|`CanRegisterSmartContractCode` |Խելացի պայմանագիր |Գրանցեք խելացի պայմանագրի կոդը: |
-|`CanUseFeeSponsor` |Nexus |Հաշվարկել Nexus վճարներ նշված հովանավորի հաշիվին: |
+|`CanManageSmartContractCode` |Խելացի պայմանագիր |Չհղված կոդի արտեֆակտների հեռացում և պայմանագրի մուտքի կետերի պատվիրակում։ Գրանցված հաշիվները կարող են առանց դրա ստեղծել ստուգված արտեֆակտներ։ |
+| `CanManageFeeSponsorProgram` | SORA Nexus | Կառավարել ճշգրիտ հովանավոր հաշվին պատկանող ծրագրերը։ |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Կառավարել մեկ ճշգրիտ հովանավոր ծրագրի շահառուներին։ |
 
 ## Գույքի սեփականություն {#ownership}
 

@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Матрица совместимости {#compatibility-matrix}
 
 Матрица совместимости показывает перекрестные SDK покрытие сценариев для текущего Iroha 3 набор документов. По умолчанию страница загружает пакетный снимок данных, сгенерированный из закрепленных [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) пересмотр.

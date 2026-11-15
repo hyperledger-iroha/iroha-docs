@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/permissions-and-roles.md
-translation_source_hash: 8d6fd7101094ba21cfc2c5fb9a89d2acd7e67f13ff47b9f8c8e01bbbd7bf2836
+translation_source_hash: 40fe8b19344d8eff66b178dc8576e2e049fef50bd3212fbddc5c0d5f7f37fa03
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # ངོས་ལེན་དང་ འགན་འཁྲི་ཚུ་ {#permissions-and-roles}
 
@@ -13,13 +13,12 @@ translation_engine: human-reviewed
 
 ## དགོས་མཁོ་ཚུ་ {#prerequisites}
 
-- དངུལ་ཕོགས་ཐོབ་མི་ Taira ཚོང་མགྲོན་པ་དང་ཁྲལ་གྱི་བརྡ་དོན་ཚུ་ [ལས་ Taira](./connect-to-taira.md) ལུ་ཐོ་བཀོད་འབད་ཡོདཔ་ཨིན།
+- [Taira ལུ་མཐུད་སྦྲེལ་འབད་](./connect-to-taira.md) ལས་ མ་དངུལ་བཙུགས་ཡོད་པའི་ Taira ཞབས་ཏོག་ལེན་མི་ཅིག།
 - `TARGET_ACCOUNT` དང་ `DELEGATE_ACCOUNT` འདི་ ཚད་ལྡན I105 རྩིས་ཐོ IDs ལུ་གཞི་སྒྲིག་འབད།
-- ཐོ་བཀོད་འབད་མིའི་རྩིས་ཐོ་ལུ་ དམིགས་གཏད་ཅན་གྱི་ ངོས་ལེན་དང་ འགན་འཁྲི་ཚུ་ འཛིན་སྐྱོང་འབད་ནིའི་ གོ་སྐབས་བྱིན་དགོཔ་ཨིན། Taira ལུ་ འ་ནི་འདི་ ངོས་ལེན་གི་སྒོ་ཁར་ཡོད་མི་ འཛིན་སྐྱོང་ལས་འགུལ་ཨིན། ཁྱོད་ཀྱིས་ `CanManageRoles` དང་ ཚད་གཞི་བཀོད་ཡོད་པའི་ ངོས་ལེན་སྤྲོད་ནིའི་དོན་ལུ་ དགོས་མཁོ་ཅན་གྱི་དབང་འཛིན་ ཐོབ་ཚུགས། ཡང་ན་ བཟོ་སྐྲུན་འབད་མི་ ས་གནས་ཀྱི་ཁ་ཐུག་ལུ་ བཀྲམ་སྟོན་འབད་འོང་།
+- མིང་རྟགས་འགོད་མི་རྩིས་ཐོ་གིས་ `CanManageRoles` འཛིན་དགོཔ་དང་ ཁྱབ་ཚད་བཀོད་ཡོད་པའི་ཆོག་ཐམ་འདི་ གཞན་ལུ་ སྤྲོད་ཚུགས་དགོ། དེ་ཡང་ རྩིས་ཐོ་དེ་ `TARGET_ACCOUNT` རང་ ཨིན་དགོཔ་ ཡང་ན་ རྩིས་ཐོ་དེ་གི་དོན་ལུ་ `CanModifyAccountMetadata` ཧེ་མ་ལས་ར་ འཛིན་ཏེ་ ཡོད་དགོ། Taira གུ་ འདི་ ཆོག་ཐམ་གྱིས་ ཚད་བཀག་འབད་ཡོད་པའི་ འཛིན་སྐྱོང་གི་ བཀོལ་སྤྱོད་ཅིག་ཨིན། བཟོ་བཏོན་འབད་ཡོད་པའི་ ས་གནས་དྲ་རྒྱའི་ ཞབས་ཏོག་ལེན་མི་གིས་ `CanManageRoles` མི་འཛིན་པས་ ཐབས་རིམ་འདི་ལུ་ འགོ་ཐོག་སྡེབ་ཚན་གྱིས་ དེ་ གནང་མི་ དྲ་རྒྱ་ཅིག་ དགོཔ་ཨིན།
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 ROLE_ID=cookbook_metadata_editors
 test -n "$TARGET_ACCOUNT"
 test -n "$DELEGATE_ACCOUNT"
@@ -35,12 +34,11 @@ DELEGATE_CONFIG=./taira.delegate.toml
 
 ### 1. འགན་འཁྲི་སྟོང་པ་ཅིག་ ཐོ་བཀོད་འབད་ {#_1-register-an-empty-role}
 
-གནས་སྟངས་བསྒྱུར་བཅོས་འབད་མི་ CLI བཀའ་རྒྱ་རེ་རེ་གིས་འཐུས་སྤྲོད་མི་ལུ་ གསལ་ཏོག་ཏོ་སྦེ་མིང་བཏགས་དོ་ཡོདཔ་ཨིན། མེ་ཊ་ཌའི་ཊ་ཡིག་སྣོད་ནང་ལུ་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གྱི་ལན་ནང་ལས་ འབྱུང་འབབ་ཡོད་པའི་ད་ལྟོའི་ Taira འཐུས་དངུལ་ཀྲམ་ཚུ་ཡོདཔ་ཨིན།
+གནས་སྟངས་བསྒྱུར་མི་ CLI བཀའ་རྒྱ་རེ་རེ་གིས་ འཐུས་སྤྲོད་མི་གི་མིང་ གསལ་ཏོག་ཏོ་སྦེ་ བཏགསཔ་ཨིན། CLI གིས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ Taira གི་འཐུས་རྒྱུ་དངོས་ནང་ འཐུས་ངེས་བདེན་གྱི་ གོང་ཚད་བཀོདཔ་ཨིན།
 
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger role register --id "$ROLE_ID"
 ```
 
@@ -53,7 +51,6 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
   '{name:"CanModifyAccountMetadata",payload:{account:$account}}' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger role permission grant --id "$ROLE_ID"
 ```
 
@@ -62,8 +59,7 @@ jq -cn --arg account "$TARGET_ACCOUNT" \
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger account role grant \
+  account role grant \
   --id "$DELEGATE_ACCOUNT" \
   --role "$ROLE_ID"
 ```
@@ -78,13 +74,12 @@ iroha --config "$CONFIG" \
 printf '"delegated"\n' |
   iroha --config "$DELEGATE_CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger account meta set \
+    account meta set \
     --id "$TARGET_ACCOUNT" \
     --key cookbook_access
 ```
 
-འ་ནི་དཔེ་འདི་ Rust ཌའི་ལོག་ལུ་ལག་ལེན་འབད་ཚུགསཔ་ཨིན། འདི་ནང་ལུ་ `client` གིས་ `registrar_account` བཟོ་བཀོད་འབདཝ་ཨིན་ འདི་གིས་འགན་ཁུར་གྱི་ འགོ་ཐོག་གི་ཇོ་བདག་སྦེ་འགྱུར་དོ་ཡོདཔ་ད་ འདི་ཡང་ CLI ལྡོག་ཕྱོགས་ནང་འབདཝ་ཨིན། རྩིས་ཐོ་ཀྱི་འགྱུར་ལྡེ་གསུམ་ཆ་རང་ལུ་ ཧེ་མ་ལས་ `AccountId` གི་གོང་ཚད་ཚུ་ བརྟག་ཞིབ་འབད་ཡོདཔ་ཨིན།
+དཔེ་གཞི་གཅིག་པ་འདི་ Rust ཞབས་ཏོག་ལེན་མི་ཚུ་ལུ་ཡང་ ཐོབ་ཚུགས། ནཱ་ལུ་ `client` འདི་ `registrar_account` སྦེ་ མིང་རྟགས་བཀོད་མི་ `iroha::blocking::Client` ཅིག་ཨིན། `registrar_account` འདི་ CLI གི་བྱ་རིམ་ནང་བཟུམ་སྦེ་ འགན་ཁུར་གྱི་ འགོ་ཐོག་གི་ཇོ་བདག་ལུ་ འགྱུརཝ་ཨིན། རྩིས་ཐོ་འགྱུར་ཅན་ གསུམ་ཆ་ར་ ཧེ་མ་ལས་ར་ དབྱེ་དཔྱད་འབད་ཚར་བའི་ `AccountId` གནས་གོང་ཚུ་ཨིན་:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
@@ -97,7 +92,7 @@ let role = Role::new(role_id.clone(), registrar_account).add_permission(
     },
 );
 
-client.submit_all_blocking::<InstructionBox>(
+client.submit_all::<InstructionBox>(
     [
         Register::role(role).into(),
         Grant::account_role(role_id, delegate_account).into(),
@@ -108,32 +103,35 @@ client.submit_all_blocking::<InstructionBox>(
 
 ## བརྟག་དཔྱད་འབད་ {#verify}
 
-ལས་འགན་གྱི་ཕྱོགས་གཉིས་ཆ་ར་ཐོ་བཀོད་འབད་ཞིནམ་ལས་ སྐུ་ཚབ་ཀྱིས་བྲིས་ཡོད་པའི་གནས་གོང་ངེས་བདེན་འདི་ལྷག:
+འགན་ཁུར་གྱི་ཆོག་ཐམ་གནང་བ་ཚུ་ ཚུད་མི་ སྐུ་ཚབ་ཀྱི་ ནུས་ཅན་ཆོག་ཐམ་ཚུ་ ལྷག་ཞིནམ་ལས་ སྐུ་ཚབ་ཀྱིས་ བྲིས་མི་ གནས་གོང་ངེས་བདེན་དེ་ ལྷག་:
 
 ```bash
-iroha --config "$CONFIG" ledger role permission list --id "$ROLE_ID"
-iroha --config "$CONFIG" ledger account role list --id "$DELEGATE_ACCOUNT"
+iroha --config "$CONFIG" --machine account permission list \
+  --id "$DELEGATE_ACCOUNT" --all \
+  | jq -e --arg account "$TARGET_ACCOUNT" \
+    '.items | any(.name == "CanModifyAccountMetadata"
+      and .payload.account == $account)'
 
-iroha --config "$CONFIG" ledger account meta get \
+iroha --config "$CONFIG" account meta get \
   --id "$TARGET_ACCOUNT" \
   --key cookbook_access
 ```
 
-གནང་བ་ཐོ་ཡིག་ནང་ `CanModifyAccountMetadata` `TARGET_ACCOUNT` ལུ་ཁྱབ་ཚད་ཡོདཔ་ཨིན་ སྐུ་ཚབ་ཀྱི་འགན་ཁུར་ཐོ་ཡིག་ནང་ `ROLE_ID` འོང་དགོཔ་དང་ མེ་ཊ་ཌེ་ཊ་ལྷག་མི་འདི་གིས་ `"delegated"` ལོག་འོང་དགོ།
+སྐུ་ཚབ་ཀྱི་ ནུས་ཅན་ཆོག་ཐམ་ཚུ་ནང་ `TARGET_ACCOUNT` ལུ་ ཁྱབ་ཚད་བཀོད་ཡོད་པའི་ `CanModifyAccountMetadata` ཚུད་དགོཔ་དང་ ཟུར་གནས་གནད་སྡུད་ ལྷག་མི་འདི་གིས་ `"delegated"` ལོག་བྱིན་དགོ། Torii གིས་ མིང་རྟགས་བཀོད་ཡོད་པའི་ དྲི་དཔྱད་ཚུ་བརྒྱུད་དེ་ འགན་ཁུར་གྱི་ཐོ་ཡིག་ ངོས་ལེན་མི་འབདཝ་ལས་ ནུས་ཅན་ཆོག་ཐམ་གྱི་ཐོ་ཡིག་འདི་ འགན་སྤྲོད་ཀྱི་ ཞིབ་དཔྱད་ཨིན།
 
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
-- `Not permitted` གིས་ ཐོ་བཀོད་འབད་ནི་དང་ བསྒྱུར་བཅོས་འབད་ནི་ ཡང་ན་ འགན་འཁྲི་བགོ་བཀྲམ་འབད་པའི་སྐབས་ ངོ་རྟགས་རྐྱབ་མི་དེ་གིས་ དགོས་མཁོ་ཅན་གྱི་ Taira དབང་ཚད་མེད་ཟེར་ཨིན་མས། དམིགས་གཏད་ཅན་གི་རྟགས་མཚན་འདི་ འཛམ་གླིང་ཡོངས་ཀྱི་རྟགས་མཚན་ཅིག་གིས་མ་བརྗེ་སོར་འབད། དེ་གི་དོན་ལུ་ ཚད་ལྡན་ལག་ལེན་གྱི་དོན་ལུ་ ཞུ་བ་རྐྱབས། ཡང་ན་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ ལག་ལེན་འཐབ་དགོ།
+- འགན་ཁུར་ ཐོ་བཀོད་ ཞུན་དག་ ཡང་ན་ འགན་སྤྲོད་འབད་བའི་སྐབས་ `Not permitted` བྱུང་པ་ཅིན་ མིང་རྟགས་འགོད་མི་ལུ་ དགོས་མཁོ་ཡོད་པའི་ Taira དབང་ཚད་ མེདཔ་སྦེ་ སྟོནམ་ཨིན། ཁྱབ་ཚད་བཀོད་ཡོད་པའི་ ཆོག་ཐམ་རྟགས་མཚན་འདི་ ཡོངས་ཁྱབ་ཅིག་གིས་ ཚབ་མ་བཙུགས། ཆོག་ཐམ་གནང་བ་ངེས་བདེན་འདི་ ཞུ།
 - སྤྱིར་བཏང་ལུ་ `account` འདི་ `payload` གི་སྦོ་ལོགས་ཁར་བཙུགས་ཡོདཔ་ཨིན་ ཡང་ན་ I105 ID གི་ཚབ་ལུ་ མིང་གཞན་ཅིག་བཀྲམ་སྤེལ་འབད་ཡོདཔ་ཨིན་ ཡང་ན་ JSON གནས་གོང་འདི་ ཚར་གཉིས་ལུང་འདྲེན་འབད་ཡོདཔ་ཨིན།
-- འཐུས་བཀག་ཆ་འདི་ གོ་རིམ་དེ་ཕུལ་མི་ མཚན་རྟགས་བཀོད་མི་ལུ་ཨིན། འཛིན་སྐྱོང་པ་ལུ་མ་དངུལ་བཏང་ཞིནམ་ལས་ རང་དབང་ཅན་སྦེ་ འགན་ཁུར་འབག་སྟེ་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་ལས་ཐོན་པའི་འཐུས་རྒྱུ་དངོས་མེ་ཊ་ཌེ་ཊ་འདི་ བཞག་དགོ།
+- འཐུས་ཀྱི་བཀག་ཆ་འདི་ རིམ་པ་དེ་ ཕུལ་མི་ མིང་རྟགས་འགོད་མི་གི་ཨིན། འཛིན་སྐྱོང་པ་དང་ སྐུ་ཚབ་གཉིས་ལུ་ འཐུས་ཀྱི་གོང་ཚད་བཀོད་པ་རེ་རེ་ནང་ མིང་བཏགས་ཡོད་པའི་ འཐུས་རྒྱུ་དངོས་ནང་ སོ་སོར་ མ་དངུལ་བཙུགས།
 - མཐར་འཁྱོལ་ཅན་གྱི་འགན་ཁུར་གནང་བ་འདི་གིས་ དེ་གི་ཊོ་ཀེན་ཚུ་ནང་ ཨིན་ཀོ་ཌི་འབད་ཡོད་པའི་ཁྱབ་ཚད་འདི་ བཀག་ཆ་འབད་མི་བཏུབ། འགན་ཁུར་འདི་གིས་ གནང་བ་ནང་དོན་གནད་སྡུད་ནང་མིང་བཏགས་ཡོད་པའི་རྩིས་ཐོ་རྐྱངམ་ཅིག་ལེགས་བཅོས་འབད་ཚུགས།
-- གཙང་མ་བཟོ་ནི་ལུ་ `ledger account role revoke` དེ་ལས་ `ledger role permission revoke` དང་ མཐའ་མཇུག་ལུ་ `ledger role unregister` གཡོག་བཀོལ་དགོ། རེ་རེ་བཞིན་དུ་ འབྲི་ནི་སོ་སོ་ཅིག་ཨིནམ་དང་ `--fee-payer authority` དང་ འཐུས་མེ་ཊ་ཌེ་ཊ་ཚུ་ ཚུད་དགོ།
+- གཙང་སྦྲ་བཟོ་ནི་ལུ་ `account role revoke` དང་ དེ་ལས་ `ledger role permission revoke` དེ་ལས་ མཐའ་མཇུག་ལུ་ `ledger role unregister` གཡོག་བཀོལ། དེ་ཚུ་རེ་རེ་ འབྲི་ནིའི་ཚོང་འབྲེལ་ སོ་སོ་ཨིནམ་ལས་ `--fee-payer authority` ཚུད་དགོ།
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [འགན་འཁྲི་མཐུན་འབྲེལ་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/roles.rs) ལུ་འབདཝ་ཨིན།
-- [ངོས་ལེན་མཐུན་འབྲེལ་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/permissions.rs) ལུ་འབདཝ་ཨིན།
-- [བཙུགས་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/permission.rs) ལུ་ ནང་འཁོད་ལུ་ ངོས་ལེན་ཡིག་གཟུགས་བཟོ་ཡོདཔ་ཨིན།
+- [འགན་འཁྲི་མཐུན་འབྲེལ་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/roles.rs) ལུ་འབདཝ་ཨིན།
+- [ངོས་ལེན་མཐུན་འབྲེལ་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/permissions.rs) ལུ་འབདཝ་ཨིན།
+- [བཙུགས་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/permission.rs) ལུ་ ནང་འཁོད་ལུ་ ངོས་ལེན་ཡིག་གཟུགས་བཟོ་ཡོདཔ་ཨིན།
 - [འཁྲུན་ཆོད་དང་ འགན་ཁུར་ཚུ་](/dz/blockchain/permissions.md)
 - [ངོས་ལེན་གྱི་བརྡ་དོན་ཁ་བྱང་](/dz/reference/permissions.md)
 - [ཟུར་གནས་གནད་སྡུད](./metadata.md)

@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # אבטחת המבצע {#operational-security}
 
 האבטחה התפעולית מגינה על האנשים, המארחים, פרטי ההזדהות והנהלים סביב פריסת Iroha. ספר החשבונות מתעד שינויי מצב שהתקבלו. המפעילים חייבים לאבטח בנפרד את תחנות העבודה, מפתחות החתימה ותהליך התגובה לתקריות.

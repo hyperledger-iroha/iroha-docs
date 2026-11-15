@@ -5,7 +5,6 @@ translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb957
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Həqiqi Dünyada Aktivlər {#real-world-assets}
 
 Həqiqi dünya aktivləri (RWAs) mülkiyyəti və ya nəzarəti zəncirdə izlənilən off-chain aktivləri modelləşdirir. Iroha-də, bir RWA yaradılmış identifikator, sahiblərin hesabı, miqdar, biznes metadatasi, mənşəyi və istəyə bağlı həyat dövrü nəzarətləri olan qeydiyyatdan keçmiş bir blokçeyn dəftər lotudur.

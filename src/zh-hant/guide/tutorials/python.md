@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Python {#python}
 
@@ -56,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -86,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -104,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -173,20 +173,16 @@ for limit in fee_quote["intent"]["value"]["charge_limits"]:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-faucet 會傳回用於餘額檢查的具體 `asset_id`。請驗證即時費用報價收取 `FEE_ASSET_DEFINITION`；交易不會透過中繼資料選擇此資產。
+依水龍頭所注資的費用資產定義篩選該帳戶的餘額。請驗證即時費用報價收取 `FEE_ASSET_DEFINITION`；交易不會透過中繼資料選擇此資產。
 
 應用程式後設資料是可選的,並且沒有費用語義:
 
@@ -216,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -240,10 +236,10 @@ SDK 對最常見的指令家庭的打字構建器和尚未成為一流 Python �
 
 |教學家庭|Python 表面|
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|登記| `register_account`, `register_asset_definition_numeric`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` 專用於創世/啟動鏈工具 |
+|登記| `register_account`, `register_asset_definition`, `register_rwa`, `register_time_trigger`, `register_precommit_trigger`; `register_domain` 專用於創世/啟動鏈工具 |
 |取消註冊|`unregister_trigger`;使用`Instruction.from_json`用於其他變體 |
-|鑄造/銷毀|`mint_asset_numeric`, `burn_asset_numeric`,`mint_trigger_repetitions`, `burn_trigger_repetitions` |
-|轉移| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
+|鑄造/銷毀|`mint_asset_quantity`, `burn_asset_quantity`,`mint_trigger_repetitions`, `burn_trigger_repetitions` |
+|轉移| `transfer_asset_quantity`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa`                                                              |
 |轉移資料和控制| `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value`                                                                        |
 |RWA 生命週期 | `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`                                                                                                         |
 |ExecuteTrigger|`execute_trigger`|
@@ -251,7 +247,7 @@ SDK 對最常見的指令家庭的打字構建器和尚未成為一流 Python �
 |創業資產鎖定|`open_asset_lock`, `drawdown_asset_lock`,`cancel_asset_lock`, `expire_asset_lock`,加上客戶 `*_and_wait`的助手 |
 |授予/撤銷, SetParameter,日誌,定製,升級以及不常見的註冊/非註冊變體 |`Instruction.from_json`或`TransactionBuilder.add_instruction_json`具有規範名稱的 `InstructionBox` JSON |
 
-對於託管類條件付款,見 [產業資產保證](/zh-hant/blockchain/escrow.md#python-asset-locks). Python 目前對通用資產鎖定的一流助手曝光;市場和匿名託管助手不是一流 Python 方法還沒有.
+有關託管式條件支付，請參閱[原生資產託管](/zh-hant/blockchain/escrow.md#python-asset-locks)。Python 目前為通用資產鎖提供一級輔助函式；市場託管與條件式託管的輔助函式目前還不是 Python 的一級方法。
 
 ### 設定域名,然後註冊帳戶和資產 {#set-up-domains-then-register-accounts-and-assets}
 
@@ -264,12 +260,13 @@ SDK 對最常見的指令家庭的打字構建器和尚未成為一流 Python �
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -283,13 +280,13 @@ submit(
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### 轉移所有權 {#transfer-ownership}
@@ -298,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
@@ -380,7 +377,7 @@ draft.register_rwa(
 在註冊交易提交後,使用 `FindRwas`, `/v1/rwas`,RWA 事件或設定的探索者路線來發現生成的 ID:
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -464,7 +461,7 @@ draft.force_transfer_rwa(
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -619,7 +616,7 @@ submit(instruction)
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -698,13 +695,13 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 輸入查詢輔助器返回資料類,而不是原始的 JSON 字典.它們是最簡單的方式來開始,因為 SDK 解析頁面化和常見記錄領域:
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
@@ -727,9 +724,9 @@ with urlopen(request, timeout=5) as response:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
@@ -739,13 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 串流輔助程式預設會解碼 JSON 承載資料。需要 SSE 事件名稱、ID、重試提示及原始承載資料時，請傳入 `with_metadata=True`。標準 `/v1/events/sse` feed 僅提供即時事件：它不會發出重播 IDs，也不保留重播記錄，因此這些輔助程式不提供遊標或續傳引數。重新連線會建立新的訂閱，可能產生缺口；需要完整帳本歷史時，請從已知高度使用 `/v1/blocks/stream`。這些範例會等待即時事件，因此請在串流已啟用且處於活動狀態的節點上執行。
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -754,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -1025,26 +1015,6 @@ client = create_torii_client(
 )
 ```
 
-## 卡蓋穆沙的準備 {#kagemusha-readiness}
-
-其他 Python SDK 能查詢電流 JSON 準備路線透過其通用 Torii 要求助理:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python 尚未提供具型別的 Kagemusha 儲值或贖回封存建構器。請使用具型別的 Swift 或 JVM 錢包建構規範 V4 封存，然後透過受支援的 Kagemusha Torii 用戶端提交並輪詢。
-
 ## 訂閱 {#subscriptions}
 
 `iroha_python.ToriiClient`使用的共享 Torii 客戶端繼承了訂閱閱閱和草案構建器.每個突變都使用繫結請求正文的規範帳戶簽名予以准入,並返回未簽署的交易草案. Torii 從來沒有接受私鑰,也不為您提交草案.
@@ -1281,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1299,22 +1268,20 @@ if connect_status is not None:
 
 ## SoraFS,UAID 和 Kaigi 的輔助人員 {#sorafs-uaid-and-kaigi-helpers}
 
-當目標節點暴露相應的 Nexus/SORA 端點時,這些輔助器可用.將空清單視為有效的響應:公眾 Taira 可能會在沒有樣本表或 UAID 的資料的情況下啟用路線.
+當目標節點提供相應的 SORA Nexus 端點時，即可使用這些輔助工具。空清單也是有效回應：公開 Taira 可能已啟用路由，但沒有範例清單或 UAID 對應的資料。
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()
@@ -1356,7 +1323,7 @@ Python SDK 已經包括以下型別的助手:
 - 為常見 ISI 和特定域的擴充套件型別指令構建器
 - 交易草案,清單,簽署和簽署的交易封裝工作流程
 - 現場事件流和具型別過濾器;提交的區塊流提供完整的歷史記錄
-- 一般Kagemusha準備訪問和 Torii 訂閱輔助員;打字補充和贖回構建者不暴露
+- Torii 訂閱讀取與未簽署交易草稿建構器
 - 帳戶地址,全演算法簽字輔助器,多個雜湊回來旅行, SM2, GOST, ML-DSA, BLS 以及機金鑰處理
 - 連線 URIs,會議,框架,加密輔助器和登錄檔管理員
 - 當節點提供相應功能時，用於治理、執行階段升級、Sumeragi、節點管理、SoraFS、UAID 和 Kaigi 端點的封裝器

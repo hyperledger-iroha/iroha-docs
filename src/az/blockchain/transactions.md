@@ -1,16 +1,15 @@
 ---
 translation_locale: az
 translation_source: /blockchain/transactions.md
-translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Əməliyyatlar {#transactions}
 
 Əməliyyat blokçeyn üzərində iş yerinə yetirmək üçün imzalanmış sorğudur. Yerinə yetirilə bilən yük [təlimatlar](./instructions.md)-ın sıralanmış ardıcıllığı, müqavilənin texniki çağırışı, IVM baytkodu və ya sübut edilmiş IVM icra ola bilər. Mövcud müqavilə icra modelini görmək üçün [Ağıllı Müqavilələr](./smart-contracts.md)-ə baxın.
 
-Əməliyyatlar vəziyyəti dəyişdirən və ya icra edilə bilən işləri yerinə yetirir. Yalnız oxumaq üçün müfəttişlik imzalı sorğular və ya ümumi oxuma API son nöqtələrindən istifadə edir və əməliyyat yaratmır.
+Əməliyyatlar vəziyyəti dəyişən və ya icra olunan iş görür. Yalnız oxuma yoxlamaları imzalanmış sorğulardan və ya açıq oxuma son nöqtələrindən istifadə edir və əməliyyat yaratmır.
 
 Tamamlanmış bloka daxil edilmiş əməliyyat, icra nəticəsi ilə birlikdə, icranın rədd edilməsi də daxil olmaqla, saxlanılır. Bloka daxil edilmədən əvvəl rədd edilmiş sorğular, məsələn, etibarsız məlumat konteyneri və ya növbə tərəfindən rədd edilmiş əməliyyat, blokda saxlanılmır.
 
@@ -39,32 +38,30 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-Bu hələ də yalnız oxunandır. Əməliyyatı təqdim etmək üçün imzalanmış Norito məlumat konteyneri, düzgün zəncir ID-si, ödəniş metadatasi və testnet ilə maliyyələşdirilmiş Taira hesab tələb olunur.
+Bu hələ də yalnız oxuma əməliyyatıdır. Əməliyyat göndərmək üçün imzalanmış Norito zərfi, düzgün zəncir ID-si və şəbəkə ID-si, açıq göstərilmiş haqq ödəyicisi və test vəsaiti paylama xidməti ilə maliyyələşdirilmiş Taira hesabı tələb olunur.
 
-Ödənişli nümunələr üçün Taira üzərində, testnet maliyyələşdirmə xidmət köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` kimi yadda saxlayın, sonra kriptoqrafik imzalayanı əvvəlcə ictimai testnet maliyyələşdirmə xidməti vasitəsilə maliyyələşdirin:
+Taira üzərində haqq tələb edən nümunələr üçün [Taira üzərində testnet XOR əldə etmək](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindəki əvvəlcədən hazırlanan vəsait alma axını ilə imzalayan hesabı maliyyələşdirin, sonra haqq aktivinin balansını yoxlayın:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Əgər testnet maliyyələşdirmə xidməti tapmacası və ya tələb yolu `502` qaytarırsa, tranzaksiyanı özü debug etməzdən əvvəl gözləyin və yenidən cəhd edin.
+Vəsait paylama marşrutu `502` qaytararsa, əməliyyatın özündə xəta axtarmazdan əvvəl gözləyin və yenidən cəhd edin.
 
-Sonra əməliyyatı təqdim edərkən Taira rüsum aktiv metadatasını əlavə edin:
+Sonra əməliyyatı göndərərkən haqq ödəyicisini seçin. `--fee-payer authority` ilə imzalayan hesab ödəyir və CLI imzalamadan əvvəl dəqiq haqqı Taira-nın haqq aktivində hesablayıb göstərir:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## Offline Əməliyyatlar {#offline-transactions}
@@ -72,34 +69,26 @@ iroha --config ./taira.client.toml \
 Iroha-ın iki oflayn əməliyyat iş axını var:
 
 - Offline imzalama cihaz bağlandıqda normal imzalanmış əməliyyat yaradır. Əməliyyat, imzalanmış məlumat konteynerini Torii ünvanına göndərən onlayn müştəri təqdim edənə qədər işlənmir, buna görə də hələ də düzgün zəncir ID-si, avtorizasiya prinsipi, icazələr, ödənişlər tələb olunur, və əməliyyat ömrü.
-- Kagemusha oflayn nağd pulları onlayn olduqda cüzdana yükləyir, hər iki cüzdan oflayn olduqda alıcı tərəfindən başlanan cüzdandan cüzdana keçidləri dəstəkləyir və alıcı onlayna qayıtdıqda yaranmış qeyd vəziyyətini istifadə edir.
+- **Kagemusha oflayn nağd pul** qeydiyyatdan keçmiş, aparatla qorunan pul kisəsi onlayn olduqda ona dəyər yükləyir, hər iki pul kisəsi oflayn olduqda kisələrarası ödənişləri dəstəkləyir və pul kisəsi yenidən onlayn olduqda qalan dəyəri reyestr hesabına boşaldır.
 
-Torii `/v1/offline/*` altında tam Kagemusha həyat dövranını göstərir:
+Torii bir Kagemusha dəyişiklik marşrutu təqdim edir: `POST /v1/kagemusha/enrollment`. O, hesabla autentifikasiya edilmiş `application/x-norito` qeydiyyat çərçivələrini qəbul edir və keşlənməməli olan özəl cavablar qaytarır. `/v1/kagemusha/{scheme}/wallets/{wallet}/` altındakı hesabla imzalanan SDK oxuma marşrutları Load qəbzlərini və yekunluq sübutlarını qaytarır; onlar `/openapi.json` siyahısına daxil edilməyib. Həyat dövrünün reyestr tərəfi `KagemushaWalletLedgerV1` təlimatı daşıyan adi imzalanmış əməliyyatlardan istifadə edir:
 
-|Metod və API son nöqtə|Məqsəd|
+| Əməl | Məqsəd |
 | --- | --- |
-| `GET /v1/offline/readiness` |Kagemusha-nın bir `asset_definition_id` üçün hazırlığını qiymətləndirin|
-| `POST /v1/offline/receiver-lineage` |İmzalı qəbulçu sorğusu üçün sübut-a sahib aktiv qeydiyyat mənşəyini həll edin|
-| `POST /v1/offline/top-up` |İmzalı onlayn-dən-oflayna yükləmə əməliyyatını təqdim edin|
-| `POST /v1/offline/redeem` |İmzalanmış oflayn geri ödəmə əməliyyatını təqdim edin|
-| `GET /v1/offline/operations/{operation_id}` |Yeniləmə və ya çıxarışın tək protokol-standart statusunu oxuyun|
-
-Əməliyyata keçmədən əvvəl aktivin hazır olub-olmadığını yoxlayın:
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-Hazır vəziyyət pulqabını aktiv körpü ABI 21 və təsdiqlənmiş V4 artefakt dəsti ilə bağlayır. Soy, yükləmə və geri alma sorğuları yazılmış `application/x-norito` arxivlərdən istifadə edir. Əlavə ödəniş və geri ödəmə qaytarılması `202 Accepted` əməliyyat resursuna işarə edən `Location` başlığı ilə; daxil edilmiş sıfır olmayan əməliyyat ID-si idempotentlik açarını təmin edir.
+| `Activate` | Qeydiyyatdan keçmiş pul kisəsini aktivləşdirmək; birbaşa platformada ilkin qurulma yoxlaması məcburidir |
+| `IssueLoad` | Ödəyicinin balansından çıxmaq və pul kisəsinin növbəti Load qeydini atomik şəkildə yazmaq |
+| `Unload` | Tam Unload tələbini onun bağlandığı hesaba ən çox bir dəfə ödəmək |
+| `ClaimFee` | Tam haqq tələbini onun sabit faydalananına ödəmək |
+| `Abandon` | İstifadə olunmamış qeydiyyatdan imtina etmək |
 
 Tipik axın belədir:
 
-1. Sorğuya hazır olmağı yoxlayın və əgər `ready` yanlışdırsa və ya hər hansı bir bloklayıcı tətbiq olunursa dayandırın.
-2. Tək protokol-standart doldurma arxivi yaratmaq üçün yazılı Swift və ya JVM cüzdanından istifadə edin, bunu təqdim edin və əməliyyat son zəncir vəziyyətinə çatana qədər həm giriş notu vəziyyətini, həm də əməliyyat ID-sini saxlayın.
-3. Tələb olunduqda qəbul edənin qeydiyyat soy ağacını həll edin, hər bir şəbəkə qonşu ötürməsini yerli olaraq qurun və yoxlayın, və ötürməni təsdiqləməzdən əvvəl şifrəli qeyd vəziyyətini saxlayın.
-4. Qəbul edici onlayndaykən, tək protokol-standart geri ödəmə arxivini qurun, təqdim edin və onun əməliyyat resursunu yekunlaşana qədər sorğu edin.
+1. Tipləşdirilmiş interfeysi olan Swift və ya Android pul kisəsi ilə `/v1/kagemusha/enrollment` vasitəsilə qeydiyyatdan keçin, sonra pul kisəsini aktivləşdirin.
+2. `IssueLoad` əməliyyatı göndərin. İcra gözlənilən növbəti Load sıra nömrəsini və sıfırdan fərqli sorğu ID-sini yoxlayır; buna görə köhnəlmiş və ya dəyişdirilmiş təkrar cəhd uğursuz olur. Cavab itdikdə başqa Load imzalamaq əvəzinə ilkin Load qəbzini oxuyun.
+3. Pul kisələri oflayn olduqda ödənişləri onların arasında yerli şəkildə mübadilə edin və yoxlayın; hər köçürməni təsdiqləməzdən əvvəl pul kisəsinin vəziyyətini davamlı saxlayın.
+4. Pul kisəsi yenidən onlayn olduqda onun Unload tələbini göndərin və yekunluğu gözləyin.
+
+Kagemusha buraxılış üçün kvalifikasiyadan keçməyib: canlı monetar kvalifikasiya, həmçinin fiziki cihazlarda telefon qeydiyyatı, aktivləşdirmə və ödəniş hələ açıq məsələ olaraq qalır.
 
 Blokçeyn dəftəri, qeyd vəziyyəti onlayn həyat dövrü vasitəsilə qayıtmayana qədər ziddiyyətli oflayn ötürməni görə bilməz. Buna görə də, cüzdan və operator siyasəti dəyər məhdudiyyətlərini, müddət bitməsini, qəbul edilmiş buraxanları, davamlı yerli saxlama və uyğunlaşdırma pəncərələrini tətbiq etməlidir.
 
@@ -107,7 +96,13 @@ Burada `Grant` təlimatı ilə yeni bir əməliyyat yaratmaq nümunəsi var. Bu 
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

@@ -19,13 +19,14 @@ notifications rather than a complete history.
 
 ### 1. Confirm the SSE response
 
-Taira currently negotiates this route only when the `Accept` header
-includes both the preferred event stream and a JSON fallback. Disable curl
-buffering. The command ends after 15 seconds; receiving only heartbeat
-comments during a quiet period is valid.
+Request the event stream with a JSON fallback: Torii streams
+`text/event-stream` and reports a rejected request, such as an invalid
+filter, as a JSON error. Disable curl buffering. The command ends after 20
+seconds. Torii sends a heartbeat comment after 15 idle seconds, so receiving
+only heartbeat comments during a quiet period is valid.
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -35,18 +36,15 @@ not a replay log, and rejects replay requests.
 
 ### 2. Add a filtered JavaScript consumer
 
-Save the following as `stream-taira.mjs`. It uses Fetch directly so the
-request can send Taira's required mixed `Accept` header. The current
-`FilterExpr` selects approved transaction events, and the parser consumes SSE
+Save the following as `stream-taira.mjs`. It uses Fetch directly to show
+the wire format. The `filter` query parameter uses Torii's text filter
+grammar to select approved transaction events, and the parser consumes SSE
 frames without a replay cursor.
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -56,7 +54,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -67,7 +65,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -173,10 +171,10 @@ consumer must replace or extend `reconcile()` with queries for its durable
 application resources and a recovery bound large enough for its checkpoint.
 The bounded snapshot alone cannot prove that no events were missed.
 
-At the pinned commit, `ToriiClient.streamEvents()` sends only
-`Accept: text/event-stream`; live Taira rejects that narrower header with
-`406`. Use the raw Fetch form above until the SDK and public endpoint
-negotiate the same media types.
+`ToriiClient.streamEvents({ filter })` from `@iroha/iroha-js` reads the
+same stream: pass `field('tx_status').eq('Approved')` or the text filter
+above. It yields the terminal `stream_error` frame before the stream ends,
+so the reconnect and reconciliation rules above still apply.
 
 ## Verify
 
@@ -186,7 +184,7 @@ transaction snapshot:
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -199,12 +197,14 @@ must print a fresh diagnostic after the replacement stream opens.
 
 - A connection with heartbeat comments but no data events is healthy; the
   selected pipeline status may simply be quiet.
-- `406 Not Acceptable` on live Taira usually means the request advertised
-  only `text/event-stream`. Send `text/event-stream, application/json`
-  exactly as shown above.
+- `400` with code `invalid_filter` means the `filter` is not in Torii's text
+  grammar or names a field that event streams do not support. Event streams
+  filter on `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`,
+  `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`,
+  `proof_call_hash`, and `proof_envelope_hash`.
 - A `stream_error` event indicates that the server detected lag or another
   terminal stream condition. Torii sends that event once and closes the
-  stream; reconcile before reconnecting.
+  stream; open a replacement stream, then reconcile.
 - A proxy can buffer SSE even when Torii does not. Disable response
   buffering and compression in the proxy, and keep `curl -N` in
   diagnostics.
@@ -214,10 +214,10 @@ must print a fresh diagnostic after the replacement stream opens.
 
 ## Source and related docs
 
-- [JavaScript streaming recipe at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs)
-- [Torii FilterExpr parser at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii event routing at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs)
+- [JavaScript streaming recipe at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs)
+- [Torii filter text grammar at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii event routing at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs)
 - [Events](/blockchain/events.md)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Query ledger state](./query-ledger-state.md)

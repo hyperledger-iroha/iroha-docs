@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha کو براہ راست فزیکل سرور پر چلانا {#running-iroha-on-bare-metal}
 
 جب آپ Docker Compose کے بجائے میزبانوں پر براہ راست نیٹ ورک نوڈ چلانے کا ارادہ رکھتے ہیں تو اس ورک فلو کا استعمال کریں۔ موجودہ ماخذ درخت Kagami جنریٹرز فراہم کرتا ہے جو مماثلت جینیس ، نیٹ ورک نوڈ ترتیب ، کلائنٹ ترتیب اور شروع / اسٹاپ اسکرپٹ لکھتے ہیں۔
@@ -32,10 +31,10 @@ cargo build --release \
 چار پیئر Iroha 3 لوکل نیٹ پیدا کریں:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-آؤٹ پٹ ڈائرکٹری میں پیدا کردہ `genesis.json` ، `genesis.signed.nrt`، نیٹ ورک نوڈ `config.toml` فائلیں، `client.toml`، مددگار اسکرپٹس اور ایک جنریٹڈ `README.md` شامل ہیں جس میں اس بنڈل کے لئے عین مطابق کمانڈز ہیں۔
+آؤٹ پٹ ڈائرکٹری میں تیار کردہ `genesis.json`، `genesis.signed.nrt`، `genesis.expected_hash`، ہر ویلیڈیٹر کے لیے ایک `peerN.toml`، `client.toml`، `start.sh` اور `stop.sh` اسکرپٹس، اور ایک تیار کردہ `README.md` شامل ہیں جس میں اس بنڈل کے لیے عین کمانڈز درج ہیں۔
 
 ## 3۔ نیٹ ورک نوڈز کا آغاز کریں {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-اگر آپ کو systemd جیسے عمل مینیجر میں ہر نیٹ ورک نوڈ کو وائرنگ کرنے کی ضرورت ہو تو ، ہر نیٹ ورک نوڈ کے لئے `./localnet/README.md` میں ریکارڈ کردہ لانچ کمانڈ کا استعمال کریں۔ ہر نیٹ ورک نوڈ کی `config.toml` ، نجی کلید ، اسٹوریج ڈائرکٹری اور بندرگاہوں کو علیحدہ رکھیں.
+اگر آپ کو ہر پیئر کو systemd جیسے پراسیس مینیجر سے جوڑنا ہو تو `./localnet/start.sh` میں ہر پیئر کی کمانڈ پر عمل کریں: `<bundle>/state/peerN` سے `iroha3d --config <bundle>/peerN.toml` چلائیں، اور `--sumeragi-assert-fresh-key` صرف اس پیئر کے پہلے آغاز پر دیں۔ ہر پیئر کی `peerN.toml`، نجی کلید، اسٹوریج ڈائرکٹری اور پورٹس الگ رکھیں۔
 
 ## 4۔ نیٹ ورک کو چلانے کے لیے {#_4-operate-the-network}
 
 تخلیق کردہ کلائنٹ ترتیب کا استعمال کریں:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

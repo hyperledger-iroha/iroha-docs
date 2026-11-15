@@ -1,14 +1,13 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript и TypeScript {#javascript-and-typescript}
 
-Текущий JavaScript SDK является пакетом `@iroha/iroha-js` в исходном дереве Iroha. Это Node.js-й SDK для Torii, Norito сборщиков, подписания, нумерации страниц, предварительного просмотра Connect и передачи команд Kagemusha.
+Текущий JavaScript SDK — это пакет `@iroha/iroha-js` в исходном дереве Iroha. Это SDK, ориентированный в первую очередь на Node.js, для Torii, конструкторов Norito, подписания, постраничной навигации и предварительного просмотра Connect.
 
 ## Собрать из исходников {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 - Подписание и генерация ключей Ed25519
 - помощники для постраничного отображения и повторных попыток
 - Подключить вспомогательные модули Bootstrap для браузера
-- Помощники по транспортировке готовности Kagemusha, пополнения, выкупа и состояния работы
 
 ## Исходные ссылки {#upstream-references}
 

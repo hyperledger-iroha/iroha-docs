@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # میٹا ڈیٹا اور لیجر اسٹوریج کے اختیارات {#metadata-and-ledger-storage-choices}
 
 Iroha 3 ڈیٹا ماڈل میں تعمیری کلیدی قدر کے اعداد و شمار کے لئے کوئی علیحدہ `Store` اثاثہ کی قسم نہیں ہے۔ درج ذیل اسٹوریج کے اختیارات استعمال کریں۔
@@ -23,7 +22,7 @@ Iroha 3 ڈیٹا ماڈل میں تعمیری کلیدی قدر کے اعداد 
 
 ## عددی اثاثہ جات اور NFTs {#numeric-assets-and-nfts}
 
-[اثاثہ جات ](/ur/blockchain/assets.md) اور [NFTs](/ur/blockchain/nfts.md) کا استعمال کریں جب ریاست قدر کی حامل ہو:
+اگر درج کی جانے والی حالت مالی قدر کی نمائندگی کرتی ہے تو [اثاثے](/ur/blockchain/assets.md) اور [NFTs](/ur/blockchain/nfts.md) استعمال کریں:
 
 - فنجیبل سالڈوں کے لئے عددی اثاثے
 - NFTs منفرد ملکیت کے ریکارڈوں کے لئے

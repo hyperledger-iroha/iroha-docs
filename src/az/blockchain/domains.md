@@ -1,26 +1,25 @@
 ---
 translation_locale: az
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Domenlər {#domains}
 
-Domenlər `World`-da qeydiyyatdan keçmiş adlandırılmış ad sahələridir. Hazırkı Iroha 3 məlumat modeli üzrə bir domen onun valideyn məlumat sahəsi ilə təyin olunur, buna görə tək protokol-standart identifikator belədir:
+Domenlər `World` daxilində qeydiyyatdan keçmiş adlandırılmış ad məkanlarıdır. Hazırkı Iroha 3 məlumat modelində domen öz ana məlumat məkanı ilə tam müəyyənləşdirilir, buna görə kanonik identifikator belədir:
 
 ```text
 domain.dataspace
 ```
 
-Məsələn, `payments.universal` `universal` məlumat sahəsinin içərisindəki `payments` domenini adlandırır.
+Məsələn, `payments.universal` adı `universal` məlumat məkanındakı `payments` domenini bildirir.
 
 ## Struktur {#structure}
 
 Qeydiyyatdan keçmiş `Domain` aşağıdakıları ehtiva edir:
 
-- `id`: məlumat məkanına uyğun `DomainId`
+- `id`: məlumat məkanı ilə tam müəyyənləşdirilmiş `DomainId`
 - `logo`: bir domen loqosu üçün isteğe bağlı `SoraFS` URI
 - `metadata`: ixtiyari açar-dəyər metadatası
 - `owned_by`: domenin sahib olduğu hesab, adətən onu qeydiyyatdan keçirən hesab
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-Niyyət müəyyən edir `payments.universal`, rəqəmsal məlumat sahəsi, tək protokol-standart I105 sahib, icarə əldə etmə müddəti və mövcud siyasət/ödəmə haqqı-qiymət təsdiqi qoruyucusu. Planlayıcı API son nöqtədir `POST /v1/aliases/setup/plan`; qaytarılan plan zəncirlə bağlıdır, əməliyyatın təsdiqi şəxsiyyət, blok zənciri dəftər vəziyyəti və son tarix. Domenin silinməsi hələ də istifadə edir [`Unregister`](/az/blockchain/instructions.md#un-register).
+Niyyət `payments.universal` domenini, onun ədədi məlumat məkanı identifikatorunu, kanonik I105 sahibini, icarənin əldə olunma müddətini və cari siyasət/ödəniş təklifinin yoxlama şərtini müəyyən edir. Planlayıcının son nöqtəsi `POST /v1/aliases/setup/plan`-dır; qaytardığı plan zəncirə, səlahiyyət sahibinə, vəziyyətə və son tarixə bağlıdır. Domeni silmək üçün hələ də [`Unregister`](/az/blockchain/instructions.md#un-register) istifadə olunur.
 
 Bir domen yaratmaq və ya silmək üçün uyğun domen idarəetmə icazəsi tələb olunur aktiv proqram təminatının icra mühiti yoxlayıcısı. Domen metadata məlumatları ilə yenilənə bilər [`SetKeyValue` və `RemoveKeyValue`](/az/blockchain/instructions.md#setkeyvalue-removekeyvalue) icazə verən əsasın həmin domeni dəyişdirmək icazəsi olduğu zaman.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-İctimai edam zolağı kataloqunu məlumat sahəsi ləqəblərinə geri xəritələyin:
+Açıq zolaq kataloqunu məlumat məkanı ləqəbləri ilə uyğunlaşdırın:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Tətbiq bir domenin mövcud olub olmadığını yoxlamalı olduğu zaman ilk əmrdən istifadə edin. Bir dataspace-in ictimai, məhdud və ya əsas icra xəttindən geridə olub olmadığını təsdiqləmək lazım olduqda icra xətti kataloqundan istifadə edin.
+Tətbiq domenin mövcudluğunu yoxlamalıdırsa, birinci əmrdən istifadə edin. Məlumat məkanı ilə əlaqəli zolaqları, o cümlədən hər zolağın açıq və ya məhdud görünməsini və əsas zolağa nəzərən sinxronizasiya vəziyyətini araşdırmaq üçün zolaq kataloqundan istifadə edin.
 
-Domen qurulması ödənişli yazıdır. Taira-də sınamadan əvvəl, testnet maliyyələşdirmə xidmət köməkçisini [Taira üzərində Testnet XOR əldə edin](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-dən `taira_faucet_claim.py` kimi saxlayın, kriptoqrafik imzalayıcıyı ictimai testnet maliyyələşdirmə xidməti vasitəsilə maliyyələşdirin və ödəniş metadatasını əlavə edin:
+Domenin qurulması haqq tələb edən yazma əməliyyatıdır. Taira üzərində sınamazdan əvvəl [Taira üzərində testnet XOR əldə etmək](/az/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bölməsindəki əvvəlcədən hazırlanan vəsait alma axını ilə imzalayan hesabı maliyyələşdirin, sonra planı açıq şəkildə göstərilmiş haqq ödəyicisi ilə tətbiq edin. CLI imzalamadan əvvəl dəqiq haqqı hesablayıb göstərir:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

@@ -1,26 +1,24 @@
 ---
 translation_locale: mn
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3-г CLI-аар ажиллуулна {#operate-iroha-3-via-cli}
 
-`iroha` хоёртын файл нь Iroha 3 зориулсан командын мөрийн клиент юм. Үүнийг блокчэйн бүртгэлийн төлвийг лавлах, гүйлгээ илгээх, операторын API төгсгөлүүдийг шалгахад ашиглана уу.
+`iroha` гүйцэтгэх файл нь Iroha 3-ын командын мөрийн үйлчлүүлэгч юм. Бүртгэлийн төлөвийг асуух, гүйлгээ илгээх болон операторын төгсгөлийн цэгийг шалгахад ашиглана.
 
 ## 1. Урьдач нөхцөл {#_1-prerequisites}
 
-Эхлээд локал сүлжээг эхлүүлнэ үү:
-
-- [Эхлүүлэх Iroha 3](./launch-iroha.md)
-
-Доорхи жишээнүүд нь [Эхлүүлэх Iroha 3](./launch-iroha.md)-д бүтээгдсэн localnet-аас үүсгэсэн клиент тохиргоог таамаглаж байна:
+Баримтжуулсан эх кодын хувилбарт байгаа Iroha-ийн татаж авсан эх кодоос дөрвөн зангилаатай локал сүлжээг үүсгэж эхлүүлнэ үү:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+Доорх жишээнүүд түүний үүсгэсэн клиентийн тохиргоо болох `./localnet/client.toml`-ийг ашиглана.
 
 ## 2. Суурь CLI тохиргоо {#_2-basic-cli-setup}
 
@@ -32,16 +30,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI нь эдгээр дээд түвшний командуудын бүлгүүдэд зохион байгуулагдсан:
 
-- `account` данс төвтэй товчлолуудад зориулсан
-- `tx` гүйлгээний түвшний туслахуудын төлөө
+- данс унших болон өөрчлөхөд `account`
+- нийтлэг шүүлтүүр, хуудаслалттай блок хөтчийн урсгалд `explorer`
+- гүйлгээний төлөв болон гүйлгээний туслахуудад `tx`
 - `ledger` блокчэйн дэвтэр дээр унших болон бичихэд зориулсан
+- өдөөгч унших, бичих болон гүйцэтгэхэд `trigger`
 - `ops` операторын оношлогоонд
 - `app` апп API туслахуудын хувьд
-- `contract` гэрээ байрлуулах ба техникийн дуудах үйлдлүүдэд
+- гэрээ дуудах, харах болон дотоодод алдаа шинжлэхэд `contract`; байрлуулахдаа `kagami contract deploy` эсвэл `musubi deploy` ашиглана
 - `tools` оношлогоо болон хөгжүүлэгчийн хэрэгслүүдэд
-- `taira` нь Taira ба Nexus-т чиглэсэн ажлын урсгалын хувьд
+- өгөгдлийн орон зайн тодорхойлолтыг төлөвлөх, хэрэгжүүлэх, шалгахад `dataspace`
+- Taira оношилгоо болон дансыг анх бэлтгэхэд `taira`
+- офлайн кодлогч, тайлан болон оношилгоонд `offline`
+- Soracloud хэрэглээний платформын туслахуудад `soracloud`
+- SORA Cross-Chain Protocol уншилт, шилжүүлэг болон нотолгоонд `sccp`
 
-`ledger` бүлэг нь мөн `ledger transaction` гэсэн домайн тусгай гүйлгээний туслахуудыг агуулдаг.
+Гүйлгээ илгээдэг команд бүр `--fee-payer authority` зэрэг илэрхий шимтгэл төлөгч шаарддаг; CLI гарын үсэг зурахаас өмнө яг шимтгэлийг тооцож харуулна.
 
 Хүний уншиж болох операторын гарцыг ашиглахад `--output-format text`, хатуу автоматжуулалтын горимд `--machine` ашиглана уу.
 
@@ -56,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-`universal` өгөгдлийн сан дахь нийтийн домэйнуудыг жагсаа:
+Нэвтрээгүй уншигчид харагдах домэйнуудыг жагсаана:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -76,32 +80,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml`-ийг зөвхөн гарын үсэглэсэн командуудыг туршихад бэлэн болсон үедээ үүсгээрэй. Тохиргоо, тестнэт санхүүжүүлэх үйлчилгээ, канарийн урсгалыг үзэхийн тулд [SORA Nexus Датаспэйс-үүдтэй холбогдоно уу](/mn/get-started/sora-nexus-dataspaces.md)-ийг хараарай. Данс тестнэт санхүүжүүлэх үйлчилгээний хураамжийн хөрөнгөөр хангагдаагүй байхад Taira-д бичих командуудыг ажиллуулж болохгүй.
+Гарын үсэгтэй команд туршихад бэлэн болсон үед л `taira.client.toml` үүсгэнэ. Тохиргоо, туршилтын хөрөнгө авах болон анхан шатны ажиллагааны сорилыг [SORA Nexus өгөгдлийн орон зайд холбогдох](/mn/get-started/sora-nexus-dataspaces.md) хэсгээс үзнэ үү. Данс туршилтын хөрөнгө олгох үйлчилгээний шимтгэлийн хөрөнгөөр санхүүжихээс өмнө Taira дээр бичих команд бүү ажиллуул.
 
-Төлбөр төлдөг аливаа Taira CLI жишээний хувьд, [Тестнет XOR-ийг Taira-оос авна уу](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)-аас тестнетийн санхүүжилтийн үйлчилгээний туслахыг `taira_faucet_claim.py` болгон хадгалж, түрүүнд тестнет XOR-ийг авна уу:
+Шимтгэлтэй Taira CLI жишээ бүрийн өмнө [Taira дээр туршилтын XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн урьдчилан бэлтгэдэг хөрөнгө авах урсгалаар гарын үсэг зурах дансыг санхүүжүүлээд, үлдэгдлийг шалгана:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Хэрэв тестнет санхүүжилтийн үйлчилгээний таавар эсвэл шаардлагын зам `502` буцаавал хүлээж, дахин оролдоно уу. Энэ нь олон нийтийн тестнетийн боломжийн асуудал бөгөөд дансны түлхүүрүүдийг дахин үүсгэх дохио биш юм.
+Туршилтын хөрөнгө олгох маршрут `502` буцаавал хүлээж, дахин оролдоно. Энэ нь нийтэд нээлттэй туршилтын сүлжээний хүртээмжийн асуудал болохоос дансны түлхүүрийг дахин үүсгэх дохио биш.
 
-Тэнцвэр харагдсаны дараа төлбөрийн хөрөнгийн мета өгөгдлийг бичлэгүүдэд хавсаргана:
+Үлдэгдэл харагдсаны дараа бичих үйлдлийг `--fee-payer authority`-тай илгээнэ. CLI гарын үсэг зурахаас өмнө яг шимтгэлийг Taira-гийн шимтгэлийн хөрөнгөөр тооцож харуулна:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. Үндсэн блокчэйнийн бүртгэлийн тушаалууд {#_4-basic-ledger-commands}
@@ -109,7 +111,7 @@ iroha --config ./taira.client.toml \
 Бүх домейнуудыг жагсаа:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Энгийн домайны үүсгэх нь тунхагласан алиасыг төлөвлөгчийг ашигладаг; `ledger domain` командыг `register` дэд командгүй байдаг. `docs.universal`-д зориулсан нууцгүй `AliasSetupPlanRequestV1` зорилгыг өөрийн SDK эсвэл нэвтрүүлэх үйлчилгээтэйгээр бэлдээд, дараа нь төлөвлөн хэрэгжүүлнэ үү:
@@ -120,16 +122,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-Зорилгын програм нь өгөгдлийн сангийн ID, нэг протокол-стандарт эзэмшигчийн данс, түрээслэх хугацаа, одоогийн төлбөр-үнэн зөвлөлт хамгаалагчийг тогтоодог. Төлөвлөгч амьд төлөвийг шалгаж, үүсгэх нарийн атом `EnsureAlias` төлөвлөгөөг буцаадаг. Бусад сүлжээнээс хамгаалагч утгыг гараар хуулж болохгүй.
+Зорилго нь өгөгдлийн орон зайн ID, каноник эзэмшигч данс, түрээсийн хугацаа болон одоогийн үнийн саналын шалгах нөхцөлийг тогтооно. Төлөвлөгч ажиллаж буй төлөвийг шалгаж, илгээх яг атомик `EnsureAlias` төлөвлөгөөг буцаана. Шалгах нөхцөлийн утгуудыг өөр сүлжээнээс гараар бүү хуул.
 
 Энгийн пинг шилжүүлэг илгээнэ үү:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 Сүүлд нэмэгдсэн блокыг уншина уу эсвэл блокын үйл явдлуудыг захиална уу:
@@ -141,10 +143,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. Операторын командууд {#_5-operator-commands}
 
-Нийтлэг операторын командуудад зөвшөөрөгдсөн програмын гүйцэтгэх орчны түлхүүр хэрэгтэй. Үүнийг `client.toml`-д оруулахгүй байлгаж, зөвхөн эзэмшигчид зориулсан файлыг тодорхой зааж өгөөрэй:
+Зөвшилцлийн операторын командууд зөвшөөрлийн жагсаалтад орсон гүйцэтгэлийн түлхүүр шаарддаг. Үүнийг `client.toml`-д бүү хадгал; зөвхөн эзэмшигч нэвтрэх файлыг абсолют замаар дамжуулна:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -161,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-Хамгийн өндөр ба түгжигдсэн консенсусын кворумын гэрчилгээ:
+Батлагдсан зөвшилцлийн эгнээнүүд болон энэ зангилааны ажиллагааны нэгжийн төлөв:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 Сүлжээ дэх зөвшилцлийн параметрууд:
@@ -182,12 +185,12 @@ cargo run --bin iroha -- \
 ## 6. Дараагийн хаашаа явах вэ {#_6-where-to-go-next}
 
 - [SDK сургалт хичээлүүд](/mn/guide/tutorials/)
-- [Torii API төгсгөлийн цэгүүд](/mn/reference/torii-endpoints.md)
+- [Torii төгсгөлийн цэгүүд](/mn/reference/torii-endpoints.md)
 - [Iroha хоёртын файлуудтай ажиллаж байна](/mn/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-Эх кодын ажлын хуулбараас Markdown тусламжийн бүрэн агшин зургийг дахин үүсгэхдээ дараах командыг ажиллуулна:
+Эх кодын хуулбараас бүтэн Markdown тусламжийн агшин дүрс хэвлэхийн тулд:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

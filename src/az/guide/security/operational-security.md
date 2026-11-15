@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Əməliyyat Təhlükəsizliyi {#operational-security}
 
 Əməliyyat təhlükəsizliyi Iroha yerləşdirilməsi ətrafındakı insanları, hostları, sertifikatları və prosedurları qoruyur. Blokçeyn dəftəri qəbul edilmiş vəziyyət dəyişikliklərini qeyd edir. Operatorlar öz iş stansiyalarını, imzalama açarlarını və hadisələrə cavab prosesini ayrıca təmin etməlidirlər.

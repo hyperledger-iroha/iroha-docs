@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
+translation_source_hash: 846370e45fe0e0d605016d6722b1d50c39981f954c7d9040b87fc385eb12ac68
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # `iroha3d` CLI {#iroha3d-cli}
 
 `iroha3d`是标准的 Iroha 3 对等节点守护进程.Cargo 软件包名为 `irohad`,所以从源支付中调用二进制:
@@ -22,7 +21,7 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-运营商必须在使用前呈现规范的 Taira 配置文件. 已注册的模板有示例设置. 操作员必须取代每一个示例设置. 在与 Taira 进行测试时,不要使用通用 Nexus 或生产 SoraFS 设置.
+请使用由运维人员填充完成的规范 Taira 配置；仓库中的模板仍包含部署占位符。在 Taira 上测试时，不要替换为通用 SORA Nexus 配置或生产 SoraFS 设置。
 
 ## `--config` {#arg-config}
 
@@ -41,14 +40,39 @@ iroha3d_taira --sora \
 
 验证已解决的配置和可用的创世材料,然后无需绑定网络插座退出.
 
-## 卡盖穆沙资格章 {#kagemusha-qualification-seals}
+## `--json` {#arg-json}
 
-这些文件路径选项需要 `--check-config` 并在写定章之前完成完整的Kagemusha资格:
+- **类型：**开关选项
+- **要求：** `--check-config`
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` 符合目录的要求.
-- `--write-kagemusha-validator-qualification-seal <PATH>`使本地验证者符合配置签署的促销预订条件.
+将此构建和配置的兼容性值作为一个 Norito JSON 对象打印，而不是 `Ready` 或 `Pending` 行。
 
-两种密封选项相互冲突.
+## `--check-storage` {#arg-check-storage}
+
+- **类型：**开关选项
+- **冲突项：** `--check-config`
+
+使用本构建的解码器，以只读方式检查已停止节点的 Kura 存储及最新快照，将结果打印为一个 Norito JSON 对象，并在失败时以非零状态退出。检查会获取 Kura 存储根锁，因此拒绝由运行中节点占用的存储。它不会修改存储，也不会打开仅供运行时使用的秘密。
+
+## `--check-replay` {#arg-check-replay}
+
+- **类型：**开关选项
+- **冲突项：** `--check-config`、`--check-storage`
+
+使用本构建重放已停止节点的存储副本，并将结果打印为一个 Norito JSON 对象。命令将区块复制到临时目录，在其中恢复最新快照或重新执行已签名创世配置，然后重新执行后续每个区块。若区块无法重现其认证结果，或缺少所需区块体，则以非零状态退出；它不会写入原存储，也不会打开仅供运行时使用的秘密。
+
+## `--require-genesis-inrou-deployment-authority` {#arg-require-genesis-inrou-deployment-authority}
+
+- **类型：**账户 ID
+- **要求：** `--check-config`
+
+离线验证时，要求该已注册账户在执行指定的已签名创世配置后仍保留 SoraCloud 部署权限。
+
+## `--sumeragi-assert-fresh-key` {#arg-sumeragi-assert-fresh-key}
+
+- **类型：**开关选项
+
+仅对本次启动声明节点的共识密钥从未为该链签名。Sumeragi 为每个密钥保存安全记录；缺少记录时，在取得该记录并未丢失的证明之前不会签署任何内容。仅在新密钥首次启动时传入该选项一次，数据丢失后绝不可使用。
 
 ## `--trace-config` {#arg-trace-config}
 
@@ -83,7 +107,7 @@ iroha3d_taira --sora \
 - 类型:旗
 - 环境: `IROHA_SORA_PROFILE`
 
-启用Sora Nexus 配置文件. 该配置文件设置 SoraFS,SoraNet 握手,以及多行道共识. 总是用这个旗调用 Taira 启动器
+启用 SoraFS、SoraNet 握手和多执行通道共识所用的 SORA Nexus 配置。Taira 启动器始终带此选项调用。
 
 ## FastPQ 覆盖范围 {#fastpq-overrides}
 
@@ -105,7 +129,7 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## 产生的帮助 {#generated-help}
 
-上面的选项摘要已根据当前的 `iroha3d` 参数定义进行验证。检入仓库的已生成帮助快照在其来源状态仍待确认时不会呈现。要查看与当前源码检出完全一致的帮助，请运行：
+上述选项摘要依据固定 Iroha commit 中的 `iroha3d` 参数定义。要查看当前源码工作副本的准确帮助，请运行：
 
 ```shell
 cargo run --locked -p irohad --bin iroha3d -- --help

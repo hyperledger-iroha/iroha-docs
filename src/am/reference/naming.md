@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # ስምምነቶችን መሰየም {#naming-conventions}
 
 መለያዎችን፣ ጎራዎችን ወይም ንብረቶችን በሚሰይሙበት ጊዜ፣ በ Iroha ውስጥ ጥቅም ላይ የዋሉትን የሚከተሉትን ስምምነቶች ማስታወስ አለብዎት።
@@ -16,10 +15,9 @@ translation_engine: bing-translator-llm
    - `#` ለንብረት ፍቺ ተለዋጭ ስሞች እና ለንብረት ቀሪ ሒሳብ ቃል በቃል የተያዘ ነው
    - `::` ለኮንትራት ተለዋጭ ስሞች የተያዘ ነው።
    - `.` ለጎራ እና ዳታ ቦታ መመዘኛ የተያዘ ነው።
-   - `$` ቀስቅሴ-ወሰን ለሆኑ የጽሑፍ ቅጾች የተያዘ ነው።
-   - `%` ለአረጋጋጭ-ወሰን ለሆኑ የጽሑፍ ቅጾች የተያዘ ነው።
+   - `$` እንደ `name$domain.dataspace` ላሉ የNFT መለያዎች የተያዘ ነው
 
-2. አንድ ስም ሊኖረው የሚችለው ከፍተኛው የቁምፊዎች ብዛት (UTF-8 ቁምፊዎችን ጨምሮ) በሁለት ምክንያቶች የተገደበ ነው `[0, u32::MAX]` እና አሁን የተመደበው ቁልል ቦታ።
+2. ስም ባዶ ያልሆነ፣ በUnicode NFC ቅርጽ፣ ቢበዛ 255 UTF-8 ባይት ርዝመት ያለው፣ እንዲሁም ከባዶ ቦታ፣ ከቁጥጥር እና ከሁለት አቅጣጫ ቁጥጥር ቁምፊዎች ነፃ መሆን አለበት።
 
 ## ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 

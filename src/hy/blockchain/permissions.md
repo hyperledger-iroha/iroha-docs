@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # թույլտվություններ {#permissions}
 
 Հաշվետիկները պահանջում են թույլտվության տոմսեր բլոկչեյնի վրա տարբեր գործողությունների համար, օրինակ՝ ակտիվների մինթման կամ այրելու համար।
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## թույլտվությունների հավաստիչներ {#permission-validators}
 
-Թույլտվությունները գոյություն ունեն, այնպես որ միայն պահանջվող թույլտվության տոքեր ունեցող հաշիվները կարող են պաշտպանված գործողություն կատարել: Նախնական կատարողը ստուգում է թույլտվությունները հրահանգների, հարցումների եւ արտահայտությունների գործարկման ընթացքում:
+Թույլտվությունները գոյություն ունեն, որպեսզի պաշտպանված գործողություն կարողանան կատարել միայն պահանջվող թույլտվության տոկեն ունեցող հաշիվները։ Լռելյայն կատարողը թույլտվությունները ստուգում է գործարքների և հրահանգների կատարման, ինչպես նաև հարցումների վավերացման ընթացքում։
 
 Սովորական վավերացողի մակերեսը խմբավորվում է գլխավոր գրքի տարածքով.
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - ակտիվներ, NFTs, եւ վարկային գրավումներ
 - գործարկիչներ
 - դեր եւ թույլտվություններ
-- կատարող/կատարման ժամկետ, ապացույցներ, կամուրջներ եւ SORA/Nexus մոդուլներ
+- կատարող/կատարման միջավայր, ապացույցներ, կամուրջներ և SORA Nexus-ի մոդուլներ
 
 Հստակ տոքերների ցուցակը հաստատված է աղբյուրի կողմից [Permission Tokens հղումով ](/hy/reference/permissions.md).
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 Թույլտվությունների ստուգումները իրականացվում են ակտիվ կատարողի կողմից: Նախնական կատարողը տրամադրում է ներկառուցված թույլտվության հավաստագրիչները եւ տոկենների սահմանումները, եւ ցանցը կարող է քաղաքականությունը փոխել այն գործադրողին թարմացնելով, որը օգտագործում է.
 
-Վավերացողները վերադարձնում են վավերացման դատավճիռ: Վավերացողը կարող է թույլ տալ գործողություն, մերժել այն պատճառներով կամ բաց թողնել այն, եթե գործողությունը գտնվում է վավերացողի շրջանակից դուրս: Ընտրված դատավորը միավորում է այդ դատավճռները ՝ որոշելու համար, թե արդյոք հրահանգը, հարցումը կամ արտահայտումը կարող են շարունակվել:
+Կատարողը կամ թույլատրում է գործողությունը, կամ մերժում է այն `ValidationFail` պատճառով։ Մերժված հրահանգը մերժում է իր գործարքը, իսկ մերժված հարցումը սխալը վերադարձնում է կանչողին։
 
 ## Աջակցված հարցումներ {#supported-queries}
 

@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የህዝብ እና የግል blockchains {#public-and-private-blockchains}
 
 Iroha በተለያዩ ውቅሮች ውስጥ ሊሠራ ይችላል።. የራስዎ አውታረ መረብ አስተዳዳሪ እንደመሆኖ፣ የትኛው አስፈፃሚ እና የፍቃድ ፖሊሲ ግብይቱ ተቀባይነት ማግኘቱን እንደሚወስኑ ይወስናሉ።

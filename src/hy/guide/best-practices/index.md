@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Լավագույն պրակտիկա {#best-practices}
 
 Այս բաժինը հավաքում է արտադրության ուղղված ուղեցույցներ Iroha ծրագրերի եւ ցանցերի համար: Այն կազմակերպվում է այն որոշման հիման վրա, որը դուք պետք է կայացնեք, այլ ոչ թե այն առանձնահատկությամբ, որը պատահաբար իրականացնում է այն:

@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Incorporar Kaigi em um App JavaScript {#embed-kaigi-in-a-javascript-app}
 
 Kaigi registra o ciclo de vida de uma reunião em Iroha enquanto o navegador transmite áudio e vídeo via WebRTC. O livro razão da blockchain armazena a chamada, alterações na lista de participantes, metadados de sinalização criptografados e o status final; não é um relé de mídia.
@@ -48,7 +47,7 @@ npm install
 npm run dev
 ```
 
-O limpo SDK o pacote não contém o workspace do Cargo exigido por `npm run build:native`, então reconstrua isso no Iroha cópia de trabalho do código-fonte após SDK alterações. O documentado SDK a fonte está fixada em [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+O limpo SDK o pacote não contém o workspace do Cargo exigido por `npm run build:native`, então reconstrua isso no Iroha cópia de trabalho do código-fonte após SDK alterações. O documentado SDK a fonte está fixada em [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## Verifique o endpoint API {#check-the-endpoint}
 

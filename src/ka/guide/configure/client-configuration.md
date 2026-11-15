@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /guide/configure/client-configuration.md
-translation_source_hash: 6da8a0abddc9723b16477a935a3953ebd497300f02eadd635e4e38027a11d095
+translation_source_hash: b3cfc8d8bf51a43b88cefb5ac7fe641717b347f7c89d983bf4c2de80944f1bb8
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # მომხმარებლის კონფიგურაცია {#client-configuration}
 
 Iroha CLI და SDK კლიენტები იყენებენ TOML კონფიგურაციას. სათავსო გადმოსცემს მიმდინარე დეფოლტს `defaults/client.toml`; წარმოქმნილი ადგილობრივი ქსელები ასევე წერენ შეესაბამებელს `client.toml` თავიანთ გამოსასვლელ დირექტორში.
@@ -18,22 +17,24 @@ Iroha CLI და SDK კლიენტები იყენებენ TOML �
 
 ## ძირითადი ველები {#core-fields}
 
-მინიმუმ, კლიენტის კონფიგურაციაში იდენტიფიცირებულია ჯაჭვი, Torii API საბოლოო წერტილი და ხელმოწერის ანგარიში:
+კლიენტის კონფიგურაცია, სულ მცირე, განსაზღვრავს ჯაჭვს, მის ქსელურ იდენტობას, Torii ბოლო წერტილს, ანგარიშის ქსელურ კონტექსტსა და ხელმოწერის გასაღებს:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000000"
-torii_url = "http://127.0.0.1:8080"
+network_id = "hash:32C903E5B3497E34C2B844EBFE8A39C19E6CF8F95D44C1FFB8BA9DCB42F91149#A2F0"
+torii_url = "http://127.0.0.1:8080/"
 
 [account]
-domain = "wonderland.universal"
+chain_discriminant = 753
 public_key = "ed0120..."
 private_key = "802620..."
 ```
 
 - `chain` ირჩევს ჯაჭვს, რომელშიც შედის წარმოდგენილი ოპერაციები.
+- `network_id` არის გენეზისიდან მიღებული ქსელური იდენტობა, რომელსაც ყოველი ხელმოწერილი მოთხოვნა ებმის. დააკონფიგურირეთ ზუსტად ერთი: `network_id` ან `network_id_file`; კვანძი მნიშვნელობას `GET /v1/accounts/capabilities`-ზე აქვეყნებს.
 - `torii_url` პუნქტები ქსელის კვანძზე Torii HTTP API.
-- `[account].domain` გამოიყენება CLI მოკლე გზებითა და მისამართის სელექტორის კოდირებით; კანონიკური `AccountId` თავად არის დომენის გარეშე.
-- `[account].public_key` და `[account].private_key` ხელმოწერითი ოპერაციები.
+- `[account].chain_discriminant` ირჩევს ქსელის I105 ანგარიშის პრეფიქსს. საჯარო ქსელებში მის ნაცვლად შეიძლება `[account].profile = "taira"` ან `"minamoto"` გამოიყენოთ. ამ ორი მიდგომიდან ერთი სავალდებულოა; თავად კანონიკური `AccountId` დომენს არ შეიცავს.
+- `[account].public_key` და `[account].private_key` ტრანზაქციების ხელმოწერისთვის გამოიყენება; `private_key_file`-ს შეუძლია `private_key` ჩაანაცვლოს.
 
 ანგარიში უკვე უნდა არსებობდეს ჯაჭვზე. დეფოლტური ადგილობრივი ქსელისათვის ეს ხორციელდება ბუნდლირებული ბლოკჩეინის გენეზისის ტექნიკური მანიფესტით.
 
@@ -70,25 +71,25 @@ nonce = false
 
 ## შეაერთეთ რიგის პარამეტრები {#connect-queue-settings}
 
-მიმდინარე Iroha კლიენტებს ასევე შეუძლიათ გამოიყენონ ადგილობრივი რიგის მდგომარეობისთვის ვარიანტიანი `[connect]` განყოფილება:
+`iroha` CLI ლოკალური რიგის მდგომარეობისთვის არასავალდებულო `[connect]` სექციასაც კითხულობს. ხელახლა გამოყენებადი SDK კონფიგურაცია მას არ იღებს:
 
 ```toml
 [connect]
 queue_root = "./queue"
 ```
 
-გამოიყენეთ ეს, როდესაც სამუშაო პროცესს სჭირდება მდგრადი კლიენტის მხრიდან რიგის შენახვა.
+ეს გამოიყენეთ, როცა პროცესს კლიენტის მხარეს რიგის მდგრადი შენახვა სჭირდება. `connect.queue_root` ნაგულისხმევად არის `~/.iroha/connect`; ფარდობითი გზა აითვლება დირექტორიიდან, რომელიც კლიენტის TOML ფაილს შეიცავს.
 
 ## კონფიგურაციების შექმნა {#generating-configurations}
 
 ერთჯერადი ადგილობრივი ქსელებისთვის, უპირატესობა აქვს Kagami, რადგან იგი წერს შედარებულ Iroha 3 კონფიგურაციას, ბლოკჩეინის გენეზისისს, სკრიპტებს და README:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 გამოიყენეთ წარმოქმნილი `./localnet/client.toml` და CLI:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```

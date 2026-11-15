@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 解決配置問題 {#troubleshooting-configuration-issues}
 
 本節提供 Iroha 3 配置的故障解決技巧.請先檢查 [鍵](./overview.md#check-the-keys),因為這是 Iroha 中最常見的問題.
@@ -16,27 +15,9 @@ translation_engine: nllb-200-ct2
 
 當您使用 Docker Compose 的版本 Iroha, 你可能會遇到一個對等節點容器的故障問題 `Failed to deserialize raw genesis block` 這通常意味著對等節點,簽署的創世交易和生成的配置是由不同的 Iroha 修訂或個人資料.
 
-透過以下步驟檢查故障:
+在套件目錄中執行 `python3 poc.py logs`，即可查看驗證節點的日誌。 請參閱 [啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)，使用同一版本的執行檔，在 Docker 中建置並啟動四個驗證節點。
 
-1. 使用 `docker ps`來檢查當前的容器.根據生成的配置檔案,您通常會看到`hyperledger/iroha:dev`容器.預設的 Docker Compose 配置檔案包含四個對等節點容器,儘管您生成的 `docker-compose.yml`可能不同.
-
-2. 檢查日誌並尋找`Failed to deserialize raw genesis block`錯誤. 如果您啟動了 Iroha 在 daemon模式中使用`docker compose up -d`,請使用 `docker compose logs`命令.
-
-解決此類問題的方法取決於使用 Iroha.如果這是一個基本的演示程式,並且不需要儲存對等節點資料,請重建與 Kagami 相匹配的本地網路或 Docker Compose 捆綁:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-然後從再生的 `genesis.signed.nrt`,對等節點`config.toml`和 `client.toml`檔案中刪除舊容器狀態,重新啟動.
-
-如果您需要恢復 Iroha 例項資料,請執行以下操作:
-
-1. 連線第二個 Iroha 對等節點,將複製第一個 (失敗) 對等節點的資料.
-2. 等新對等節點將資料與第一個對等節點同步.
-3. 讓新對等節點活躍.
-4. 僅作為協調遷移的一部分更新第一個對等節點的生成和配置檔案.
+依序執行 `python3 poc.py down` 和 `python3 poc.py up` 以重新啟動同一個網路。請將 `state/` 與其四個 Docker 儲存卷一併保留。
 
 ::: info
 
@@ -50,7 +31,7 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 
 如果您以前從未使用多哈什,那麼自然可以假設右邊不是六分之一.代表關鍵位元組 (每位元組的兩個符號),而更好的是編碼為 ASCII (或 UTF-8),並呼叫 `from_hex` 在兩個字串上, `public_key` 和 `private_key` 一個例項.
 
-也是自然的假設,在字串字母上呼叫 `PrivateKey::try_from_str`只會產生正確的鍵.所以如果你錯誤地讀取鍵中的位元數量,例如32位元組對64位元組,那就會引起一個錯誤資訊.
+人們也很自然地會認為，使用 `str::parse::<PrivateKey>()` 剖析該字串常值只會得到正確的金鑰。因此，如果金鑰的位元數弄錯了，例如 32 位元組與 64 位元組，就會引發錯誤訊息。
 
 這兩種假設都是錯誤的. 遺憾的是,錯誤資訊並沒有幫助解決這種特殊的失敗.
 
@@ -58,7 +39,7 @@ cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyper
 
 ::: warning
 
-即使是 `try_from_str` 實現也無法驗證給定的字串是否是一個有效的 `PrivateKey`,並且警告你如果不是.
+即使是 `FromStr` 實現也無法驗證給定的字串是否是一個有效的 `PrivateKey`,並且警告你如果不是.
 
 它會發現一些明顯的錯誤,例如如果字串包含無效的符號.然而,由於我們旨在支援許多鍵格式,它不能做很多其他事情. 除非您提交指示外,它也無法判斷金鑰是否是給定的帳戶的正確私鑰.
 

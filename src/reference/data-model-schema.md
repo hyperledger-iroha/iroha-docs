@@ -10,7 +10,7 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-Do not generate bindings from the checked-in documentation snippet while its
-provenance status is pending. The live node response is authoritative for that
-node's compiled data model; keep it pinned alongside the node build used by
-your integration.
+Generate bindings from that response rather than from a copy published for
+another build. The live node response is authoritative for that node's
+compiled data model; keep it pinned alongside the node build used by your
+integration.

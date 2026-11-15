@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Blockchains publiques et privées {#public-and-private-blockchains}
 
 Iroha peut fonctionner dans une variété de configurations. En tant qu'administrateur de votre propre réseau, vous décidez quel exécuteur et quelle politique de permissions déterminent si une transaction est acceptée.

@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # Պատրաստություն ազատ արձակել {#release-readiness}
 
 Նախքան Iroha ծրագրի կամ ցանցի փոփոխության խթանումը, ապացուցեք վարքագիծը ամենափոքր միջավայրում, որը կարող է բացահայտել համապատասխան ռիսկը, այնուհետեւ դիտավորյալ անցեք ընդհանուր փորձարկման ցանցով եւ արտադրական դռներով:
@@ -26,7 +25,7 @@ translation_engine: nllb-200-ct2
 - Ստուգեք ստորագրողի ֆինանսավորումը, վճարային ակտիվների մետադատները, լիազոր հաշվի թույլտվությունները եւ սպասվող վիճակը յուրաքանչյուր կենդանի փորձարկման գործարքի ներկայացնելուց առաջ:
 - Սպասեք վերջնական կարգավիճակի, ապա ստուգեք ստացված վիճակը միայն ընթերցման հարցմամբ:
 
-Տես [Կառուցել SORA 3: Taira եւ Minamoto](/hy/get-started/sora-nexus-dataspaces.md):
+Տես [Կառուցել SORA Nexus-ի վրա․ Taira և Minamoto](/hy/get-started/sora-nexus-dataspaces.md)։
 
 ## Գլխավոր ցանց կամ արտադրական դարպաս {#mainnet-or-production-gate}
 

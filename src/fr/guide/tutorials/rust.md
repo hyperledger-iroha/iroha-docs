@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rust {#rust}
 
 L'implémentation Rust se trouve dans l'espace de travail principal et reste le moyen le plus direct de travailler avec la base de code Iroha 3.
@@ -31,7 +30,7 @@ cargo build --workspace
 Exécutez le client de référence avec la configuration client par défaut enregistrée :
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Essayer Taira Lecture seule {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Après avoir créé `taira.client.toml`, le même binaire peut exécuter des commandes canari signées contre Taira. Gardez-les séparés des tests unitaires ordinaires car ils nécessitent un compte financé sur le testnet et la disponibilité du testnet en direct.
+Après avoir créé `taira.client.toml`, le même binaire peut inscrire et approvisionner un compte avec `iroha taira account` et soumettre des commandes de registre signées ordinaires sur Taira. Gardez-les séparées des tests unitaires ordinaires car elles nécessitent un compte financé sur le testnet et la disponibilité du testnet en direct.
 
 ## Utilisation du logiciel Client Rust {#using-the-rust-client-crate}
 
@@ -71,7 +70,7 @@ Si vous avez besoin des exemples les plus complets sur la façon dont les surfac
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Pour les flux de travail d'entiercement gérés par grand livre, voir [Compte séquestre d'actifs natifs](/fr/blockchain/escrow.md#rust-sdk). Le modèle de données Rust possède actuellement la couverture typée la plus complète pour l'entiercement de marché, les verrous d'actifs génériques, l'entiercement anonyme, les requêtes et les événements.
+Pour les flux de travail d'entiercement gérés par grand livre, voir [Compte séquestre d'actifs natifs](/fr/blockchain/escrow.md#rust-sdk). Le modèle de données Rust possède actuellement la couverture typée la plus complète pour l'entiercement de marché, les verrous d'actifs génériques, le séquestre conditionnel, les requêtes et les événements.
 
 Vous pouvez régénérer une vue de données locale CLI à un instant donné avec :
 

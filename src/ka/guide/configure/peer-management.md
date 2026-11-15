@@ -5,7 +5,6 @@ translation_source_hash: f085fa1587595414f95705bbe2cd285752b0fe12cffb9ef29a33399
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ქსელის კვანძების მართვა {#peer-management}
 
 თუ რომელიმე ენის სპეციფიკური სახელმძღვანელო გაითვალისწინეთ, ახლა თქვენ გაქვთ კარგად ფუნქციონირებადი ქსელი, რომელშიც ადამიანებს შეუერთება მოუწევთ.

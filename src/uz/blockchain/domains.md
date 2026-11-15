@@ -1,14 +1,13 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Domenlar {#domains}
 
-Domenlar — `World` da ro‘yxatdan o‘tgan nomlar makonlari. Joriy Iroha 3 ma’lumotlar modelida domen ota ma’lumotlar makoni bilan aniqlashtiriladi, shu sabab kanonik identifikator quyidagicha:
+Domenlar — `World`da ro‘yxatdan o‘tgan nomlangan nom makonlari. Joriy Iroha 3 ma’lumotlar modelida domen ota ma’lumotlar makoni bilan aniqlashtiriladi, shuning uchun kanonik identifikator quyidagicha:
 
 ```text
 domain.dataspace
@@ -20,7 +19,7 @@ Masalan, `payments.universal` — `universal` ma’lumotlar makonidagi `payments
 
 Ro‘yxatdan o‘tkazilgan `Domain` quyidagilarni o‘z ichiga oladi:
 
-- `id`: ma’lumotlar makoni bilan aniqlashtirilgan `DomainId`;
+- `id`: ma’lumotlar makoni bilan aniqlashtirilgan `DomainId`
 - `logo`: domen logotipi uchun ixtiyoriy `SoraFS` URI;
 - `metadata`: ixtiyoriy kalit-qiymat metama’lumotlari;
 - `owned_by`: domenga egalik qiladigan hisob, odatda uni ro‘yxatdan o‘tkazgan hisob.
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-Niyat `payments.universal`, uning raqamli ma’lumotlar makoni, kanonik I105 egasi, ijara muddati va joriy siyosat/haq narxi himoyasini belgilaydi. Rejalashtiruvchi yo‘nalishi — `POST /v1/aliases/setup/plan`; u qaytargan reja zanjir, vakolat, holat va oxirgi muddatga bog‘langan. Domenni olib tashlash uchun hamon [`Unregister`](/uz/blockchain/instructions.md#un-register) ishlatiladi.
+Niyat `payments.universal`, uning raqamli ma’lumotlar makoni, kanonik I105 egasi, ijara olish muddati va joriy siyosat/to‘lov hisobining himoya shartini belgilaydi. Rejalashtiruvchi endpoint `POST /v1/aliases/setup/plan`; u qaytargan reja zanjir, vakolat, holat va muddatga bog‘langan. Domenni olib tashlash hali ham [`Unregister`](/uz/blockchain/instructions.md#un-register)dan foydalanadi.
 
 Domen yaratish yoki olib tashlash uchun faol bajarish muhiti tekshiruvchisi belgilagan tegishli domen boshqaruv ruxsati kerak. Vakolat shu domenni o‘zgartirish ruxsatiga ega bo‘lsa, domen metama’lumotini [`SetKeyValue` va `RemoveKeyValue`](/uz/blockchain/instructions.md#setkeyvalue-removekeyvalue) bilan yangilash mumkin.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-Ochiq yo‘lak katalogini ma’lumotlar makoni taxalluslari bilan birga oling:
+Ochiq yo‘lak katalogini ma’lumotlar makonlari taxalluslari bilan moslang:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-Domen mavjudligini tekshirish uchun birinchi buyruqdan foydalaning. Ma’lumotlar makoni ochiq, cheklangan yoki asosiy yo‘lakdan ortda qolganini tekshirish uchun yo‘lak katalogidan foydalaning.
+Ilova domen borligini tekshirishi kerak bo‘lsa, birinchi buyruqdan foydalaning. Ma’lumotlar makoniga bog‘langan yo‘laklar, har bir yo‘lakning ochiq yoki cheklangan ko‘rinishi hamda asosiy yo‘lakka nisbatan sinxronizatsiya holatini ko‘rish uchun yo‘lak katalogidan foydalaning.
 
-Domenni sozlash haq talab qiladigan yozish amalidir. Uni Taira-da sinashdan oldin [Taira-da sinov tarmog‘i XOR aktivini olish](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) bo‘limidagi yordamchini `taira_faucet_claim.py` sifatida saqlang, imzolovchini ochiq sinov mablag‘i xizmati orqali moliyalashtiring va haq metama’lumotini biriktiring:
+Domenni sozlash komissiyali yozish amalidir. Uni Taira tarmog‘ida sinashdan oldin [Taira tarmog‘ida testnet XOR oling](/uz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)dagi oldindan tayyorlashga asoslangan faucet jarayoni bilan imzolovchini moliyalashtiring, so‘ng aniq komissiya to‘lovchisi bilan rejani qo‘llang. CLI imzolashdan oldin aniq komissiyani hisoblatadi:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

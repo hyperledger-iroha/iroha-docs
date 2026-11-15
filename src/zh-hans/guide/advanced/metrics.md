@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 绩效和指标 {#performance-and-metrics}
 
@@ -23,8 +23,8 @@ Iroha 的性能取决于工作负载,验证器拓扑,网络条件和共识设置
 开始使用公开节点快照和Prometheus抓取,然后使用 CLI 为操作员认证共识状态.目标节点必须允许操作员密钥,并且只有在运行时加载:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 不要用公共测试网观测作为生产能力数字用于自己的部署.
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### 候选人和入境限制 {#candidate-and-ingress-bounds}
 
-节点本地 Sumeragi 界限确定验证器可以保留多少候选和恢复工作:
+区块大小和交易限制来自已签名创世配置及已提交的链参数。节点本地 `[sumeragi]` 设置涵盖参与角色、签名密钥保管、安全记录路径，以及文档规定的本地超时和同步覆盖项。
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies`和`sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`,和 `sumeragi.queues.ready_bodies`
-
-太小的界限会产生队列或有效负载恢复压力;大尺寸的界限增加了保留的内存和对虐待对等节点可用的工作量.在一次改变一个界限之前,比较诊断快照与过程内存,信息处理和缺失体度指标:
+网络入口和交易队列上限控制本地保留的工作量。调整运行上限之前，请将诊断快照与进程内存、消息处理及缺失区块体指标进行比较。比较同一网络的不同运行结果时，应保持已签名链参数不变：
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -194,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |已接受的吞吐量|`sum(rate(txs{type="accepted"}[5m]))`|在稳定状态下应达到或超过目标 TPS |
 |拒绝|`sum(rate(txs{type="rejected"}[5m]))`|应通过测试计划解释|
-|提交延迟|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))`|比较p95/p99与延迟预算|
+|提交延迟|`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`、`last_commit_time_ms`|比较 p95/p99 与延迟预算|
 |排队深度|`queue_size`, `sumeragi_tx_queue_depth` |应在高负载期间保持限制.|
 |排列度|`sumeragi_tx_queue_saturated`|持续的非零值平均过载量|
-|查看变更|`view_changes`, `sumeragi_view_change_suggest_total`,`sumeragi_view_change_install_total` |增加的值表明时间,拓物质,有效载荷或网络问题|
-|丢弃的消息|`dropped_messages`, `sumeragi_consensus_message_handling_total` |在负载期间的下降通常解释了延迟峰值|
-|有效载荷和 DA 回收| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |持续出现的请求、不断增加的等待时间或重复触发的 DA 门控，表明区块体或分片获取出现问题。|
-|提交定决数|`sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |已计数的签名应该迅速达到所需的共数.|
+|查看变更|`view_changes`, `sumeragi_view_changes_total`,`sumeragi_timeout_votes_total` |增加的值表明时间,拓物质,有效载荷或网络问题|
+|丢弃的消息|`sumeragi_dropped_total`, `p2p_queue_dropped_total` |在负载期间的下降通常解释了延迟峰值|
+|载荷与追赶获取| `sumeragi_fetch_requests_total{kind="body"}`、`sumeragi_fetch_requests_total{kind="sync"}` |持续出现的区块体或同步获取，表明载荷获取或追赶同步出现问题。|
+|提交进度|`sumeragi_committed_height`、`sumeragi_applied_height` |已认证高度与已应用高度应同步推进|
 
 如果仅在 `/v1/sumeragi/status` 中存在一个指标,则将 JSON 的快照捕捉到与Prometheus痕相同的运行构件中.
 
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - 验证器和观察员的数量
 - 共识模式,签署的区块序列和 DA 布局
 - 确切的 `3f + 1`委员会,常委会和观察员名单
-- `sumeragi.block`,`sumeragi.queues`, `sumeragi.limits`,网络入口和交易队列限制
+- 已签名链参数、本地 Sumeragi 覆盖项、网络入口和交易队列上限
 - 远程测量资料
 - 硬件,存储和 OS 详细信息
 - 网络 RTT, jitter,损失和带宽假设
@@ -252,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - 接受/拒绝 TPS
 - p50/p95/p99 提交延迟
 - 排队深度和度
-- 查看变化,丢弃的消息,缺失区块检索和 DA 门计器
+- 视图变更、超时投票、Sumeragi 丢弃，以及区块体和同步获取
 - CPU,每个验证器的内存,磁盘和网络使用量
 
 缺少这些细节时，TPS 数字只能视为未经充分佐证的参考。

@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Transacciones anónimas {#anonymous-transactions}
 
 Las transacciones anónimas en Iroha se construyen a partir de operaciones de activos confidenciales. En lugar de registrar transferencias públicas de cuenta a cuenta con montos públicos, una cartera mueve valor a un libro de contabilidad protegido en la blockchain y luego gasta notas opacas con pruebas de cero conocimiento.
@@ -47,7 +46,7 @@ Una definición de activo también conlleva un [`AssetConfidentialPolicy`](/es/r
 4. Protege los fondos públicos con `Shield`. La billetera crea un compromiso de nota y una carga útil encriptada para el destinatario antes de enviar la transacción.
 5. Transfiere de forma privada con `ZkTransfer`. La cartera construye una prueba de que posee las notas de entrada, que los valores de entrada y salida están equilibrados, y que cada nota gastada está anclada en un árbol de compromisos reciente.
 6. Desproteja solo cuando la política del activo lo permita. `Unshield` revela la cantidad pública y la cuenta del receptor, gasta el anulado de la nota privada y puede crear salidas de cambio privadas.
-7. Auditar leyendo eventos confidenciales, registros de prueba, estado de nulificador y registros de custodia anónima a través de consultas escritas y los endpoints Torii API.
+7. Auditar leyendo eventos confidenciales, registros de prueba y el estado del nulificador mediante consultas tipadas y los endpoints de Torii.
 
 ## CLI Ejemplos {#cli-examples}
 
@@ -151,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## Custodia de Activos Anónima {#anonymous-asset-escrow}
-
-El depósito en custodia de activos anónimos utiliza la misma maquinaria de transferencia protegida para el valor en custodia. Las partes y el estado del depósito en custodia todavía se registran en el registro de custodia, pero las fases de financiamiento, liberación, cancelación y resolución usan anuladores protegidos y compromisos de salida.
-
-Para un comportamiento detallado del depósito en garantía ISI y ejemplos, vea [Custodia de Activos Nativos](/es/blockchain/escrow.md#anonymous-escrow).
-
-El ciclo de vida es:
-
-1. `OpenAnonymousAssetEscrow` gasta notas de financiamiento protegidas y crea un compromiso de depósito en garantía.
-2. `AcceptAnonymousAssetEscrow` registra al comprador.
-3. `MarkAnonymousEscrowPaymentSent` registra que el comprador envió el pago fuera de la cadena.
-4. `ReleaseAnonymousAssetEscrow` gasta el compromiso de depósito en garantía para los compromisos de salida del comprador.
-5. `CancelAnonymousAssetEscrow` devuelve el compromiso de depósito en garantía a los compromisos de salida del vendedor cuando el pago no ha sido marcado.
-6. `OpenAnonymousEscrowDispute` y `ResolveAnonymousEscrowDispute` manejan depósitos en disputa con pruebas de hashes criptográficos y una división controlada por el resolutor.
-
-Utilice las consultas de depósito en garantía anónimas listadas en [Consultas](/es/reference/queries.md#escrow-and-proof-records) para inspeccionar los registros y estados del depósito en garantía.
-
 ## Matemáticas {#math}
 
 La notación a continuación describe el flujo de activos confidenciales. Las implementaciones utilizan el circuito activo y los ID de parámetros de la política de activos y del registro de verificadores, por lo que los clientes deben tratar los compromisos, los anuladores y los bytes de prueba como salidas opacas del monedero/probador.
@@ -236,7 +218,6 @@ Las transacciones anónimas no hacen que todos los hechos observables sean priva
 - anuladores y compromisos de salida
 - hashes criptográficos de prueba, referencias de clave de verificación y hashes criptográficos de contenedor de datos opcionales
 - monto público y cuenta del destinatario para `Unshield`
-- vendedor en depósito anónimo, comprador, estado, marcas de tiempo y hashes criptográficos de evidencia
 
 Diseñe aplicaciones de manera que estos metadatos públicos no revelen la relación comercial que está tratando de proteger.
 

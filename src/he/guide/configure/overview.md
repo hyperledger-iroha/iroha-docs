@@ -5,7 +5,6 @@ translation_source_hash: 24eae3295459781d774369521241f1c2da5b24fe51eb8a2b086911b
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # הגדרות והניהול {#configuration-and-management}
 
 הקונפיגורת Iroha יש שתי שכבות סמכותיות:

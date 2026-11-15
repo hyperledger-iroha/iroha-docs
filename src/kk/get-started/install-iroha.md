@@ -1,20 +1,21 @@
 ---
 translation_locale: kk
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 орнатыңыз {#install-iroha-3}
 
 Бұл бетте Iroha 3 құралдар жинағы мен бинарлық файлдарды жоғары деңгейлі `hyperledger-iroha/iroha` жұмыс кеңістігін пайдалана отырып қазіргі орнату жұмыс ағымы көрсетілген.
+
+Хостқа тікелей орнату үшін төмендегі Rust нұсқауларын орындаңыз. Docker көмегімен төрт валидаторды іске қосу үшін [Iroha 3-ті іске қосу](/kk/get-started/launch-iroha.md) нұсқаулығынан бастаңыз.
 
 ## 1. Алдын ала талаптар {#_1-prerequisites}
 
 Бұларды бірінші орнатыңыз:
 
-- [rustup](https://www.rust-lang.org/tools/install), сондықтан бекітілген `rust-toolchain.toml` құралдар жиынтығы (`1.93.1`) автоматты түрде орнатылды
+- [rustup](https://www.rust-lang.org/tools/install), сондықтан бекітілген `rust-toolchain.toml` құралдар жиынтығы (`1.99.1`) автоматты түрде орнатылды
 - `git`
 - қалауы бойынша, жергілікті көпсерверлі жылдам бастау үшін Docker және Docker Compose
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 Ағымдағы бастапқы кодқа негізделген жергілікті желі ағынын Kagami жасайды. Ол желі түйіндерінің конфигурацияларын, genesis артефактілерін, клиент конфигурациясын, көмекші сценарийлерді және жұмыс көшірмесіндегі кодқа сәйкес келетін міндетті емес Compose файлын жазады:
 
-- `kagami localnet` жергілікті желідегі түпнұсқа процесс әріптестерінің скрипттері үшін
+- `kagami localnet up` — Kagami іске қосып, қадағалайтын басқарылатын жергілікті желі үшін
+- `kagami localnet generate` — нативті жергілікті торап скрипттері үшін
 - `kagami docker` үшін Docker Compose локальді желі каталогынан жасалған
 
 [Жіберу Iroha 3](/kk/get-started/launch-iroha.md) арқылы жалғастырыңыз.

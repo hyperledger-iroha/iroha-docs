@@ -1,14 +1,13 @@
 ---
 translation_locale: fr
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rechargement à chaud Iroha dans un conteneur Docker {#hot-reload-iroha-in-a-docker-container}
 
-Utilisez le rechargement à chaud uniquement pour le débogage local. Pour le développement local normal, préférez reconstruire l'image ou redémarrer la pile générée Docker Compose à partir d'un nouveau bundle Kagami.
+Réservez le rechargement à chaud au débogage local. Suivez le guide [Lancer Iroha 3](/fr/get-started/launch-iroha.md) pour compiler et lancer quatre validateurs dans Docker avec des binaires issus de la même révision.
 
 ## Remplacer le pair réseau binaire {#replace-the-peer-binary}
 
@@ -25,21 +24,12 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Utilisez `docker ps` pour confirmer le nom du conteneur. Dans la pile générée, les conteneurs pair du réseau sont définis par `./docker-compose.yml`.
+Utilisez `docker ps` pour repérer le conteneur. Vérifiez le chemin du démon dans votre image avant de le remplacer.
 
 ## Recommencer la genèse de la blockchain dans un réseau jetable {#recommit-genesis-in-a-disposable-network}
 
-Un pair de réseau ne valide le bloc de genèse de la blockchain que lorsque son stockage est vide. Pour un réseau Docker jetable, arrêtez la pile, supprimez l'état généré, régénérez ou remplacez le paquet de genèse de la blockchain signé, puis redémarrez :
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Ne remplacez pas le genesis de la blockchain sur un réseau dont l'état doit être préservé.
+Un nouveau bloc de genèse nécessite un espace de stockage vide sur chaque pair. Utilisez `python3 poc.py down` et `python3 poc.py up` pour redémarrer le même réseau. Conservez `state/` avec ses quatre volumes Docker.
 
 ## Utiliser une configuration personnalisée {#use-custom-configuration}
 
-La configuration actuelle du pair est au format TOML. Montez ou copiez les fichiers générés `config.toml`, `genesis.signed.nrt` et les fichiers de clés associés aux emplacements du conteneur attendus par l’image, puis redémarrez le pair. Gardez les fichiers générés ensemble : mélanger des fichiers issus de différentes exécutions de Kagami peut provoquer des échecs de désérialisation ou de consensus.
+La configuration actuelle du pair est au format TOML. Kagami écrit un `peerN.toml` par validateur avec `genesis.signed.nrt`, `genesis.public_key` et `genesis.expected_hash` ; le fichier Compose produit par `kagami docker` les monte dans le conteneur. Régénérez-le au lieu de copier les fichiers à la main, puis redémarrez le pair. Gardez les fichiers générés ensemble : mélanger des fichiers issus de différentes exécutions de Kagami peut provoquer des échecs de désérialisation ou de consensus.

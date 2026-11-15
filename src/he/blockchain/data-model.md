@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # מודל נתונים {#data-model}
 
 Iroha מאחסן את מצב ספר החשבונות ב- `World`. מודל הנתונים הראשון שלה משתמש באותיות ונושאים קנוניים הבאים:
@@ -122,9 +121,9 @@ Aliases הם שמות קריאים לאדם שמונחים מעל מזהים ק�
 |הגדרה של נכסים |כתובת קנוניקה `AssetDefinitionId` Base58 |`name#domain.dataspace` או `name#dataspace` |`AssetDefinitionAlias` מחויבת להגדרה של נכס |
 |חוזה|קאנוניקה Bech32m `ContractAddress` |`name::domain.dataspace` או `name::dataspace` |`ContractAlias` מחויבת כתובת חוזה משמשת |
 |שם דומיין |`DomainId` בצורה `domain.dataspace` |`domain.dataspace` |SNS `domain` רישום מקום שמות |
-|שם חלקי נתונים |מספר `DataSpaceId` מהקטלוג פעיל Nexus |שם כינוי למרחב נתונים כגון `universal`, `paynet`, או `zk` |SNS `dataspace` רישום חלל שמות ועוד קטלוג החלל נתונים הפעיל |
+| שם מרחב הנתונים | `DataSpaceId` מספרי מתוך קטלוג SORA Nexus הפעיל | כינוי למרחב נתונים, כגון `universal` או `paynet` | רשומת מרחב השמות `dataspace` ב־SNS יחד עם קטלוג מרחבי הנתונים הפעיל |
 
-הכינויים של חשבונות הם שמות החשבונות המופנים בפני המשתמש. הם שרדים את ריקיוי החשבון כי הכינוי מצביע על החשבון הפעיל ID באמצעות אינדיקסים של מצבי העולם ורישומים של רקיוי חשבון. השתמש `SetPrimaryAccountAlias` עבור התווית העיקרית של החשבון, `SetAccountAliasBinding` עבור כינויים נוספים שאינם ראשוניים, ו `FindAccountByAlias` או `FindAliasesByAccountId` עבור קריאה. כינוי החשבון דורש בדרך כלל רכישה פעילה של כינוי חשבון SNS שנרכשת עם `AcquireAccountAliasLease` ונחדשת עם `RenewAccountAliasLease`.
+כינויי חשבונות הם שמות החשבונות המוצגים למשתמש. הם נשמרים גם לאחר החלפת מפתחות החשבון, משום שהכינוי מצביע על ה־ID של החשבון הפעיל באמצעות אינדקסים של מצב העולם ורשומות של החלפת מפתחות חשבון. השתמשו ב־`EnsureAlias`, בדרך כלל דרך תהליך התכנון וההחלה של `app alias setup`, כדי לרכוש חכירת כינוי חשבון ולקשור את הכינוי; ב־`CompareAndSetPrimaryAccountAlias` כדי לשנות את התווית הראשית; ב־`RebindAccountAlias` כדי להעביר כינוי לחשבון אחר; וב־`FindAccountByAlias` או ב־`FindAliasesByAccountId` לקריאה. חדשו חכירות באמצעות `RenewAliasLease`, או הגדירו חידוש אוטומטי באמצעות `ConfigureAliasAutoRenew`.
 
 כינויים של נכסים הם הגדרות של נכסים, לא סולדות חשבונות בודדים. הכינוי של נכסים והכינוי של חוזים הם חיבורים ישירים מהשם קריא למטרה קנוניקה קיימת. הכינוי של נכסים נקבע עם `SetAssetDefinitionAlias`; שקטת שם כינוי חייב להיות תואם לכינוי הגילוי של ההגדרה של נכס או השם של ההגדרת המתוכננת. הכינוי של החוזה נקבוע עם `SetContractAlias`; חלל הנתונים של הכינוי חייב להתאמה עם החלל הנתוני המוצפן בכתובת החוזה. שני הקשרים יכולים לשאת `lease_expiry_ms`; לאחר סיום תקופה הם מפסיקים לפתור כאשר חלון החסד עובר ומוחקים מפריטים של מצב העולם .
 

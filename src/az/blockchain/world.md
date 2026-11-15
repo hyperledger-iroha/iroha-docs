@@ -1,23 +1,22 @@
 ---
 translation_locale: az
 translation_source: /blockchain/world.md
-translation_source_hash: 61657e1736d3163965063c38e347ed7dbfe040633ddf24eb1a37904922cb354d
+translation_source_hash: 3e03f6f778e5e53a95ab6e5b94c05da410fa415fcc26ad31aa387bdaf0d744bf
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # Dünya {#world}
 
 `World` digər vahidləri ehtiva edən qlobal varlıqdır. `World` aşağıdakılardan ibarətdir:
 
-- Iroha [konfiqurasiya parametrləri](/az/guide/configure/client-configuration.md)
+- [genezisdə](/az/reference/genesis.md) və `SetParameter` ilə təyin olunan zəncirdaxili zəncir parametrləri
 - qeydiyyatdan keçmiş şəbəkə əlaqə nöqtələri
 - qeydiyyatdan keçmiş domenlər
 - qeydiyyatdan keçmiş [tetikləyicilər](/az/blockchain/triggers.md)
 - qeydiyyatdan keçmiş [rollar](/az/blockchain/permissions.md#permission-groups-roles)
 - qeydiyyatdan keçmiş [icazə tokeni təyinatları](/az/blockchain/permissions.md#permission-tokens)
 - bütün hesablar üçün icazə tokenləri
-- [proqram təminatı icra mühiti yoxlayıcılarının zənciri](/az/blockchain/permissions.md#runtime-validators)
+- [aktiv icra mühiti icraçısı](/az/blockchain/permissions.md#runtime-validators)
 
 Domenlər, şəbəkə həmkarları və ya rollar qeydiyyata alındıqda və ya qeydiyyatdan çıxarıldıqda, `World` (qeydə/alınmadan) [təlimat](/az/blockchain/instructions.md)-in hədəfidir.
 
@@ -36,7 +35,7 @@ WSV `World` obyektindən daha genişdir. Təcrübədə o, aşağıdakıları eht
 - sorğular və protokol nəticə qeydləri tərəfindən istifadə olunan əməliyyat-dən-blok indeksləri
 - konsensus tərəfindən istifadə olunan cari və əvvəlki protokolun yekunlaşdırılma topologiyası
 - tamamlanmış bloklardan əldə edilən yaddaşdaxili indekslər, məsələn, məlumat-mövcudluğu kriptoqrafik öhdəlik dəyərləri, protokol nəticə qeyd göstəriciləri, pin niyyətləri və sorğu proyeksiya markerləri
-- determinist blok icrası üçün lazım olan proqram təminatı icra mühiti konfiqurasiyası nöqtə-vaxt məlumat baxışları, məsələn, kriptoqrafiya, idarəetmə, proqram təminatı işləmə iş axını, məzmun, maliyyə əməliyyatlarının həlli və Nexus parametrləri
+- blokların deterministik icrası üçün lazım olan icra mühiti konfiqurasiyasının anlıq görüntüləri, məsələn, kriptoqrafiya, idarəetmə, emal xətti, məzmun, hesablaşma və SORA Nexus parametrləri
 
 Sorğular adətən bu strukturlar üzərində yalnız oxumağa icazə verilmiş `StateView` əldə edirlər. Görünüş sorğunun icrası üçün vaxt nöqtəsində ardıcıl məlumat görünüşüdür; bu, WSV-in birbaşa dəyişdirilməsinə imkan vermir.
 
@@ -58,22 +57,19 @@ Replay hər saxlanmış bloku təsdiqləyir, həmin hündürlük üçün protoko
 
 Kura Iroha-in davamlı blok yaddaşıdır. O, imzalanmış blokları və bərpa metadatasını saxlayır. O, WSV-nin ikinci dəyişkən nüsxəsini saxlamır.
 
-Kura yaddaş yerləşir [`kura.store_dir`](/az/reference/peer-config/params.md#param-kura-store-dir). O kök daxilində blok məlumatı icra xətti və ya seqment üzrə bölünür. Bir seqment üçün əsas fayllar bunlardır:
+Kura yaddaşının kökü [`kura.store_dir`](/az/reference/peer-config/params.md#param-kura-store-dir) qovluğundadır. Qlobal zəncirin blokları zəncirə aid `blocks/canonical` qovluğunda saxlanılır, zolaq instansiyaları isə ayrıca zolaq blok anbarlarını saxlayır. Əsas kanonik fayllar bunlardır:
 
 |Yol|Məqsəd|
 | --- | --- |
-| `blocks/<segment>/blocks.data` |Davamlı Norito-çərçivəli imzalı blok yükləri.|
-| `blocks/<segment>/blocks.index` |Sabit ölçülü `(start, length)` girişləri, blok hündürlüyünü `blocks.data`-dəki baytlara uyğunlaşdırır.|
-| `blocks/<segment>/blocks.hashes` |Blok kriptoqrafik xəşləri sürətli axtarış və başlanğıc doğrulama üçün yüksəklik üzrə bloklayın.|
-| `blocks/<segment>/blocks.count.norito` |Blok indeksi qeydlərindən neçəsinin istifadə üçün təhlükəsiz olduğunu yazan davamlı blok-sonlandırma göstəricisi.|
-| `blocks/<segment>/da_blocks/` |Disk-büdcə tətbiqi köhnə blokları isti fayldan çıxaranda, çıxarılan blok yükləri `blocks.data` kənarda saxlanıldı.|
-| `blocks/<segment>/pipeline/sidecars.norito` və `sidecars.index` |blok hündürlüyü ilə açarlanan proqram təminatı emal iş axını bərpa köməkçi qeydləri.|
-| `blocks/<segment>/pipeline/roster_sidecars.norito` və `roster_sidecars.index` |Son protokolun yekunlaşdırılması — blok sinxronizasiyası və təkrar oynatma üçün istifadə edilən köməkçi siyahı qeydləri.|
-| `merge_ledger/<segment>.log` |blokçeyn birləşmə girişləri yekunlaşdırılmış bloklarla uyğunlaşdırıldı.|
-| `commit-rosters.norito` |Son bloklar üçün saxlanılmış konsensus yekunlaşdırma sertifikatları və təsdiqləyici yoxlama nöqtələri.|
+| `blocks/canonical/blocks.data` |Davamlı Norito-çərçivəli imzalı blok yükləri.|
+| `blocks/canonical/blocks.index` |Sabit ölçülü `(start, length)` girişləri, blok hündürlüyünü `blocks.data`-dəki baytlara uyğunlaşdırır.|
+| `blocks/canonical/blocks.hashes` |Blok kriptoqrafik xəşləri sürətli axtarış və başlanğıc doğrulama üçün yüksəklik üzrə bloklayın.|
+| `blocks/canonical/blocks.count.norito` |Blok indeksi qeydlərindən neçəsinin istifadə üçün təhlükəsiz olduğunu yazan davamlı blok-sonlandırma göstəricisi.|
+| `blocks/canonical/da_blocks/` |Disk-büdcə tətbiqi köhnə blokları isti fayldan çıxaranda, çıxarılan blok yükləri `blocks.data` kənarda saxlanıldı.|
+| `blocks/canonical/pipeline/sidecars.norito` və `sidecars.index` |blok hündürlüyü ilə açarlanan proqram təminatı emal iş axını bərpa köməkçi qeydləri.|
 
 Kura zəncir üçün kompakt yaddaşda vektor saxlayır: hər hündürlükdə blokun kriptoqrafik xashi və istəyə görə blokun bədəni var. Blokçeyn başlanğıc bloku keşdə saxlanılır və ən son [`kura.blocks_in_memory`](/az/reference/peer-config/params.md#param-kura-blocks-in-memory) Qeyri-genesis blokları bədənlərini yaddaşda saxlayır. Köhnə blok bədəni yaddaşdan çıxarılır və yenidən yüklənir Kura lazım olduqda fayllar.
 
-İlkinləşdirmə zamanı, `strict` rejimi blok yükləmələrindən saxlanmış blokları yoxlayır və lazım olduqda kriptoqrafik həşləmə faylını yenidən yazır. `fast` rejimi saxlanmışdan başlayır hash/index metadata və əgər həmin metadata qeyri-sabitdirsə sərt ilkinləşməyə qayıdır. Əgər Kura korlanmış quyruğu aşkar edirsə, o, yaddaşı son təsdiqlənmiş blokadək məhdudlaşdırır.
+İlkinləşdirmə zamanı `strict` rejimi (defolt) hər kanonik blok gövdəsini və valideyn blok keçidini yoxlayır. `fast` artıq `strict` tərəfindən ilkinləşdirilmiş yaddaş üçün fövqəladə rejimdir: o, cari imzalanmış anlıq görüntüyə, davamlı saya və zəncirin ucuna etibar edir və qovşaq `strict` rejimində yenidən başladılanadək Sumeragi, əməliyyat yayımı və blok istehsalını dayandırılmış saxlayır. Başlanğıc zamanı istifadədən çıxarılmış `merge_ledger`, `roster_sidecars` və `commit-rosters.norito` artefaktları rədd edilir. Əgər Kura korlanmış quyruğu aşkar edirsə, o, yaddaşı son təsdiqlənmiş blokadək kəsir.
 
 Kura yeni blokları fon yazıcısı vasitəsilə yazır. Yazıcı blok yüklərini, kriptoqrafik xəşləri və indeks qeydlərini əlavə edir, sonra isə konfiqurasiya olunmuş fsync siyasətinə uyğun olaraq dayanıqlı say göstəricisini irəliləyir. Disk-büdcə tətbiqi aktiv olduqda, Kura çıxarılmış seqmentləri təmizləyə və ya köhnə blok bədənlərini `da_blocks/` yerinə çıxara bilər, eyni zamanda kriptoqrafik xəşlərlə və indeks girişləri ilə doğrulama və axtarış üçün əlçatanlığı təmin edir.

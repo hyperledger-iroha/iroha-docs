@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Ən Yaxşı Təcrübələr {#best-practices}
 
 Bu bölmə Iroha tətbiqləri və şəbəkələri üçün istehsal yönümlü təlimatları toplayır. O, funksiyanı tətbiq edən xüsusiyyətə görə deyil, verməli olduğunuz qərara görə təşkil olunub.

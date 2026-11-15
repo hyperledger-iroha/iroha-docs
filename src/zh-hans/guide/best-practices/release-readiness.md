@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-source-title-amendment
 ---
-
 # 发布就绪 {#release-readiness}
 
 在推进 Iroha 应用或网络变更之前，先在能够暴露相关风险的最小环境中验证其行为，再有计划地通过共享测试网和生产环境的各道关卡。
@@ -26,7 +25,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 - 提交每笔实时测试交易之前，验证签名者资金、费用资产元数据、授权主体的权限和预期状态。
 - 等待交易进入终态，再使用只读查询验证产生的状态。
 
-请参阅[在 SORA 3 上构建：Taira 与 Minamoto](/zh-hans/get-started/sora-nexus-dataspaces.md)。
+请参阅[在 SORA Nexus 上构建：Taira 与 Minamoto](/zh-hans/get-started/sora-nexus-dataspaces.md)。
 
 ## 主网或生产环境关卡 {#mainnet-or-production-gate}
 

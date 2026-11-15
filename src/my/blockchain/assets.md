@@ -1,11 +1,10 @@
 ---
 translation_locale: my
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ပိုက်ဆံများ {#assets}
 
 Iroha အရင်းအမြစ်သည် အကောင့်တစ်ခုတွင် ထိန်းသိမ်းထားသော ကိန်းဂဏန်းစာရင်းဖြစ်သည်။ ကွန်ကရစ်စာရင်းတိုင်းမှာ `AssetDefinition` ကို ညွှန်ပြပြီး အဓိပ္ပါယ်ဖွင့်ဆိုချက်သည် ထိုအရင်းအမြစ်ကို မည်သို့အမည်ပေးခြင်း၊ ထုတ်လွှင့်ခြင်း၊ ပြသခြင်းနှင့် ခွဲခြားနိုင်သည်ကို ဖော်ပြသည်။
@@ -17,12 +16,13 @@ Iroha အရင်းအမြစ်သည် အကောင့်တစ်ခ�
 - `id`: Single Protocol Standard အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်လိပ်စာ
 - `name`: လူဖတ်လို့ရတဲ့ မျက်နှာပြင်အမည်
 - `description`: လူဖတ်လို့ရတဲ့ ရွေးချယ်စရာ သရုပ်ဖော်ချက်
-- `alias`: `<name>#<domain>.<dataspace>` သို့မဟုတ် `<name>#<dataspace>` ပုံစံများတွင် ရွေးချယ်စရာ အမည်မဖော်လိုပါ။
+- `alias`: `<name>#<domain>.<dataspace>` သို့မဟုတ် `<name>#<dataspace>` ပုံစံဖြင့် ရွေးချယ်ထည့်နိုင်သော alias
 - `spec`: ငွေကြေးပမာဏအတွက် ကိန်းဂဏန်း တိကျမှုနှင့် ကန့်သတ်ချက်များ
 - `mintable`: အရင်းအမြစ်ထုတ်လွှင့်ရေးမူဝါဒ
 - `logo`: ရွေးချယ်စရာရှိသည် `SoraFS` URI
 - `metadata`: key value ကို အလိုလို metadata လုပ်ပါ။
-- `balance_scope_policy`: ငွေကြေးစာရင်းများက ကမ္ဘာလုံးဆိုင်ရာလား (သို့) ဒေတာနေရာများအတွက် ကန့်သတ်ထားမှုလား
+- `balance_scope_policy`: လက်ကျန်များသည် ကမ္ဘာလုံးဆိုင်ရာလား၊ data space အလိုက် ကန့်သတ်ထားသလား ဆိုသည်ကို သတ်မှတ်သည်
+- `owning_domain`: domain ပိုင် အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို ပိုင်ဆိုင်သော domain၊ data space တစ်ခုတွင် တိုက်ရိုက်မှတ်ပုံတင်ထားသော အဓိပ္ပါယ်ဖွင့်ဆိုချက်များအတွက် မပါဝင်ပါ
 - `owned_by`: အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို မှတ်ပုံတင်ထားသည့် သို့မဟုတ် ပိုင်ဆိုင်ထားသော စာရင်း
 - `total_quantity`: ထုတ်လွှင့်ထားသော စုစုပေါင်းပမာဏ
 - `confidential_policy`: ပိတ်ပင်ထားသော အရင်းအမြစ်လုပ်ငန်းများအတွက် မူဝါဒ
@@ -34,9 +34,9 @@ Asset Definition IDs သည် single protocol-standard ပွင့်လင်
 `Asset` တွင် အောက်ပါအချက်များ ပါဝင်သည် -
 
 - `id`: အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်၊ ပိုင်ရှင်စာရင်းနှင့် ရွေးချယ်စရာအရင်းအမြစ်လက်ကျန်ကဏ္ဍကို ပေါင်းစပ်ထားသော `AssetId`။
-- `value`: `Numeric` ငွေကြေးပမာဏ
+- `value`: `Quantity` ငွေကြေးပမာဏ
 
-ရင်းနှီးမြှုပ်နှံသူစာရင်းသည် Single Protocol Standard နှင့် Domainless ဖြစ်သည်။ အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို ဒေတာနေရာအရ ကျွမ်းကျင်သော domain တစ်ခုအောက်တွင် စီမံခန့်ခွဲနိုင်သည်၊ ဥပမာ `payments.universal`။
+ကိုင်ဆောင်သူ၏ အကောင့်သည် စံသတ်မှတ်ထားသော တစ်သမတ်တည်းပုံစံဖြစ်ပြီး domain မပါဝင်ပါ။ ပိုင်ဆိုင်မှု သတ်မှတ်ချက်ကို data space ဖြင့် အမည်အပြည့်အစုံ သတ်မှတ်ထားသော domain အောက်တွင် ဖော်ပြနိုင်သည်၊ ဥပမာ `payments.universal` ဖြစ်သည်။
 
 ## အရင်းအမြစ် ထုတ်လွှင့်မှု မူဝါဒ {#mintability}
 
@@ -56,9 +56,9 @@ Asset Definition IDs သည် single protocol-standard ပွင့်လင်
 `balance_scope_policy` သည် ငွေကြေးပမာဏကို ဘယ်လိုခွဲခြားထားသလဲဆိုတာကို ထိန်းချုပ်ပေးပါတယ်။
 
 - `Global`: ငွေစာရင်းနှင့် အရင်းအမြစ် သတ်မှတ်ချက်တစ်ခုစီအတွက် ငွေကြေးပမာဏခွဲခြားမှုတစ်ခု
-- `DataspaceRestricted`: ငွေကြေးညီမျှမှုများကို ဒေတာနေရာ အခြေအနေအရ ခွဲခြားထားပါသည်။
+- `DataspaceRestricted`: လက်ကျန်များကို data space ဆိုင်ရာ အကြောင်းအရာအလိုက် ခွဲခြားထားသည်
 
-Nexus ဒေတာနေရာများစွာမှာ တူညီတဲ့ အရင်းအမြစ် အဓိပ္ပါယ်ဖွင့်ဆိုချက်ကို သုံးတဲ့အခါ ဒေတာနေရာကန့်သတ်ထားတဲ့ ငွေကြေးကျန်ရစ်မှုဟာ အသုံးဝင်ပေမဲ့ ငွေကြေးစာရင်းတွေက သီးခြားနေရပါမယ်။
+ပိုင်ဆိုင်မှု သတ်မှတ်ချက်တစ်ခုတည်းကို SORA Nexus data space အများအပြားတွင် သုံးသော်လည်း လက်ကျန်များကို သီးခြားထားရမည့်အခါ data space အလိုက် ကန့်သတ်ထားသော လက်ကျန်များသည် အသုံးဝင်သည်။
 
 ## Taira တွင် ဤအလုပ်ခွင်ကို run လုပ်ပါ။ {#try-it-on-taira}
 
@@ -89,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Taira တွင် အရင်းအမြစ်များကို ထုတ်လွှင့်ရန်၊ ဖျက်ဆီးရန် သို့မဟုတ် လွှဲပြောင်းရန် testnet မှ ရံပုံငွေပေးချေသည့်စာရင်းနှင့် [SORA Nexus ဒေတာနေရာများနှင့် ချိတ်ဆက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) တွင် ထိန်းသိမ်းထားသော စီးဆင်းမှုကို အသုံးပြုပါ။
+နမူနာသုံးခုစလုံးသည် ဖတ်ရှုမှုများဖြစ်သည်။ Taira တွင် ပိုင်ဆိုင်မှုများကို ထုတ်လုပ်ခြင်း၊ ဖျက်သိမ်းခြင်း သို့မဟုတ် လွှဲပြောင်းခြင်းပြုရန် faucet မှ ငွေဖြည့်ထားသော အကောင့်နှင့် [Taira နှင့် Minamoto ကို အသုံးပြု၍ SORA Nexus ပေါ်တွင် တည်ဆောက်ခြင်း](/my/get-started/sora-nexus-dataspaces.md) ရှိ စစ်ဆေးကာကွယ်ထားသော လုပ်ငန်းစဉ်ကို အသုံးပြုပါ။
 
-Taira အခွန်ပေးသော အရင်းအမြစ်ဥပမာအတွက် testnet ငွေကြေးထောက်ပံ့ရေး ဝန်ဆောင်မှု အကူအညီကို [Testnet XOR ကို Taira သို့ခေါ်ယူပါ။](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) မှ `taira_faucet_claim.py` အဖြစ် သိမ်းဆည်းပြီး testnet ငွေချေးရေးဝန်ဆောင်မှုအရင်းအမြစ်ကို ပထမဦးဆုံး တောင်းဆိုကာ ငွေချေးမှု စီမံခန့်ခွဲမှု ကုန်ကျစရိတ်အရင်းအမြစ်ကို အသုံးပြုပါ။
+Taira တွင် အခကြေးငွေပေးရသော ပိုင်ဆိုင်မှုနမူနာအတွက် [Taira တွင် Testnet XOR ရယူခြင်း](/my/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ရှိ ကြိုတင်ပြင်ဆင်သည့် faucet လုပ်ငန်းစဉ်ဖြင့် လက်မှတ်ထိုးသူကို ဦးစွာ ငွေဖြည့်ပါ။ ထို့နောက် `ledger asset mint`၊ `ledger asset burn` နှင့် `ledger asset transfer` command များတွင် `--fee-payer authority` ကို ထည့်ပါ။ CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခကြေးငွေသုံး ပိုင်ဆိုင်မှုဖြင့် အခကြေးငွေအတိအကျကို တွက်ချက်ဖော်ပြသည်:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-`ledger asset mint`၊ `ledger asset burn` နှင့် `ledger asset transfer` command များတွင် `--metadata ./taira.tx-metadata.json` ကို ထည့်သွင်းပါ။
 
 ## ညွှန်ကြားချက် {#instructions}
 

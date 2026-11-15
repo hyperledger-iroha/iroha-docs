@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 過濾器 {#filters}
 
 過濾器可縮小事件串流和觸發條件的範圍。目前的頂層事件過濾器是 `EventFilterBox`，可比對下列事件系列：

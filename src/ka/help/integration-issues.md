@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ინტეგრაციის პრობლემების გადაჭრა {#troubleshooting-integration-issues}
 
 ამ განყოფილებაში მოცემულია Iroha 3-ის ინტეგრაციის პრობლემების მოგვარების რჩევები. თუ პრობლემა არ არის აღწერილი აქ, დაუკავშირდით ჩვენ [ტელეგრამი](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI შემოწმების შემთხვევაში, გადასცეს იგივე ფაილი მკაფიოდ:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 თუ ქსელის კვანძი Docker-ში ან Kubernetes-ში მუშაობს, გამოიყენეთ კლიენტის პროცესიდან მისაწვდომი ჰოსტის ან სერვისის მისამართი. კონტეინერში `127.0.0.1` ჰოსტის მანქანას არ აღნიშნავს.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - მომხმარებლის კონფიგურაციაში არსებული ანგარიშის საჯარო გასაღები არ შეესაბამება ხელმოწერისთვის გამოყენებულ პირად გასაღებს
 - ანგარიში არ არის რეგისტრირებული ბლოკჩეინ გენეზში ან წინა ტრანზაქციით.
 - ანგარიშს არ აქვს ნებართვის ტოკი ან როლი, რომელიც შესრულების გარემოს ვალიდატორისთვის არის საჭირო
-- დომენის ID-ს არ აქვს მონაცემთა სივრცის კვალიფიკაცია, როგორიცაა `domain.dataspace`
+- დომენის ID-ს აკლია მონაცემთა სივრცით დაზუსტება, მაგალითად `domain.dataspace`
 
 გამოიყენეთ `--output-format text` დაშვების დროს CLI ბრძანებები, რათა შეცდომები უფრო ადვილად წაიკითხოს:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## შეკითხვები უბრუნებს ცარიელ შედეგებს {#queries-return-empty-results}
@@ -65,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 დომენის შემოწმებისათვის, დაიწყეთ ყველაზე ფართო მოთხოვნით:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## მოვლენების ან ბლოკების ნაკადები ადრე შეწყდება {#event-or-block-streams-stop-early}

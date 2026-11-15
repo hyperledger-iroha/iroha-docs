@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የአውታረ መረብ ማሰማራት {#network-deployment}
 
 የ Iroha አውታረ መረብን እንደ የተቀናጀ ስርዓት ይያዙት። አውታረ መረቡ ብሎኮችን ከመጀመሩ እና ከማጠናቀቁ በፊት አረጋጋጮች በብሎክቼይን ጀነሲስ፣ ቶፖሎጂ፣ የታመኑ የአውታረ መረብ እኩዮች እና ከስምምነት ጋር ተዛማጅነት ባለው ውቅር ላይ መስማማት አለባቸው።
@@ -25,6 +24,8 @@ translation_engine: bing-translator-llm
 - ለትንሹ የባይዛንታይን ስህተት-ታጋሽ ማሰማራት ቢያንስ አራት አረጋጋጮችን ይጠቀሙ።
 - በአቅም እቅድ ውስጥ አረጋጋጮችን ከተመልካቾች ይለዩ። ታዛቢዎች ድምጽ አይሰጡም፣ አያቀርቡም ወይም አይሰበስቡም፣ ነገር ግን አሁንም ማከማቻ፣ ማመሳሰልን ያግዳሉ እና የአውታረ መረብ ባንድዊድዝ ይጠቀማሉ።
 - የብሎክቼይን ጀነሲስ፣ አስፈፃሚ እና ቶፖሎጂ ለውጦችን ከነጠላ-አቻ አርትዖቶች ይልቅ እንደ የተቀናጁ ፍልሰት ይያዙ።
+
+አውታረ መረቡን በDocker ለማስጀመር እና አንዱን አረጋጋጭ ካቆሙ በኋላ መልሶ ማገገሙን ለመፈተሽ [አራት አረጋጋጮችን የማስጀመሪያ መመሪያ](/am/get-started/launch-iroha.md) ይከተሉ።
 
 [blockchain ጀነሲስ](/am/reference/genesis.md)፣ [የአውታረ መረብ አቻ አስተዳደር](/am/guide/configure/peer-management.md) እና [አፈጻጸም እና መለኪያዎች](/am/guide/advanced/metrics.md#node-count-and-quorum) ተመልከት።
 

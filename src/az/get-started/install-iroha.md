@@ -1,20 +1,21 @@
 ---
 translation_locale: az
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 quraşdır {#install-iroha-3}
 
 Bu səhifə yuxarı axın `hyperledger-iroha/iroha` iş sahəsini istifadə edərək Iroha 3 alət dəsti və ikili faylların cari quraşdırma iş axışını əhatə edir.
+
+Birbaşa hostda quraşdırmaq üçün aşağıdakı Rust təlimatlarına əməl edin. Docker ilə dörd validatoru işə salmaq üçün [Iroha 3-ün işə salınması](/az/get-started/launch-iroha.md) təlimatından başlayın.
 
 ## 1. Tələblər {#_1-prerequisites}
 
 İlk olaraq bunları quraşdırın:
 
-- [rustup](https://www.rust-lang.org/tools/install), buna görə də bərkidilmiş `rust-toolchain.toml` alət zənciri (`1.93.1`) avtomatik olaraq quraşdırılır
+- [rustup](https://www.rust-lang.org/tools/install), buna görə də bərkidilmiş `rust-toolchain.toml` alət zənciri (`1.99.1`) avtomatik olaraq quraşdırılır
 - `git`
 - istəyə görə, yerli çoxnövlü sürətli başlatma üçün Docker və Docker Compose
 
@@ -64,7 +65,8 @@ Siz adətən istifadə edəcəyiniz dörd ikilik bunlardır:
 
 Cari mənbə dəstəklənən lokalnet axını Kagami tərəfindən yaradılır. Bu, şəbəkə həmkarı konfiqurasiyalarını, blockchain genesis sənədlərini, müştəri konfiqurasiyasını, köməkçi skriptləri və çıxarılan kodla uyğunlaşan istəyə bağlı Compose faylını yazır:
 
-- `kagami localnet` yerli yerli şəbəkə həmkarı skriptləri üçün
+- Kagami tərəfindən başladılan və nəzarət olunan yerli şəbəkə üçün `kagami localnet up`
+- yerli həmyaşıd qovşaqların birbaşa işləyən skriptləri üçün `kagami localnet generate`
 - `kagami docker` üçün Docker Compose localnet qovluğundan yaradıldı
 
 [Başlat Iroha 3](/az/get-started/launch-iroha.md) ilə davam et.

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 上流ワークスペースの Python SDK は`iroha-python`です。最初の Iroha 3 リリースは現在の Torii および Norito サーフェスを対象としています。統合で使用するパッケージバージョンまたはソースリビジョンを固定して、SDK とノードが同じシリアル化フォーマットリビジョンのままであるようにしてください。
@@ -46,7 +45,7 @@ PY
 
 ## クイックスタート {#quickstart}
 
-パブリックで読み取り専用の Taira API エンドポイントから始めます:
+パブリックで読み取り専用の Taira エンドポイントから始めます:
 
 ```python
 from iroha_python import (
@@ -57,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -87,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -105,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -174,20 +173,16 @@ for limit in fee_quote["intent"]["value"]["charge_limits"]:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-テストネットの資金提供サービスは、残高確認に使用する具体的な`asset_id`を返します。ライブ見積もりが`FEE_ASSET_DEFINITION`を請求することを確認してください。取引はメタデータを通じてその資産を選択しません。
+テストネットの資金提供サービスが入金した手数料資産定義で、アカウントの残高を絞り込みます。ライブ見積もりが`FEE_ASSET_DEFINITION`を請求することを確認してください。取引はメタデータを通じてその資産を選択しません。
 
 アプリケーションメタデータはオプションであり、料金の意味はありません：
 
@@ -217,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -241,10 +236,10 @@ SDK は、最も一般的な命令ファミリー向けの型付きビルダー�
 
 |指導家族| Python 表面|
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|登録|`register_account`、`register_asset_definition_numeric`、`register_rwa`、`register_time_trigger`、`register_precommit_trigger`；`register_domain` はジェネシス／ブートストラップツール用に予約されています|
+|登録|`register_account`、`register_asset_definition`、`register_rwa`、`register_time_trigger`、`register_precommit_trigger`；`register_domain` はジェネシス／ブートストラップツール用に予約されています|
 |登録解除| `unregister_trigger`; 他のバリアントには `Instruction.from_json` を使用してください|
-|生成/焼却| `mint_asset_numeric`, `burn_asset_numeric`, `mint_trigger_repetitions`, `burn_trigger_repetitions`|
-|転送| `transfer_asset_numeric`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
+|生成/焼却| `mint_asset_quantity`, `burn_asset_quantity`, `mint_trigger_repetitions`, `burn_trigger_repetitions`|
+|転送| `transfer_asset_quantity`, `transfer_domain`, `transfer_asset_definition`, `transfer_nft`, `transfer_rwa`, `force_transfer_rwa` |
 |メタデータとコントロール| `set_account_key_value`, `remove_account_key_value`, `set_rwa_controls`, `set_rwa_key_value`, `remove_rwa_key_value` |
 | RWA ライフサイクル| `merge_rwas`, `redeem_rwa`, `freeze_rwa`, `unfreeze_rwa`, `hold_rwa`, `release_rwa`|
 | ExecuteTrigger | `execute_trigger` |
@@ -252,7 +247,7 @@ SDK は、最も一般的な命令ファミリー向けの型付きビルダー�
 |ネイティブ資産ロック| `open_asset_lock`、`drawdown_asset_lock`、`cancel_asset_lock`、`expire_asset_lock`、およびクライアント`*_and_wait`のヘルパー|
 |付与/取り消し、SetParameter、ログ、カスタム、アップグレード、およびあまり一般的でない登録/登録解除のバリアント| `Instruction.from_json` または `TransactionBuilder.add_instruction_json`、正規の `InstructionBox` JSON|
 
-エスクロー形式の条件付き支払いについては、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md#python-asset-locks) を参照してください。Python は現在、汎用資産ロックのための一流のヘルパーを公開していますが、マーケットプレイスおよび匿名エスクローのヘルパーはまだ一流の Python メソッドではありません。
+エスクロー形式の条件付き支払いについては、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md#python-asset-locks) を参照してください。Python は現在、汎用資産ロックのためのファーストクラスのヘルパーを公開していますが、マーケットプレイスおよび条件付きエスクローのヘルパーはまだファーストクラスの Python メソッドではありません。
 
 ### ドメインを設定し、その後アカウントと資産を登録する {#set-up-domains-then-register-accounts-and-assets}
 
@@ -265,12 +260,13 @@ SDK は、最も一般的な命令ファミリー向けの型付きビルダー�
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -284,13 +280,13 @@ submit(
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### 所有権を移転する {#transfer-ownership}
@@ -299,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
@@ -381,7 +377,7 @@ draft.register_rwa(
 登録取引が完了した後、生成されたIDを確認するには、`FindRwas`、`/v1/rwas`、RWA イベント、またはエクスプローラーのルートを使用してください。
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -465,7 +461,7 @@ draft.force_transfer_rwa(
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -620,7 +616,7 @@ submit(instruction)
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -699,17 +695,17 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 入力されたクエリヘルパーは生の JSON 辞書ではなくデータクラスを返します。これらは最も簡単に始められる方法で、SDK がページネーションや一般的なレコードフィールドを解析してくれます:
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
-型付きソフトウェアアダプターがまだ存在しない Torii API エンドポイントの場合は、汎用リクエストヘルパーを使用してください:
+Torii のエンドポイントに型付きラッパーがまだない場合は、汎用のリクエストヘルパーを使ってください。
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,13 +720,13 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-アカウントインベントリヘルパーには、SDK のノーマライザーが受け入れるアカウント識別子が必要です。正規の I105 アカウントIDまたはオンチェーンのエイリアスを使用してください；ブロックエクスプローラーや生の API エンドポイントが SDK に拒否されるIDを返す場合、これらのヘルパーを呼び出す前に、それを正規のアカウントIDに解決してください:
+アカウントインベントリヘルパーには、SDK のノーマライザーが受け入れるアカウント識別子が必要です。正規の I105 アカウントIDまたはオンチェーンのエイリアスを使用してください；ブロックエクスプローラーや生の エンドポイントが SDK に拒否されるIDを返す場合、これらのヘルパーを呼び出す前に、それを正規のアカウントIDに解決してください:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
@@ -740,13 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 ストリーミングヘルパーはデフォルトで JSON ペイロードをデコードします。`with_metadata=True` を渡すと、SSE イベント名、ID、再試行ヒント、および生のペイロードが必要な場合に対応します。標準の `/v1/events/sse` フィードはライブ専用であり、リプレイIDを発行せず、リプレイログも保持しないため、これらのヘルパーはカーソルや再開引数を提供しません。再接続は新しいサブスクリプションを開始し、ギャップが発生する可能性があります。ブロックチェーン台帳の完全な履歴が必要な場合は、既知の高さから`/v1/blocks/stream`を使用してください。これらの例はライブイベントを待機するため、ストリームが有効でアクティブなノードで実行してください。
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -755,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -1026,26 +1015,6 @@ client = create_torii_client(
 )
 ```
 
-## 影武者の準備 {#kagemusha-readiness}
-
-Python SDK は、汎用の Torii リクエストヘルパーを通じて、現在の JSON の準備状況ルートを問い合わせることができます:
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python は型付きの影武者のチャージや償還アーカイブビルダーを公開していません。型付きの Swift または JVM ウォレットを使用して、標準の V4 アーカイブを構築し、その後、サポートされている影武者の Torii クライアントを通じて送信およびポーリングしてください。
-
 ## サブスクリプション {#subscriptions}
 
 サブスクリプションの読み取りおよびドラフトビルダーは、`iroha_python.ToriiClient` によって使用される共有の Torii クライアントから継承されます。すべてのミューテーションはボディ結合された標準的なアカウント署名とともに受理され、署名されていないトランザクションドラフトを返します。Torii は決して秘密鍵を受け取らず、ドラフトを代わりに送信することはありません。
@@ -1282,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1300,22 +1268,20 @@ if connect_status is not None:
 
 ## SoraFS、UAID、および Kaigi ヘルパー {#sorafs-uaid-and-kaigi-helpers}
 
-これらのヘルパーは、ターゲットノードが対応する Nexus/SORA API エンドポイントを公開している場合に利用可能です。空のリストを有効な応答として扱ってください: public Taira は、サンプル技術マニフェストまたは UAID のデータなしでルートが有効になっている可能性があります。
+これらのヘルパーは、対象ノードが対応する SORA Nexus のエンドポイントを公開している場合に利用できます。空のリストも有効な応答として扱ってください。公開 Taira では、経路が有効でも、サンプルのマニフェストや UAID に対応するデータが存在しない場合があります。
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()
@@ -1324,7 +1290,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito、RPC、および GPU ヘルパー {#norito-rpc-and-gpu-helpers}
 
-Norito バイトをすでに持っていて、バイナリ Torii API エンドポイントを呼び出す必要がある場合は、`NoritoRpcClient` を使用してください。この例では、前のトランザクションテンプレートからの署名済みデータコンテナが必要です。
+Norito のバイト列がすでにあり、バイナリ形式の Torii エンドポイントを呼び出す必要がある場合は、`NoritoRpcClient` を使います。この例では、前のトランザクションテンプレートで作成した署名済みエンベロープが必要です。
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1357,7 +1323,7 @@ Python SDK には、すでに次のためのヘルパーが含まれています
 - 一般的な ISI およびドメイン固有の拡張のための型付き命令ビルダー
 - 取引ドラフト、技術マニフェスト、署名、および署名済み取引データコンテナのワークフロー
 - ライブイベントストリームと入力されたフィルター；確定済みブロックストリームは完全な履歴を提供します
-- 一般的な影武者の準備アクセスおよび Torii 購読ヘルパー；型付きのチャージおよび償還ビルダーは公開されていません
+- Torii のサブスクリプション読み取りと、未署名トランザクションのドラフトを組み立てるビルダー
 - アカウントアドレス、全アルゴリズム署名ヘルパー、マルチハッシュラウンドトリップ、SM2、GOST、ML-DSA、BLS、および機密キーの取り扱い
 - URIs、セッション、フレーム、暗号化ヘルパー、およびレジストリ管理者を接続する
 - ノードが対応する場合の、ガバナンス、ランタイム更新、Sumeragi、ノード管理、SoraFS、UAID、Kaigi 各エンドポイントのラッパー

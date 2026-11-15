@@ -5,7 +5,6 @@ translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b60
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # მეტამონაცემები {#metadata}
 
 მეტამონაცემები რეესტრის ობიექტებზე მიმაგრებული, შემოწმებული გასაღები-მნიშვნელობის ასახვაა. გასაღებები `Name` მნიშვნელობებია, ხოლო მნიშვნელობები — JSON (`Json`) დატვირთვები.

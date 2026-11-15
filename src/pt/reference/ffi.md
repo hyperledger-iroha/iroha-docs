@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Interfaces de Funções Estrangeiras (FFI) {#foreign-function-interfaces-ffi}
 
 O pacote de software `iroha_ffi` fornece macros e traits para gerar bindings C ABI a partir de Rust APIs. Ele é usado quando tipos Iroha precisam atravessar uma fronteira FFI, por exemplo, por meio de bindings SDK ou integrações com o host.

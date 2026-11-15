@@ -5,16 +5,16 @@ ledger state, submit transactions, and inspect operator endpoints.
 
 ## 1. Prerequisites
 
-Start a local network first:
-
-- [Launch Iroha 3](./launch-iroha.md)
-
-The examples below assume the generated client configuration from the localnet
-created in [Launch Iroha 3](./launch-iroha.md):
+From an Iroha checkout at the documented source revision, generate and start
+a four-peer localnet:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+The examples below use its generated client configuration,
+`./localnet/client.toml`.
 
 ## 2. Basic CLI Setup
 
@@ -26,17 +26,24 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 The CLI is organized into these top-level command groups:
 
-- `account` for account-oriented shortcuts
-- `tx` for transaction-level helpers
+- `account` for account reads and mutations
+- `explorer` for explorer feeds with shared filters and paging
+- `tx` for transaction status and transaction helpers
 - `ledger` for on-ledger reads and writes
+- `trigger` for trigger reads, writes, and execution
 - `ops` for operator diagnostics
 - `app` for app API helpers
-- `contract` for contract deployment and calls
+- `contract` for contract calls, views, and local debugging; deploy with
+  `kagami contract deploy` or `musubi deploy`
 - `tools` for diagnostics and developer utilities
-- `taira` for Taira and Nexus-oriented workflows
+- `dataspace` for planning, applying, and inspecting a data space definition
+- `taira` for Taira diagnostics and account onboarding
+- `offline` for offline encoders, reports, and diagnostics
+- `soracloud` for Soracloud app platform helpers
+- `sccp` for SORA Cross-Chain Protocol reads, transfers, and proofs
 
-The `ledger` group also contains domain-specific transaction helpers such as
-`ledger transaction`.
+Every command that submits a transaction needs an explicit fee payer, such
+as `--fee-payer authority`; the CLI quotes the exact fee before signing.
 
 Use `--output-format text` for human-readable operator output and `--machine`
 for strict automation mode.
@@ -54,7 +61,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-List public domains in the `universal` dataspace:
+List the domains visible to an unauthenticated reader:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -75,37 +82,37 @@ iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
 Create `taira.client.toml` only when you are ready to test signed commands.
-See [Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md)
-for the config, faucet, and canary flow. Do not run write commands against
-Taira until the account is funded with the faucet fee asset.
+See [Connect to SORA Nexus Data spaces](/get-started/sora-nexus-dataspaces.md)
+for the config, faucet, and smoke-test flow. Do not run write commands
+against Taira until the account is funded with the faucet fee asset.
 
-For any fee-paying Taira CLI example, save the faucet helper from
-[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-as `taira_faucet_claim.py`, then claim testnet XOR first:
+For any fee-paying Taira CLI example, fund the signer with the prepared
+faucet flow in
+[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira),
+then check the balance:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-If the faucet puzzle or claim route returns `502`, wait and retry. That is a
-public testnet availability issue, not a signal to regenerate the account keys.
+If a faucet route returns `502`, wait and retry. That is a public testnet
+availability issue, not a signal to regenerate the account keys.
 
-After the balance is visible, attach the fee asset metadata to writes:
+After the balance is visible, submit writes with `--fee-payer authority`.
+The CLI quotes the exact fee, in Taira's fee asset, before signing:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. Basic Ledger Commands
@@ -113,7 +120,7 @@ iroha --config ./taira.client.toml \
 List all domains:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Ordinary domain creation uses the declarative alias planner; the `ledger
@@ -127,11 +134,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-The intent pins the dataspace ID, canonical owner account, lease term, and
+The intent pins the data space ID, canonical owner account, lease term, and
 current quote guard. The planner verifies live state and returns the exact
 atomic `EnsureAlias` plan to submit. Do not hand-copy guard values from another
 network.
@@ -139,7 +146,7 @@ network.
 Send a simple ping transaction:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 Read a recent block or subscribe to block events:
@@ -152,10 +159,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 ## 5. Operator Commands
 
 Consensus operator commands require an allow-listed runtime key. Keep it out
-of `client.toml` and pass the owner-only file explicitly:
+of `client.toml` and pass the owner-only file by its absolute path:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -172,13 +180,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-Highest and locked quorum certificates:
+Committed consensus lanes and this node's instance status:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 On-chain consensus parameters:
@@ -195,10 +203,10 @@ cargo run --bin iroha -- \
 - [SDK tutorials](/guide/tutorials/)
 - [Torii endpoints](/reference/torii-endpoints.md)
 - [Working with Iroha binaries](/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-To regenerate a full Markdown help snapshot from the source checkout, run:
+To print a full Markdown help snapshot from the source checkout, run:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

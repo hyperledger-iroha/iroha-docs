@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Eng yaxshi amaliyotlar {#best-practices}
 
 Ushbu bo‘lim Iroha ilovalari va tarmoqlari uchun ishlab chiqarishga yo‘naltirilgan ko‘rsatmalarni to‘playdi. U amalga oshiradigan xususiyatga qarab emas, balki qilishingiz kerak bo‘lgan qarorga ko‘ra tashkil etilgan.

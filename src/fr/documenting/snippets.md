@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Extraits de code {#code-snippets}
 
 Les extraits générés maintiennent les exemples liés au code, à la configuration et aux schémas de la révision Iroha qui les a produits.

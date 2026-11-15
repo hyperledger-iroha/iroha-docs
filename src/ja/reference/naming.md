@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # 命名規則 {#naming-conventions}
 
 アカウント、ドメイン、または資産に名前を付ける際には、Iroha で使用されている以下の規則を念頭に置く必要があります。
@@ -16,10 +15,9 @@ translation_engine: bing-translator-llm
    - `#` 資産定義のエイリアスおよび資産残高リテラルに予約されています
    - `::` 契約エイリアス専用です
    - `.` ドメインおよびデータスペースの資格付けのために予約されています
-   - `$` トリガースコープのテキスト形式に予約されています
-   - `%` バリデータスコープのテキスト形式のために予約されています
+   - `$` は `name$domain.dataspace` のような NFT 識別子のために予約されています
 
-2. 名前が持てる最大文字数（UTF-8 文字を含む）は、`[0, u32::MAX]`と現在割り当てられているスタック領域の2つの要因によって制限されます。
+2. 名前は空でなく、Unicode NFC 形式で、UTF-8 で最大 255 バイトであり、空白文字、制御文字、双方向制御文字を含まない必要があります。
 
 ## Taira でこのワークフローを実行してください {#try-it-on-taira}
 

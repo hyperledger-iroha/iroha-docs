@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Izanami ilə Xaos Testi {#chaos-testing-with-izanami}
 
 Izanami yuxarı axın Iroha iş sahəsində chaosnet təşkilatçısıdır. O, birdəfəlik yerli Iroha klasterini işə salır, tənzimlənə bilən iş yükünü təqdim edir və şəbəkənin seçilmiş iştirakçılarına səhvlər daxil edir ki, operatorlar şəbəkənin nəzarət olunan uğursuzluq altında irəliləməyə davam edib-etmədiyini yoxlaya bilsinlər.

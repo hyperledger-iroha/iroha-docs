@@ -102,8 +102,12 @@ export async function validateCookbook(repositoryRoot: string): Promise<string[]
       issues.push(`${route}: Taira SSE examples must advertise event-stream with a JSON fallback`)
     }
     if (route === 'stream-events.md' && source.includes('/v1/events/sse')) {
-      if (!source.includes("args: ['tx_status', 'Approved']")) {
-        issues.push(`${route}: Taira SSE examples must use the current FilterExpr transaction-status form`)
+      // Torii parses the SSE `filter` parameter with its text grammar and rejects the JSON form.
+      if (!source.includes(`const filter = 'tx_status = "Approved"'`)) {
+        issues.push(`${route}: Taira SSE examples must use the text-filter transaction-status form`)
+      }
+      if (source.includes('JSON.stringify(filter)')) {
+        issues.push(`${route}: Taira SSE filters use Torii's text grammar, not JSON`)
       }
       if (source.includes('Pipeline:')) {
         issues.push(`${route}: contains the retired typed event-filter shape`)
@@ -127,23 +131,28 @@ export async function validateCookbook(repositoryRoot: string): Promise<string[]
       }
     }
     if (route === 'smart-contracts.md' && source.includes('tuple_return_demo')) {
-      if (!source.includes('contract debug-call')) {
-        issues.push(`${route}: kotoage examples must execute locally with contract debug-call`)
+      // The bundled tuple sample publishes one read-only `view fn`; the call commands reject it.
+      if (!/\bcontract debug-view\b/u.test(source)) {
+        issues.push(`${route}: tuple view examples must execute locally with contract debug-view`)
       }
-      if (!source.includes('contract call') || !source.includes('--simulate')) {
-        issues.push(`${route}: deployed kotoage examples must verify with contract call --simulate`)
+      if (!/\bcontract view\b/u.test(source)) {
+        issues.push(`${route}: deployed tuple view examples must verify with contract view`)
       }
-      if (source.includes('contract debug-view') || source.includes('contract view')) {
-        issues.push(`${route}: kotoage examples must not use view-only commands`)
+      if (/\bcontract (?:debug-)?call\b/u.test(source)) {
+        issues.push(`${route}: tuple view examples must not use call commands`)
       }
       const stringTupleAssertions = source.match(/\.result == \["3", "5"\]/gu) ?? []
       if (stringTupleAssertions.length !== 3) {
-        issues.push(`${route}: kotoage tuple assertions must use the JSON string result ["3", "5"]`)
+        issues.push(`${route}: tuple view assertions must use the JSON string result ["3", "5"]`)
       }
     }
     if (route === 'query-ledger-state.md') {
-      if (!source.includes(`{"equals":[{"field":"id","value":"wonderland.universal"}]}`)) {
-        issues.push(`${route}: domain filtering must use the current lightweight predicate JSON`)
+      // Collection listings take Torii's text filter grammar; signed typed queries refuse listings.
+      if (!source.includes(`DOMAIN_FILTER='id = "`)) {
+        issues.push(`${route}: domain filtering must use the collection text filter`)
+      }
+      if (source.includes('ledger domain list filter') || source.includes(`{"equals":`)) {
+        issues.push(`${route}: contains a retired typed listing predicate`)
       }
       if (source.includes(`{"Atom"`)) {
         issues.push(`${route}: contains the retired nested typed-predicate JSON`)

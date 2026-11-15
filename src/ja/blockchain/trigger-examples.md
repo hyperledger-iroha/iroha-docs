@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # イベントトリガーの例 {#event-trigger-example}
 
 この例では、Iroha 3 データモデルにおいて、正規化されたドメインなしアカウントIDと予測資産定義を使用します。

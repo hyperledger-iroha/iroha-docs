@@ -1,18 +1,18 @@
 ---
 translation_locale: dz
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # Iroha ཌའི་ལོག་ཚུ་དང་གཅིག་ཁར་ལཱ་འབད་ {#working-with-iroha-binaries}
 
 Iroha 3 ཨོ་པེ་རེ་ཊར་གྱི་ལཱ་རྒྱུན་ལམ་འདི་ གཞི་རྟེན་གཉིསཔ་༤ གི་མཐའ་འཁོར་ལུ་འགྱོ་དོ་ཡོདཔ་ཨིན།
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ཡོངས་འབྲེལ་གྱི་མཉམ་རོགས་ཌེ་མཱོན་གཡོག་བཀོལ་ནིའི་དོན་ལུ་ཨིན།
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) ཡོངས་འབྲེལ་གྱི་མཉམ་རོགས་ཌེ་མཱོན་གཡོག་བཀོལ་ནིའི་དོན་ལུ་ཨིན།
 - `iroha3d_taira` ཚད་ལྡན་ Taira བདེན་ཁུངས་སྐྱེལ་འཕྲུལ་ཆས་གཏང་ཐངས་ཀྱི་དོན་ལུ་
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)གི་དོན་ལུ་ CLI དང་ ལས་འཛིན་གྱི་བཀའ་རྒྱ་ཚུ་
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) གི་ལྡེ་མིག་ཚུ་དང་ གཞི་རྟེན་འབྱུང་ཁུངས། ས་གནས་ཀྱི་དྲ་ཚིགས་དང་ ཡིག་གཟུགས་ཚུ་གི་དོན་ལུ་
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli)གི་དོན་ལུ་ CLI དང་ ལས་འཛིན་གྱི་བཀའ་རྒྱ་ཚུ་
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) གི་ལྡེ་མིག་ཚུ་དང་ གཞི་རྟེན་འབྱུང་ཁུངས། ས་གནས་ཀྱི་དྲ་ཚིགས་དང་ ཡིག་གཟུགས་ཚུ་གི་དོན་ལུ་
 
 ## གཞི་རྟེན་ནང་ལས་ བཟོ་སྐྲུན་འབད་ {#build-from-source}
 
@@ -49,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker པར་འདི་ {#docker-image}
 
-ཡར་ཐུག་ལུ་ལཱ་འབད་སའི་ས་ཁོངས་འདི་ `kagami localnet` དང་ `kagami docker`ཚུ་ལག་ལེན་འཐབ་ཐོག་ལས་ Docker Compose ཡིག་སྣོད་ཚུ་ བཟོ་སྐྲུན་འབད་དོ་ཡོདཔ་ད་ ཡིག་སྣོད་དེ་ ཐོ་བཀོད་འབད་ཚར་མི་ ལས་རིམ་ཨང་རྟགས དང་གཅིག་ཁར་ མཐོངམ་ཨིན། པར་བརྙན་ `hyperledger/iroha:dev` འདི་ཡང་ ཐོན་སྐྱེད་འབད་ཡོད་པའི་ཡིག་སྣོད་ཚུ་དང་གཅིག་ཁར་ ལག་ལེན་འཐབ་ཚུགས།
-
-CLI ཆ་ཚན་ནང་འབད།
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Kagami སྦ་སྣོད་ནང་འབད།
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-མཉམ་རོགས་འགོ་བཙུགས་ནིའི་དོན་ལུ་ ལོ་ཀཱལ་ནེཊི་ཅིག་བཟོ་བཏོན་འབད་ཞིནམ་ལས་ དང་པ་རང་ ཡིག་སྣོད་བརྩམས།
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker ནང་གཞི་རྟེན་ཨང་རྟགས་ཀྱི་ཐོན་རིམ་གཅིག་ལས་བཟོ་ཡོད་པའི་ཡིག་སྣོད་ཚུ་ལག་ལེན་འཐབ་སྟེ་ ངེས་དཔྱད་འབད་མི་བཞི་འགོ་བཙུགས་ནིའི་དོན་ལུ་ [འགོ་བཙུགས Iroha 3](/dz/get-started/launch-iroha.md) ལམ་སྟོན་ལུ་གཟིགས།
 
 ## ང་གིས་ ལག་ལེན་འཐབ་དགོ་པའི་ སྦིན་རི་གང་ཡོདཔ་ཨིན་ན? {#which-binary-should-i-use}
 

@@ -1,27 +1,26 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 网络部署的关键 {#keys-for-network-deployment}
 
-每个网络都需要针对客户,对等节点,创世签名和NPoS或 Nexus 个人资料, BLS 验证者身份.
+每个网络都需要为客户端、创世签名以及附带持有证明的 BLS-normal 验证者身份分别准备独立的密钥材料。
 
 ## 用钥匙的地方 {#where-keys-are-used}
 
 - 客户签名密钥存储在 `client.toml`下 `[account]`.
 - 每个对等节点身份密钥 `config.toml` 存储为 `public_key`和 `private_key`.
 - 在 `trusted_peers` 中,对等节点发现使用每个对等节点的公钥.
-- BLS 验证器 NPoS配置文件的所有权证明存储在 `trusted_peers_pop` 中.
+- 无论采用哪种共识模式，每个验证者的 BLS 持有证明都存储在 `trusted_peers_pop` 中。
 - 在签署表时,Genesis签字使用`[genesis].public_key`在对等节点配置中和相匹配的私钥.
 
 在本地或测试部署中,让 Kagami 将所有这些文件生成在一起:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 对于现有网络或配置文件,使用导向流程:

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # RAM-LFE {#ram-lfe}
 
@@ -763,6 +763,5 @@ Torii གྱི་ བྱ་རིམ་ནང་ཡོད་པའི་ ལག
 
 ## འབྲེལ་བའི་གནད་དོན་ཚུ་ {#related-topics}
 
-- [སྒེར་གྱི་གནས་སྡུད་ཀྱི་དོན་ལུ་རྒྱབ་སྐྱོར་གྱི་འཐུས་](/dz/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
 - [Torii མཐའ་མཇུག་གི་ཐོ་བཀོད་](/dz/reference/torii-endpoints.md#app-and-sora-route-families)
 - [རྣམ་རྟོག་ཅན་གྱི་ཚོང་འབྲེལ་ཚུ་](/dz/blockchain/anonymous-transactions.md)

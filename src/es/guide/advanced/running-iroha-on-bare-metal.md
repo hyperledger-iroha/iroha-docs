@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Ejecutando Iroha en hardware físico {#running-iroha-on-bare-metal}
 
 Utilice este flujo de trabajo cuando desee ejecutar pares de red directamente en los hosts en lugar de a través de Docker Compose. El árbol de código fuente actual proporciona generadores Kagami que escriben la génesis de blockchain correspondiente, configuraciones de pares de red, configuración del cliente y scripts de inicio/detención.
@@ -32,10 +31,10 @@ Esto produce:
 Generar una red local Iroha 3 de cuatro pares:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-El directorio de salida contiene los archivos generados `genesis.json`, `genesis.signed.nrt`, `config.toml` del par de red, `client.toml`, scripts auxiliares y un `README.md` generado con comandos exactos para ese paquete.
+El directorio de salida contiene los archivos generados `genesis.json`, `genesis.signed.nrt` y `genesis.expected_hash`, un `peerN.toml` por validador, `client.toml`, los scripts `start.sh` y `stop.sh`, y un `README.md` generado con comandos exactos para ese paquete.
 
 ## 3. Iniciar pares de red {#_3-start-peers}
 
@@ -45,14 +44,14 @@ Para una red local desechable generada, use el script generado:
 ./localnet/start.sh
 ```
 
-Si necesitas conectar cada par de red a un administrador de procesos como systemd, utiliza el comando de lanzamiento registrado en `./localnet/README.md` para cada par de red. Mantén separados el `config.toml`, la clave privada, el directorio de almacenamiento y los puertos de cada par de red.
+Si necesitas conectar cada par de red a un administrador de procesos como systemd, sigue el comando por par de `./localnet/start.sh`: ejecuta `iroha3d --config <bundle>/peerN.toml` desde `<bundle>/state/peerN` y pasa `--sumeragi-assert-fresh-key` solo en el primer arranque de ese par. Mantén separados el `peerN.toml`, la clave privada, el directorio de almacenamiento y los puertos de cada par de red.
 
 ## 4. Operar la red {#_4-operate-the-network}
 
 Usa la configuración del cliente generada:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Виртуаль шәхси селтәрҙәр {#virtual-private-networks}
 
 <abbr title="Virtual Private Network">VPN</abbr> - селтәр идарасыһы, ул Iroha хеҙмәттәренә кем барып етергә мөмкинлеген сикләй. Ул шәхси һәм консорциум ҡулланыу өсөн файҙалыраҡ, унда валидаторҙар, ҡушымталар ярҙамында эш итеүселәр һәм операторҙар асыҡ интернет маршруттары урынына шәхси адрестар аша аралашырға тейеш.

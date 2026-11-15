@@ -2,10 +2,10 @@
 
 The Iroha 3 operator workflow revolves around four primary binaries:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) for running a peer daemon
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) for running a peer daemon
 - `iroha3d_taira` for the canonical Taira validator launcher
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) for CLI and operator commands
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) for keys, genesis, localnets, and profiles
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) for CLI and operator commands
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) for keys, genesis, localnets, and profiles
 
 ## Build from Source
 
@@ -42,29 +42,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Image
 
-The upstream workspace uses `kagami localnet` and `kagami docker` to generate
-Docker Compose files that match the checked-out code. The `hyperledger/iroha:dev`
-image can be used with those generated files.
-
-Run the CLI in a container:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Run Kagami in a container:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-For peer startup, generate a localnet and Compose file first:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Follow [Launch Iroha 3](/get-started/launch-iroha.md) to build and run four validators with matching binaries in Docker.
 
 ## Which Binary Should I Use?
 

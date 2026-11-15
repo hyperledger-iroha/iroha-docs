@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # 通过 CLI 运行 Iroha 3 {#operate-iroha-3-via-cli}
 
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2
 
 ## 1.先决条件 {#_1-prerequisites}
 
-首先启动一个本地网络:
-
-- [启动 Iroha 3](./launch-iroha.md)
-
-在 [启动 Iroha 3](./launch-iroha.md)中创建的本地网络中生成的客户端配置:
+在文档所述源代码修订版本的 Iroha 检出副本中，生成并启动一个四对等节点的本地网络：
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+下面的示例使用其生成的客户端配置 `./localnet/client.toml`。
 
 ## 2. 基本的 CLI 设置 {#_2-basic-cli-setup}
 
@@ -31,16 +30,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI 分为以下最高级别指挥组:
 
-- `account` 针对账户指导的快捷方式
-- `tx` 对于交易级助理
+- `account`：账户读取与修改
+- `explorer`：使用共享筛选和分页的浏览器数据流
+- `tx`：交易状态和交易辅助操作
 - `ledger`用于链上读取和写入
+- `trigger`：触发器读取、写入及执行
 - `ops` 用于操作员诊断
 - `app`用于应用程序的 API 助手
-- `contract` 关于合同部署和调用
+- `contract`：合约调用、查询和本地调试；使用 `kagami contract deploy` 或 `musubi deploy` 部署
 - `tools`用于诊断和开发者公用事业
-- `taira` 对于 Taira 和 Nexus- 工作流程
+- `dataspace`：规划、应用和检查数据空间定义
+- `taira`：Taira 诊断及账户入网
+- `offline`：离线编码器、报告及诊断
+- `soracloud`：Soracloud 应用平台辅助操作
+- `sccp`：SORA 跨链协议的读取、转移及证明
 
-`ledger`集团还包含特定领域的交易助理,如`ledger transaction`.
+提交交易的每个命令都必须明确指定费用支付方，例如 `--fee-payer authority`；CLI 会在签名前给出准确报价。
 
 使用 `--output-format text`用于人可读操作员输出和 `--machine`用于严格的自动化模式.
 
@@ -55,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-列出 `universal` 数据空间中的公共域名:
+列出未经身份验证的读取者可见的域：
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -75,32 +80,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-仅在准备测试签署命令时创建 `taira.client.toml`.查看[连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)为配置,水龙头和 canary 流程.直到账户通过水龙头费资产融资之前,不要对 Taira 进行写入命令.
+仅在准备测试签名命令时才创建 `taira.client.toml`。有关配置、水龙头及冒烟测试流程，请参阅[连接 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md)。账户通过水龙头获得费用资产之前，不要向 Taira 执行写入命令。
 
-对于任何付费 Taira CLI 例如,拯救水龙头辅助器 [获取测试网 XOR 在 Taira](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) 作为 `taira_faucet_claim.py`, 然后索赔测试网 XOR 首先:
+运行任何 Taira CLI 付费示例前，请按[在 Taira 获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中带有准备步骤的水龙头流程为签名账户提供资金，然后检查余额：
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-如果水龙头拼图或索赔路线返回 `502`,请等待,再试一次.这是一个公共测试网可用性问题,而不是一个重建账户密钥的信号
+如果水龙头路由返回 `502`，请等待并重试。这是公开测试网的可用性问题，不表示需要重新生成账户密钥。
 
-在余额可见后,附加费用资产的元数据以写:
+余额可见后，使用 `--fee-payer authority` 提交写入。CLI 会在签名前以 Taira 的费用资产给出准确报价：
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. 基本账本指令 {#_4-basic-ledger-commands}
@@ -108,7 +111,7 @@ iroha --config ./taira.client.toml \
 列出所有域名:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 普通域名创建使用声明别名计划器; `ledger domain` 命令没有 `register` 准备一个无秘密的机器. `AliasSetupPlanRequestV1` 目的 `docs.universal` 和你的 SDK 或安装服务,然后规划并应用:
@@ -119,16 +122,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-意图键是数据空间 ID,规范所有者帐户,租期限和当前报价保护.计划器验证现实状态并返回提交的精确原子`EnsureAlias`计划.不要手动复制其他网络的保护值.
+意图固定数据空间标识、规范所有者账户、租期和当前报价校验条件。规划器验证在线状态，并返回待提交的准确原子 `EnsureAlias` 计划。不要从其他网络手动复制校验条件值。
 
 发送一个简单的ping交易:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 阅读最近的区块或订阅区块事件:
@@ -140,10 +143,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. 操作员指挥 {#_5-operator-commands}
 
-共识操作员命令需要一个允许列出的运行时密钥.将其保持在 `client.toml`之外,并明确传递仅限所有者读取的文件:
+共识运维命令要求使用列入允许列表的运行时密钥。不要将其放入 `client.toml`；应通过绝对路径提供仅允许所有者访问的密钥文件：
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -160,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-最高和最密封的定数证书:
+已提交的共识执行通道及本节点的实例状态：
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 链上共识参数:
@@ -183,10 +187,10 @@ cargo run --bin iroha -- \
 - [SDK 教程](/zh-hans/guide/tutorials/)
 - [Torii 端点](/zh-hans/reference/torii-endpoints.md)
 - [与 Iroha 二进制](/zh-hans/reference/binaries.md) 合作
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-为了从源检查中恢复一个完整的Markdown帮助快照,运行:
+要从源码工作副本打印完整的 Markdown 帮助快照，请运行：
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

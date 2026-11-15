@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # استكشاف مشكلات التثبيت {#troubleshooting-installation-issues}
 
 يقدم هذا القسم نصائح لحل المشكلات المتعلقة بتثبيت Iroha 3. إذا كانت المشكلة التي تواجهها غير مذكورة هنا، فاتصل بنا عبر [تليغرام](https://t.me/hyperledgeriroha).

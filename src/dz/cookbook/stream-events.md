@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/stream-events.md
-translation_source_hash: 96f0a26000530fee15d121f815f9f5717a535dc3836cff9a2a447b1e5b70c41c
+translation_source_hash: d6202b208288688cdfd927491d6670f094f631ccaecd7ff62858a94267c5306a
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # འགྱུར་བ་ཚུ་ རྒྱུན་འགྲུལ་འཐབ་ནི་ {#stream-events}
 
@@ -21,10 +21,10 @@ translation_engine: human-reviewed
 
 ### ༡. SSE གི་ལན་འདི་ངོས་ལེན་འབད། {#_1-confirm-the-sse-response}
 
-Taira གིས་ད་ལྟོའི་བར་ན་ཡང་ ལམ་འདི་སེལ་འཐུ་འབད་དོ་ཡོདཔ་ད་ `Accept` གྱི་ཨེབ་རྟ་ནང་ གདམ་ཁ་ཅན་གྱི་འབྱུང་རིམ་དང་ JSON གི་རྒྱབ་སྐྱོར་ཆ་མཉམ་ཚུད་ཡོདཔ་ཨིན། curl བཕ་ར་བཟོ་བཞག་མ་གཏང་། བཀའ་རྒྱ་དེ་ དུས་ཡུན་སྐར་མ་༡༥ གི་ཤུལ་ལས་མཇུག་བསྡུ་ནི་ཨིན། ཞི་བདེ་གི་དུས་ལུ་ སེམས་ཀྱི་ལྡིར་བའི་བརྡ་དོན་རྐྱངམ་གཅིག་ཐོབ་ནི་དེ་ ཆ་གནས་ཡོདཔ་ཨིན།
+བྱུང་ལས་རྒྱུན་ལམ་འདི་ JSON ཚབ་ལམ་དང་གཅིག་ཁར་ ཞུ། Torii གིས་ `text/event-stream` རྒྱུན་ལམ་སྦེ་ གཏངམ་ཨིནམ་དང་ ནུས་མེད་ཚགས་མ་ཅིག་བཟུམ་གྱི་ བཀག་ཆ་འབད་ཡོད་པའི་ ཞུ་བ་ཅིག་ JSON འཛོལ་བ་སྦེ་ སྙན་ཞུ་འབདཝ་ཨིན། curl གི་ གནས་སྐབས་གསོག་འཇོག་ ལྕོགས་མིན་བཟོ། བཀའ་རྒྱ་འདི་ སྐར་ཆ་ 20 གི་ཤུལ་ལས་ མཇུག་བསྡུཝ་ཨིན། Torii གིས་ ལཱ་མེད་པའི་ སྐར་ཆ་ 15 གི་ཤུལ་ལས་ སྙིང་འཕར་མཆན་ཅིག་ གཏངམ་ཨིན། དེ་འབདཝ་ལས་ ཁུ་སིམ་སིམ་གི་ དུས་ཡུན་ནང་ སྙིང་འཕར་མཆན་རྐྱངམ་ཅིག་ ཐོབ་མི་འདི་ ཆ་གནས་ཅན་ཨིན།
 
 ```bash
-curl -sS -N --max-time 15 \
+curl -sS -N --max-time 20 \
   -H 'Accept: text/event-stream, application/json' \
   https://taira.sora.org/v1/events/sse
 ```
@@ -33,15 +33,12 @@ curl -sS -N --max-time 15 \
 
 ### 2. ཕི་ལཊར་འབད་མི་ JavaScript མཁོ་ཆས་བཙུགས་ནི། {#_2-add-a-filtered-javascript-consumer}
 
-གཤམ་གསལ་འདི་ `stream-taira.mjs` སྦེ་སྲུངས། འདི་གིས་ ཐད་ཀར་དུ་ ཕེཆ་ལག་ལེན་འཐབ་ཨིནམ་ལས་ ཞུ་བ་འདི་གིས་ Taira གི་དགོས་མཁོ་ཡོད་པའི་ སླ་བསྲེ་ `Accept` མགོ་ཡིག་གཏང་ཚུགས། ད་ལྟོའི་ `FilterExpr` གིས་ ཆ་འཇོག་འབད་ཡོད་པའི་ཚོང་འབྲེལ་བྱུང་ལས་ཚུ་སེལ་འཐུ་འབདཝ་ཨིནམ་དང་ དབྱེ་དཔྱད་འབད་མི་གིས་ SSE གཞི་ཁྲམ་ཚུ་ བསྐྱར་གཏང་འོད་རྟགས་མེད་པར་ བཀོལ་སྤྱོད་འབདཝ་ཨིན།
+འོག་གི་ཡིག་ཆ་འདི་ `stream-taira.mjs` སྦེ་ སྲུང་བཞག་འབད། དེ་གིས་ དྲ་རྒྱ་བརྒྱུད་འཕྲིན་གྱི་ རྣམ་གཞག་ སྟོན་ནིའི་དོན་ལུ་ Fetch ཐད་ཀར་དུ་ ལག་ལེན་འཐབ་ཨིན། `filter` དྲི་དཔྱད་ཚད་བཟུང་འདི་གིས་ ཆ་འཇོག་འབད་ཡོད་པའི་ ཚོང་འབྲེལ་བྱུང་ལས་ཚུ་ སེལ་འཐུ་འབད་ནི་ལུ་ Torii གི་ ཡིག་ཐོག་ཚགས་མའི་བརྡ་སྤྲོད་ ལག་ལེན་འཐབ་ཨིན། དབྱེ་དཔྱད་འབད་མི་གིས་ SSE གཞི་ཁྲམ་ཚུ་ བསྐྱར་གཏང་འོད་རྟགས་ མེད་པར་ ལེན་ཏེ་ ལག་ལེན་འཐབ་ཨིན།
 
 ```js
 const baseUrl = 'https://taira.sora.org'
 const shutdown = new AbortController()
-const filter = {
-  op: 'eq',
-  args: ['tx_status', 'Approved'],
-}
+const filter = 'tx_status = "Approved"'
 
 process.once('SIGINT', () => shutdown.abort())
 process.once('SIGTERM', () => shutdown.abort())
@@ -51,7 +48,7 @@ const delay = (milliseconds) =>
 
 async function reconcile() {
   const response = await fetch(
-    `${baseUrl}/v1/explorer/transactions?page=1&per_page=25`,
+    `${baseUrl}/v1/explorer/transactions?limit=25`,
     { headers: { Accept: 'application/json' } },
   )
   if (!response.ok) {
@@ -62,7 +59,7 @@ async function reconcile() {
 
 async function* streamOnce() {
   const url = new URL('/v1/events/sse', baseUrl)
-  url.searchParams.set('filter', JSON.stringify(filter))
+  url.searchParams.set('filter', filter)
   const response = await fetch(url, {
     headers: { Accept: 'text/event-stream, application/json' },
     signal: shutdown.signal,
@@ -163,7 +160,7 @@ SSE སེམས་ཀྱི་འཕར་རྩའི་བསམ་འཆར�
 
 མཐའ་མའི་-༢༥ འཚོལ་ཞིབ་ཀྱི་ཞུ་བ་འདི་ མི་མང་བརྟག་དཔྱད་རྐྱངམ་ཅིག་ཨིན། བཟོ་བསྐྲུན་ཉོ་སྤྱོད་པ་ཅིག་གིས་ `reconcile()` འདི་ དེ་གི་ཐུབ་ཚད་ཅན་གྱི་འཇུག་སྤྱོད་ཐོན་ཁུངས་ཚུ་གི་དོན་ལུ་ འདྲི་དཔྱད་ཚུ་དང་ དེ་གི་ཞིབ་དཔྱད་ས་ཚིགས་ཀྱི་དོན་ལུ་ ལངམ་སྦེ་ཡོད་པའི་ སླར་གསོའི་མཐུད་མཚམས་ཅིག་དང་གཅིག་ཁར་ ཚབ་བཙུགས་དགོཔ་ཡང་ན་ རྒྱ་བསྐྱེད་འབད་དགོ། ཚད་འཛིན་འབད་ཡོད་པའི་པར་འདི་རྐྱངམ་ཅིག་གིས་ བྱུང་ལས་ག་ནི་ཡང་མ་བརླག་སྟོར་ཞུགས་ཡོདཔ་སྦེ་ བདེན་ཁུངས་བཀལ་མི་ཚུགས།
 
-གཏན་སྦྱར་ཡོད་པའི Git commit — ཐོ་བཀོད་ཐོ་བཀོད་ནང་ལུ་ `ToriiClient.streamEvents()` གིས་རྐྱངམ་ཅིག་ `Accept: text/event-stream` བཏང་ཨིན། ཕྲ་རིང་གི་ Taira གིས་ `406`དང་གཅིག་ཁར་ དུམ་གྲ་ཅིག་གི་ཨེབ་རྟ་འདི་མ་བཏུབ། ཁྱོད་ཀྱིས་ཁ་གོང་ལུ་ཡོད་པའི་ མ་བཅོས ལེན བཟོ་རྣམ ལག་ལེན་འཐབ་སྟེ་ SDK དང་ མི་མང མཐའ་མཚམསགིས་ བརྡ་བརྒྱུད་དབྱེ་བ་དེ་འདྲ་མཉམ་སྦེ་ གྲོས་བསྟུན་མ་འབད་བར་སྡོད་དགོ།
+`@iroha/iroha-js` ལས་ཡོད་པའི་ `ToriiClient.streamEvents({ filter })` གིས་ རྒྱུན་ལམ་གཅིག་པ་དེ་ ལྷགཔ་ཨིན། `field('tx_status').eq('Approved')` ཡང་ན་ གོང་གི་ ཡིག་ཐོག་ཚགས་མ་ བྱིན། དེ་གིས་ རྒྱུན་ལམ་ མ་རྫོགས་པའི་ཧེ་མ་ མཐའ་མཇུག་གི་ `stream_error` གཞི་ཁྲམ་འདི་ བྱིནམ་ཨིན། དེ་འབདཝ་ལས་ གོང་གི་ ལོག་མཐུད་དང་ མཐུན་སྒྲིག་གི་ ལམ་ལུགས་ཚུ་ ད་ལྟོ་ཡང་ འཇུག་སྤྱོད་འབདཝ་ཨིན།
 
 ## བརྟག་དཔྱད་འབད་ {#verify}
 
@@ -172,7 +169,7 @@ SSE སེམས་ཀྱི་འཕར་རྩའི་བསམ་འཆར�
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=25' |
+  'https://taira.sora.org/v1/explorer/transactions?limit=25' |
   jq .
 ```
 
@@ -181,17 +178,17 @@ curl -fsS \
 ## དཀའ་ངལ་སེལ་ཐབས། {#troubleshooting}
 
 - སེམས་ཀྱི་འཕར་རྩའི་བསམ་འཆར་ཚུ་དང་འབྲེལ་བ་ཡོད་རུང་ གནད་སྡུད་བྱུང་རིམ་ཚུ་ གསོ་བའི་དོན་ལུ་ཨིན། སེལ་འཐུ་འབད་ཡོད་པའི་ མདོང་ལམ་གནས་ཚད་འདི་ འཇམ་ཏོང་ཏོ་སྦེ་ ཁུ་སིམ་སིམ་འོང་།
-- `406 Not Acceptable` ཕྲང་ལམ་ནང་ Taira གིས་ སྤྱིར་བཏང་ལུ་ གསལ་བསྒྲགས་འབད་ཡོད་པའི་ཞུ་ཡིག་འདི་རྐྱངམ་ཅིག་ `text/event-stream` ཟེར་སླབ་ཨིན། ཡར་བཀོད་ནང་སྟོན་དོ་བཟུམ་སྦེ་ `text/event-stream, application/json` བཏང་གཏང་།
-- `stream_error` བྱུང་ལས་ཅིག་གིས་ སར་བར་གྱིས་ ལཱག་ཡང་ན་ ཊར་མི་ནཱལ་རྒྱུན་ལམ་གནས་སྟངས་གཞན་ཅིག་ བརྟག་དཔྱད་འབད་ཡོདཔ་སྦེ་ བརྡ་སྟོནམ་ཨིན། Torii གིས་བྱུང་ལས་དེ་ཚར་གཅིག་གཏང་ཞིནམ་ལས་ རྒྱུན་ལམ་འདི་ཁ་བསྡམས། ལོག་སྟེ་མཐུད་པའི་ཧེ་མ་ མཐུན་སྒྲིག་འབད།
+- `invalid_filter` ཨང་རྟགས་དང་གཅིག་ཁར་ `400` འབྱུང་པ་ཅིན་ `filter` འདི་ Torii གི་ ཡིག་ཐོག་བརྡ་སྤྲོད་དང་ མ་མཐུནམ་ ཡང་ན་ བྱུང་ལས་རྒྱུན་ལམ་ཚུ་གིས་ རྒྱབ་སྐྱོར་མི་འབད་མི་ ས་སྒོ་ཅིག་གི་མིང་ བཏགས་ཡོདཔ་སྦེ་ སྟོནམ་ཨིན། བྱུང་ལས་རྒྱུན་ལམ་ཚུ་གིས་ `tx_status`, `tx_hash`, `tx_block_height`, `tx_lane_id`, `tx_dataspace_id`, `block_status`, `block_height`, `proof_backend`, `proof_call_hash`, དང་ `proof_envelope_hash` གུ་ ཚགས་མ་བཙུགསཔ་ཨིན།
+- `stream_error` བྱུང་ལས་ཅིག་གིས་ ཞབས་ཏོག་སྤྲོད་མི་གིས་ འགྱངས་ཆགས་ ཡང་ན་ རྒྱུན་ལམ་མཇུག་བསྡུ་དགོ་པའི་ གནས་སྟངས་གཞན་ཅིག་ ཤེས་རྟོགས་བྱུང་ཡོདཔ་སྦེ་ སྟོནམ་ཨིན། Torii གིས་ བྱུང་ལས་དེ་ ཚར་གཅིག་ གཏང་ཞིནམ་ལས་ རྒྱུན་ལམ་འདི་ ཁ་བསྡམསཔ་ཨིན། ཚབ་ཀྱི་རྒྱུན་ལམ་ཅིག་ ཁ་ཕྱེ་ཞིནམ་ལས་ མཐུན་སྒྲིག་འབད།
 - Torii གིས་ SSE མ་བཀག་རུང་ ངོ་ཚབ གིས་ SSE གནས་སྐབས་གསོག་ཆས འབད་ཚུགས། ངོ་ཚབ ནང་ ལན་གསལ་ གནས་སྐབས་གསོག དང་ བསྡུ་གནོན སྒོ་བསྡམས་ཏེ་ བརྟག་དཔྱད ནང་ `curl -N` བཞག་དགོ།
 - ཤུལ་མམ་གྱི་བྱུང་ལས་འདི་ ཧེ་མམ་གྱི་བྱུང་ལས་གི་ཤུལ་ལས་ཨིནམ་སྦེ་ མནོ་བསམ་གཏང་སྟེ་ མཐུད་མཚམས་འཇོག་པའི་བར་སྟོང་འདི་ ནམ་ཡང་མ་བཀང་། མཇུག་སྣོད་ལུ་ བསྐྱར་གཏང་འོད་རྟགས་མེདཔ་ཨིན། དེ་གི་ཚབ་ལུ་ ད་ལྟོའི་རྩིས་ཐོའི་གནས་སྟངས་འདྲི་དཔྱད་འབད།
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [JavaScript རྒྱུན་ལམ་ལག་ལེན་དཔེ་མཚོན་ གཏན་སྦྱར་ཡོད་པའི Git commit ལུ།](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes/streaming.mjs)
-- [SSE འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events/sse_smoke.rs) ལུ་འབདཝ་ཨིན།
-- [Torii FilterExpr བརྟག་ཞིབ་འབད་ཐངས་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/filter.rs)
-- [Torii རྒྱུན་བསྡུར་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/routing.rs) ལུ་བྱུང་རྐྱེན་ལམ་སྟོན་འབདཝ་ཨིན།
+- [JavaScript རྒྱུན་ལམ་ལག་ལེན་དཔེ་མཚོན་ གཏན་སྦྱར་ཡོད་པའི Git commit ལུ།](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes/streaming.mjs)
+- [SSE འབྲེལ་མཐུད་བརྟག་དཔྱད་ཚུ་ ཕིན་ཌ་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events/sse_smoke.rs) ལུ་འབདཝ་ཨིན།
+- [གཏན་སྦྱར་ཡོད་པའི་ Git commit ནང་གི་ Torii ཚགས་མའི་ ཡིག་ཐོག་བརྡ་སྤྲོད་](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/src/list_query/text.rs)
+- [Torii རྒྱུན་བསྡུར་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/routing.rs) ལུ་བྱུང་རྐྱེན་ལམ་སྟོན་འབདཝ་ཨིན།
 - [གནད་དོན་ཚུ་](/dz/blockchain/events.md)
 - [Torii ཚད་མཇུག་གི་ཐིག་ཁྲ།](/dz/reference/torii-endpoints.md)
 - [འབྲི་ཤོག་གི་གནས་གོང་](./query-ledger-state.md)

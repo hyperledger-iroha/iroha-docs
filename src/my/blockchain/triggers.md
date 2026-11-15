@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # နှိုးစက်များ {#triggers}
 
 trigger တွေက event filter ကို executable action နဲ့ ချိတ်ဆက်ပေးပါတယ်။ event တစ်ခုဟာ trigger ရဲ့ filter နဲ့ ကိုက်ညီတဲ့အခါ Iroha က block execution အစိတ်အပိုင်းအဖြစ် trigger လုပ်ရပ်ကို အကဲဖြတ်တယ်။
@@ -54,7 +53,7 @@ Time trigger တွေက time event filter ကို သုံးပါတယ�
 
 trigger authorization principal က executable ကို invocate လုပ်ဖို့ အသုံးပြုတဲ့ account ပါ။ ရေရှည် သက်တမ်းရှိတဲ့ trigger တွေအတွက် ရည်စူးထားတဲ့ technical account တစ်ခုကို သုံးပြီး လိုအပ်တဲ့ ခွင့်ပြုချက်တွေဟာ operator ရဲ့ ကိုယ်ရေးကိုယ်တာအကောင့်ကနေ ရှင်းလင်းပြီး သီးသန့်ဖြစ်စေပါတယ်။
 
-Authorisation Principal က executable instruction တွေ (သို့) contract technical invocation တွေမှာ လိုအပ်တဲ့ ခွင့်ပြုချက်တွေကို လိုအပ်ပါတယ်။ trigger ကို မှတ်ပုံတင်တဲ့ account ဟာ active software execution environment validator အောက်မှာ trigger တွေကို မှတ်ပုံတင်ဖို့ ခွင့်ပြုချက်ကိုလည်း လိုအပ်တယ်။
+Authority အကောင့်တွင် လုပ်ဆောင်မည့် ညွှန်ကြားချက်များ သို့မဟုတ် စာချုပ်ခေါ်ဆိုမှုက လိုအပ်သော ခွင့်ပြုချက်များ ရှိရမည်။ Trigger ကို မှတ်ပုံတင်သော အကောင့်တွင်လည်း လက်ရှိ runtime ၏ စစ်ဆေးသူအရ trigger မှတ်ပုံတင်ခွင့် ရှိရမည်။
 
 ## ပြန်လည်စမ်းသပ်မှု မူဝါဒ {#retry-policy}
 
@@ -65,7 +64,7 @@ Time trigger တွေက retry policy ကို ရွေးချယ်နိ�
 
 ထပ်မံစမ်းသပ်ဖို့ ဘတ်ဂျက်ကုန်သွားတဲ့အခါ trigger က မှတ်ပုံတင်မထားဘူး။
 
-## မေးခွန်းများ {#queries}
+## Query များ {#queries}
 
 trigger status ကို စစ်ဆေးဖို့ လက်ရှိ trigger queries တွေကို သုံးပါ။
 

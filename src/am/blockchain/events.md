@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # ክስተቶች {#events}
 
 የተተየቡ የክስተት ማሳወቂያዎች የሚለቀቁት በብሎክቼይን ውስጥ አንዳንድ ነገሮች ሲከሰቱ ለምሳሌ አዲስ መለያ ሲፈጠር ወይም ብሎክ ሲጠናቀቅ። የተለያዩ አይነት ክስተቶች አሉ -
@@ -17,7 +16,7 @@ translation_engine: bing-translator-llm
 
 ## የሶፍትዌር ሂደት የስራ ፍሰት ክስተቶች {#pipeline-events}
 
-የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ክስተቶች የሚለቀቁት ግብይቶች ሲቀርቡ፣ ሲፈጸሙ ወይም በብሎክ ሲጠናቀቁ ነው። የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ክስተት የሚከተለውን መረጃ ይዟል ክስተቱን ያስከተለው አካል አይነት (ግብይት ወይም ብሎክ)፣ ምስጠራው ሃሽ እና ሁኔታ። ሁኔታው `Validating` (ማረጋገጫው በሂደት ላይ)፣ `Rejected` ወይም `Committed` ሊሆን ይችላል። አንድ አካል ውድቅ ከተደረገ, ውድቅ የተደረገበት ምክንያት ቀርቧል.
+ግብይቶችና ብሎኮች በሶፍትዌር ማቀነባበሪያ የስራ ፍሰቱ ውስጥ ሲያልፉ የሶፍትዌር ማቀነባበሪያ የስራ ፍሰት ክስተቶች ይለቀቃሉ። የግብይት ክስተት የግብይቱን ሃሽ፣ የብሎክ ቁመት፣ የመስመር እና የውሂብ ቦታ መታወቂያዎችን እና ሁኔታን ይይዛል፦ `Queued`፣ `Expired`፣ `Approved` ወይም ከውድቅ ምክንያቱ ጋር `Rejected`። የብሎክ ክስተት የብሎኩን ራስጌ እና ሁኔታን ይይዛል፦ `Created`፣ `Approved`፣ ከምክንያቱ ጋር `Rejected`፣ `Committed` ወይም `Applied`።
 
 ### ይህንን የስራ ፍሰት በ Taira ላይ ያሂዱ {#try-it-on-taira}
 
@@ -31,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 ዥረት ክፍት ሳያደርጉ መመርመር ለሚችሉት የጊዜ ዳታ እይታ፣ የቅርብ ጊዜ የአሳሽ ግብይቶችን ያንብቡ -
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 የቀጥታ ክስተቶች ሲፈልጉ የ SSE መንገዱን በተርሚናል ውስጥ ይክፈቱ -
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## የውሂብ ክስተቶች {#data-events}
 
-የውሂብ ክስተቶች የሚለቀቁት ከብሎክቼይን መዝገብ ውሂብ ጋር የተያያዘ ለውጥ ሲኖር እንደ የአውታረ መረብ እኩዮች፣ ጎራዎች፣ መለያዎች፣ ንብረቶች፣ የንብረት ፍቺዎች፣ NFTs፣ ቀስቅሴዎች፣ ሚናዎች፣ በሰንሰለት ላይ ውቅር፣ አስፈፃሚ ሁኔታ፣ ማረጋገጫዎች፣ ሚስጥራዊ ንብረቶች፣ ድልድዮች ወይም SORA/Nexus -ተኮር ነገሮች። እንደነዚህ ዓይነቶቹ ክስተቶች በ [የውሂብ ክስተት ማጣሪያዎች](./filters.md#data-event-filters) ውስጥ ጥቅም ላይ ይውላሉ.
+የውሂብ ክስተቶች የሚለቀቁት ከብሎክቼይን መዝገብ ውሂብ ጋር የተያያዘ ለውጥ ሲኖር እንደ የአውታረ መረብ እኩዮች፣ ጎራዎች፣ መለያዎች፣ ንብረቶች፣ የንብረት ፍቺዎች፣ NFTs፣ ቀስቅሴዎች፣ ሚናዎች፣ በሰንሰለት ላይ ውቅር፣ አስፈፃሚ ሁኔታ፣ ማረጋገጫዎች፣ ሚስጥራዊ ንብረቶች፣ ድልድዮች ወይም SORA Nexus -ተኮር ነገሮች። እንደነዚህ ዓይነቶቹ ክስተቶች በ [የውሂብ ክስተት ማጣሪያዎች](./filters.md#data-event-filters) ውስጥ ጥቅም ላይ ይውላሉ.
 
 ## በጊዜ ላይ የተመሰረተ የክስተት ማሳወቂያዎች {#time-events}
 

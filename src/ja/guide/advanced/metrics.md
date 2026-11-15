@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # パフォーマンスと指標 {#performance-and-metrics}
 
 Iroha のパフォーマンスは、ワークロード、バリデータのトポロジー、ネットワーク条件、コンセンサス設定に依存します。したがって、単一の TPS の数値は、固定された構成でのベンチマーク実行に関連付けられている場合にのみ有用です。
@@ -24,8 +23,8 @@ Iroha のパフォーマンスは、ワークロード、バリデータのト�
 まず、パブリックノードのデータスナップショットとPrometheusのスクレイプから始め、次にオペレーター認証済みのコンセンサス状態には CLI を使用します。オペレーターキーはターゲットノードで許可されている必要があり、ソフトウェアの実行時にのみ読み込まれます:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 自分の展開のための生産能力の数値として、パブリックテストネットの観察結果を使用しないでください。
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### 候補およびイングレス境界 {#candidate-and-ingress-bounds}
 
-ノードローカル Sumeragi の境界は、バリデーターが保持できる候補およびリカバリ作業の量を決定します:
+ブロックサイズとトランザクションの上限は、署名済みジェネシスとコミット済みのチェーンパラメーターで決まります。ノードローカルの `[sumeragi]` 設定では、参加時の役割、署名鍵の管理、安全性記録のパス、文書化されたローカルのタイムアウトと同期設定の上書きを扱います。
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` と `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`、`sumeragi.queues.chunks`、および`sumeragi.queues.ready_bodies`
-
-小さすぎる境界はキューやペイロード回復の負荷を生じさせ、過大な境界は保持されるメモリと、悪用するネットワークピアに利用可能な作業量を増加させます。1つの制限を変更する前に、プロセスメモリ、メッセージ処理、欠落ボディのメトリクスと診断データのスナップショットを比較してください。
+ネットワークの受信処理とトランザクションキューの上限は、ローカルに保持する処理量を制御します。運用上の上限を変更する前に、診断スナップショットを、プロセスのメモリ、メッセージ処理、ブロック本体の欠落に関するメトリクスと比較してください。同じネットワークでの実行結果を比較する際には、署名済みのチェーンパラメーターを固定します。
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |受理スループット| `sum(rate(txs{type="accepted"}[5m]))` |定常状態において、目標 TPS を達成するか、それを上回るべきです|
 |拒否| `sum(rate(txs{type="rejected"}[5m]))` |テスト計画で説明できるべきです|
-|プロトコルの確定遅延| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99 をレイテンシー予算と比較する|
+|プロトコルの確定遅延| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |p95/p99 をレイテンシー予算と比較する|
 |キューの深さ| `queue_size`、`sumeragi_tx_queue_depth` |ピーク時の負荷中は制限されたままであるべきです|
 |キュー飽和| `sumeragi_tx_queue_saturated` |持続的なゼロでない値は過負荷を意味します|
-|変更を表示| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |値の上昇は、タイミング、トポロジー、ペイロード、またはネットワークの問題を示します|
-|ドロップされたメッセージ| `dropped_messages`、`sumeragi_consensus_message_handling_total` |負荷中のドロップは通常、レイテンシのスパイクを説明します|
-|ペイロードと DA の回収| `sumeragi_missing_block_requests`、`sumeragi_missing_block_oldest_ms`、`sumeragi_missing_block_fetch_total`、`sumeragi_da_gate_block_total`、`sumeragi_da_gate_satisfied_total` |しつこい要求、増加する年齢、または繰り返される DA ゲートは、体やチャンクの取得の問題を示しています|
-|コンセンサスの最終化定足数| `sumeragi_commit_signatures_counted`、`sumeragi_commit_signatures_required` |集計された署名は必要な定足数にすぐに達するはずです|
+|変更を表示| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |値の上昇は、タイミング、トポロジー、ペイロード、またはネットワークの問題を示します|
+|ドロップされたメッセージ| `sumeragi_dropped_total`、`p2p_queue_dropped_total` |負荷中のドロップは通常、レイテンシのスパイクを説明します|
+|ペイロードと追いつき同期の取得| `sumeragi_fetch_requests_total{kind="body"}`、`sumeragi_fetch_requests_total{kind="sync"}` |本体または同期の取得が続く場合は、ペイロードの取得または追いつき同期に問題があることを示しています|
+|コンセンサス確定の進行| `sumeragi_committed_height`、`sumeragi_applied_height` |認証済みの高さと適用済みの高さは一緒に進むはずです|
 
 メトリックが `/v1/sumeragi/status` にのみ存在する場合は、Prometheus スクレイプと同じ実行成果物に JSON のデータスナップショットを取得してください。
 
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - バリデータおよびオブザーバーの数
 - コンセンサスモード、署名付きブロックのケイデンス、そして DA レイアウト
 - 正確な`3f + 1`委員会、定足数、およびオブザーバー名簿
-- `sumeragi.block`、`sumeragi.queues`、`sumeragi.limits`、network-ingress、およびtransaction-queueの境界
+- 署名済みのチェーンパラメーター、ローカルの Sumeragi 設定の上書き、ネットワーク受信処理とトランザクションキューの上限
 - テレメトリープロファイル
 - ハードウェア、ストレージ、そして OS の詳細
 - ネットワーク RTT、ジッター、損失、帯域幅の前提
@@ -253,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - 受理/拒否 TPS
 - p50/p95/p99 プロトコル最終化レイテンシ
 - キュー深度と飽和
-- ビューの変更、失われたメッセージ、欠落したブロックの取得、および DA-ゲートカウンター
+- ビューの変更、タイムアウト投票、Sumeragi の破棄、および本体と同期の取得
 - CPU、各バリデーターごとのメモリ、ディスク、およびネットワーク使用率
 
 これらの詳細がなければ、TPS 番号は逸話的なものとして扱うべきです。

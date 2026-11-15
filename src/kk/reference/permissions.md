@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Рұқсат белгішелері {#permission-tokens}
 
 Бұл бет қазіргі Iroha орындаушы деректер моделінде көрсетілген әдепкі рұқсат-токен түрлерін көрсетеді. Рөлдер мен рұқсаттарға арналған ұғымдық нұсқаулық үшін [Рұқсаттар](/kk/blockchain/permissions.md) қараңыз.
@@ -17,7 +16,6 @@ translation_engine: bing-translator-llm
 |Рұқсат белгісі|Санат|Операция|
 | --- | --- | --- |
 | `CanManagePeers` |желілік тең|Желі түйіндерін тіркеу, тіркеуден шығару немесе басқа жолмен басқару.|
-| `CanManageLaneRelayEmergency` |желілік тең|Төтенше жағдайлардағы жол-қосқыш бақылауларын басқарыңыз.|
 | `CanRegisterDomain` |Домен|Доменді тіркеу.|
 | `CanUnregisterDomain` |Домен|Доменді тіркеуден шығару.|
 | `CanModifyDomainMetadata` |Домен|Доменнің метадеректерін өзгерту.|
@@ -29,7 +27,7 @@ translation_engine: bing-translator-llm
 | `CanMintAssetWithDefinition` |Актив|нақты анықтама үшін активтер шығару.|
 | `CanBurnAssetWithDefinition` |Актив|нақты анықтама үшін активтерді жою.|
 | `CanTransferAssetWithDefinition` |Актив|Белгілі бір анықтама үшін активтерді аудару.|
-| `CanMintAsset` |Актив|нақты актив балансын шығару|
+| `CanMintAssetToAccount` |Актив|нақты актив балансын шығару|
 | `CanBurnAsset` |Актив|арнайы актив балансын жою|
 | `CanTransferAsset` |Актив|Белгілі бір актив қалдығын аудару.|
 | `CanRegisterNft` | NFT |NFT тіркелу|
@@ -44,8 +42,9 @@ translation_engine: bing-translator-llm
 | `CanModifyTrigger` |Триггер|Триггер конфигурациясын өзгерту.|
 | `CanModifyTriggerMetadata` |Триггер|Триггер метадеректерін өзгерту.|
 | `CanUpgradeExecutor` |Орындаушы|Бағдарламалық қамтамасыз ету орындалу ортасының орындалушысын жаңартыңыз.|
-| `CanRegisterSmartContractCode` |Ақылды келісімшарт|Ақылды келісімшарт кодын тіркеу.|
-| `CanUseFeeSponsor` | Nexus |Белгіленген демеуші есепшотына Nexus алымды салыңыз.|
+| `CanManageSmartContractCode` |Ақылды келісімшарт|Сілтеме жасалмаған код артефактілерін жою және келісімшарттың кіру нүктелерін өкілдік ету. Тіркелген есептік жазбалар бұл рұқсатсыз да тексерілген артефактілер жасай алады.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Нақты демеуші есептік жазба иеленетін бағдарламаларды басқару. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Бір нақты демеуші бағдарламасының бенефициарларын басқару. |
 
 ## Меншік {#ownership}
 

@@ -15,38 +15,9 @@ the issue of one of the peer containers failing with the
 signed genesis transaction, and generated configuration were produced by
 different Iroha revisions or profiles.
 
-Check the failure with these steps:
+From the kit directory, run `python3 poc.py logs` to inspect the validator logs. Follow [Launch Iroha 3](/get-started/launch-iroha.md) to build and run four validators with matching binaries in Docker.
 
-1. Use `docker ps` to check the current containers. Depending on the
-   generated profile, you will usually see `hyperledger/iroha:dev`
-   containers. The default Docker Compose profile contains four peer
-   containers, although your generated `docker-compose.yml` may differ.
-
-2. Check the logs and look for the
-   `Failed to deserialize raw genesis block` error. If you started your
-   Iroha in daemon mode with `docker compose up -d`, use
-   `docker compose logs` command.
-
-The way to troubleshoot such an issue depends on the use of Iroha. If this is a
-basic demo and you do not need to preserve peer data, regenerate a matching
-localnet or Docker Compose bundle with Kagami:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-Then remove the old container state and restart from the regenerated
-`genesis.signed.nrt`, peer `config.toml` files, and `client.toml`.
-
-If you need to restore the Iroha instance data, do the following:
-
-1. Connect the second Iroha peer that will copy the data from the first
-   (failed) peer.
-2. Wait for the new peer to synchronize the data with the first peer.
-3. Leave the new peer active.
-4. Update the genesis and configuration files of the first peer only as part of
-   a coordinated migration.
+Use `python3 poc.py down` and `python3 poc.py up` to restart the same network. Keep `state/` together with its four Docker volumes.
 
 ::: info
 
@@ -70,8 +41,8 @@ the right-hand-side is not a hexadecimal representation of the key bytes
 and call `from_hex` on the string literal in both the `public_key` and
 `private_key` instantiation.
 
-It is also natural to assume that calling `PrivateKey::try_from_str` on the
-string literal would yield only the correct key. So if you get the number
+It is also natural to assume that parsing the string literal with
+`str::parse::<PrivateKey>()` would yield only the correct key. So if you get the number
 of bits in the key wrong, e.g. 32 bytes vs 64, that it would raise an error
 message.
 
@@ -83,7 +54,7 @@ characters into a nice small table of obviously hexadecimal numbers.
 
 ::: warning
 
-Even the `try_from_str` implementation cannot verify if a given string is a
+Even the `FromStr` implementation cannot verify if a given string is a
 valid `PrivateKey` and warn you if it isn't.
 
 It will catch some obvious errors, e.g. if the string contains an invalid

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # İcazə Jetonları {#permission-tokens}
 
 Bu səhifə hazırkı Iroha icraçı məlumat modelində açıqlanan standart icazə-jeton növlərini sadalayır. Rollar və icazələr üzrə konseptual bələdçi üçün [İcazələr](/az/blockchain/permissions.md)-a baxın.
@@ -17,7 +16,6 @@ Bu səhifə hazırkı Iroha icraçı məlumat modelində açıqlanan standart ic
 |İcazə tokeni|Kateqoriya|Əməliyyat|
 | --- | --- | --- |
 | `CanManagePeers` |şəbəkə əlaqəsi|Şəbəkə iştirakçılarını qeydiyyatdan keçirin, qeydiyyatdan çıxarın və ya başqa şəkildə idarə edin.|
-| `CanManageLaneRelayEmergency` |şəbəkə əlaqəsi|Təcili ehtiyat yol əlaqə nəzarətlərini idarə edin.|
 | `CanRegisterDomain` |Domen|Bir domain qeydiyyatdan keçirin.|
 | `CanUnregisterDomain` |Domen|Bir domeni qeydiyyatdan silmək.|
 | `CanModifyDomainMetadata` |Domen|Domen metadatasını dəyişdirin.|
@@ -29,7 +27,7 @@ Bu səhifə hazırkı Iroha icraçı məlumat modelində açıqlanan standart ic
 | `CanMintAssetWithDefinition` |Əmlak|müəyyən bir tərif üçün aktivlər buraxmaq.|
 | `CanBurnAssetWithDefinition` |Əmlak|müəyyən bir tərif üçün aktivləri məhv etmək.|
 | `CanTransferAssetWithDefinition` |Əmlak|Müəyyən bir tərif üçün aktivləri köçürün.|
-| `CanMintAsset` |Əmlak|müəyyən bir aktiv balansını vermək.|
+| `CanMintAssetToAccount` |Əmlak|müəyyən bir aktiv balansını vermək.|
 | `CanBurnAsset` |Əmlak|müəyyən bir aktiv balansını məhv etmək.|
 | `CanTransferAsset` |Əmlak|Müəyyən bir aktiv balansını köçürün.|
 | `CanRegisterNft` | NFT |NFT qeydiyyatdan keçin.|
@@ -44,8 +42,9 @@ Bu səhifə hazırkı Iroha icraçı məlumat modelində açıqlanan standart ic
 | `CanModifyTrigger` |Tətik|Tətik ayarını dəyişdirin.|
 | `CanModifyTriggerMetadata` |Tətik|Tətik metadatasını dəyişdirin.|
 | `CanUpgradeExecutor` |İcraçı|Proqram təminatının icra mühiti yerinə yetiricisini yeniləyin.|
-| `CanRegisterSmartContractCode` |Ağıllı müqavilə|Ağıllı müqavilə kodunu qeydiyyatdan keçirin.|
-| `CanUseFeeSponsor` | Nexus |Müəyyən edilmiş sponsor hesabına Nexus ödənişləri yükləyin.|
+| `CanManageSmartContractCode` |Ağıllı müqavilə|İstinad edilməyən kod artefaktlarını silin və müqavilə giriş nöqtələrini həvalə edin. Qeydiyyatdan keçmiş hesablar bu icazə olmadan da yoxlanılmış artefaktlar yarada bilər.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Məhz həmin sponsor hesabına məxsus proqramları idarə etmək. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Məhz bir sponsor proqramının faydalananlarını idarə etmək. |
 
 ## Sahiblik {#ownership}
 

@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 資料建模 {#data-modeling}
 
 賬本資料應該圍繞所有權,轉移行為,許可界限和查詢模式進行模擬.選擇可以支援可審計性和確定性執行的最小的鏈上表示.

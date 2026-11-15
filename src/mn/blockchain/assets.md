@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Хөрөнгө {#assets}
 
 Iroha хөрөнгө нь дансанд хадгалагдсан тоон тэнцэл юм. Боломжит бүх тэнцэл нь `AssetDefinition`-ийг заадаг бөгөөд тодорхойлолт нь тухайн хөрөнгийг хэрхэн нэрлэх, гаргах, харуулах, хуваахыг тодорхойлдог.
@@ -22,7 +21,8 @@ Iroha хөрөнгө нь дансанд хадгалагдсан тоон тэ�
 - `mintable`: хөрөнгийн гаргалтын бодлогын бодлого
 - `logo`: сонголттой `SoraFS` URI
 - `metadata`: дурын түлхүүр-утга metadata
-- `balance_scope_policy`: үлдэгдэл нь дэлхийн хэмжээнд эсвэл өгөгдлийн орон зайгаар хязгаарлагдах эсэх
+- `balance_scope_policy`: үлдэгдэл глобал эсвэл өгөгдлийн орон зайгаар хязгаарлагдсан эсэх
+- `owning_domain`: домэйны эзэмшлийн тодорхойлолтыг эзэмшдэг домэйн; өгөгдлийн орон зайд шууд бүртгэгдсэн тодорхойлолтод байхгүй
 - `owned_by`: бүртгэл үүсгэсэн эсвэл тодорхойлолтыг эзэмшдэг данс
 - `total_quantity`: нийт нийтлэгдсэн хэмжээ
 - `confidential_policy`: хамгаалалттай хөрөнгийн үйл ажиллагааны бодлого
@@ -34,9 +34,9 @@ Iroha хөрөнгө нь дансанд хадгалагдсан тоон тэ�
 Нэг `Asset` агуулна:
 
 - `id`: хөрөнгийн тодорхойлолт, эзэмшигчийн данс болон сонголттой үлдэгдлийн хамрах хүрээг нэгтгэсэн `AssetId`
-- `value`: нэг `Numeric` баланс
+- `value`: нэг `Quantity` баланс
 
-Эзэмшигчийн данс нь ганц протокол-стандарттай бөгөөд домэйнгүй байна. Хөрөнгийн тодорхойлолтыг өгөгдлийн орон зайд тохирсон домэйн дор төсөөлж болно, жишээ нь `payments.universal`.
+Эзэмшигч данс нь каноник бөгөөд домэйн агуулахгүй. Хөрөнгийн тодорхойлолтыг өгөгдлийн орон зайгаар бүрэн тодорхойлсон домэйн дор тусгаж болно, жишээлбэл `payments.universal`.
 
 ## Эд хөрөнгө гаргах бодлого {#mintability}
 
@@ -56,9 +56,9 @@ Iroha хөрөнгө нь дансанд хадгалагдсан тоон тэ�
 `balance_scope_policy` нь үлдэгдлүүд хэрхэн хуваагдахыг хянадаг:
 
 - `Global`: данс ба хөрөнгийн тодорхойлолт бүрт нэг үлдэгдлийн хуваалт
-- `DataspaceRestricted`: үлдэгдлийг өгөгдлийн орон зайгаар хэсэглэнэ
+- `DataspaceRestricted`: үлдэгдлийг өгөгдлийн орон зайн нөхцөлөөр тусгаарлана
 
-Өгөгдөл зай хязгаарлагдсан тэнцлүүд нь нэгэн ижил хөрөнгийн тодорхойлолтыг хэд хэдэн Nexus өгөгдөл зайд ашигласан тохиолдолд хэрэгтэй боловч тэнцлүүд тусгаарлагдсан хэвээр байх ёстой.
+Нэг хөрөнгийн тодорхойлолтыг хэд хэдэн SORA Nexus өгөгдлийн орон зайд ашиглах боловч үлдэгдлийг нь тусад нь хадгалах шаардлагатай үед өгөгдлийн орон зайгаар хязгаарласан үлдэгдэл хэрэгтэй.
 
 ## Энэ урсгалыг Taira-д ажиллуулна уу {#try-it-on-taira}
 
@@ -89,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Бүх гурван жишээ нь унших үйлдэл юм. Taira-д хөрөнгийг гаргах, устгах, шилжүүлэхийн тулд туршилтын сүлжээгээр санхүүжүүлсэн данс болон [SORA Nexus өгөгдлийн сангуудтай холбогдох](/mn/get-started/sora-nexus-dataspaces.md)-д хамгаалалттай урсгалыг ашигла.
+Гурван жишээ бүгд унших үйлдэл юм. Taira дээр хөрөнгө шинээр гаргах, шатаах эсвэл шилжүүлэхдээ туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлсэн данс болон [Taira болон Minamoto ашиглан SORA Nexus дээр хөгжүүлэх](/mn/get-started/sora-nexus-dataspaces.md) хэсгийн хамгаалалтын шалгалттай урсгалыг ашиглана уу.
 
-Taira дээр төлбөртэй хөрөнгийн жишээг ажиллуулахдаа [Taira-аас testnet XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн faucet туслахыг `taira_faucet_claim.py` нэрээр хадгалж, faucet хөрөнгийг эхлээд аваад гүйлгээний gas хөрөнгө болгон ашиглана:
+Taira дээр шимтгэлтэй хөрөнгийн жишээ ажиллуулахын өмнө [Taira дээр туршилтын XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн урьдчилан бэлтгэдэг хөрөнгө авах урсгалаар гарын үсэг зурах дансыг санхүүжүүлнэ. Дараа нь `ledger asset mint`, `ledger asset burn`, `ledger asset transfer` командуудад `--fee-payer authority` дамжуулна; CLI гарын үсэг зурахаас өмнө яг шимтгэлийг Taira-гийн шимтгэлийн хөрөнгөөр тооцож харуулна:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Дараа нь `ledger asset mint`, `ledger asset burn`, болон `ledger asset transfer` командуудад `--metadata ./taira.tx-metadata.json`-г оруулаарай.
 
 ## Заавар {#instructions}
 

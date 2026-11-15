@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito 是 Iroha 的规范序列化层。当对等节点、SDKs、CLI 工具、T
 | Torii 类型化响应 | 支持类型化二进制响应的端点使用 `Accept: application/x-norito`。 |
 | SDKs | Rust、Python、JavaScript、Kotlin/Java、Swift 和 Android 客户端使用 Norito 构建器或绑定，而不是手动组装字节。 |
 | Kura 存储 | 区块载荷、恢复辅助文件、名册和提交标记以 Norito 帧数据的形式存储。 |
-| 清单 | Nexus、数据可用性、SoraFS、流媒体和面向应用的清单在需要签名或哈希时使用 Norito。 |
+| 清单 | SORA Nexus、数据可用性、SoraFS、流媒体和面向应用的清单在需要签名或哈希时使用 Norito。 |
 | 流媒体 | Norito Streaming 使用 Norito 清单、分段头、控制帧和一致性测试数据。 |
 
 Norito 不是智能合约语言。它是承载交易、合约调用、清单和类型化 API 载荷的确定性封装与编解码器。
@@ -123,7 +123,7 @@ Rust 数据类型通常使用 derive 宏，而不是手写编解码代码。deri
 
 在可行时，derive 实现还会公开编码长度提示和精确长度计算。编码器使用这些提示预留缓冲区并避免额外拷贝。
 
-## Rust 软件包功能系列 {#crate-feature-families}
+## 软件包功能系列 {#crate-feature-families}
 
 从源代码构建 Iroha 或 SDK 绑定时，Norito 功能决定可用的辅助函数和加速器：
 
@@ -205,5 +205,5 @@ Norito Streaming 将同样的确定性方法扩展到媒体和实时传输接口
 
 ## 上游参考 {#upstream-references}
 
-- [Norito 格式的规范](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito 格式的规范](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

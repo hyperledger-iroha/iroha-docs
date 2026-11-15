@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Парольдәр хәүефһеҙлеге {#password-security}
 
 Паролдәр оператор консольдарын, йәшерен магазиндарҙы, резервтарҙы һәм урындағы файлдарҙы һаҡлай ала. Пароль - бары тик бер контроль. Уны хәүефһеҙ асҡыстар һаҡланыуы, инеү контролдәре һәм күп факторлы аутентификация менән бергә ҡулланығыҙ.

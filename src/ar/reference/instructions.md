@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha عمليات التعليمات {#iroha-special-instructions}
 
 يعرض نموذج البيانات الحالي عائلات التعليمات المدمجة هذه:
@@ -28,7 +27,6 @@ translation_engine: bing-translator-llm
 | [`CustomInstruction`](/ar/blockchain/instructions.md#other-instructions) |الحمولة الخاصة بالمنفذ التنفيذي JSON|
 | [حساب ضمان للأصل الأصلي](/ar/blockchain/escrow.md) | `OpenAssetEscrow`، `AcceptAssetEscrow`، `MarkEscrowPaymentSent`، `ReleaseAssetEscrow`، `CancelAssetEscrow`، `OpenEscrowDispute`، `ResolveEscrowDispute` |
 | [أقفال الأصول العامة](/ar/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`، `DrawdownAssetLock`، `CancelAssetLock`، `ExpireAssetLock` |
-| [حساب ضمان للأصول المجهولة](/ar/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`، `AcceptAnonymousAssetEscrow`، `MarkAnonymousEscrowPaymentSent`، `ReleaseAnonymousAssetEscrow`، `CancelAnonymousAssetEscrow`، `OpenAnonymousEscrowDispute`، `ResolveAnonymousEscrowDispute` |
 | [التسوية الخاصة الذرية](/ar/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`، `RotatePrivateSettlementPoolPolicyV1`، `FinalizeAtomicPrivateSettlementV1`، `AbortAtomicPrivateSettlementV1` |
 
 قد تقوم وحدات Iroha 3 الإضافية بتسجيل أنواع تعليمات خاصة بالنطاق من خلال سجل التعليمات. بالنسبة لمخطط العقدة المخول والأمر الذي يلتقطه، انظر [مخطط نموذج البيانات](./data-model-schema.md).
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

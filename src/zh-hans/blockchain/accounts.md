@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 账户 {#accounts}
 
 账户是一个能够签署交易并拥有账本状态的授权主体。在当前 Iroha 3 数据模型中，`AccountId` 是规范且无域的：它派生自账户控制器，并以 [I105](/zh-hans/reference/i105.md) 规范编码。人类可读的域和数据空间上下文属于单独的账户别名绑定。
@@ -17,12 +16,12 @@ translation_engine: nllb-200-ct2
 - `id`:规范`AccountId`
 - `metadata`:任意的账户元数据
 - `label`:可选的稳定别名
-- `uaid`:可选的通用账户 ID 用于 Nexus 流.
+- `uaid`：SORA Nexus 流程使用的可选通用账户 ID
 - `opaque_ids`:与账户的 UAID 绑定的不透明标识符
 
 创建帐户所使用的交易有效载荷为 `NewAccount`.它携带相同的身份,元数据,标签, UAID 和不透明的 ID 字段,被注册账户使用.
 
-`uaid` 是对规范 `AccountId` 的补充，而不是替代。当 Nexus 服务需要跨数据空间的稳定用户或组织句柄、保护隐私的注册流程或服务能力查找时，请使用它。运行时维护一对一的 UAID到账户索引，要求不透明标识符通过 UAID 附加，并拒绝重复或冲突的不透明标识符。有关 Nexus 服务层流程，请参阅 [FHE 和 UAID](/zh-hans/blockchain/sora-nexus-services.md#fhe-and-uaid)。
+`uaid` 是对规范 `AccountId` 的补充，不会取代它。当 SORA Nexus 服务需要跨数据空间的稳定用户或组织标识、保护隐私的注册，或服务能力查询时，可使用它。运行时维护 UAID 与账户的一对一索引，要求通过 UAID 关联不透明标识符，并拒绝重复或冲突的不透明标识符。有关 SORA Nexus 服务层流程，请参阅 [FHE 和 UAID](/zh-hans/blockchain/sora-nexus-services.md#fhe-and-uaid)。
 
 ## 账户控制者 {#account-controllers}
 
@@ -32,8 +31,9 @@ translation_engine: nllb-200-ct2
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 查看当前关键格式[客户端配置](/zh-hans/guide/configure/client-configuration.md)和 [关键生成](/zh-hans/guide/security/generating-cryptographic-keys.md).
@@ -44,7 +44,7 @@ private_key = { digest_function = "ed25519", payload = "..." }
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 为了检查账户资产,从第一次调用中复制一个帐户 ID,然后在将其放入路径之前编码 URL.该 Python 片段为上市的第一个账户执行:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-创建或更新一个帐户是一个签署的交易,需要以下页面所述、由 faucet 供资的 Taira 设置： [连接到 SORA Nexus 数据空间](/zh-hans/get-started/sora-nexus-dataspaces.md).
+这些都是公开读取操作。创建或更新账户需要提交签名交易，并完成[使用 Taira 和 Minamoto 在 SORA Nexus 上开发](/zh-hans/get-started/sora-nexus-dataspaces.md)中介绍的 Taira 配置及水龙头资金领取流程。
 
 ## 登记和许可证 {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ PY
 - 自己的域名
 - 接收角色和权限令牌
 - 存储元数据
-- 当这些功能被启用时,参与别名, rekey,回收和 Nexus 身份流
+- 在相关功能启用时，参与别名、密钥更换、恢复和 SORA Nexus 身份流程
 
 ## 解决身份问题 {#troubleshooting-identity-issues}
 

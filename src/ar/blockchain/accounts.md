@@ -1,14 +1,13 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/accounts.md
-translation_source_hash: 015a85d81c44b7ef7f13cdafb2ed8e493ef512b94dc500939655c70285eac3bd
+translation_source_hash: d956bfb8c698fa463ef9fa84a91d50cf0e2100885eba670121ad78753f87d88d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # الحسابات {#accounts}
 
-الحساب هو كيان تفويض يمكنه توقيع المعاملات وامتلاك حالة دفتر السجل على البلوكشين. في نموذج البيانات الحالي Iroha 3، `AccountId` هو بروتوكول واحد قياسي وبدون نطاق: يتم اشتقاقه من وحدة التحكم في الحساب ويتم ترميزه في الشكل الموحد للبروتوكول كـ [I105](/ar/reference/i105.md). ينتمي السياق القابل للقراءة من قبل الإنسان للنطاق ومساحة البيانات إلى ربط أسماء الحسابات المنفصلة.
+الحساب هو جهة مخوّلة بتوقيع المعاملات وامتلاك حالة في دفتر السجل. في نموذج بيانات Iroha 3 الحالي، يُعد `AccountId` معرّفًا معياريًا لا يتضمن نطاقًا: يُشتق من المتحكم في الحساب ويُرمّز بالصيغة المعيارية [I105](/ar/reference/i105.md). أما سياق النطاق ومساحة البيانات المقروء للبشر فينتمي إلى روابط منفصلة للأسماء المستعارة للحسابات.
 
 ## هيكل {#structure}
 
@@ -17,12 +16,12 @@ translation_engine: bing-translator-llm
 - `id`: البروتوكول الموحد القياسي `AccountId`
 - `metadata`: بيانات وصفية عشوائية للحساب
 - `label`: اسم مستعار اختياري ومستقر
-- `uaid`: معرف الحساب الشامل الاختياري المستخدم بواسطة تدفقات Nexus
+- `uaid`: معرف الحساب الشامل الاختياري المستخدم بواسطة تدفقات SORA Nexus
 - `opaque_ids`: معرفات غامضة مرتبطة بـ UAID للحساب
 
 بيانات المعاملة المستخدمة لإنشاء حساب هي `NewAccount`. تحمل نفس الهوية والبيانات الوصفية والتسمية و UAID وحقول المعرف الغامض المستخدمة من قبل الحساب المسجل.
 
-`uaid` يُكمّل بروتوكول المعيار الفردي `AccountId`؛ فهو لا يحل محله. استخدمه عندما تحتاج خدمات Nexus إلى مُعرف مستخدم أو مؤسسة ثابت عبر مساحات البيانات، أو تسجيل يحافظ على الخصوصية، أو البحث عن قدرات الخدمة. يحافظ بيئة تنفيذ البرنامج على فهرس واحد إلى واحد UAID-إلى-الحساب، ويتطلب إرفاق معرفات غامضة من خلال UAID، ويرفض المعرفات الغامضة المكررة أو المتصادمة. انظر [FHE و UAID](/ar/blockchain/sora-nexus-services.md#fhe-and-uaid) لتدفق طبقة الخدمة Nexus.
+يكمّل `uaid` معرّف الحساب المعياري `AccountId` ولا يحل محله. استخدمه عندما تحتاج خدمات SORA Nexus إلى معرّف ثابت لمستخدم أو مؤسسة عبر مساحات البيانات، أو إلى تسجيل يحافظ على الخصوصية، أو إلى البحث عن قدرات الخدمات. تحتفظ بيئة التنفيذ بفهرس يربط كل UAID بحساب واحد والعكس، وتشترط ربط المعرّفات المعتمة من خلال UAID، وترفض المعرّفات المعتمة المكررة أو المتصادمة. راجع [FHE وUAID](/ar/blockchain/sora-nexus-services.md#fhe-and-uaid) للاطلاع على تدفق طبقة خدمات SORA Nexus.
 
 ## مراقبو الحسابات {#account-controllers}
 
@@ -32,8 +31,9 @@ translation_engine: bing-translator-llm
 
 ```toml
 [account]
+profile = "taira"
 public_key = "ed0120..."
-private_key = { digest_function = "ed25519", payload = "..." }
+private_key_file = "/absolute/path/to/private.key"
 ```
 
 انظر إلى [تكوين العميل](/ar/guide/configure/client-configuration.md) و [توليد المفتاح](/ar/guide/security/generating-cryptographic-keys.md) لأشكال المفاتيح الحالية.
@@ -44,7 +44,7 @@ private_key = { digest_function = "ed25519", payload = "..." }
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+  | jq -r '.items[] | [.id, (.label // "-")] | @tsv'
 ```
 
 لفحص أصول الحساب، انسخ معرف الحساب من الاستدعاء الفني الأول وقم بترميزه باستخدام URL قبل وضعه في المسار. يقوم هذا المقطع Python بذلك للحساب المدرج أولاً:
@@ -67,7 +67,7 @@ print(json.dumps({"account_id": account_id, "assets": assets["items"]}, indent=2
 PY
 ```
 
-هذه قراءات عامة. إنشاء حساب أو تحديثه هو معاملة موقعة ويتطلب إعداد Taira الممول من شبكة الاختبار الموضح في [الاتصال بمساحات البيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md).
+هذه عمليات قراءة عامة. إنشاء حساب أو تحديثه معاملة موقعة، ويتطلب إعداد Taira مع تمويل الحساب من خدمة التمويل التجريبي كما هو موضح في [التطوير على SORA Nexus باستخدام Taira وMinamoto](/ar/get-started/sora-nexus-dataspaces.md).
 
 ## التسجيل والأذونات {#registration-and-permissions}
 
@@ -80,7 +80,7 @@ PY
 - النطاقات الخاصة
 - استلام الأدوار ورموز الأذونات
 - تخزين البيانات الوصفية
-- المشاركة في تدفقات الهوية البديلة، وإعادة التشفير، والاسترداد، و Nexus عندما تكون هذه الميزات مفعلة
+- المشاركة في تدفقات الأسماء المستعارة وتغيير المفاتيح والاسترداد وهوية SORA Nexus عندما تكون هذه الميزات مفعّلة
 
 ## استكشاف مشكلات الهوية وإصلاحها {#troubleshooting-identity-issues}
 
@@ -96,4 +96,4 @@ PY
 - [الأذونات](/ar/blockchain/permissions.md)
 - [البيانات الوصفية](/ar/blockchain/metadata.md)
 - [تكوين العميل](/ar/guide/configure/client-configuration.md)
-- [SORA Nexus مساحات البيانات](/ar/get-started/sora-nexus-dataspaces.md)
+- [مساحات بيانات SORA Nexus](/ar/get-started/sora-nexus-dataspaces.md)

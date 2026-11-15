@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Moslik Matrisi {#compatibility-matrix}
 
 Moslik matritsasi kesishmani ko'rsatadi SDK joriy uchun stsenariy qamrovi Iroha 3 hujjatlar to'plami. Standart bo'lib, sahifa pinlanganidan yaratilgan bir nuqtada vaqt ma'lumotlar ko'rinishini yuklaydi [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) tahrir.

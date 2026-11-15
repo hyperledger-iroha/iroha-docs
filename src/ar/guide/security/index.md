@@ -5,7 +5,6 @@ translation_source_hash: ec7fc2f950b007f52d837473ad7021565923e537df1d18b86055fb4
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # الأمان {#security}
 
 قم بتأمين نشر Iroha كما تفعل مع أي نظام يتعامل مع البيانات الحساسة والقيمة. احمِ مفاتيح التوقيع، والوصول إلى الشبكة، وعمليات العقد، والمراقبة، والاستجابة للحوادث. دفتر الأستاذ الخاص بالبلوكشين لا يلغي الحاجة إلى هذه الضوابط.

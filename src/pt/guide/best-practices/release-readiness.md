@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # Preparação para Lançamento {#release-readiness}
 
 Antes de promover uma aplicação ou mudança de rede Iroha, prove o comportamento no menor ambiente que possa expor o risco relevante, e então avance cuidadosamente através dos portões de testnet compartilhada e produção.
@@ -21,12 +20,12 @@ Veja [Iniciar Iroha 3](/pt/get-started/launch-iroha.md) e [Tutoriais de SDK](/pt
 
 ## Gateway de Testnet Compartilhada {#shared-testnet-gate}
 
-- Use Taira ou outro testnet compartilhado para o comportamento do endpoint API, taxas, financiamento de conta, latência e ensaios operacionais.
+- Use Taira ou outro testnet compartilhado para o comportamento do endpoint , taxas, financiamento de conta, latência e ensaios operacionais.
 - Mantenha as gravações na testnet ao vivo como opcional para que execuções de teste comuns não dependam da disponibilidade da rede nem gastem fundos da testnet.
 - Antes de enviar cada transação de teste real, verifique os fundos do signatário, os metadados do ativo de taxa, as permissões da autoridade e o estado esperado.
 - Aguarde um status terminal e, em seguida, verifique o estado resultante com uma consulta somente leitura.
 
-Veja [Construir em SORA 3: Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md).
+Consulte [Desenvolver sobre SORA Nexus: Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md).
 
 ## Gate da Mainnet ou Produção {#mainnet-or-production-gate}
 
@@ -46,7 +45,7 @@ Veja [Construir em SORA 3: Taira e Minamoto](/pt/get-started/sora-nexus-dataspac
 
 - A configuração é específica do ambiente e não contém segredos apenas para testes.
 - O comportamento de tentativa de transação é idempotente ou explicitamente limitado.
-- O aplicativo pode distinguir falhas de rejeição, expiração, tempo limite e disponibilidade do endpoint API.
+- O aplicativo pode distinguir rejeição, expiração, esgotamento do tempo limite e falhas de disponibilidade do endpoint.
 - O monitoramento abrange taxa de transferência, latência, profundidade da fila, rejeições, alterações de visualização e eventos comerciais relevantes.
 - Os operadores têm livros de procedimentos para modos de falha esperados.
 - A revisão de segurança abrangeu custódia de chaves, permissões, exposição de rede e principal de autorização de automação.

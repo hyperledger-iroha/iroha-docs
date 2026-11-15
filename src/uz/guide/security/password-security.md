@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Parol xavfsizligi {#password-security}
 
 Parollar operator konsollari, maxfiy omborlar, zaxiralar va mahalliy kalit fayllarini himoya qilishi mumkin. Parol faqat bitta nazorat vositasidir. Uni xavfsiz kalit saqlash, kirish nazoratlari va mavjud bo'lganda ko'p faktorli autentifikatsiya bilan birga ishlating.

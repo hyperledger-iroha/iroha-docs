@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 超級資料和賬本儲存選擇 {#metadata-and-ledger-storage-choices}
 
 Iroha 3 資料模型對於任意的關鍵值資料沒有單獨的 `Store`資產型別. 使用以下儲存選項:

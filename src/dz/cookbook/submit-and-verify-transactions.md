@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+claude-opus-5-5
 ---
 # ཚོང་འབྲེལ་ཚུ་ བཏང་ནི་དང་ བདེན་དཔྱད་འབད་ནི། {#submit-and-verify-transactions}
 
@@ -13,7 +13,7 @@ Taira འབྲེལ་གཏད་འདི་ སྔོན་འགོག་�
 
 ## དགོས་མཁོ་ཚུ་ {#prerequisites}
 
-- `taira.tx-metadata.json`དང་ `TAIRA_ACCOUNT_ID`གིས་དངུལ་རྒྱབ་སྐྱོར་འབད་ཡོད་པའི་ `taira.client.toml` དེ་ལས་ [གིས་ བཟོ་སྐྲུན་འབད་མི་ འབྲེལ་མཐུད་དེ་ར་ Taira](./connect-to-taira.md) ལུ་ཡོདཔ་ཨིན།
+- [Taira ལུ་མཐུད་སྦྲེལ་འབད་](./connect-to-taira.md) གིས་ བཟོ་མི་ མ་དངུལ་བཙུགས་ཡོད་པའི་ `taira.client.toml` དང་ `taira-faucet-policy.json` དེ་ལས་ `TAIRA_ACCOUNT_ID`། འབྲི་ནིའི་ཚོང་འབྲེལ་ཚུ་གིས་ `--fee-payer authority` ལག་ལེན་འཐབ་ཨིན། CLI གིས་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ Taira གི་འཐུས་རྒྱུ་དངོས་ནང་ འཐུས་ངེས་བདེན་གྱི་ གོང་ཚད་བཀོདཔ་ཨིན།
 -  ད་ལྟོའི `iroha` CLI དང་ `jq`.
 - ཚར་གཅིག་སྤྱོད་ནི Taira མིང་རྟགས་འགོད་མི ཅིག། དེའི ལྡེ་མིག ཡང་ན་ འབྲི བཀའ་རྒྱ་ཚུ འདི་ Minamoto གུ་ལོག་སྟེ་ལག་ལེན་མ་འཐབ།
 
@@ -21,15 +21,15 @@ Taira འབྲེལ་གཏད་འདི་ སྔོན་འགོག་�
 
 ### 1. མཐའ་མཇུག་གི་གནས་ཚད་དང་ དབང་ཚད་དང་ འཐུས་ཚུ་ སྔོན་འགོག་འབད་དགོ། {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-དང་པ་གྲལ་ཐིག་གི་གནས་སྟངས་འདྲ་བཤུས་འདི་ ཀློག་ཞིནམ་ལས་ དབང་འཛིན་གྱི་འཐུས་དངུལ་ལྷག་ལུས་དེ་མཐོང་ཚུགསཔ་སྦེ་ བརྟག་ཞིབ་འབད་ འབྲེལ་མཐུད་བཟོ་ཐབས་ལུ་ བཟོ་སྐྲུན་འབད་མི་ ཟུར་གནས་གནད་སྡུདནང་ལས་ Base58 རྒྱུ་དངོས་ངེས་ཚིག ID ཀློག་དགོ།
+དང་པ་ གྲལ་རིམ་གྱི་ སྐབས་བབ་གནས་སྟངས་ ལྷག་ཞིནམ་ལས་ དབང་འཛིན་གྱི་ འཐུས་ལྷག་ལུས་ མཐོང་ཚུགསཔ་ བདེན་ཁུངས་བཀལ། མཐུད་སྦྲེལ་ཐབས་རིམ་གྱིས་ སྲུང་བཞག་འབད་ཡོད་པའི་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གི་སྲིད་བྱུས་ནང་ལས་ Base58 རྒྱུ་དངོས་ངེས་ཚིག་ ID ལྷག།
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -47,8 +47,7 @@ CLI གིས་འཐུས་སྤྲོད་ལེན་གྱི་དོ�
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -59,12 +58,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### 3. མཐའ་བཅད་རྒྱུན་རིམ་གནས་སྟངས་ལུ་སྒུག། {#_3-wait-for-terminal-pipeline-state}
 
-HTTP ངོས་ལེན་ ཡང་ན་གྲལ་ཐིག་འཛུལ་ལས་ གྲུབ་འབྲས་བཏོན་ནིའི་ཚབ་ལུ་ ཐོ་བཀོད་ཅན་གྱི་གནས་གོང་གི་རོགས་རམ་འདི་ལག་ལེན་འཐབ་ཨིན། `--wait` དང་གཅིག་ཁར་ ཉེན་སྲུང་ལྡན་པའི་ལམ་འགྲུལ་གྱི་ཁྱབ་ཚད་འདི་ རང་བཞིན་གྱིས་གདམ་ཁ་འབད་ཡོདཔ་ད་ སྔོན་སྒྲིག་དམིགས་གཏད་དེ་ ལག་ལེན་འཐབ་ཡོདཔ མཐའ་བཅད ཨིན་པས།
+HTTP ངོས་ལེན་ ཡང་ན་ གྲལ་རིམ་ནང་ འཛུལ་ཆོག་པ་ལས་ མཐར་འཁྱོལ་བྱུང་ཡོདཔ་སྦེ་ ཚོད་དཔག་འབད་ནིའི་ཚབ་ལུ་ དབྱེ་བ་བཀོད་ཡོད་པའི་ གནས་ཚད་གྲོགས་རམ་པ་ ལག་ལེན་འཐབ། `--wait` དང་གཅིག་ཁར་ CLI གིས་ ངེས་བདེན་གྱི་ ཡོངས་ཁྱབ་གནས་ཚད་ ཡང་ཡང་ ཞིབ་དཔྱད་འབད་དེ་ གནས་སྟངས་ལས་ཐག་བཅད་ཡོད་པའི་ `Applied` མཐར་ཐུག་གནས་སྟངས་ ཐོབ་པའི་སྐབས་རྐྱངམ་ཅིག་ མཐར་འཁྱོལ་འབྱུངམ་ཨིན།
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -82,7 +81,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -100,15 +99,17 @@ curl -fsS -H 'Accept: application/json' \
 
 ## བརྟག་དཔྱད་འབད་ {#verify}
 
-དྲན་ཐོ་གསུམ་ཆ་ར་ ཧེཤ་གཅིག་ལུ་ མོས་མཐུན་ཡོདཔ་ཨིན་ན་ ཞིབ་དཔྱད་འབད་ཞིནམ་ལས་ འཚོལ་ཞིབ་པ་གིས་ ད་ལས་ཕར་ བསྒུག་སྡོད་པའི་གནས་སྟངས་ཅིག་ སྙན་ཞུ་མི་འབད།
+དྲན་ཐོ་གསུམ་ཆ་ར་ ཧེཤ་གཅིག་པ་ལུ་ མཐུན་མཐུན་ཨིན་ན་ དེ་ལས་ འཚོལ་ཞིབ་པ་གིས་ `Rejected` མེན་པར་ `Committed` སྙན་ཞུ་འབདཝ་ཨིན་ན་ ཞིབ་དཔྱད་འབད་:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 ཐོ་བཀོད་ཡིག་སྣེ་ལེན་དང་ མཐའ་མའི་གནས་ཚད་འདི་ བརྟག་དཔྱད་ཀྱི་དཔང་རྟགས་སྦེ་བཞག་དགོ། དེ་ཚུ་ནང་ མི་མང་གི་ཚོང་འབྲེལ་གྱི་ གནད་དོན་ཡོད་མ་གཏོགས་ མཚམས་འཇོག་གི་ལྡེ་མིག་མེདཔ།
@@ -117,15 +118,15 @@ curl -fsS -H 'Accept: application/json' \
 
 - HTTP `202` ཡང་ན་གྲལ་ཐིག་གནས་ཚད་ཀྱིས་ཁས་ལེན་ཙམ་སྟོནམ་ཨིན། ཡིག་དཔར་ཅན་གྱི་གནས་ཚད་འདི་ ལག་ལེན་འཐབ་ཡོདཔ, ཆ་མེད་བཏང, དུས་ཡོལ ཡང་ན་ཚད་བཟུང་དུས་ཚོད་རྫོགས་ཚུན་འཕྲོ་མཐུད་འདྲི།
 - ཧེཤ་ཅིག་སླར་ལོག་འབད་བའི་ཤུལ་ལས་ ཕུལ་བའི་དུས་ཚོད་རྫོགས་སོང་པ་ཅིན་ ཚོང་འབྲེལ་གཞན་ཅིག་མ་བཟོ་བའི་ཧེ་མ་ ཧེཤ་དེ་འདྲི་དཔྱད་འབད། མིག་མེད་ལོག་བཙུགས་མི་འདི་གིས་ ལུང་འདྲེན་དང་མིང་རྟགས་བཀོད་ཡོད་པའི་ ནང་དོན་གནད་སྡུད་གསརཔ་ཅིག་གསར་བསྐྲུན་འབདཝ་ཨིན།
-- མཚན་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ འཐུས་བརྗོད་ཚིག་འདི་ བཀག་ཆ་འབད་ཚུགས། `--fee-payer authority`, `gas_asset_id`, དབང་འཛིན་གྱི་ལྷག་ལུས་, དང་ཡོངས་འབྲེལ་རིམ་སྒྲིག་ཨའི་ཌི་ཚུ་ཞིབ་དཔྱད་འབད།
+- འཐུས་ཀྱི་གོང་ཚད་བཀོད་པ་ཅིག་ མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་ བཀག་ཆ་འབད་ཚུགས། `--fee-payer authority`, དབང་འཛིན་གྱི་ལྷག་ལུས་ རིམ་སྒྲིག་འབད་ཡོད་པའི་ `chain` དང་ `network_id`, དེ་ལས་ `--metadata` ནང་ `gas_asset_id` བཟུམ་གྱི་ འཐུས་ལྡེ་མིག་ མེདཔ་ཚུ་ ཞིབ་དཔྱད་འབད།
 - `Rejected` གིས་ སྤྱིར་བཏང་ལུ་ བཀའ་རྒྱ་ལག་ལེན་བསྟར་སྤྱོད་འབད་ནི་དང་ ངོས་ལེན་འབད་ནི་དང་འཐུས་སྤྲོད་ནི་ དེ་ལས་ ཡང་ཅིན་ གནས་སྟངས་ཉམས་མྱོང་མེདཔ་སྦེ་སྟོན་དོ་ཡོདཔ་ལས་ འཛིན་སྐྱོང་འཐབ་མ་ཚུགས་པའི་ཁུངས་ཅིག་ཨིནམ་ལས་ བརྒྱུད་འཕྲིན་བསྐྱར་བཅོས་འབད་ནིའི་ དཔའ་བཅམ་མི་དགོ་ཟེར་ཨིན་པས།
 - བརྟག་ཞིབ་འབད་མི་ `404` ལག་ལེན་འཐབ་ཡོདཔ གི་ཤུལ་ལུ་ ཌའི་ལོག་ཨེབ་གཏང་འབད་ཚུགས། ཀློག་ཐེངསམ་བསྐྱར་དུ་བརྟག་དཔྱད་འབད། ཚོང་འབྲེལ་འདི་ ལོག་བཙུགས་མ་བཅུག།
 - གལ་སྲིད་ ཁྱད་ལྡན་བཀོད་རྒྱ་ཅིག་གིས་ ས་གནས་བརྟག་དཔྱད་དྲ་རྒྱ བཟོ་སྐྲུན་འབད་རུང་ Taira གིས་ འདི་མ་བཏུབ་པ་ཅིན་ ཁྱོད་ཀྱིས་ Taira གི་བདེན་པའི་ཆོག་ཐམ་དང་ ཡང་ན་ མིང་གི་ས་སྟོང་གི་བཅའ་ཡིག་ཚུ་ཐོབ་ཚུགས། ས་གནས་ཀྱི་གྲུབ་འབྲས་འདི་གིས་ མི་མང་གི་དྲ་ལམ་ལུ་ དབང་ཚད་བྱིན་མི་ཚུགས།
 
 ## གཞི་རྟེན་དང་འབྲེལ་བའི་ཡིག་ཆ་ཚུ་ {#source-and-related-docs}
 
-- [ཚོང་འབྲེལ་གྱི་གནད་དོན་ཚུ་ བསྡུ་ལེན་འབད་ནི་དང་ དངུལ་ཕོགས་ཀྱི་བཅའ་ཡིག་ལག་ལེན་འཐབ་ནི་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs) ལུ་ གཞི་བཙུགས་འབདཝ་ཨིན།
-- [བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs) ལུ་ ཚོང་འབྲེལ ངེས་གཏན བརྟག་དཔྱད
+- [ཚོང་འབྲེལ་གྱི་གནད་དོན་ཚུ་ བསྡུ་ལེན་འབད་ནི་དང་ དངུལ་ཕོགས་ཀྱི་བཅའ་ཡིག་ལག་ལེན་འཐབ་ནི་ — གཏན་སྦྱར་ཡོད་པའི Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs) ལུ་ གཞི་བཙུགས་འབདཝ་ཨིན།
+- [བསྡུ་སྒྲིག་འབད་ཡོད་པའི་ Git commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs) ལུ་ ཚོང་འབྲེལ ངེས་གཏན བརྟག་དཔྱད
 - [ལས་སྣ་ཚུ་](/dz/blockchain/transactions.md)
 - [CLI ལམ་སྟོན་](/dz/get-started/operate-iroha-via-cli.md)
 - [Torii ཚད་མཇུག་གི་ཐིག་ཁྲ།](/dz/reference/torii-endpoints.md)

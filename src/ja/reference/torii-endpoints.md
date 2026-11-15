@@ -1,45 +1,44 @@
 ---
 translation_locale: ja
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 32f53c1fad49ecd320c46636f707e105db86b2080a4500f6006a3a91e97b9c7f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
-# Torii API エンドポイント {#torii-endpoints}
+# Torii エンドポイント {#torii-endpoints}
 
 Torii は Iroha 3 の HTTP、SSE、WebSocket ゲートウェイです。台帳向け APIs とオペレーター向けエンドポイントの両方を提供します。
 
 現在のプロトコルの規則は次の通りです：
 
 - 標準の二進形式は Norito です
-- 多くの API エンドポイントは、`Accept: application/json` を送信するときに JSON もサポートします
+- 多くの エンドポイントは、`Accept: application/json` を送信するときに JSON もサポートします
 - メトリクスは Prometheus 形式で公開されます
 
 形式の詳細、コンテンツ交渉、レイアウトフラグ、スキーマの暗号ハッシュ、および Norito RPC のガイダンスについては、[Norito 参照](/ja/reference/norito.md) を参照してください。
 
-## 一般的な API エンドポイント {#common-endpoints}
+## 一般的な エンドポイント {#common-endpoints}
 
-| API エンドポイント                         |フォーマット|目的|
+| エンドポイント                         |フォーマット|目的|
 | -------------------------------- | -------------- | ---------------------------------------------------------------- |
 | `POST /v1/pipeline/transactions` | Norito         |署名済みのトランザクションを送信する|
 |`POST /v1/query`| Norito         |署名済みの問い合わせを提出する|
 | `GET /v1/events/ws`              | WebSocket      |イベントストリームを購読する|
 | `GET /v1/events/sse`             | SSE            |SSE のイベントストリームを購読する|
 | `GET /v1/blocks/stream`          | WebSocket      |確定ブロックをストリームする|
-| `GET /v1/peers`                  | JSON           |Torii によって公開されたネットワークピアリスト|
+| `GET /v1/peers`                  | JSON           |オンラインのネットワークピア ID。運用担当者のリクエスト署名が必要|
 | `GET /livez`                     |テキスト|プロセスのみの生存性；プロトコルの準備が整っていることを意味するわけではありません|
-| `GET /readyz`                    | JSON           |必須のオフライン現金チェックを含む、ノードの準備完了|
-| `GET /health`                    | JSON           |同じオフラインキャッシュ不変条件を持つレディネスプローブ|
-|`GET /v1/api/version`|テキスト|現在のブロックヘッダーバージョン|
+| `GET /readyz` | テキスト | 合意形成への参加受け入れとビーコンの保管が利用可能になると準備完了。緊急用 Fast 起動中、または設定済みの ISO 20022 ブリッジが監査記録を永続化できない場合は `503` |
+| `GET /health` | テキスト | Torii の稼働確認。`Healthy` を返す |
+|`GET /v1/api/version`|テキスト|正規の署名済みブロックのワイヤ形式バージョン。ジェネシス前は `503`|
 | `GET /status`                    | Norito または JSON |高レベルの診断ステータス；リクエスト JSON を明示的に|
-| `GET /metrics`                   |プロメテウス|Prometheus スクレイプ API エンドポイント|
+| `GET /metrics` | Prometheus | Prometheus のスクレイプ用エンドポイント |
 |`GET /v1/schema`| JSON           |有効にすると、ノードによって提供されるデータモデルスキーマのデータスナップショット|
-| `GET /openapi.json`              | JSON           | OpenAPI アクティブな Torii HTTP ルートのドキュメント|
+| `GET /openapi.json`              | JSON           | リポジトリに登録済みの OpenAPI 契約。このビルドのカタログルートに絞り込まれています|
 | `GET /v1/parameters`             |JSON|ノードパラメータデータスナップショット|
 | `GET /v1/node/capabilities`      | JSON           |ノードの機能とデータモデルのメタデータ|
 |`GET /v1/time/now`| JSON           |ノードローカルシステムクロックデータスナップショット|
-| `GET /v1/time/status`            | JSON           |時間同期ステータス|
+| `GET /v1/time/status`            | JSON           |時間同期ステータス。運用担当者のリクエスト署名が必要|
 
 SSE リクエストの場合、ネイティブストリームと型付きフォールバックを宣伝してください：
 
@@ -49,7 +48,7 @@ Accept: text/event-stream, application/json
 
 Torii は最初にリクエストレイヤーで JSON または Norito の表現を交渉し、その後ネイティブの `text/event-stream` レスポンスを検証します。そのため `text/event-stream` のみを送信すると `406` で拒否されます。[ストリームイベントのレシピ](/ja/cookbook/stream-events.md) は完全なヘッダーを使用します。
 
-`/openapi.json`はスキーマで表されるルートの生成された契約であり、完全な運用プローブの在庫ではありません。現在の文書には`/livez`および`/readyz`が省略されており、その`/health`の説明はレディネスハンドラーに遅れることがあります。ライブドキュメントからルートクライアントを生成しますが、稼働中のノードとピン留めされたハンドラに対して直接ライブネスとレディネスを検証します。正確なサーフェスはまだビルドに依存します機能およびソフトウェアの実行時構成。[Torii API コンソール](/ja/reference/torii-api-console.md) を使用してそのライブドキュメントを読み込み、JSON ルートをテストし、curl リクエストをコピーし、現在のスキーマからクライアントコードを生成します。
+`/openapi.json` は、OpenAPI プロジェクションの対象としてマークされたカタログ経路について、リポジトリに登録済みの契約です。`/livez`、`/health`、`/readyz` を含みます。対象ノードが提供する文書から経路のクライアントを生成し、検査用の経路を直接確認してください。利用できる機能は、ビルド機能とランタイム設定によって決まります。[Torii API コンソール](/ja/reference/torii-api-console.md)で稼働中の文書を読み込み、JSON の経路を試し、curl リクエストをコピーして、現在のスキーマからクライアントコードを生成できます。
 
 カタログ対応の OpenAPI 操作には、すべて`x-iroha-route-auth`オブジェクトが含まれています。カタログ対応の MCP ツールは、`_meta["iroha/routeAuth"]`と同じ契約を公開します。両方のプロジェクションには、`schemaVersion`、`stableRouteId`、`authentication`、および`admission`が含まれています。バージョン `1` を正確な契約として扱うこと：認証または承認ラベルの解釈方法を推測するのではなく、サポートされていない `schemaVersion` を拒否する。ルートメタデータはリクエストの境界を記述するものであり、その境界で必要な認証情報の代わりにはならない。
 
@@ -83,19 +82,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-パブリックテストネットのルートが`502`を返す場合、タイムアウトする場合、またはキューが飽和していると報告する場合は、クライアントコードのデバッグを行う前に、それを API のエンドポイント可用性の問題として扱い、後で再試行してください。
+公開テストネットの経路が `502` を返す、タイムアウトする、またはキューの飽和を報告する場合は、エンドポイントの可用性の問題として扱ってください。クライアントコードの調査に進む前に、時間を置いて再試行します。
 
-## コンセンサスとソフトウェアランタイム API エンドポイント {#consensus-and-runtime-endpoints}
+## コンセンサスとソフトウェアランタイム エンドポイント {#consensus-and-runtime-endpoints}
 
-以下のすべての Sumeragi ルートでは、オペレーターの署名が必要です。ステータス、診断、ストリーム、リーダー、キー、QC、およびパラメータルートも、テレメトリ対応ビルドが必要です。
+以下のすべての Sumeragi 経路には、運用担当者のリクエスト署名が必要です。状態、診断、ストリーム、レーン、鍵、パラメーターの経路には、テレメトリを有効にしたビルドも必要です。ランタイムのアップグレード、リリース、封じ込めの経路にも、運用担当者のリクエスト署名が必要です。`GET /v1/runtime/abi/active` と `GET /v1/runtime/metrics` には正規のアカウントリクエスト署名が必要で、`GET /v1/runtime/abi/hash` は公開されています。
 
-| API エンドポイント                                  |フォーマット|目的|
+| エンドポイント                                  |フォーマット|目的|
 | ----------------------------------------- | -------------- | ------------------------------------------------------- |
 | `GET /v1/sumeragi/status`                 | Norito または JSON |権威あるリデューサー所有のコンセンサス状態|
 |`GET /v1/sumeragi/diagnostics`| JSON           |非権威的なソフトウェア処理ワークフロー、キュー、および実行レーンの診断|
 | `GET /v1/sumeragi/status/sse`             |SSE|継続的な権威による合意状況のストリーム|
-| `GET /v1/sumeragi/leader`                 | JSON           |現在のリーダー情報|
-| `GET /v1/sumeragi/qc`                     | Norito または JSON |最高かつロックされた過半数証明データスナップショット|
+| `GET /v1/sumeragi/lanes` | Norito または JSON | グローバルチェーンのコミット済みレーンと、このノードのレーンインスタンスの状態 |
 | `GET /v1/sumeragi/consensus-keys`         | JSON           |アクティブコンセンサスキー|
 | `GET /v1/sumeragi/bls-keys`               | JSON           |アクティブ BLS コンセンサスキー|
 | `GET /v1/sumeragi/params`                 |JSON|現在のオンチェーン Sumeragi パラメータ|
@@ -105,15 +103,17 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
 | `GET /v1/runtime/abi/hash`                |JSON|アクティブソフトウェアランタイム ABI 暗号ハッシュ|
 | `GET /v1/runtime/metrics`                 | JSON           |ソフトウェア実行時メトリクスデータのスナップショット|
 | `GET /v1/runtime/upgrades`                | JSON           |ソフトウェア実行時アップグレードリスト|
-|`POST /v1/runtime/upgrades/propose`| JSON           |ソフトウェアランタイムのアップグレードを提案する|
-| `POST /v1/runtime/upgrades/activate/{id}` | JSON           |提案されたソフトウェアランタイムのアップグレードを有効にする|
-| `POST /v1/runtime/upgrades/cancel/{id}`   | JSON           |提案されたソフトウェアランタイムのアップグレードをキャンセルする|
+|`POST /v1/runtime/upgrades/propose`| JSON           |ランタイムの変更セットをスケジュールする SORA Parliament の提案を作成する|
+| `POST /v1/runtime/upgrades/attest/{id}` | JSON | スケジュール済みの変更セットに対する、このノードのアテステーションに署名する |
+| `GET /v1/runtime/release` | JSON | このノードのリリースダイジェストと、コミット済みおよびスケジュール済みのランタイム選択を実行しているかどうか |
+| `GET /v1/runtime/containments` | JSON | 記録されたランタイム定義の緊急封じ込め |
+| `POST /v1/runtime/upgrades/cancel/{id}`   | JSON           |スケジュール済みの変更セットを取り下げる SORA Parliament の提案を作成する|
 
-## アプリと SORA ルートファミリー {#app-and-sora-route-families}
+## アプリと SORA Nexus の経路群 {#app-and-sora-route-families}
 
-Torii がアプリ向けの機能セットで構築されると、エクスプローラー、SORA サービス、ブリッジフロー、証明、およびストレージのための追加の JSON ファミリーが公開されます。これらのファミリーはすべてのネットワークプロファイルで有効になっているわけではありません。
+アプリ向け機能セットで Torii をビルドすると、エクスプローラー、SORA Nexus のサービス、ブリッジ処理、証明、ストレージ向けの JSON 経路群が追加で公開されます。すべてのネットワークプロファイルで、これらの経路群がすべて有効になるわけではありません。
 
-`/openapi.json` は生成されたアプリ-API カタログに登録されたルートを説明します。これは、含まれるエントリについては権威がありますが、マウントされたすべてのルートについてではありません。そのプロセスによって。特に、公共のローカル SoraFS CID およびよく知られたルートは、その生成されたドキュメントの外部に配置されており、直接プローブする必要があります。
+`/openapi.json` は、含まれる操作については権威がありますが、プロセスがマウントするすべてのルートについてではありません。生成された SDKs にのみ公開されるカタログルートや、まったく投影されないカタログルートは、マウントされていてもこのドキュメントには含まれません。固定されたコミットでは、Kaigi の通話ルート、`/v1/app-api/*`、`/v1/kagemusha/{scheme}/wallets/*` 配下の KAGEMUSHA ウォレット読み取り、そして公開 SoraFS の `/sorafs/cid/*` と `/.well-known/sorafs/manifest` ルートがこれに該当します。これらのルートは直接プローブしてください。
 
 |ルートファミリー|目的|
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -126,17 +126,17 @@ Torii がアプリ向けの機能セットで構築されると、エクスプ�
 | `/v1/multisig/*`, `/v1/controls/*`                                        |マルチシグ提案、承認、および送金制御ヘルパー|
 | `/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*`                            |最終性、状態証明、ブロック証明、証明保持、および証明クエリルート|
 |`/v1/da/*`|データ可用性の取り込み、技術マニフェスト、証明ポリシー、暗号コミットメント値、およびピン意図|
-| `/v1/zk/*`                                                                | ZK ルーツ、証明検証、IVM 証明、投票集計、検証キー、証明記録、添付ファイル|
+| `/v1/zk/*` | ZK ルート、証明検証、投票集計、検証鍵、証明記録、添付データ |
 | `/v1/gov/*`, `/v1/ministry/*`                                             |ガバナンス提案、投票用紙、理事会の状態、保護された名前空間、議題提案、制定、最終化|
-| `/v1/nexus/*`, `/v1/sccp/*`                                               | Nexus 実行レーン、データスペース、およびクロスチェーン証明ヘルパー|
+| `/v1/nexus/*`, `/v1/sccp/*` | SORA Nexus のデータスペース、レーン、クロスチェーン証明の補助機能 |
 | `/v1/musubi/*`                                                            |Musubi パッケージレジストリの読み取りとインストラクションビルダー|
 | `/v1/subscriptions/*`                                                     |サブスクリプションプラン、サブスクリプションのライフサイクル、使用状況、課金ヘルパー|
 | `/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*`                      | SoraFS プロバイダの発見、容量証明、ピン留め、ストレージ取得、そして公開コンテンツの提供                          |
-| `/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*`                | SoraCloud サービスライフサイクル、プライベートコンピュート/モデルフロー、パブリックディスカバリー、ホストされたアプリルーティング|
+| `/v1/soracloud/*`, `/v1/soradns/*`, `/api/*` | SoraCloud サービスのライフサイクル、プライベート計算とモデルの処理、公開の探索機能、ホストされたアプリへのルーティング |
 | `/v1/connect/*`, `/v1/vpn/*`                                              |Iroha セッションを接続, WebSocket トランスポート, VPN セッション、プロファイル、およびプロトコル結果レコード|
 | `/v1/app-api/*`, `/v1/api/*`, `/v1/content/*`                             |アプリ API のバインディングとバンドル/CID に基づくコンテンツルーティング|
 | `/v1/operator/*`, `/v1/mcp`                                               |オペレーター認証およびネイティブ MCP JSON-RPC ブリッジ|
-| `/v1/offline/*`、`/v1/repo/*`、`/v1/space-directory/*`、`/v1/ram-lfe/*` |オフライン準備、リポジトリ契約、データスペース技術マニフェスト、および[RAM-LFE ヘルパー](/ja/blockchain/ram-lfe.md#torii-routes)|
+| `/v1/kagemusha/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` | KAGEMUSHA の登録とウォレットのファイナリティ読み取り、レポ取引契約、データスペースのマニフェスト、[RAM-LFE の補助機能](/ja/blockchain/ram-lfe.md#torii-routes) |
 | `/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*`        |コラボレーション、ウェブフック、プッシュ通知、ライブテレメトリー統合|
 
 ## アカウント認証、可視性、エクスプローラーカーソル {#account-authentication-visibility-and-explorer-cursors}
@@ -197,9 +197,9 @@ iroha.operator.http-request.network.v1\0 || <genesis-derived network_id[32]> ||
 
 正確なリクエスト署名は常に必須です。`[torii.operator_auth].enabled = true` の場合、各通常のオペレータールートも有効な `x-iroha-operator-session` を必要とします。`require_mtls = true` の場合、追加で信頼されたイングレスからの `x-forwarded-client-cert` が必要です。どちらの要素もリクエスト署名に代わるものではありません。
 
-WebAuthn 登録およびログインには、これら4つの JSON API エンドポイントを使用します:
+WebAuthn 登録およびログインには、これら4つの JSON エンドポイントを使用します:
 
-|方法および API エンドポイント|目的|
+|方法および エンドポイント|目的|
 | --------------------------------------------- | ---------------------------------------- |
 | `POST /v1/operator/auth/registration/options` | WebAuthn 資格登録を開始する|
 | `POST /v1/operator/auth/registration/verify` |資格情報を確認して保存する|
@@ -212,33 +212,32 @@ ISO 20022 のルートは、2つの独立したチェックを適用します。
 
 ### ブロックチェーン台帳の可視性とエクスプローラーカーソル {#ledger-visibility-and-explorer-cursors}
 
-アプリ向けのブロックチェーン台帳の読み取りは、上記のオプションのアプリアカウント境界を使用します。署名されていないリクエストは、公開として構成されたデータスペースのみを受け取ります。有効な署名付きリクエスト呼び出し元の現在の UAID にバインドされたデータスペースを追加します。それぞれの制限されたデータスペースは正確な`CanReadRestrictedDataspace { dataspace }`権限で名前が付けられるか、アカウントが`CanReadAllLedgerData`を持っている場合はすべてのルートになります。
+アプリ向けの台帳読み取りは、上記の任意のアプリアカウント認証境界を使います。未署名のリクエストに返されるのは、公開として設定されたデータスペースだけです。有効な署名付きリクエストでは、呼び出し元の現在の UAID に結び付けられたデータスペースと、正確な `CanReadRestrictedDataspace { dataspace }` 権限で指定された各制限付きデータスペースが追加されます。アカウントに `CanReadAllLedgerData` がある場合は、すべての経路が対象になります。
 
 呼び出し元の認可プリンシパルに一致するルートを使用してください：
 
-|方法および API エンドポイント|認証と可視性|
+|方法および エンドポイント|認証と可視性|
 | ------------------------------------- | --------------------------------------------------------------- |
-|`POST /v1/transactions/visible/query`|正規のアカウント署名; 呼び出し元の可視性を適用する|
-|`POST /v1/transactions/query`|オペレーター要求署名；グローバルオペレーターの表示を許可|
+| `POST /v1/transactions/query` | 正規アカウントの署名は任意。呼び出し元のデータスペース可視性を適用 |
 | `GET /v1/triggers/completed`          |オペレーター要求署名; ノードローカルの完了レコードを読み取る|
 
-同じ可視性オブジェクトは、アカウント、ドメイン、アセット定義、アセット、NFT、RWA、ホルダー、Explorerの読み取りをフィルタします。不在のオブジェクトと呼び出し元の可視ルート外にあるオブジェクトは、意図的に区別がつかないようにされています。最終化された取引および指示履歴は、取引のために記録されたすべての経路金融転送部分が表示される場合にのみ表示されます。混合データスペース取引はしたがって、参加者の一人でも財務転送部分が呼び出し元の範囲外にある場合は隠されます。ルーティングコンテキストが欠落している、古くなっている、または不正な場合は、グローバルリーダーのみが確認できます。
+同じ可視性オブジェクトで、アカウント、ドメイン、資産定義、資産、NFT、RWA、保有者、Explorer の読み取りを絞り込みます。存在しないオブジェクトと、呼び出し元から見える経路の外にあるオブジェクトは、意図的に区別できないようにしています。コミット済みのトランザクションと命令の履歴は、そのトランザクションに記録されたすべての経路レッグが見える場合だけ表示します。したがって、複数のデータスペースにまたがるトランザクションでは、参加者のレッグが一つでも呼び出し元の範囲外なら、トランザクション全体を非表示にします。ルーティングコンテキストが欠落している、古い、または不正な場合は、グローバルな読み取り権限を持つ者だけが参照できます。
 
 六つの世界対応のExplorerコレクションは、不透明な標準的base64urlキーセットカーソルを使用します。デフォルトのページ制限は25で、最大は100であり、1ページで最大512の候補キーを検査します。各カーソルは、そのコレクション、フィルター、標準的な最後のキー、および呼び出し元の可視ルートセットの暗号ダイジェスト値に結び付けられているため、別のクエリで再利用したり、呼び出し元の可視性が変化した後に再生することはできません。
 
 ブロック、トランザクション、最新トランザクション、インストラクション、および最新インストラクションの履歴カーソルは、最終確定済みデータのスナップショットの高さとブロックの暗号化ハッシュも固定します。レスポンスは `pagination.limit`、`pagination.snapshot_height`、`pagination.snapshot_hash`、`pagination.next_cursor`、および `pagination.has_more` を公開します。別のルートやフィルターセットのカーソル、変更された可視性の暗号ダイジェスト値、またはノードがもはや検証できないデータスナップショットはクローズドして失敗します。ブロッキングワーカーが実行されている間、履歴スキャンは Torii のクエリ許可内に留まります。
 
-エクスプローラー WebSocket のストリームは、フィルタリングされたサマリーを出力し、ブロックチェーン台帳の権限が変更されると可視性を再計算します。ネイティブの `GET /v1/blocks/stream` ルートは異なります:それは完全な署名付きブロックを送出し、ハンドシェイク中に `CanReadAllLedgerData` を要求し、その後その許可が取り消された場合には閉じます。データスペース対応のエクスプローラーにはネイティブストリームを使用しないでください。
+Explorer の WebSocket ストリームは、絞り込み済みの要約を出力し、台帳の権限が変わると可視性を再計算します。ネイティブの `GET /v1/blocks/stream` 経路はこれとは異なり、完全な署名済みブロックを出力します。ハンドシェイク時に `CanReadAllLedgerData` を要求し、その後この権限が取り消された場合は接続を閉じます。特定のデータスペースに範囲を限定したエクスプローラーには、このネイティブストリームを使わないでください。
 
 ## ISO 20022 ブリッジ {#iso-20022-bridge}
 
-Torii は、アプリ向けの API とブリッジソフトウェアランタイムが有効になっている時に、`/v1/iso20022/*` の下で ISO 20022 ブリッジを公開します。ブリッジは意図的に次の範囲に限定されています:これは汎用の ISO 20022クリアリングゲートウェイではなく、選択された支払いメッセージを署名付き Iroha 転送に変換し、それらのブロックチェーン台帳の状態を追跡するためにサポートされているサブセットです。
+Torii は、すべてのビルドで `/v1/iso20022/*` の下に ISO 20022 ブリッジをマウントします。ただし、送信を処理するのは `torii.iso_bridge.enabled` が設定されている場合だけです。ブリッジは意図的に次の範囲に限定されています：これは汎用の ISO 20022 クリアリングゲートウェイではなく、選択された支払いメッセージを署名付き Iroha 転送に変換し、それらの台帳上の状態を追跡するためにサポートされているサブセットです。
 
 提出を受け入れる前に、耐久性のあるローカル`torii.iso_bridge.store_dir`を構成してください。構成フィールドは、ノードが読み取り専用または診断用途で起動できるようにするためのみ任意です。すべての認証済みの ISO 提出にはディレクトリが必要であり、永続性がない場合やリプレイ・トゥームストーンまたはリッチレコードの書き込みに失敗した場合は、再試行可能な `503 Service Unavailable` を返します。
 
-### Torii ISO 20022 API エンドポイント {#torii-iso-20022-endpoints}
+### Torii ISO 20022 エンドポイント {#torii-iso-20022-endpoints}
 
-|方法および API エンドポイント|目的|
+|方法および エンドポイント|目的|
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `POST /v1/iso20022/pacs008`                  |FI から FI への顧客クレジット振替を提出し、対応する Iroha 資産振替を作成してください|
 | `POST /v1/iso20022/pacs009`                  |PvP または有価証券関連の資金調達に使用される FI から FI へのクレジット振替を提出してください|
@@ -261,7 +260,7 @@ Torii は、アプリ向けの API とブリッジソフトウェアランタイ
 
 `pacs.009` の送信では、ビジネスメッセージ ID、メッセージ定義 ID、作成時刻、銀行間決済額、通貨、決済日、指図側機関と被指図側機関の BICs、債務者と債権者の IBANs を指定する必要があります。メッセージに `Purp` が含まれる場合、現在ブリッジが受け付けるのは証券目的の資金提供、つまり `Purp=SECU` だけです。
 
-`pacs.008`および`pacs.009`の送信 API エンドポイントは、XML ISO データコンテナまたはブリッジテストで使用されるフラットフィールド形式を受け入れます。オプションの `SplmtryData` フィールドは、対象の Iroha ブロックチェーン台帳、送信元および受信先のアカウントIDまたはアドレス、資産定義IDを固定することができます。レスポンスは `202 Accepted` であり、`message_id`、`transaction_hash`、`status`、`pacs002_code`、および解決された台帳/アカウント/資産のコンテキストが含まれます。
+`pacs.008`および`pacs.009`の送信 エンドポイントは、XML ISO データコンテナまたはブリッジテストで使用されるフラットフィールド形式を受け入れます。オプションの `SplmtryData` フィールドは、対象の Iroha ブロックチェーン台帳、送信元および受信先のアカウントIDまたはアドレス、資産定義IDを固定することができます。レスポンスは `202 Accepted` であり、`message_id`、`transaction_hash`、`status`、`pacs002_code`、および解決された台帳/アカウント/資産のコンテキストが含まれます。
 
 ### 参加者の認可とライフサイクル管理 {#participant-authorization-and-lifecycle-ownership}
 
@@ -278,7 +277,7 @@ Torii は、アプリ向けの API とブリッジソフトウェアランタイ
 
 オリジナルのプロファイルおよび署名ポリシーはライフサイクル全体にわたって固定されているため、呼び出し元は更新のためにより弱いプロファイルを選択することはできません。`pacs.002` コードは次のものを表します金融取引の決済（`ACSC`、`ACCP`、`SETT`、または`SETTLED`）は、Torii が取引証拠を確定したときにのみ元の記録を決済済みに変更します。
 
-いずれの元の当事者も、自分のメッセージ記録および生成された送信箱文書を読むことができます。監査 API エンドポイントは、認証された参加者が発信者または相手方であるレコードのみを返します。別途構成された監査管理者は、グローバルな読み取り専用の監査ビューを受け取り、メッセージを送信したり変更したりすることはできません。未知の参加者や無関係なメッセージ識別子は開示されません。
+いずれの元の当事者も、自分のメッセージ記録および生成された送信箱文書を読むことができます。監査 エンドポイントは、認証された参加者が発信者または相手方であるレコードのみを返します。別途構成された監査管理者は、グローバルな読み取り専用の監査ビューを受け取り、メッセージを送信したり変更したりすることはできません。未知の参加者や無関係なメッセージ識別子は開示されません。
 
 ### 耐久性のあるリプレイIDおよび署名済みアウトボックス文書 {#durable-replay-identity-and-signed-outbox-documents}
 
@@ -319,7 +318,7 @@ Kaigi は、SORA Nexus 上で有料のリアルタイムオーディオ/ビデ�
 
 - `CreateKaigi`：ドメインの下で通話を作成し、そのポリシー、スケジュール、メタデータ、およびオプションのリレーテクニカルマニフェストを保存します。
 - `JoinKaigi`：通話名簿を更新してください。`zk-roster-v1`モードでは、公開通話ビューは参加者のアカウントIDの代わりに暗号化コミットメント値とヌリファイアのカウントを表示します。
-- `LeaveKaigi`：透明な通話から参加者を削除します。プライベートモードでの退場は、初回リリースのプロトコルではオフチェーンです。
+- `LeaveKaigi`：参加者を削除します。`zk-roster-v1` モードでは、参加者が退出を証明し、それによって名簿上のコミットメントが削除され、ヌリファイアが記録されます。
 - `RecordKaigiUsage`: メーター付期間とトランザクション実行コストの合計を追加します。
 - `EndKaigi`: セッションを終了し、最終のタイムスタンプを記録する。
 
@@ -328,6 +327,7 @@ Torii は、次のアプリ向けの読み取りを公開します:
 |ルート|認証|目的|
 | ----------------------------------- | --------------------------------------- | ------------------------------------------ |
 |`/v1/kaigi/calls/{call_id}`|公開|現在の通話記録|
+| `/v1/kaigi/calls/{call_id}/participation` | 標準的な正確なネットワークアカウントのリクエスト | 署名した呼び出し元自身の参加状況 |
 | `/v1/kaigi/calls/{call_id}/signals` |標準的な正確なネットワークアカウントのリクエスト|ページ分割された最終化済みのシグナルメタデータ|
 | `/v1/kaigi/calls/{call_id}/events`  |標準的な正確なネットワークアカウントのリクエスト|コールライフサイクルストリーム|
 | `/v1/kaigi/relays`                  |許可リストに載っているオペレーターのリクエスト|リレーの要約|
@@ -335,11 +335,13 @@ Torii は、次のアプリ向けの読み取りを公開します:
 | `/v1/kaigi/relays/health`           |許可リストに載っているオペレーターのリクエスト|リレーの総合状態|
 | `/v1/kaigi/relays/events`           |標準的な正確なネットワークアカウントのリクエスト|リレー登録および健康イベントストリーム|
 
-アプリ API を有効にする必要があります。リレーの概要とヘルスルートは読み取り専用であってもオペレーターの操作画面です；署名されていない `curl` リクエストは有効な可用性プローブではありません。セッション状態は、`KaigiRosterSummary`、`KaigiRelayManifestUpdated`、`KaigiRelayHealthUpdated`、`KaigiUsageSummary` などの Kaigi ドメインイベントを通じても反映されます。
+アプリ API を有効にする必要があります。4 つの通話ルートは `/openapi.json` に含まれていません。通話記録、参加、シグナルのルートは生成された SDKs にのみ公開され、通話イベントストリームは投影されません。
+
+リレーの概要とヘルスのルートは、読み取り専用であってもオペレーター向けの操作面です。署名されていない `curl` リクエストは有効な可用性プローブではありません。セッション状態は、`KaigiRosterSummary`、`KaigiRelayManifestUpdated`、`KaigiRelayHealthUpdated`、`KaigiUsageSummary` などの Kaigi ドメインイベントを通じても反映されます。
 
 ### CLI スモークテスト {#cli-smoke-test}
 
-接続する前に UI がある場合、Torii API エンドポイントが Kaigi トランザクションを受け入れるか確認したいときは、`iroha app kaigi` CLI から始めてください。クイックスタートコマンドは、設定された API エンドポイントに対してルームを作成し、その通話識別子と参加メタデータを表示します:
+UI を接続する前に、Torii のエンドポイントが Kaigi のトランザクションを受け付けることを確認するには、`iroha app kaigi` CLI から始めます。クイックスタートのコマンドは、設定されたエンドポイントでルームを作成し、通話の識別子と参加用メタデータを表示します。
 
 ```bash
 iroha app kaigi quickstart \
@@ -380,22 +382,22 @@ iroha app kaigi end --domain kaigi.universal --call-name daily
 
 ### JavaScript 統合 {#javascript-integration}
 
-現在の [Iroha JavaScript デモ](https://github.com/soramitsu/iroha-demo-javascript) 透明で認証された1対1のミーティングプロファイルを実装します。プロトコルの内容を公開しません `zk-roster-v1` プルーフフロー。そのレンダラーは作成します WebRTC 提供と応答、一方で特権付きブリッジはローカルを使用する [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) 見積もりにチェックアウトし、署名して、提出し、最終結果を待つ Kaigi 取引。
+現在の [Iroha JavaScript デモ](https://github.com/soramitsu/iroha-demo-javascript) 透明で認証された1対1のミーティングプロファイルを実装します。プロトコルの内容を公開しません `zk-roster-v1` プルーフフロー。そのレンダラーは作成します WebRTC 提供と応答、一方で特権付きブリッジはローカルを使用する [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) 見積もりにチェックアウトし、署名して、提出し、最終結果を待つ Kaigi 取引。
 
 正確なルート認証、招待フォーマット、ブリッジ境界、現在のデモテストコマンドについては、[JavaScript アプリに Kaigi を埋め込む](/ja/guide/tutorials/kaigi.md) を参照してください。
 
 ## 状況と指標 {#status-and-metrics}
 
-ステータスおよびメトリクス API エンドポイントは、ダッシュボードに最初に接続するものです:
+ステータスおよびメトリクス エンドポイントは、ダッシュボードに最初に接続するものです:
 
 - `/status` はトップレベルのネットワークピア、ブロック、キュー、およびコンセンサスのフィールドを公開します
 - `/metrics` は Prometheus のカウンター、ゲージ、ヒストグラムを公開します
 
-Nexus 対応ノードでは、ステータス出力には実行レーンおよびデータ空間対応セクションも含まれます。`nexus.enabled = false`の場合、これらのセクションは省略されます。
+SORA Nexus のルーティングは必須です。状態の出力には、設定されたデータスペースとレーンが含まれます。報告されるトポロジーは、それぞれのカタログとコミット済みのルーティング状態で決まります。
 
 ## JSON 対 Norito {#json-vs-norito}
 
-いくつかのオペレーター API のエンドポイントは、デフォルトで Norito を返します。API エンドポイントが JSON をサポートしている場合、送信してください:
+運用担当者向けのエンドポイントの中には、デフォルトで Norito を返すものがあります。エンドポイントが JSON に対応している場合は、次を送信します。
 
 ```http
 Accept: application/json
@@ -404,13 +406,13 @@ Accept: application/json
 これは特に次の場合に役立ちます:
 
 - `/v1/sumeragi/status`
-- `/v1/sumeragi/qc`
+- `/status`
 
-API エンドポイントが型付き Norito を直接受け入れるまたは返す場合、コンテンツタイプまたは推奨される `Accept` 値として `application/x-norito` を使用します。輸送の詳細については [Norito](/ja/reference/norito.md#torii-and-norito-rpc) を参照してください。
+エンドポイントが型付き Norito を直接受け付ける、または返す場合は、コンテンツタイプか優先する `Accept` の値として `application/x-norito` を指定します。通信形式の詳細は [Norito](/ja/reference/norito.md#torii-and-norito-rpc) を参照してください。
 
 ## テレメトリープロファイル {#telemetry-profiles}
 
-API エンドポイントの可視性は、ノードの `telemetry.profile` 設定によって決まります。現在の構成では、5つのプロファイルレベルが公開されています：
+エンドポイントの可視性は、ノード設定の最上位にある `telemetry_profile` で決まります。現在の設定には、次の五つのプロファイルレベルがあります。
 
 |プロフィール| `/status` | `/metrics` |開発者ルート|
 | ----------- | --------- | ---------- | ---------------- |
@@ -422,7 +424,7 @@ API エンドポイントの可視性は、ノードの `telemetry.profile` 設�
 
 ## CLI ショートカット {#cli-shortcuts}
 
-この `iroha` CLI はすでにこれらの多くの API エンドポイントをラップしています:
+この `iroha` CLI はすでにこれらの多くの エンドポイントをラップしています:
 
 ```bash
 export IROHA_OPERATOR_KEY_FILE=/run/secrets/iroha/operator.key
@@ -439,6 +441,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## 上流参照 {#upstream-references}
 
-- [README API とオブザーバビリティの概要](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO 20022ブリッジ実装](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API とオブザーバビリティの概要](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO 20022ブリッジ実装](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [パフォーマンスと指標](/ja/guide/advanced/metrics.md)

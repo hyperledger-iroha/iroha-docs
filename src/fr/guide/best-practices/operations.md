@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # Opérations {#operations}
 
 La préparation opérationnelle signifie que le réseau peut être observé, modifié, sauvegardé et récupéré sans dépendre d'un accès improvisé aux hôtes de validation.
@@ -38,7 +37,7 @@ Voir [Sécurité opérationnelle](/fr/guide/security/operational-security.md).
 ## Gestion du changement {#change-management}
 
 - Traitez les modifications de configuration on-chain comme des transactions nécessitant une révision, des lectures préalables, une autorisation et une vérification après modification.
-- Déployez les mises à jour binaires des pairs du réseau avec un plan de compatibilité et un point de décision de retour en arrière.
+- Avant d’installer une version du logiciel d’un pair, vérifiez qu’elle implémente la sélection d’exécution authentifiée du réseau et l’historique situé au-dessus de son point de contrôle de démarrage. Toute modification des définitions du protocole exige une transition de sélection qualifiée et régie par la gouvernance ; après activation, la reprise utilise une transition corrective plutôt qu’un retour à un binaire incompatible.
 - Évitez de modifier la topologie des pairs du réseau, le calendrier du consensus et la charge de travail de l'application dans la même fenêtre de maintenance, sauf si le plan de migration l'exige.
 - Consignez les hachages de transactions et les hauteurs de blocs des changements opérationnels.
 

@@ -1,27 +1,26 @@
 ---
 translation_locale: ka
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ქსელის განთავსების გასაღები {#keys-for-network-deployment}
 
-თითოეულ ქსელს სჭირდება განსხვავებული საკვანძო მასალა კლიენტებისთვის, ქსელის კვანძებისთვის, ბლოკჩეინის გენეზისზე ხელმოწერისთვის და NPoS ან Nexus პროფილისთვის BLS ვალიდატორების იდენტობისთვის.
+ყოველ ქსელს ცალკე გასაღების მასალა სჭირდება კლიენტებისთვის, გენეზისის ხელმოწერისთვის და BLS-normal ვალიდატორების იდენტობებისთვის ფლობის მტკიცებულებებით.
 
 ## სადაც გამოიყენება გასაღები {#where-keys-are-used}
 
 - მომხმარებლის ხელმოწერის გასაღები ინახება `client.toml` ქვეშ `[account]`.
 - ქსელის კვანძების იდენტობის საკვანძოები ინახება თითოეულ ქსელის კვანძებში `config.toml` როგორც `public_key` და `private_key`.
 - ქსელის პარების აღმოჩენა თითოეული ქსელის პარის საჯარო გასაღები იყენებს `trusted_peers`.
-- BLS ვალიდატორი NPoS-ის პროფილებისათვის საფლავის მტკიცებულებები შენახულია `trusted_peers_pop` -ში.
+- BLS ვალიდატორების ფლობის მტკიცებულებები თითოეული ვალიდატორისთვის ინახება `trusted_peers_pop`-ში, კონსენსუსის რეჟიმის მიუხედავად.
 - ბლოკჩეინის გენეზისი-ის ხელმოწერა იყენებს `[genesis].public_key` ქსელის კვანძების კონფიგურაციაში და შესაბამისი კერძო გასაღები ტექნიკური მანიფესტის ხელმოწერას.
 
 ადგილობრივი ან ტესტის განთავსებისათვის, Kagami უნდა შექმნას ყველა ეს ფაილი ერთად:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 არსებული ქსელის ან პროფილისთვის, გამოიყენეთ გაიდებული ნაკადი:

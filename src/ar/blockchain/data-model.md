@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # نموذج البيانات {#data-model}
 
 Iroha يخزن حالة دفتر الأستاذ الخاص بالبلوكشين في `World`. يستخدم نموذج البيانات الخاص بالإصدار الأول الهوية والكيانات القياسية للبروتوكول التالية:
@@ -122,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |تعريف الأصل|عنوان Base58 وفق معيار البروتوكول الفردي `AssetDefinitionId`| `name#domain.dataspace` أو `name#dataspace`            |مرتبط بتعريف الأصل `AssetDefinitionAlias`|
 |عقد|بروتوكول-القياسي الفردي Bech32m `ContractAddress`| `name::domain.dataspace` أو `name::dataspace`          |`ContractAlias` مرتبط بعنوان عقد تم نشره|
 |اسم المجال| `DomainId` في شكل `domain.dataspace` |`domain.dataspace`| SNS `domain` سجل مساحة الأسماء |
-|اسم مساحة البيانات|رقمي `DataSpaceId` من الكتالوج النشط Nexus|اسم مستعار لمساحة البيانات مثل `universal`، `paynet`، أو `zk`|SNS `dataspace` سجل مساحة الاسم بالإضافة إلى كتالوج مساحة البيانات النشطة|
+| اسم مساحة البيانات | `DataSpaceId` رقمي من كتالوج SORA Nexus النشط | اسم مستعار لمساحة البيانات مثل `universal` أو `paynet` | سجل مساحة الأسماء `dataspace` في SNS بالإضافة إلى كتالوج مساحات البيانات النشط |
 
-أسماء الحساب المستعارة هي أسماء الحساب التي يراها المستخدم. إنها تبقى بعد إعادة تعيين مفتاح الحساب لأن الاسم المستعار يشير إلى معرف الحساب النشط من خلال مؤشرات حالة العالم وسجلات إعادة تعيين مفتاح الحساب. استخدم `SetPrimaryAccountAlias` لتسمية الحساب الأساسية، و`SetAccountAliasBinding` للأسماء المستعارة الإضافية غير الأساسية، و`FindAccountByAlias` أو `FindAliasesByAccountId` للقراءات. عادةً ما تتطلب الأسماء المستعارة للحساب الحصول على عقد استئجار اسم حساب نشط SNS يتم الحصول عليه باستخدام `AcquireAccountAliasLease` ويتم تجديده باستخدام `RenewAccountAliasLease`.
+أسماء الحساب المستعارة هي أسماء الحساب التي يراها المستخدم. إنها تبقى بعد إعادة تعيين مفتاح الحساب لأن الاسم المستعار يشير إلى معرف الحساب النشط من خلال فهارس الحالة العالمية وسجلات إعادة تعيين مفتاح الحساب. استخدم `EnsureAlias`، عادةً عبر تدفق التخطيط والتطبيق في `app alias setup`، للحصول على عقد استئجار اسم مستعار للحساب وربط الاسم المستعار؛ و`CompareAndSetPrimaryAccountAlias` لتغيير التسمية الأساسية؛ و`RebindAccountAlias` لنقل اسم مستعار إلى حساب آخر؛ و`FindAccountByAlias` أو `FindAliasesByAccountId` للقراءات. جدّد عقود الاستئجار باستخدام `RenewAliasLease`، أو اضبط التجديد التلقائي باستخدام `ConfigureAliasAutoRenew`.
 
 تسميات الأصول تسمّي تعريفات الأصول، وليس أرصدة الحسابات الفردية. تسميات الأصول وتسميات العقود هي روابط مباشرة من اسم قابل للقراءة إلى هدف واحد موجود وفقًا لمعايير البروتوكول. يتم تعيين أسماء الأصول المستعارة باستخدام `SetAssetDefinitionAlias`؛ يجب أن يتطابق جزء اسم المستعار مع اسم العرض لتعريف الأصل أو اسم التعريف المتوقع. يتم تعيين أسماء العقود المستعارة باستخدام `SetContractAlias`; يجب أن تتطابق مساحة البيانات المستعارة مع مساحة البيانات المشفرة في عنوان العقد. يمكن أن تحمل كل من الرابطين `lease_expiry_ms`؛ بعد انتهاء الصلاحية، يتوقفان عن الحل عند انقضاء نافذة السماح ويتم مسحهما من مؤشرات حالة العالم.
 

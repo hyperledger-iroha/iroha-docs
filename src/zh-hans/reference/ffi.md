@@ -5,7 +5,6 @@ translation_source_hash: 2df23722cea2f918874f0109b31b24bb3d8dbd7f95c00d1d6d1568c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 外部函数接口 (FFI) {#foreign-function-interfaces-ffi}
 
 `iroha_ffi`盒子提供了从 Rust APIs 中生成C ABI 结合的宏和特征.它用于 Iroha 类型需要跨越 FFI 边界时,例如通过 SDK 结合或主机集成.

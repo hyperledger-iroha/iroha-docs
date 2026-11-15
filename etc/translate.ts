@@ -196,8 +196,14 @@ export function clarifyTechnicalTranslationSource(source: string): string {
     )
     .replace(/\btime events\b/giu, 'time-based event notifications')
     .replace(/\bEvents are emitted\b/gu, 'Typed event notifications are emitted')
-    .replace(/(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoints(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu, 'API endpoints')
-    .replace(/(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoint(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu, 'API endpoint')
+    .replace(
+      /(?<!network )(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoints(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
+      'network endpoints',
+    )
+    .replace(
+      /(?<!network )(?<!API )(?<![\p{L}\p{N}_/.`<>-])endpoint(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
+      'network endpoint',
+    )
     .replace(
       /(?<!software )(?<![\p{L}\p{N}_/.`<>-])runtimes(?![\p{L}\p{N}_/`<>-]|\.[\p{L}\p{N}])/giu,
       'software execution environments',
@@ -447,21 +453,21 @@ export function clarifyTechnicalTranslationSource(source: string): string {
       .replace(/\bCall (?=(?:the|an?|this|that)\b)/gu, 'Invoke ')
       .replace(/\bhost calls\b/giu, 'host-function invocations')
       .replace(/\bcontract calls\b/giu, 'contract invocations')
-      .replace(/\bread-only calls\b/giu, 'read-only API requests')
-      .replace(/\bservice calls\b/giu, 'service API requests')
+      .replace(/\bread-only calls\b/giu, 'read-only service requests')
+      .replace(/\bservice calls\b/giu, 'service requests')
       .replace(/\bnetwork calls\b/giu, 'network requests')
       .replace(/\bcalls\b/giu, 'technical invocations')
       .replace(/\bcall\b/giu, 'technical invocation')
   }
 
   // `API` is deliberately protected as a technical acronym, so its marker
-  // hides the prefix from the endpoint lookbehind above. Collapse only the
-  // exact clarification duplicate after restoring literals; this also keeps
-  // repeated clarification idempotent for already explicit source wording.
+  // hides the prefix from the endpoint lookbehind above. Preserve an explicit
+  // API endpoint exactly after restoring literals.
   return protectedSource
     .restore(clarified)
-    .replace(/\bAPI API endpoints\b/gu, 'API endpoints')
-    .replace(/\bAPI API endpoint\b/gu, 'API endpoint')
+    .replace(/\bAPI network endpoints\b/gu, 'API endpoints')
+    .replace(/\bAPI network endpoint\b/gu, 'API endpoint')
+    .replace(/\b(An|an) network endpoint\b/gu, (_match, article: string) => `${article[0]} network endpoint`)
     .replace(/\bsoftware execution environment environment\b/giu, 'software execution environment')
     .replace(/\bconsensus finalization consensus quorum\b/giu, 'consensus finalization quorum')
     .replace(/\bcryptographic commitment value cryptographic hash\b/giu, 'cryptographic hash of the binding value')
@@ -476,16 +482,10 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
   am: {
     'Deterministic blockchain platform for SORA Nexus, SDKs, and operator workflows':
       'ዲተርሚኒስቲክ ብሎክቼይን መድረክ ለ SORA Nexus፣ SDKs እና ኦፕሬተር የስራ ፍሰቶች',
-    'Activation fails closed unless the governed capability is active, its state and activation heights satisfy the notice period, the compiled proof profile matches V1, and the on-chain pool and audit records are current. Enabling the configuration flag alone is insufficient.':
-      'የሚተዳደረው ብቃት ንቁ ካልሆነ፣ የሁኔታ እና የማግበሪያ ቁመቶቹ የማስታወቂያ ጊዜውን ካላሟሉ፣ የተጠናቀረው የማረጋገጫ መገለጫ ከ V1 ጋር ካልተዛመደ ወይም በሰንሰለት ላይ ያሉት የፑል እና የኦዲት መዝገቦች ወቅታዊ ካልሆኑ፣ ማግበሪያው በአስተማማኝ ሁኔታ ውድቅ ይሆናል። የውቅር ባንዲራውን ብቻ ማንቃት በቂ አይደለም።',
-    '`[nexus.atomic_private_settlement]` governs the separate `AtomicPrivateSettlementV1` path. It is disabled by default. Setting `enabled = true` also requires an `activation_height`; admission still fails closed unless the on-chain capability, notice period, fixed proof profile, and pool/audit governance are active.':
-      '`[nexus.atomic_private_settlement]` የተለየውን `AtomicPrivateSettlementV1` መንገድ ይቆጣጠራል። በነባሪ ጠፍቷል። `enabled = true` ማድረግ `activation_height`ንም ይጠይቃል፤ በሰንሰለት ላይ ያለው ብቃት፣ የማስታወቂያ ጊዜ፣ የተወሰነው የማረጋገጫ መገለጫ እና የፑል/ኦዲት አስተዳደር ንቁ ካልሆኑ፣ መግቢያው በአስተማማኝ ሁኔታ ውድቅ ይሆናል።',
-    '| `POST /v1/offline/receiver-lineage` | Resolve proof-bearing active registration lineage for a signed receiver request |':
-      '| `POST /v1/offline/receiver-lineage` | ለተፈረመ ተቀባይ ጥያቄ ማረጋገጫ ያለውን ንቁ የምዝገባ ተከታታይነት ይፍቱ |',
     "The trigger authority is the account used to invoke the executable. Use a dedicated technical account for long-lived triggers so the required permissions are explicit and isolated from an operator's personal account.":
       'የቀስቅሴው የፈቃድ ባለቤት ፈጻሚውን ለመጥራት የሚጠቀመው መለያ ነው። የሚፈለጉት ፈቃዶች ግልጽ እንዲሆኑ እና ከኦፕሬተሩ የግል መለያ እንዲለዩ፣ ለረጅም ጊዜ ለሚኖሩ ቀስቅሴዎች የተለየ ቴክኒካዊ መለያ ይጠቀሙ።',
-    'If you need a new organizational dataspace, prepare a catalog and routing proposal instead of trying to register it from an ordinary client account. See [Provision a New Dataspace](#_8-provision-a-new-dataspace) below.':
-      'አዲስ ድርጅታዊ የመረጃ ቦታ ካስፈለገዎት፣ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግ እና የማስተላለፊያ ፕሮፖዛል ያዘጋጁ። ከታች [አዲስ የመረጃ ቦታ ያቅርቡ](#_8-provision-a-new-dataspace) ይመልከቱ።',
+    'If you need a new organizational data space, prepare a catalog and routing proposal instead of trying to register it from an ordinary client account. See [Provision a New Data space](#_8-provision-a-new-dataspace) below.':
+      'አዲስ የድርጅት የውሂብ ቦታ ከፈለጉ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግና የማዘዋወር ሀሳብ ያዘጋጁ። ከታች [አዲስ የውሂብ ቦታ ያቋቁሙ](#_8-provision-a-new-dataspace) ይመልከቱ።',
     'Publish performance numbers only with enough context to reproduce them:':
       'የአፈጻጸም ቁጥሮችን እንደገና ለማግኘት የሚያስችል በቂ አውድ ሲኖር ብቻ ያትሙ፦',
     '- Generate fresh private keys for production and store them outside the repository.':
@@ -518,18 +518,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- `id`፦ የንብረት ፍቺውን፣ የያዡን መለያ እና አማራጭ የቀሪ ሒሳብ ወሰን የሚያጣምር `AssetId`',
     'Creating or removing a domain requires the appropriate domain-management permission under the active runtime validator. Domain metadata can be updated with [`SetKeyValue` and `RemoveKeyValue`](/blockchain/instructions.md#setkeyvalue-removekeyvalue) when the authority has permission to modify that domain.':
       'ጎራን ለመፍጠር ወይም ለማስወገድ በንቁ የአፈጻጸም አካባቢ አረጋጋጭ ሥር ተገቢው የጎራ አስተዳደር ፈቃድ ያስፈልጋል። ባለሥልጣኑ ያንን ጎራ የማሻሻል ፈቃድ ሲኖረው፣ የጎራውን ሜታዳታ በ [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ማዘመን ይቻላል።',
-    'For the underlying shielded transaction model, see [Anonymous Transactions](/blockchain/anonymous-transactions.md).':
-      'ለመሠረታዊው የተከለለ ግብይት ሞዴል [ስም-አልባ ግብይቶች](/am/blockchain/anonymous-transactions.md)ን ይመልከቱ።',
     'Transparent numeric transfers create a structured transfer transcript when the instruction mutates balances. The transcript records:':
       'መመሪያው ቀሪ ሒሳቦችን ሲቀይር፣ ግልጽ የቁጥር ዝውውሮች የተዋቀረ የዝውውር መዝገብ ይፈጥራሉ። መዝገቡ የሚከተሉትን ይመዘግባል፦',
-    'Let `omega_T` be the trace-domain generator, `omega_E` the evaluation-domain generator, and `g` the configured coset offset. For a trace column with values `v_i`, interpolation produces coefficients `a_j` such that:':
-      '`omega_T` የመከታተያ ጎራ አመንጪ፣ `omega_E` የግምገማ ጎራ አመንጪ እና `g` የተዋቀረው የኮሴት ማካካሻ ይሁን። `v_i` እሴቶች ላሉት የመከታተያ አምድ፣ ኢንተርፖሌሽኑ የሚከተለውን የሚያሟሉ `a_j` ቅንጅቶችን ያመነጫል፦',
     'RWA lots are created through the dedicated `RegisterRwa` instruction. The current code does not expose an `UnregisterRwa` instruction; use `RedeemRwa` to retire represented quantity.':
       'የ RWA ሎቶች በተለየው `RegisterRwa` መመሪያ ይፈጠራሉ። የአሁኑ ኮድ የ `UnregisterRwa` መመሪያ አያቀርብም፤ የተወከለውን መጠን ከዝውውር ለማስወገድ `RedeemRwa`ን ይጠቀሙ።',
     "Remove the example NFT after the walkthrough. If you transferred it, either transfer it back or submit the unregister command with the current owner's account configuration.":
       'መመሪያውን ከጨረሱ በኋላ የምሳሌውን NFT ያስወግዱ። ካስተላለፉት ወደ ነበረበት ይመልሱት ወይም የአሁኑን ባለቤት መለያ ውቅር ተጠቅመው የምዝገባ-ማስወገጃ ትዕዛዙን ያስገቡ።',
-    'Permissions exist so that only accounts with the required permission token can perform a protected action. The default executor checks permissions during instruction, query, and expression execution.':
-      'ፈቃዶች ያሉት አስፈላጊው የፈቃድ ቶከን ያላቸው መለያዎች ብቻ የተጠበቀ ተግባር እንዲፈጽሙ ነው። ነባሪው አስፈጻሚ መመሪያዎች፣ መጠይቆች እና ኤክስፕሬሽኖች ሲፈጸሙ ፈቃዶችን ይፈትሻል።',
+    'Permissions exist so that only accounts with the required permission token can perform a protected action. The default executor checks permissions during transaction and instruction execution and query validation.':
+      'ፈቃዶች ያሉት አስፈላጊው የፈቃድ ቶከን ያላቸው መለያዎች ብቻ የተጠበቀ ተግባር እንዲፈጽሙ ነው። ነባሪው አስፈጻሚ ግብይቶችና መመሪያዎች ሲፈጸሙ እና መጠይቆች ሲረጋገጡ ፈቃዶችን ይፈትሻል።',
     'To encrypt a plaintext polynomial \\(m\\), the implementation seeds another ChaCha20 RNG from:':
       'የግልጽ ጽሑፍ ፖሊኖሚያል \\(m\\)ን ለማመስጠር፣ አተገባበሩ ለሌላ ChaCha20 RNG ከሚከተሉት የመነሻ ዘር ይሰጣል፦',
     'Identifier resolution does not use the generic backend `opaque_hash` as the user-facing opaque account identifier. It projects the RAM-LFE output hash through identifier-specific domains:':
@@ -542,20 +538,16 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'የ Taira አረጋጋጮች አብሮገነብ SoraFS ማከማቻ፣ ጥገና እና የቆሻሻ ማሰባሰብ አገልግሎት ተሰናክሏል። የተዋቀረው አቅማቸው የአረጋጋጩ የዲስክ በጀት ፍተሻ አካል ሆኖ ይቀራል፤ ይህ ግን አረጋጋጩ የማከማቻ አቅራቢ ነው ማለት አይደለም። ከሙከራ በፊት የአሁኑን የተዋቀረ ጌትዌይ እና የማጣበቂያ መዳረሻዎችን ለማንበብ `GET /v1/sorafs/storage/peers?limit=4`ን ይጠቀሙ።',
     'Trigger registration itself is a normal transaction, so the registering account needs permission to register triggers. The technical account needs the permissions required by the trigger executable.':
       'ቀስቅሴን መመዝገብ ራሱ መደበኛ ግብይት ስለሆነ፣ መዝጋቢው መለያ ቀስቅሴዎችን የመመዝገብ ፈቃድ ያስፈልገዋል። ቴክኒካዊው መለያ ደግሞ የቀስቅሴው ፈጻሚ የሚፈልጋቸውን ፈቃዶች ያስፈልገዋል።',
-    'Use `/livez` only to decide whether the process answers. Use `/readyz` for traffic admission and inspect its JSON blocker details before treating a `503` as an outage.':
-      'ሂደቱ ምላሽ መስጠቱን ለማወቅ `/livez`ን ብቻ ይጠቀሙ። ትራፊክን ለመቀበል `/readyz`ን ይጠቀሙ፤ `503`ን እንደ መቋረጥ ከመቁጠርዎ በፊት የ JSON የማገጃ ዝርዝሮቹን ይመርምሩ።',
-    'The `$` separator belongs to the NFT text form. Keep the complete `wonderland.universal` domain and dataspace suffix.':
-      'የ `$` መለያያ የ NFT ጽሑፍ ቅርጽ አካል ነው። ሙሉውን `wonderland.universal` የጎራ እና የመረጃ ቦታ ቅጥያ ይጠብቁ።',
+    'Use `/livez` only to decide whether the process answers. Use `/readyz` for traffic admission. Its `503` is a `service_unavailable` error envelope with no blocker details, so run the diagnostics below before treating it as an outage.':
+      'ሂደቱ ምላሽ መስጠቱን ለማወቅ `/livez`ን ብቻ ይጠቀሙ። ትራፊክን ለመቀበል `/readyz`ን ይጠቀሙ። የእሱ `503` ምንም የእንቅፋት ዝርዝር የሌለው የ`service_unavailable` የስህተት ውሂብ መያዣ ነው፣ ስለዚህ እንደ መቋረጥ ከመቁጠርዎ በፊት ከታች ያሉትን ምርመራዎች ያሂዱ።',
+    'The `$` separator belongs to the NFT text form. Keep the complete `name.dataspace` domain in the ID.':
+      'የ `$` መለያያ የ NFT ጽሑፍ ቅርጽ አካል ነው። ሙሉውን የ`name.dataspace` ጎራ በመታወቂያው ውስጥ ያቆዩ።',
     'Use a second client configuration for the delegate when proving the write:':
       'የመጻፍ ክዋኔውን ሲያረጋግጡ ለውክልና ተቀባዩ ሁለተኛ የደንበኛ ውቅር ይጠቀሙ፦',
     'Roles and their grants do not expire. Revoke them explicitly when the access is no longer needed.':
       'ሚናዎች እና በእነሱ የተሰጡ ፈቃዶች ጊዜያቸው አያልፍም። መዳረሻው ሳያስፈልግ ሲቀር በግልጽ ይሰርዟቸው።',
     'Generated snippets keep examples tied to code, configuration, and schemas from the Iroha revision that produced them.':
       'የመነጩ ቅንጥቦች ምሳሌዎችን ካመነጫቸው የ Iroha ክለሳ ኮድ፣ ውቅር እና ስኪማዎች ጋር እንደተያያዙ ያቆያሉ።',
-    'All production behavior comes from the node configuration. Environment variables cannot activate this path. The shipped default is `enabled = false`; leaving the feature disabled requires no settlement-specific configuration.':
-      'ሁሉም የምርት አካባቢ ባህሪ ከኖድ ውቅሩ ይመጣል። የአካባቢ ተለዋዋጮች ይህን መንገድ ማንቃት አይችሉም። የተላከው ነባሪ `enabled = false` ነው፤ ባህሪውን እንደተሰናከለ ለመተው ለማጠናቀቂያ የተለየ ውቅር አያስፈልግም።',
-    'After governance has registered the required capability and chosen an activation height with adequate notice, configure every relevant node consistently:':
-      'አስተዳደሩ አስፈላጊውን ችሎታ ከመዘገበ እና በቂ ማስታወቂያ ያለው የማግበሪያ ብሎክ ቁመት ከመረጠ በኋላ፣ ተዛማጅ ኖዶችን ሁሉ በተመሳሳይ መንገድ ያዋቅሩ፦',
     '- Scope permission tokens to the smallest object that satisfies the workflow.':
       '- የፈቃድ ቶከኖችን የሥራ ፍሰቱን በሚያሟላው ትንሹ ነገር ላይ ብቻ ይገድቡ።',
     '- Enable phishing-resistant multi-factor authentication where it is available.':
@@ -584,26 +576,24 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| ኮሚትመንት | ማኒፌስቱን፣ የመስመር ጭነቱን፣ የማረጋገጫ ጥቅሉን ወይም የይዘት ሥሩን በመዝገቡ ላይ ከሚታየው መዝገብ ጋር የሚያስተሳስር የዳይጀስት ውሂብ። |',
     '- Merkle lanes reject KZG commitments; KZG lanes require a non-zero KZG commitment.':
       '- የ Merkle መስመሮች የ KZG ኮሚትመንቶችን ይከለክላሉ፤ የ KZG መስመሮች ዜሮ ያልሆነ የ KZG ኮሚትመንት ይፈልጋሉ።',
-    'Fund the Taira account through the faucet before you run fee-paying writes. The direct faucet flow is in [Get Testnet XOR on Taira](#_4-get-testnet-xor-on-taira).':
-      'ክፍያ የሚጠይቁ የመጻፍ ክዋኔዎችን ከማካሄድዎ በፊት የ Taira መለያውን በሙከራ ገንዘብ አገልግሎቱ ይሙሉ። ቀጥተኛው ሂደት [በ Taira የሙከራ XOR ያግኙ](#_4-get-testnet-xor-on-taira) ውስጥ ነው።',
     'Taira XOR cannot pay Minamoto fees. Testnet balances and faucet claims do not transfer to Minamoto.':
       'Taira XOR የ Minamoto ክፍያዎችን አይከፍልም። የሙከራ መረብ ቀሪ ሂሳቦችና የገንዘብ ጥያቄዎች ወደ Minamoto አይተላለፉም።',
     'The faucet is only for Taira testnet funds. Do not use testnet XOR, faucet accounts, or Taira canary signers in Minamoto flows.':
       'የገንዘብ አገልግሎቱ ለ Taira ሙከራ መረብ ገንዘብ ብቻ ነው። በ Minamoto ፍሰቶች ውስጥ የሙከራ XOR፣ የገንዘብ አገልግሎት መለያዎች ወይም የ Taira የቅድመ-ማስጠንቀቂያ ፈራሚዎችን አይጠቀሙ።',
     'All peers in the network must agree on the signed genesis transaction and the genesis public key.':
       'የአውታረ መረቡ እኩዮች ሁሉ በተፈረመው የጀነሲስ ግብይትና በጀነሲስ ይፋዊ ቁልፍ ላይ መስማማት አለባቸው።',
-    '`TransferRequest`, `MintRequest`, `BurnRequest`, `ShieldRequest`, and `UnshieldRequest` validate canonical account IDs and canonical unprefixed Base58 asset-definition IDs before signing.':
-      '`TransferRequest`፣ `MintRequest`፣ `BurnRequest`፣ `ShieldRequest` እና `UnshieldRequest` ከመፈረም በፊት ካኖኒካል የመለያ IDs እና ቅድመ-ቅጥያ የሌላቸው ካኖኒካል Base58 የንብረት-ፍቺ IDs ያረጋግጣሉ።',
+    '`TransferRequest`, `MintRequest`, and `BurnRequest` validate canonical account IDs and canonical unprefixed Base58 asset-definition IDs before signing.':
+      '`TransferRequest`፣ `MintRequest` እና `BurnRequest` ከመፈረም በፊት ካኖኒካል የመለያ IDs እና ቅድመ-ቅጥያ የሌላቸው ካኖኒካል Base58 የንብረት-ፍቺ IDs ያረጋግጣሉ።',
     'Public key of the peer. Consensus validator peers must use BLS-Normal keys.':
       'የእኩዩ ይፋዊ ቁልፍ። የጋራ ስምምነት አረጋጋጭ እኩዮች BLS-Normal ቁልፎችን መጠቀም አለባቸው።',
     '- Contract calls require a positive typed gas limit. The first-release call contract rejects top-level gas or fee-asset metadata.':
       '- የኮንትራት ጥሪዎች አዎንታዊና ዓይነቱ የተገለጸ የ gas ገደብ ይፈልጋሉ። የመጀመሪያ ልቀት ጥሪ ኮንትራት ከፍተኛ-ደረጃ gas ወይም የክፍያ-ንብረት ሜታዳታን ይከለክላል።',
     '| Vanity origin          | `https://<fqdn>/<path>`                        | Canonical app URL recorded in manifests and release notes |':
       '| ብጁ መነሻ | `https://<fqdn>/<path>` | በማኒፌስቶች እና በልቀት ማስታወሻዎች ውስጥ የተመዘገበ ካኖኒካል የመተግበሪያ URL |',
-    'The intent identifies `payments.universal`, its numeric dataspace, canonical I105 owner, lease acquisition term, and current policy/payment quote guard. The planner endpoint is `POST /v1/aliases/setup/plan`; its returned plan is chain-, authority-, state-, and deadline-bound. Domain removal still uses [`Unregister`](/blockchain/instructions.md#un-register).':
+    'The intent identifies `payments.universal`, its numeric data space, canonical I105 owner, lease acquisition term, and current policy/payment quote guard. The planner endpoint is `POST /v1/aliases/setup/plan`; its returned plan is chain-, authority-, state-, and deadline-bound. Domain removal still uses [`Unregister`](/blockchain/instructions.md#un-register).':
       'ዓላማው `payments.universal`ን፣ የቁጥር የመረጃ ቦታውን፣ ካኖኒካል I105 ባለቤቱን፣ የሊዝ ማግኛ ጊዜውን እና የአሁኑን የፖሊሲ/ክፍያ ግምት መከላከያ ይለያል። የእቅድ አውጪው መጨረሻ ነጥብ `POST /v1/aliases/setup/plan` ነው፤ የሚመልሰው እቅድ ከሰንሰለቱ፣ ከባለሥልጣኑ፣ ከሁኔታው እና ከጊዜ ገደቡ ጋር የታሰረ ነው። ጎራን ለማስወገድ አሁንም [`Unregister`](/am/blockchain/instructions.md#un-register) ይጠቀሙ።',
-    '- [Positive and negative cross-SDK address vectors](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/fixtures/account/address_vectors.json)':
-      '- [በ SDK-ዎች መካከል የሚፈተኑ አዎንታዊ እና አሉታዊ የአድራሻ ቬክተሮች](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/fixtures/account/address_vectors.json)',
+    '- [Positive and negative cross-SDK address vectors](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/fixtures/account/address_vectors.json)':
+      '- [በ SDK-ዎች መካከል የሚፈተኑ አዎንታዊ እና አሉታዊ የአድራሻ ቬክተሮች](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/fixtures/account/address_vectors.json)',
     'Address for p2p communication for consensus (sumeragi) and block synchronization (block_sync) purposes.':
       'ለጋራ ስምምነት (sumeragi) እና ለብሎክ ማመሳሰል (block_sync) የ p2p ግንኙነት አድራሻ።',
     'Having a permission to do something means that the account has the corresponding `Permission`. Permissions can be granted directly or through a [`Role`](#permission-groups-roles), which groups a set of permissions. Permissions are granted with the `Grant` instruction. Permissions and roles do not expire; remove them with the `Revoke` instruction.':
@@ -618,22 +608,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'የመጀመሪያው ቀላል የመጻፍ ክዋኔ የ Taira የቴስትኔት ገንዘብ ድጋፍ ጥያቄ መሆን አለበት። የቴስትኔት XOR ይጠቀማል እና ፈጽሞ ወደ Minamoto መጠቆም የለበትም።',
     '- Require a written transaction or migration plan for high-impact writes.':
       '- ከፍተኛ ተጽዕኖ ላላቸው የመጻፍ ክዋኔዎች የተጻፈ የግብይት ወይም የፍልሰት እቅድ ያስፈልግ።',
-    'Domain setup is a fee-paying write. Before trying it on Taira, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, fund the signer through the public faucet, and attach fee metadata:':
-      'የጎራ ማዋቀር ክፍያ የሚጠይቅ የመጻፍ ክዋኔ ነው። በ Taira ላይ ከመሞከርዎ በፊት የቴስትኔት ገንዘብ ድጋፍ አጋዡን ከ [በ Taira የሙከራ መረብ XOR ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ወስደው `taira_faucet_claim.py` በሚል ስም ያስቀምጡ፣ ፈራሚውን በሕዝብ የገንዘብ ድጋፍ አገልግሎት በኩል ይሙሉ እና የክፍያ ሜታዳታን ያያይዙ፦',
     '- An account `404` after a faucet `202` can be propagation delay. Poll the account or funded asset before sending a write.':
       '- ከገንዘብ አገልግሎቱ `202` በኋላ የመለያ `404` ምላሽ በስርጭት መዘግየት ሊከሰት ይችላል። የመጻፍ ክዋኔ ከመላክዎ በፊት መለያውን ወይም የተሞላውን ንብረት በየጊዜው ይጠይቁ።',
-    '3. a governed confidential settlement pool and initial root in every dataspace':
+    '3. a governed confidential settlement pool and initial root in every data space':
       '3. በእያንዳንዱ የመረጃ ቦታ ውስጥ በአስተዳደር የሚቆጣጠር ሚስጥራዊ የማጠናቀቂያ ፑል እና የመነሻ ሩት',
     '- Use `kagami` when you need keys, genesis manifests, profile bundles, or localnet assets.':
       '- ቁልፎች፣ የጀነሲስ ማኒፌስቶች፣ የመገለጫ ጥቅሎች ወይም የ localnet ንብረቶች ሲያስፈልጉ `kagami`ን ይጠቀሙ።',
     'Torii is the HTTP, SSE, and WebSocket gateway for Iroha 3. It serves both ledger-facing APIs and operator endpoints.':
       'Torii የ Iroha 3 HTTP፣ SSE እና WebSocket ጌትዌይ ነው። ከመዝገቡ ጋር የሚገናኙ APIs እና የኦፕሬተር መጨረሻ ነጥቦችን ያቀርባል።',
-    'For a fee-paying Taira asset example, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, then claim the faucet asset first and use it as the transaction gas asset:':
-      'ክፍያ ለሚጠይቅ የ Taira ንብረት ምሳሌ፣ የገንዘብ ድጋፍ አጋዡን ከ [በ Taira የሙከራ መረብ XOR ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ወስደው `taira_faucet_claim.py` በሚል ስም ያስቀምጡ፤ ከዚያ በመጀመሪያ የገንዘብ ድጋፍ ንብረቱን ይጠይቁ እና ለግብይቱ የ gas ንብረት ይጠቀሙበት፦',
-    'For fee-paying examples on Taira, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, then fund the signer through the public faucet first:':
-      'በ Taira ላይ ክፍያ ለሚጠይቁ ምሳሌዎች፣ የገንዘብ ድጋፍ አጋዡን ከ [በ Taira የሙከራ መረብ XOR ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ወስደው `taira_faucet_claim.py` በሚል ስም ያስቀምጡ፤ ከዚያ በመጀመሪያ ፈራሚውን በሕዝብ የገንዘብ ድጋፍ አገልግሎት በኩል ይሙሉ፦',
-    'The example uses the shipped V1 limits, not a performance recommendation. Measure storage, proof, capsule, carrier, and latency envelopes on the intended hardware before choosing operational bounds. The three phase timeouts must fit inside `max_expiry_blocks`, and sidecar retention must be at least that expiry window.':
-      'ምሳሌው የተላኩትን V1 ገደቦች ይጠቀማል፤ ይህ የአፈጻጸም ምክር አይደለም። የአሠራር ገደቦችን ከመምረጥዎ በፊት በታሰበው ሃርድዌር ላይ የማከማቻ፣ የማረጋገጫ፣ የካፕሱል፣ የካሪየር እና የመዘግየት ወሰኖችን ይለኩ። የሦስቱ ደረጃዎች የጊዜ ማብቂያዎች በ `max_expiry_blocks` ውስጥ መግባት አለባቸው፣ እና የጎን ፋይል ማቆያው ቢያንስ ከዚያ የማብቂያ መስኮት ጋር እኩል መሆን አለበት።',
     'Start on the Taira testnet, learn the current transaction flow, and use focused recipes to build production-ready applications.':
       'በ Taira የሙከራ መረብ ይጀምሩ፣ የአሁኑን የግብይት ፍሰት ይማሩ እና ለምርት ዝግጁ መተግበሪያዎችን ለመገንባት ያተኮሩ የተግባር መመሪያዎችን ይጠቀሙ።',
     'Browse cookbook': 'የተግባር መመሪያ ስብስቡን ያስሱ',
@@ -641,15 +623,13 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'Query ledger state': 'የብሎክቼይን መዝገብ ሁኔታን ይጠይቁ',
     '| Capability negotiation | Intersects supported feature bits, datagram limits, feedback cadence, and privacy requirements. |':
       '| የችሎታ ድርድር | ሁለቱም ወገኖች የሚደግፏቸውን የባህሪ ቢቶች፣ የዳታግራም ገደቦች፣ የግብረመልስ ድግግሞሽ እና የግላዊነት መስፈርቶች ይመርጣል። |',
-    'For the full lifecycle, generic asset locks, anonymous escrow, queries, events, and Rust examples, see [Native Asset Escrow](/blockchain/escrow.md).':
-      'ሙሉውን የሕይወት ዑደት፣ አጠቃላይ የንብረት መቆለፊያዎች፣ ስም-አልባ escrow፣ መጠይቆች፣ ክስተቶች እና የ Rust ምሳሌዎች ለማየት [ቤተኛ የንብረት Escrow](/am/blockchain/escrow.md)ን ይመልከቱ።',
+    'For the full lifecycle, generic asset locks, conditional escrow, queries, events, and Rust examples, see [Native Asset Escrow](/blockchain/escrow.md).':
+      'ሙሉውን የሕይወት ዑደት፣ አጠቃላይ የንብረት መቆለፊያዎች፣ ሁኔታዊ escrow፣ መጠይቆች፣ ክስተቶች እና የ Rust ምሳሌዎች ለማየት [ቤተኛ የንብረት Escrow](/am/blockchain/escrow.md)ን ይመልከቱ።',
     '### Fetch a Resolver Directory Snapshot': '### የ Resolver Directory የነጥብ-በ-ጊዜ ውሂብ እይታን ያምጡ',
     'The asset definition still has a canonical opaque address. Store or query that address after registration and use it in the trigger action.':
       'የንብረት ፍቺው አሁንም ካኖኒካል እና ግልጽ ያልሆነ አድራሻ አለው። ከምዝገባ በኋላ ያንን አድራሻ ያከማቹ ወይም ይጠይቁ እና በቀስቅሴው እርምጃ ውስጥ ይጠቀሙበት።',
     "Set the trigger's technical account to a dedicated account when possible. A dedicated account makes it clear which permissions are required for trigger execution and avoids coupling the trigger to an operator's personal signing key.":
       'በሚቻልበት ጊዜ የቀስቅሴውን ቴክኒካዊ መለያ ወደ ተለየ መለያ ያዘጋጁ። ተለየ መለያ ለቀስቅሴ አፈጻጸም የሚያስፈልጉትን ፈቃዶች ግልጽ ያደርጋል እና ቀስቅሴውን ከኦፕሬተር የግል ፊርማ ቁልፍ ጋር ከማጣመር ይከላከላል።',
-    'Register the sponsor account through your private onboarding flow:':
-      'የስፖንሰር መለያውን በግል የመመዝገቢያ ፍሰትዎ በኩል ይመዝግቡ፦',
     'Production equivalent': 'የምርት አካባቢ አቻ',
     'The MCP bridge can submit a signed Iroha transaction, but it does not remove the normal transaction requirements. A transaction still needs a correct authority, permissions, fee funding, chain ID, metadata, and signature.':
       'የ MCP ድልድይ የተፈረመ የ Iroha ግብይት ማስገባት ይችላል፣ ነገር ግን መደበኛውን የግብይት መስፈርቶች አያስወግድም። ግብይት አሁንም ትክክለኛ የፈቃድ ባለቤት፣ ፈቃዶች፣ የክፍያ ገንዘብ፣ የሰንሰለት ID፣ ሜታዳታ እና ፊርማ ያስፈልገዋል።',
@@ -674,8 +654,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     '`AccountId` display and JSON use canonical I105.': 'የ `AccountId` ማሳያ እና JSON ካኖኒካል I105 ይጠቀማሉ።',
   },
   ar: {
-    'The final trace commitment is a byte hash over the domain, parameter set, trace shape, column digests, and trace root:':
-      'التزام التتبع النهائي هو تجزئة بايتية تُحسب على المجال، ومجموعة المعلمات، وشكل التتبع، وملخصات الأعمدة، وجذر التتبع:',
     '- stable opaque pool identifiers, roots, nullifiers, commitments, and fixed ciphertext slots':
       '- معرّفات التجمع المستقرة وغير الشفافة، والجذور، والمبطلات، والالتزامات، ومواضع النص المشفر ثابتة الحجم',
     '| [Atomic private settlement](#atomic-private-settlement)   | Govern confidential pools and atomic bundles.    |':
@@ -715,7 +693,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'لا يُدرج HRP المستخدم حصريًا للمجموع الاختباري في العنوان.',
     'Do not apply NFC, NFKC, width conversion, case folding, or look-alike substitution.':
       'لا تطبّق NFC أو NFKC، ولا تحوّل عرض الأحرف، ولا توحّد حالة الأحرف، ولا تستبدل الأحرف بأخرى متشابهة بصريًا.',
-    'Domain, dataspace, alias, UAID, and account metadata bytes are not present.':
+    'Domain, data space, alias, UAID, and account metadata bytes are not present.':
       'النطاق ومساحة البيانات والاسم المستعار وUAID وبايتات البيانات الوصفية للحساب غير موجودة.',
     'Use the compact form when the raw public-key payload is at most 255 bytes:':
       'استخدم الصيغة المدمجة عندما لا يتجاوز طول الحمولة الخام للمفتاح العام 255 بايتًا:',
@@ -754,10 +732,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'استدعِ مُرمِّز I105 الصريح الخاص بـ `AccountAddress` عند الحاجة إلى ID حساب خارجي.',
     'For contract-owned workflows, Kotodama exposes typed NFT host calls. The following is the exact lifecycle fixture compiled and executed by the pinned IVM documentation test:':
       'بالنسبة إلى سير العمل المملوك للعقد، يتيح Kotodama استدعاءات مضيف NFT محددة الأنواع. وفيما يلي حالة اختبار دورة الحياة الدقيقة التي يجمعها وينفذها اختبار توثيق IVM المثبّت:',
-    '`compute` is a public `kotoage` entrypoint. Run it with `debug-call`, which executes against local fixtures without submitting or paying for a transaction.':
-      '`compute` نقطة دخول عامة في `kotoage`. شغّله باستخدام `debug-call`، الذي ينفّذ على بيانات اختبار محلية من دون إرسال معاملة أو دفع رسومها.',
-    'First set up the domain and SNS lease that own the asset namespace. Create a secret-free `AliasSetupPlanRequestV1` intent for `$BILLING_DOMAIN`, including the numeric `team` dataspace ID, canonical owner, lease term, and current quote guard:':
-      'أولًا، أعدّ النطاق وإيجار SNS اللذين يملكان مساحة أسماء الأصل. أنشئ طلب نية `AliasSetupPlanRequestV1` خاليًا من الأسرار لـ `$BILLING_DOMAIN`، متضمنًا معرّف مساحة البيانات الرقمي `team`، والمالك بالصيغة المعيارية، ومدة الإيجار، وقيد عرض السعر الحالي:',
+    '`compute` is a public read-only `view fn`. Run it with `debug-view`, which executes the compiled bytecode locally against optional fixtures without submitting or paying for a transaction.':
+      '`compute` هي دالة `view fn` عامة للقراءة فقط. شغّلها باستخدام `debug-view`، الذي ينفّذ الشيفرة الثنائية المُجمَّعة محليًا على بيانات الاختبار الاختيارية من دون إرسال معاملة أو دفع رسومها.',
     "Do not paste private keys into an agent prompt. If an agent needs to build a transaction, point it at local code that loads secrets from the user's runtime environment, keychain, hardware signer, or ignored testnet config file. The agent should never write the key material into Markdown, fixtures, logs, or commits.":
       'لا تلصق المفاتيح الخاصة في مطالبة الوكيل. إذا احتاج الوكيل إلى إنشاء معاملة، فوجّهه إلى شفرة محلية تحمّل الأسرار من بيئة تشغيل برنامج المستخدم، أو سلسلة المفاتيح، أو موقّع تشفيري عتادي، أو ملف إعداد testnet متجاهَل. يجب ألا يكتب الوكيل مادة المفتاح مطلقًا في Markdown أو ملفات الاختبار أو السجلات أو عمليات الإيداع في نظام التحكم بالمصدر.',
     'Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible development fixtures. For production deployment, omit it so Kagami uses operating-system randomness, then move the unencrypted private-key export into the approved custody boundary. The command never prints private keys.':
@@ -766,8 +742,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'عمليات الكتابة في Kaigi هي تعليمات داخل معاملات عادية حُدّدت رسومها ووُقّعت. أرسلها عبر `POST /v1/pipeline/transactions` وانتظر دليل الكتلة التي بلغت حالة النهائية.',
     '| Anonymous read calls                          | Yes                                  | Python package plus network access                                                                             |':
       '| استدعاءات القراءة المجهولة | نعم | حزمة Python بالإضافة إلى الوصول إلى الشبكة |',
-    'The faucet returns the concrete `asset_id` to use for the balance check. Verify that the live quote charges `FEE_ASSET_DEFINITION`; the transaction does not select that asset through metadata.':
-      'تعيد خدمة تمويل شبكة الاختبار معرّف `asset_id` الفعلي المستخدم للتحقق من الرصيد. تحقّق من أن عرض الرسوم المباشر يفرض `FEE_ASSET_DEFINITION`؛ فالمعاملة لا تحدد ذلك الأصل من خلال البيانات الوصفية.',
+    "Filter the account's balances by the fee asset definition that the faucet funded. Verify that the live quote charges `FEE_ASSET_DEFINITION`; the transaction does not select that asset through metadata.":
+      'صفِّ أرصدة الحساب حسب تعريف أصل الرسوم الذي موّلته خدمة تمويل شبكة الاختبار. تحقّق من أن عرض الرسوم المباشر يفرض `FEE_ASSET_DEFINITION`؛ فالمعاملة لا تحدد ذلك الأصل من خلال البيانات الوصفية.',
     'If you omit the fee intent, accept a quote for an unexpected asset, alter the payload after quoting, or sign with an unfunded account, the transaction must not be submitted.':
       'إذا حذفت نية الرسوم، أو قبلت عرض رسوم لأصل غير متوقع، أو غيّرت الحمولة بعد تسعيرها، أو وقّعت بحساب غير ممول، فيجب ألا تُرسل المعاملة.',
     'These calls use Taira routes whose catalog boundary admits anonymous reads:':
@@ -784,14 +760,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'قد يختلف توفر الميزات بين SDKs وملفات تعريف الإصدار. يظل تنسيق الترميز الثنائي للبروتوكول محكومًا بالترويسة والمخطط، لا بعلامات البناء المحلية.',
     'Configure a durable local `torii.iso_bridge.store_dir` before admitting any submission. The configuration field is optional only so a node can start for read-only or diagnostic use: every authenticated ISO submission requires the directory, and returns retryable `503 Service Unavailable` when persistence is absent or a replay-tombstone or rich-record write fails.':
       'اضبط دليلًا محليًا دائمًا في `torii.iso_bridge.store_dir` قبل قبول أي إرسال. حقل التكوين اختياري فقط للسماح للعقدة ببدء التشغيل في وضع القراءة فقط أو لأغراض التشخيص: تتطلب كل عملية إرسال ISO موثّقة هذا الدليل، وتعيد الخطأ القابل لإعادة المحاولة `503 Service Unavailable` عند غياب التخزين الدائم أو فشل كتابة سجل منع إعادة التشغيل أو السجل الغني.',
-    "The current [Iroha JavaScript demo](https://github.com/soramitsu/iroha-demo-javascript) implements a transparent, authenticated one-to-one meeting profile. It does not expose the protocol's `zk-roster-v1` proof flow. Its renderer creates WebRTC offers and answers, while a privileged bridge uses the local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) checkout to quote, sign, submit, and wait for finalized Kaigi transactions.":
-      'ينفذ [عرض Iroha التوضيحي بلغة JavaScript](https://github.com/soramitsu/iroha-demo-javascript) الحالي ملف تعريف اجتماع شفافًا وموثّقًا بين طرفين. وهو لا يتيح تدفق إثبات `zk-roster-v1` الخاص بالبروتوكول. ينشئ العارض عروض WebRTC وإجاباتها، بينما يستخدم جسر ذو صلاحيات نسخة العمل المحلية من [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) لتحديد الرسوم والتوقيع والإرسال وانتظار بلوغ معاملات Kaigi حالة النهائية.',
-    '6. `OpenAnonymousEscrowDispute` and `ResolveAnonymousEscrowDispute` handle disputed escrows with evidence hashes and a resolver-controlled split.':
-      '6. تتولى `OpenAnonymousEscrowDispute` و`ResolveAnonymousEscrowDispute` معالجة حسابات الضمان المتنازع عليها باستخدام هاشات الأدلة وتقسيم يتحكم فيه حاسم النزاع.',
-    'The metadata hash, dataspace hash, and slot are stable across adjacent trace rows:':
-      'تظل تجزئة البيانات الوصفية، وتجزئة مساحة البيانات، والفتحة ثابتة عبر صفوف التتبع المتجاورة:',
-    'The SCCP canonical encoders write integers little-endian and encode variable-length byte arrays as:':
-      'تكتب مرمّزات SCCP المعيارية الأعداد الصحيحة بترتيب little-endian، وترمّز مصفوفات البايت متغيرة الطول كما يلي:',
+    "The current [Iroha JavaScript demo](https://github.com/soramitsu/iroha-demo-javascript) implements a transparent, authenticated one-to-one meeting profile. It does not expose the protocol's `zk-roster-v1` proof flow. Its renderer creates WebRTC offers and answers, while a privileged bridge uses the local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) checkout to quote, sign, submit, and wait for finalized Kaigi transactions.":
+      'ينفذ [عرض Iroha التوضيحي بلغة JavaScript](https://github.com/soramitsu/iroha-demo-javascript) الحالي ملف تعريف اجتماع شفافًا وموثّقًا بين طرفين. وهو لا يتيح تدفق إثبات `zk-roster-v1` الخاص بالبروتوكول. ينشئ العارض عروض WebRTC وإجاباتها، بينما يستخدم جسر ذو صلاحيات نسخة العمل المحلية من [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) لتحديد الرسوم والتوقيع والإرسال وانتظار بلوغ معاملات Kaigi حالة النهائية.',
     'For singular queries and small iterable queries, you can use `client.request` to submit a query and get the result in one go.':
       'بالنسبة إلى الاستعلامات المفردة والاستعلامات التكرارية الصغيرة، يمكنك استخدام `client.request` لإرسال استعلام والحصول على النتيجة دفعة واحدة.',
     '8. **Emit signed artifacts.** Torii computes a PDP commitment, signs a `DaIngestReceipt`, builds a `DaCommitmentRecord`, and writes spool artifacts for the manifest, PDP commitment, commitment record, commitment schedule, pin intent, receipt file, and receipt log. The receipt cursor advances monotonically per `(lane_id, epoch)`.':
@@ -812,8 +782,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| شبكة مصرّح بها | شبكات خاصة أو اتحادية أو يديرها مشغّل | يأتي المدققون من طوبولوجيا النظراء الموثوقين المتفق عليها عند النشر | أبقِ جميع المدققين على تكوين genesis الموقّع نفسه، والنظراء الموثوقين أنفسهم، ومفاتيح النظراء ومعلمات Sumeragi نفسها |',
     '| `fastpq_metal_queue_depth`        | Metal queue limit, max in-flight count, dispatch count, and sampling window |':
       '| `fastpq_metal_queue_depth` | حد طابور Metal، والحد الأقصى للعمليات قيد التنفيذ، وعدد عمليات الإرسال، ونافذة أخذ العينات |',
-    '| `universal`  | `core`       | Reserved default dataspace (`DataSpaceId::UNIVERSAL == 0`) for ordinary public ledger traffic and fallback routing.                                 |':
-      '| `universal` | `core` | مساحة البيانات الافتراضية المحجوزة (`DataSpaceId::UNIVERSAL == 0`) لحركة دفتر الأستاذ العام العادية وللتوجيه عبر المسار البديل. |',
     'For Torii RAM-LFE execution receipts, associated data is the canonical program identifier bytes:':
       'في إيصالات تنفيذ Torii RAM-LFE، تكون البيانات المرتبطة هي بايتات معرّف البرنامج المعياري:',
     "6. The client or backend verifies the receipt against the published policy, optionally checking that the returned `output_hex` hashes to the receipt's `output_hash`.":
@@ -826,10 +794,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- أبقِ مضيف الهاش المعياري ضمن نطاق بوابة SoraDNS لإجراء فحوصات GAR',
     '- Contract calls require a positive typed gas limit. The first-release call contract rejects top-level gas or fee-asset metadata.':
       '- تتطلب استدعاءات العقود حد gas موجبًا ومحدد النوع. يرفض عقد الاستدعاء في الإصدار الأول بيانات gas أو أصل الرسوم الوصفية على المستوى الأعلى.',
-    'To regenerate a full Markdown help snapshot from the source checkout, run:':
-      'لإعادة إنشاء لقطة كاملة لمساعدة Markdown من نسخة المصدر، نفّذ:',
-    '7. the chain stores an opaque identifier and receipt hash, not the raw phone or email value':
-      '7. تخزّن السلسلة معرّفًا معتمًا وهاش الإيصال، لا قيمة الهاتف أو البريد الإلكتروني الخام',
     'Strict account fields still use canonical I105 account IDs. Treat aliases as human-readable bindings that resolve to canonical account IDs.':
       'تظل حقول الحساب الصارمة تستخدم معرّفات حساب I105 المعيارية. تعامل مع الأسماء المستعارة بوصفها روابط مقروءة للبشر تُحل إلى معرّفات الحساب المعيارية.',
     '- Use `kagami` when you need keys, genesis manifests, profile bundles, or localnet assets.':
@@ -838,20 +802,12 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- خزّن السلسلة المعيارية التي يعيدها المُرمِّز باستخدام دلالات مقارنة `byte-preserving`.',
     '| `COMPACT_LEN` | `0x02` | Default | Uses canonical unsigned varints for per-value length prefixes. |':
       '| `COMPACT_LEN` | `0x02` | الافتراضي | يستخدم أعدادًا صحيحة متغيرة الطول، غير موقّعة ومعيارية، لبادئات طول كل قيمة. |',
-    'For a fee-paying Taira asset example, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, then claim the faucet asset first and use it as the transaction gas asset:':
-      'لمثال على أصل في Taira يتطلب دفع رسوم، احفظ أداة خدمة تمويل الاختبار من [الحصول على XOR لشبكة Taira التجريبية](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، ثم اطلب أصل الاختبار أولًا واستخدمه أصلًا لرسوم تنفيذ المعاملة:',
-    'Domain setup is a fee-paying write. Before trying it on Taira, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, fund the signer through the public faucet, and attach fee metadata:':
-      'إعداد النطاق عملية كتابة تتطلب دفع رسوم. قبل تجربتها على Taira، احفظ أداة خدمة تمويل الاختبار من [الحصول على XOR لشبكة Taira التجريبية](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، وموّل الموقّع عبر خدمة التمويل العامة، ثم أرفق بيانات تعريف الرسوم:',
-    'After the faucet-funded asset is visible, attach the required gas asset metadata to write transactions:':
-      'بعد ظهور الأصل المموّل من خدمة الاختبار، أرفق بعمليات الكتابة بيانات تعريف أصل رسوم التنفيذ المطلوبة:',
-    'For fee-paying examples on Taira, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, then fund the signer through the public faucet first:':
-      'للأمثلة التي تدفع رسومًا على Taira، احفظ أداة خدمة تمويل الاختبار من [الحصول على XOR لشبكة Taira التجريبية](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، ثم موّل الموقّع أولًا عبر خدمة التمويل العامة:',
     '| `HttpService`          | `Inrou` | Live HTTP APIs, collector-heavy work, cache-backed services, SSE, browser-assisted flows     |':
       '| `HttpService` | `Inrou` | واجهات HTTP APIs مباشرة، وأعمال كثيفة التجميع، وخدمات مدعومة بذاكرة تخزين مؤقت، وSSE، وتدفقات بمساعدة المتصفح |',
     '| Commitment | Digest material that binds the manifest, lane payload, proof bundle, or content root to the ledger-visible record.                                    |':
       '| الالتزام | مادة ملخّص تربط البيان أو حمولة مسار التنفيذ أو حزمة الإثبات أو جذر المحتوى بالسجل الظاهر في دفتر الأستاذ. |',
-    'Resolve the alias, fetch the on-chain manifest by the returned code hash, and simulate the same public entrypoint by canonical address:':
-      'حلّ الاسم المستعار، واجلب البيان الموجود على السلسلة باستخدام هاش الشيفرة المُعاد، ثم حاكِ نقطة الدخول العامة نفسها باستخدام العنوان المعياري:',
+    'Resolve the alias, fetch the on-chain manifest by the code hash Torii reports for the deployed view, and run the same view by canonical address:':
+      'حلّ الاسم المستعار، واجلب البيان الموجود على السلسلة باستخدام هاش الشيفرة الذي يبلغ عنه Torii لدالة العرض المنشورة، ثم شغّل دالة العرض نفسها باستخدام العنوان المعياري:',
     'The faucet is only for Taira testnet funds. Do not use testnet XOR, faucet accounts, or Taira canary signers in Minamoto flows.':
       'خدمة التمويل مخصّصة لأموال شبكة Taira التجريبية فقط. لا تستخدم XOR التجريبي أو حسابات خدمة التمويل أو موقّعي اختبار Taira في تدفقات Minamoto.',
     '- Keep `client.toml` files separate for localnet, Taira, Minamoto, and private networks. A copied testnet signer should never become a mainnet signer.':
@@ -868,8 +824,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| `COMPACT_LEN` | `0x02` | Standart | Hər dəyərin uzunluq prefiksi üçün kanonik işarəsiz varintlərdən istifadə edir. |',
     '| Execution plane        | Runtime | Use it for                                                                                   |':
       '| İcra müstəvisi | Proqram icra mühiti | İstifadə sahəsi |',
-    '`uaid` complements the canonical `AccountId`; it does not replace it. Use it when Nexus services need a stable user or organization handle across dataspaces, privacy-preserving enrollment, or service capability lookup. The runtime keeps a one-to-one UAID-to-account index, requires opaque identifiers to be attached through a UAID, and rejects duplicate or colliding opaque identifiers. See [FHE and UAID](/blockchain/sora-nexus-services.md#fhe-and-uaid) for the Nexus service-layer flow.':
-      '`uaid` kanonik `AccountId`-ni tamamlayır, onu əvəz etmir. Nexus xidmətlərində məlumat məkanları arasında sabit istifadəçi və ya təşkilat identifikatoru, məxfiliyi qoruyan qeydiyyat və ya xidmət imkanlarının axtarışı tələb olunduqda ondan istifadə edin. İcra mühiti UAID ilə hesab arasında bir-bir uyğunluqlu indeks saxlayır, qeyri-şəffaf identifikatorların UAID vasitəsilə qoşulmasını tələb edir və təkrarlanan və ya toqquşan qeyri-şəffaf identifikatorları rədd edir. Nexus xidmət səviyyəsi axını üçün [FHE və UAID](/az/blockchain/sora-nexus-services.md#fhe-and-uaid) bölməsinə baxın.',
+    '`uaid` complements the canonical `AccountId`; it does not replace it. Use it when SORA Nexus services need a stable user or organization handle across data spaces, privacy-preserving enrollment, or service capability lookup. The runtime keeps a one-to-one UAID-to-account index, requires opaque identifiers to be attached through a UAID, and rejects duplicate or colliding opaque identifiers. See [FHE and UAID](/blockchain/sora-nexus-services.md#fhe-and-uaid) for the SORA Nexus service-layer flow.':
+      '`uaid` kanonik `AccountId`-ni tamamlayır, onu əvəz etmir. SORA Nexus xidmətlərində məlumat məkanları arasında sabit istifadəçi və ya təşkilat identifikatoru, məxfiliyi qoruyan qeydiyyat və ya xidmət imkanlarının axtarışı tələb olunduqda ondan istifadə edin. İcra mühiti UAID ilə hesab arasında bir-bir uyğunluqlu indeks saxlayır, qeyri-şəffaf identifikatorların UAID vasitəsilə qoşulmasını tələb edir və təkrarlanan və ya toqquşan qeyri-şəffaf identifikatorları rədd edir. SORA Nexus xidmət səviyyəsi axını üçün [FHE və UAID](/az/blockchain/sora-nexus-services.md#fhe-and-uaid) bölməsinə baxın.',
     'A value such as `treasury@payments.universal` is an account alias, not another spelling of the I105 ID.':
       '`treasury@payments.universal` kimi bir dəyər hesab aliasıdır, I105 ID-nin başqa yazılışı deyil.',
     '- Preserve letter case and do not apply `Unicode` normalization.':
@@ -905,22 +861,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '`AccountId` ekranı və JSON təqdimatı kanonik I105-dən istifadə edir.',
   },
   ba: {
-    'Wallet or prover tooling must build the proof attachment and public inputs. Opening creates one escrow commitment. Release, cancellation, and anonymous dispute resolution must spend exactly one escrow commitment and create the buyer, seller, or split output commitments required by the action.':
-      'Кошелёк йәки иҫбатлау ҡоралы иҫбатлау ҡушымтаһын һәм асыҡ инеүҙәрҙе төҙөргә тейеш. Асыу бер эскроу коммитментын булдыра. Азат итеү, ғәмәлдән сығарыу һәм аноним бәхәсте хәл итеү һәр береһе тап бер эскроу коммитментын тотонорға һәм ғәмәл талап иткән һатып алыусы, һатыусы йәки бүленгән сығыш коммитменттарын булдырырға тейеш.',
     '### 3. Read the account and its assets': '### 3. Иҫәп яҙмаһын һәм уның активтарын ҡарау',
     'The selected executor defines which permission checks apply. You can grant the default [permission tokens](/blockchain/permissions.md) in genesis to shape a private, administrator-managed network or a more open network. Once those permissions are active, the process of registering accounts is different.':
       'Һайланған башҡарыусы ниндәй рөхсәт тикшереүҙәре ҡулланылыуын билдәләй. Ябыҡ, администратор идара иткән селтәрҙе йәки асығыраҡ селтәрҙе формалаштырыу өсөн genesis-та ғәҙәти [рөхсәт токендарын](/ba/blockchain/permissions.md) бирә алаһығыҙ. Был рөхсәттәр әүҙемләшкәс, иҫәп яҙмаларын теркәү тәртибе үҙгәрә.',
     '6. **Build the manifest.** `DaManifestV1` records the lane, epoch, blob class, codec, payload digest, chunk root, chunk size, erasure profile, retention policy, rent quote, chunk commitments, optional IPA commitment, metadata, and issue time. The storage ticket is deterministic: the node first hashes a manifest template with an empty ticket, then writes that fingerprint back as the final `storage_ticket`.':
       '6. **Манифест төҙөгөҙ.** `DaManifestV1` башҡарыу һыҙатын, дәүерҙе, блоб класын, кодекты, файҙалы йөкләмә дайджестын, фрагменттар тамырын, фрагмент күләмен, юғалтыуҙы тергеҙеү профилен, һаҡлау сәйәсәтен, ҡуртым хаҡы тәҡдимен, фрагменттарҙың криптографик коммитменттарын, өҫтәмә IPA коммитментын, метамәғлүмәттәрҙе һәм сығарылған ваҡытты теркәй. Һаҡлау билеты детерминистик: төйөн тәүҙә билет урыны буш булған манифест ҡалыбының хэшын иҫәпләй, шунан был бармаҡ эҙен һуңғы `storage_ticket` итеп яҙа.',
-    'A SORA Nexus account ID is a canonical I105 address derived from the account public key and the target network prefix. It is not the `[account].domain` value in client TOML. The same public key encodes to different IDs on Taira and Minamoto, and production users should generate a separate keypair for Minamoto.':
-      'SORA Nexus иҫәбе идентификаторы — иҫәптең асыҡ асҡысынан һәм маҡсатлы селтәр префиксынан сығарылған каноник I105 адресы. Ул клиенттың TOML файлындағы `[account].domain` ҡиммәте түгел. Бер үк асыҡ асҡыс Taira һәм Minamoto өсөн төрлө идентификаторҙарға кодлана, ә етештереү мөхитендәге ҡулланыусылар Minamoto өсөн айырым асҡыстар парын булдырырға тейеш.',
-    '- the sponsor account exists': '- спонсор иҫәбе бар',
-    '### 1. Inspect canonical accounts on Taira':
-      '### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ',
+    '### 1. Inspect canonical accounts on Taira': '### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ',
     'Grant and revoke instructions are used for account [permissions and roles](permissions.md).':
       'Рөхсәт биреү һәм кире алыу күрһәтмәләре иҫәп яҙмаһының [рөхсәттәре һәм ролдәре](permissions.md) өсөн ҡулланыла.',
-    'Multilane execution additionally derives a deterministic payload-ownership hash and lane-local RBC instance hash for each lane subject. Those identities bind lane proposals and certificates to the global carrier; they are not a separate global consensus session. A block still finalizes only when the peer has a valid commit certificate and the matching payload locally.':
-      'Күп һыҙатлы башҡарыу һәр һыҙат субъекты өсөн өҫтәмә рәүештә детерминистик файҙалы йөккә хужалыҡ итеү хешын һәм һыҙатҡа хас RBC экземпляры хешын сығара. Был идентификаторҙар һыҙат тәҡдимдәре менән сертификаттарын глобаль йөрөтөүсе менән бәйләй; улар айырым глобаль консенсус сессияһы түгел. Блок төйөндә ғәмәлдәге commit сертификаты һәм уға тап килгән файҙалы йөк урындағы һаҡлағыста булғанда ғына финаллаша.',
     '- membership or access records': '- ағзалыҡ йәки инеү хоҡуғы яҙмалары',
     'An empty `items` array is a valid response on a public testnet. It means there are no NFTs in the current page, not that NFT instructions are unavailable.':
       'Буш `items` массивы асыҡ тест селтәрендә дөрөҫ яуап булып тора. Был NFT күрһәтмәләре мөмкин түгеллеген түгел, ә хәҙерге биттә NFTs юҡлығын аңлата.',
@@ -996,7 +944,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- Conserve exactamente las mayúsculas y minúsculas, y no aplique la normalización de `Unicode`.',
     'Do not apply NFC, NFKC, width conversion, case folding, or look-alike substitution.':
       'No aplique NFC ni NFKC, ni convierta el ancho de los caracteres, ni cambie las mayúsculas y minúsculas, ni sustituya caracteres por otros visualmente similares.',
-    'Domain, dataspace, alias, UAID, and account metadata bytes are not present.':
+    'Domain, data space, alias, UAID, and account metadata bytes are not present.':
       'El dominio, el espacio de datos, el alias, el UAID y los bytes de metadatos de la cuenta no están presentes.',
     '| `key_len`    |          1 byte | Raw key length           |':
       '|`key_len` |1 byte |Longitud de la clave en bruto |',
@@ -1042,28 +990,22 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
   hy: {
     'The block header stores hashes for DA proof policies, commitments, and pin intents. For membership proofs, the commitment bundle also exposes a Merkle root whose leaves are hashes of canonical Norito-encoded `DaCommitmentRecord` values. Parent nodes hash the concatenation of left and right children; an odd leaf is promoted unchanged to the next layer.':
       'Բլոկի վերնագիրը պահպանում է DA-ի ապացույցների քաղաքականությունների, պարտավորությունների և ամրացման մտադրությունների հեշերը։ Անդամակցության ապացույցների համար պարտավորությունների փաթեթը նաև տրամադրում է Merkle-ի արմատ, որի տերևները կանոնիկ Norito-ով կոդավորված `DaCommitmentRecord` արժեքների հեշերն են։ Ծնող հանգույցները հեշավորում են ձախ և աջ զավակների միակցումը, իսկ կենտ տերևը անփոփոխ տեղափոխվում է հաջորդ շերտ։',
-    'The final trace commitment is a byte hash over the domain, parameter set, trace shape, column digests, and trace root:':
-      'Հետագծի վերջնական պարտավորությունը բայթային հեշ է՝ հաշվարկված տիրույթի, պարամետրերի հավաքածուի, հետագծի ձևի, սյունակների դայջեսթների և հետագծի արմատի հիման վրա․',
     'Soracloud config and secret entries are part of authoritative deployment state. Deploy, upgrade, and rollback fail closed when required config or secret bindings are missing or inconsistent with the active manifests.':
       'Soracloud-ի կազմաձևման և գաղտնիքների գրառումները տեղակայման հեղինակավոր վիճակի մաս են։ Տեղակայումը, թարմացումը և հետարկումը անվտանգորեն արգելափակվում են, եթե պահանջվող կազմաձևման կամ գաղտնիքի կապակցումները բացակայում են կամ չեն համապատասխանում ակտիվ մանիֆեստներին։',
-    'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory dataspace bindings for that UAID.':
+    'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory data space bindings for that UAID.':
       'UAID-ն այդ հոսքի ինքնության և հնարավորությունների հենակետն է։ Տվյալների մոդելում `UniversalAccountId`-ը հիմնված է հեշի վրա և ցուցադրվում է `uaid:<hash>` ձևով։ Վերլուծիչներն ընդունում են կամ `uaid:<hash>`, կամ չմշակված 64-նիշանոց տասնվեցական դայջեսթը։ `Account`-ը և `NewAccount`-ը ներառում են ընտրովի `uaid` և `opaque_ids` դաշտեր։ Կատարման միջավայրում գրանցումը պարտադրում է UAID-ի և հաշվի մեկ-առ-մեկ ինդեքս, մերժում է կրկնվող կամ բախվող անթափանց նույնացուցիչները և մերժում է UAID չունեցող անթափանց նույնացուցիչները։ UAID-ի ու հաշվի կապակցման յուրաքանչյուր փոփոխությունից հետո կատարման միջավայրը վերակառուցում է Տարածքների գրացուցակի տվյալների տարածքի կապակցումները տվյալ UAID-ի համար։',
-    'Space Directory manifests attach capabilities to a UAID. An `AssetPermissionManifest` names the UAID, dataspace, activation and optional expiry epoch, and ordered allow/deny entries scoped by dataspace, program, method, asset, and AMX role. Evaluation is deny-wins: the first matching deny rejects the request, otherwise the latest matching allow candidate is checked against any amount limit. Publishing, expiring, and revoking these manifests is guarded by `CanPublishSpaceDirectoryManifest`.':
+    'Space Directory manifests attach capabilities to a UAID. An `AssetPermissionManifest` names the UAID, data space, activation and optional expiry epoch, and ordered allow/deny entries scoped by data space, program, method, asset, and AMX role. Evaluation is deny-wins: the first matching deny rejects the request, otherwise the latest matching allow candidate is checked against any amount limit. Publishing, expiring, and revoking these manifests is guarded by `CanPublishSpaceDirectoryManifest`.':
       'Տարածքների գրացուցակի մանիֆեստները հնարավորություններ են կապում UAID-ին։ `AssetPermissionManifest`-ը նշում է UAID-ը, տվյալների տարածքը, ակտիվացման և ընտրովի ավարտի դարաշրջանը, ինչպես նաև տվյալների տարածքով, ծրագրով, մեթոդով, ակտիվով և AMX դերով սահմանափակված թույլատրող ու արգելող կարգավորված գրառումները։ Գնահատման ժամանակ արգելումն ունի առաջնահերթություն․ առաջին համապատասխան արգելումը մերժում է հարցումը, իսկ հակառակ դեպքում վերջին համապատասխան թույլտվության թեկնածուն ստուգվում է գումարի հնարավոր սահմանաչափի նկատմամբ։ Այս մանիֆեստների հրապարակումը, ժամկետի ավարտը և հետկանչը պաշտպանվում են `CanPublishSpaceDirectoryManifest`-ով։',
-    'UAID is not the ciphertext and not the FHE policy itself. It is the stable account capability anchor used to find the account, opaque identifier claims, and Space Directory bindings that authorize a service or dataspace flow. FHE schemas govern encrypted payload admission and execution separately through parameter sets, execution policies, ciphertext commitments, and decryption authority policies.':
+    'UAID is not the ciphertext and not the FHE policy itself. It is the stable account capability anchor used to find the account, opaque identifier claims, and Space Directory bindings that authorize a service or data space flow. FHE schemas govern encrypted payload admission and execution separately through parameter sets, execution policies, ciphertext commitments, and decryption authority policies.':
       'UAID-ը ո՛չ գաղտնագիր տեքստն է, ո՛չ էլ հենց FHE քաղաքականությունը։ Այն հաշվի հնարավորությունների կայուն հենակետն է, որով գտնում են հաշիվը, անթափանց նույնացուցիչների հավակնությունները և ծառայության կամ տվյալների տարածքի հոսքը թույլատրող Տարածքների գրացուցակի կապակցումները։ FHE սխեմաները գաղտնագրված օգտակար բեռի ընդունումն ու կատարումը առանձին կառավարում են պարամետրերի հավաքածուների, կատարման քաղաքականությունների, գաղտնագիր տեքստի պարտավորությունների և վերծանման լիազորության քաղաքականությունների միջոցով։',
-    '- A manifest or ABI mismatch means the bytecode, manifest, and node runtime do not describe the same artifact. Rebuild at the pinned commit with `--verify`.':
-      '- Մանիֆեստի կամ ABI-ի անհամապատասխանությունը նշանակում է, որ բայթկոդը, մանիֆեստը և հանգույցի կատարման միջավայրը չեն նկարագրում նույն արտեֆակտը։ Վերակառուցեք ամրագրված commit-ից՝ օգտագործելով `--verify`։',
+    '- A manifest or ABI mismatch means the bytecode, manifest, and node runtime do not describe the same artifact. Rebuild at the pinned commit, then rerun the build with `--verify`.':
+      '- Մանիֆեստի կամ ABI-ի անհամապատասխանությունը նշանակում է, որ բայթկոդը, մանիֆեստը և հանգույցի կատարման միջավայրը չեն նկարագրում նույն արտեֆակտը։ Վերակառուցեք ամրագրված commit-ից, ապա կառուցումը կրկին գործարկեք `--verify`-ով։',
     'Plain-text client configuration is suitable only for local development and controlled tests. A production integration should obtain signatures through its approved custody boundary. The stock Iroha CLI reads a private key from client configuration and does not provide a generic external-signer adapter. Custom clients can construct the transaction payload hash and attach a signature produced by an external signer.':
       'Բաց տեքստով հաճախորդի կազմաձևումը հարմար է միայն տեղային մշակման և վերահսկվող փորձարկումների համար։ Արտադրական ինտեգրումը պետք է ստորագրություններ ստանա իր հաստատված պահառության սահմանի միջոցով։ Ստանդարտ Iroha CLI-ն մասնավոր բանալին կարդում է հաճախորդի կազմաձևումից և ընդհանուր նշանակության արտաքին ստորագրող ադապտեր չի տրամադրում։ Հատուկ հաճախորդները կարող են կազմել գործարքի օգտակար բեռի հեշը և կցել արտաքին ստորագրողի ստեղծած ստորագրությունը։',
     'Operational security protects the people, hosts, credentials, and procedures around an Iroha deployment. The ledger records accepted state changes. Operators must separately secure their workstations, signing keys, and incident-response process.':
       'Գործառնական անվտանգությունը պաշտպանում է Iroha-ի տեղակայումը սպասարկող մարդկանց, հոսթերը, մուտքային տվյալները և ընթացակարգերը։ Ռեեստրը գրանցում է ընդունված վիճակի փոփոխությունները։ Օպերատորները պետք է առանձին պաշտպանեն իրենց աշխատակայանները, ստորագրման բանալիները և միջադեպերին արձագանքելու գործընթացը։',
-    'During candidate preparation, Sumeragi aggregates the proposed payload by lane and dataspace and derives the lane-local data-availability identities. The recorded totals include transaction count, chunks, payload bytes, and TEU. After commit, those totals become the lane and dataspace commitment snapshots exposed through authenticated Sumeragi diagnostics. If a block contains lane settlement receipts, block processing also creates lane settlement commitments and relay envelopes that bind the block header, commit certificate, data-availability commitment hash, settlement proof, and lane payload size.':
-      'Թեկնածու բլոկի պատրաստման ընթացքում Sumeragi-ն առաջարկված օգտակար բեռը խմբավորում է ըստ կատարման ուղու և տվյալների տարածքի ու ստանում տվյալների հասանելիության՝ տվյալ ուղուն տեղային նույնացուցիչները։ Գրանցված հանրագումարները ներառում են գործարքների քանակը, հատվածները, օգտակար բեռի բայթերը և TEU-ն։ Հաստատումից հետո դրանք դառնում են կատարման ուղու և տվյալների տարածքի պարտավորությունների վիճակապատկերներ, որոնք հասանելի են Sumeragi-ի նույնականացված ախտորոշման միջոցով։ Եթե բլոկը պարունակում է կատարման ուղու վերջնահաշվարկի անդորրագրեր, բլոկի մշակումը նաև ստեղծում է կատարման ուղու վերջնահաշվարկի պարտավորություններ և վերահաղորդման ծրարներ, որոնք կապում են բլոկի վերնագիրը, հաստատման վկայականը, տվյալների հասանելիության պարտավորության հեշը, վերջնահաշվարկի ապացույցը և կատարման ուղու օգտակար բեռի չափը։',
     'Plaintext coefficient vectors are encoded by scaling each coefficient:':
       'Բաց տեքստի գործակիցների վեկտորները կոդավորվում են՝ յուրաքանչյուր գործակիցը մասշտաբավորելով։',
-    'Lane relay envelopes also carry compact FastPQ proof material. The material is a digest over the lane id, dataspace id, block height, verification height, block header hash, settlement hash, and manifest root. A relay is merge admissible only when it has both a QC and valid FastPQ proof material.':
-      'Կատարման ուղու վերահաղորդման տվյալների ծրարները նաև պարունակում են FastPQ-ի սեղմ ապացուցողական նյութ։ Այդ նյութը կատարման ուղու ID-ի, տվյալների տարածքի ID-ի, բլոկի բարձրության, ստուգման բարձրության, բլոկի վերնագրի կրիպտոգրաֆիական հեշի, վերջնահաշվարկի կրիպտոգրաֆիական հեշի և տեխնիկական մանիֆեստի արմատի հիման վրա հաշվարկված դայջեսթ է։ Վերահաղորդումը միավորման համար ընդունելի է միայն այն դեպքում, երբ ունի և՛ QC, և՛ FastPQ-ի վավեր ապացուցողական նյութ։',
     '- the transaction entrypoint hash used as the batch hash':
       '- գործարքի մուտքային կետի հեշը, որն օգտագործվում է որպես խմբաքանակի հեշ',
     'Observer peers can synchronize committed blocks, but they do not propose, vote, or count toward the commit quorum. Use observers when a deployment needs local query capacity, indexing, monitoring, or regional block replication without increasing the number of voting validators.':
@@ -1106,32 +1048,23 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Ցածր մակարդակի `AccountAddress`-ի ցուցադրումը/JSON ներկայացումը ներքին և վրիպազերծման համատեքստերում օգտագործում է կանոնիկ տասնվեցական ձևը։',
   },
   he: {
+    'Run Atomic Private Cross-Data Space Settlement': 'הפעלת סליקה פרטית אטומית בין מרחבי נתונים',
     '5. Query the resulting pin intent or commitment before promoting an alias, settlement proof, or gateway route that depends on the payload.':
       '5. לפני קידום כינוי, הוכחת סליקה או נתיב שער שתלויים במטען, בצעו שאילתה על כוונת ההצמדה או ההתחייבות שנוצרה.',
     '- pause application-side actions that are outside the ledger, such as checkout, withdrawal, signing, bridge, or settlement workflows':
       '- השהו פעולות בצד היישום שמחוץ לפנקס, כגון תהליכי קופה, משיכה, חתימה, העברה בגשר או סליקה',
-    '# Run Atomic Private Cross-Dataspace Settlement': '# הרצת סליקה פרטית אטומית בין מרחבי נתונים',
     '## Settlement workflow': '## תהליך הסליקה',
-    '# Run Atomic Private Cross-Dataspace Settlement {#run-atomic-private-cross-dataspace-settlement}':
-      '# הרצת סליקה פרטית אטומית בין מרחבי נתונים {#run-atomic-private-cross-dataspace-settlement}',
-    'Use DA when an application or Nexus lane needs a ledger-visible promise that off-chain data remains retrievable. Common examples include lane payload commitments for settlement flows, SoraFS pin intents for published content, proof bundles that must be retained for later verification, and application artifacts whose public state should be a digest rather than the full payload.':
-      'השתמשו ב-DA כאשר יישום או מסלול Nexus זקוקים להבטחה גלויה בפנקס שהנתונים שמחוץ לשרשרת יישארו ניתנים לאחזור. דוגמאות נפוצות כוללות התחייבויות למטעני מסלול עבור תהליכי סליקה, כוונות הצמדה של SoraFS לתוכן שפורסם, חבילות הוכחה שיש לשמור לצורך אימות מאוחר יותר, ופריטי יישום שמצבם הציבורי צריך להיות תקציר ולא המטען המלא.',
-    '4. The resolved route is checked against both catalogs. Unknown lanes, unknown dataspaces, and lane/dataspace mismatches are deterministic routing errors. If a transaction writes to two different dataspace targets, it is rejected as a conflicting route; cross-dataspace DVP/PVP settlement is routed through the universal coordinator lane.':
-      '4. הנתיב שנפתר נבדק מול שני הקטלוגים. מסלולים לא מוכרים, מרחבי נתונים לא מוכרים ואי־התאמות בין מסלול למרחב נתונים הם שגיאות ניתוב דטרמיניסטיות. אם עסקה כותבת לשני יעדים שונים של מרחבי נתונים, היא נדחית עקב נתיב סותר; סליקת DVP/PVP חוצת־מרחבי־נתונים מנותבת דרך מסלול המתאם האוניברסלי.',
-    'On Taira, attach the faucet-derived `taira.tx-metadata.json` and use `--fee-payer authority` for every write. Registration and minting require the active validator\'s permissions; transfer and burn require authority over the source balance. A faucet-funded account is not automatically an issuer.':
-      'ב-Taira, צרפו את `taira.tx-metadata.json` שהתקבל משירות המימון והשתמשו ב-`--fee-payer authority` בכל כתיבה. רישום והנפקה דורשים את ההרשאות של המאמת הפעיל; העברה ושרפה דורשות סמכות על יתרת המקור. חשבון שמומן בשירות המימון אינו הופך אוטומטית למנפיק.',
-    '- runtime configuration snapshots needed for deterministic block execution, such as cryptography, governance, pipeline, content, settlement, and Nexus settings':
-      '- תמונות מצב של תצורת סביבת הריצה הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד, תוכן, סליקה ו־Nexus',
-    'During candidate preparation, Sumeragi aggregates the proposed payload by lane and dataspace and derives the lane-local data-availability identities. The recorded totals include transaction count, chunks, payload bytes, and TEU. After commit, those totals become the lane and dataspace commitment snapshots exposed through authenticated Sumeragi diagnostics. If a block contains lane settlement receipts, block processing also creates lane settlement commitments and relay envelopes that bind the block header, commit certificate, data-availability commitment hash, settlement proof, and lane payload size.':
-      'במהלך הכנת הבלוק המועמד, Sumeragi מצרף את המטען המוצע לפי נתיב ומרחב נתונים וגוזר את מזהי זמינות הנתונים המקומיים לכל נתיב. הסכומים הרשומים כוללים את מספר העסקאות, המקטעים, הבתים של המטען ו-TEU. לאחר commit הקונצנזוס, סכומים אלה הופכים לתמונות מצב של התחייבויות הנתיב ומרחב הנתונים, הנחשפות באמצעות אבחון Sumeragi מאומת. אם בלוק מכיל קבלות הסדרה של נתיב, עיבוד הבלוק יוצר גם התחייבויות הסדרה של הנתיב ומעטפות ממסר שקושרות את כותרת הבלוק, תעודת ה-commit, גיבוב התחייבות זמינות הנתונים, הוכחת ההסדרה וגודל המטען של הנתיב.',
+    'Use DA when an application or SORA Nexus lane needs a ledger-visible promise that off-chain data remains retrievable. Common examples include lane payload commitments for settlement flows, SoraFS pin intents for published content, proof bundles that must be retained for later verification, and application artifacts whose public state should be a digest rather than the full payload.':
+      'השתמשו ב-DA כאשר יישום או מסלול SORA Nexus זקוקים להבטחה גלויה בפנקס שהנתונים שמחוץ לשרשרת יישארו ניתנים לאחזור. דוגמאות נפוצות כוללות התחייבויות למטעני מסלול עבור תהליכי סליקה, כוונות הצמדה של SoraFS לתוכן שפורסם, חבילות הוכחה שיש לשמור לצורך אימות מאוחר יותר, ופריטי יישום שמצבם הציבורי צריך להיות תקציר ולא המטען המלא.',
+    "On Taira, use `--fee-payer authority` for every write; the CLI quotes the exact fee, in Taira's fee asset, before signing. Registration requires owning the definition's `--domain`, and an alias also needs `CanManageAssetDefinitionAlias`. Minting requires owning the definition or holding `CanMintAssetWithDefinition` or `CanMintAssetToAccount`; transfer and burn require authority over the source balance. A faucet-funded account is not automatically an issuer.":
+      'ב־Taira, השתמשו ב־`--fee-payer authority` בכל פעולת כתיבה; ה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה. רישום דורש בעלות על ה־`--domain` של ההגדרה, וכינוי דורש גם את `CanManageAssetDefinitionAlias`. הנפקה דורשת בעלות על ההגדרה או החזקה ב־`CanMintAssetWithDefinition` או ב־`CanMintAssetToAccount`; העברה ושריפה דורשות סמכות על יתרת המקור. חשבון שמומן דרך ה־faucet אינו הופך אוטומטית למנפיק.',
+    '- runtime configuration snapshots needed for deterministic block execution, such as cryptography, governance, pipeline, content, settlement, and SORA Nexus settings':
+      '- תמונות מצב של תצורת סביבת הריצה הנדרשות לביצוע דטרמיניסטי של בלוקים, כגון הגדרות קריפטוגרפיה, ממשל, שרשרת עיבוד, תוכן, סליקה ו־SORA Nexus',
     '4. Trigger-produced effects are handled in the block execution pipeline without allowing unbounded recursive trigger execution.':
       '4. האפקטים שהטריגר יוצר מטופלים בתהליך ביצוע הבלוק, בלי לאפשר הפעלה רקורסיבית בלתי מוגבלת של טריגרים.',
     'Use a language-specific guide to register blockchain objects:':
       'השתמשו במדריך הייעודי לכל שפה כדי לרשום אובייקטים בבלוקצ׳יין:',
-    'Run Atomic Private Cross-Dataspace Settlement': 'הפעלת סליקה פרטית אטומית בין מרחבי נתונים',
     '| `Offline` | Offline settlement events |': '| `Offline` | אירועי סליקה לא מקוונת |',
-    'Byte strings are packed into 7-byte little-endian limbs so every limb is strictly below `p`:':
-      'מחרוזות בתים נארזות ליחידות של 7 בתים בסדר little-endian, כך שכל יחידה קטנה ממש מ־`p`:',
     'Its sentinel identifies the intended network with a chain discriminant.':
       'הסנטינל שלו מזהה את הרשת המיועדת באמצעות מבחין השרשרת.',
     'A value such as `treasury@payments.universal` is an account alias, not another spelling of the I105 ID.':
@@ -1311,22 +1244,20 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- 完全なアドレスを表示し、コピー操作を提供してください。',
     'Call the explicit `AccountAddress` I105 encoder when an external account ID is required.':
       '外部アカウント ID が必要な場合は、明示的な `AccountAddress` I105 エンコーダーを呼び出してください。',
-    '- executor/runtime, proofs, bridges, and SORA/Nexus modules':
-      '- エグゼキューター／ランタイム、証明、ブリッジ、SORA／Nexus モジュール',
+    '- executor/runtime, proofs, bridges, and SORA Nexus modules':
+      '- エグゼキューター／ランタイム、証明、ブリッジ、SORA Nexus モジュール',
     'When a Python helper is not available, feed canonical data-model `InstructionBox` JSON into `Instruction.from_json`. This is the recommended path for `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT registration, and non-trigger unregister variants until those helpers are typed.':
       'Python ヘルパーがない場合は、正規のデータモデル `InstructionBox` JSON を `Instruction.from_json` に渡します。`Grant`、`Revoke`、`SetParameter`、`Log`、`Custom`、`Upgrade`、ピア／ロール／NFT の登録、およびトリガー以外の登録解除については、それぞれの型付きヘルパーが用意されるまで、この方法を推奨します。',
-    'To regenerate a full Markdown help snapshot from the source checkout, run:':
-      'ソースの作業ツリーから完全な Markdown ヘルプのスナップショットを再生成するには、次を実行します:',
     'Set `VITE_COMPAT_MATRIX_URL` only to override the bundled snapshot with a compatible live backend. Without that variable, the page loads `src/public/compat-matrix.json`.':
       '`VITE_COMPAT_MATRIX_URL` は、同梱のスナップショットを互換性のある稼働中のバックエンドで上書きする場合にのみ設定します。この変数がなければ、ページは `src/public/compat-matrix.json` を読み込みます。',
     'Inspect the detected format, canonical hex, and selected network context as JSON:':
       '検出された形式、正規の 16 進表現、選択したネットワークコンテキストを JSON で確認します:',
     'Block and event stream examples rely on Torii streaming endpoints. Verify the peer is still running, then test with a timeout:':
-      'ブロックとイベントストリームの例は、Torii のストリーミング API エンドポイントを使用します。ピアが引き続き稼働していることを確認してから、タイムアウトを指定してテストします:',
+      'ブロックとイベントストリームの例は、Torii のストリーミングエンドポイントを使用します。ピアが引き続き稼働していることを確認してから、タイムアウトを指定してテストします:',
     '<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha is part of <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a>. Learn more at <a href="https://iroha.tech/" target="_blank">iroha.tech</a>.</p>':
       '<p style="font-weight: 200; font-size: 0.875rem;">Hyperledger Iroha は <a href="https://www.lfdecentralizedtrust.org/projects/tag/ledger-technology" target="_blank">LF Decentralized Trust</a> のプロジェクトです。詳しくは <a href="https://iroha.tech/" target="_blank">iroha.tech</a> をご覧ください。</p>',
-    'A peer only commits genesis when its storage is empty. To test a new genesis in a disposable localnet, stop the peers, remove their generated state directory, and start from the new signed genesis. Do not replace genesis on a running network unless every validator is coordinating the same migration.':
-      'ピアはストレージが空の場合にのみジェネシストランザクションを確定します。使い捨てのローカルネットで新しいジェネシスをテストするには、ピアを停止し、生成済みの状態ディレクトリを削除して、新しい署名済みジェネシスから起動します。すべてのバリデーターが同じ移行を協調して実施している場合を除き、稼働中のネットワークでジェネシスを置き換えないでください。',
+    'A fresh network starts from its signed genesis. To test a different genesis in a disposable localnet, stop the peers, remove their generated state directory, and start from the new signed genesis. A running network must never replace genesis as an upgrade mechanism. Changes to protocol definitions require governed selection transitions and qualification for the selected definitions and obligations.':
+      '新しいネットワークは、署名済みジェネシスから起動します。使い捨てのローカルネットで別のジェネシスを試すには、ピアを停止し、生成された状態ディレクトリを削除して、新しい署名済みジェネシスから起動します。稼働中のネットワークで、アップグレードの手段としてジェネシスを置き換えてはいけません。プロトコル定義の変更には、ガバナンスに基づく選択の遷移と、選択する定義および履行義務に対する適格性の検証が必要です。',
     '- keep the canonical hash host under the SoraDNS gateway domain for GAR checks':
       '- GAR チェックのため、正規ハッシュホストを SoraDNS ゲートウェイドメイン配下に維持します',
     'All write commands select the authority as fee payer explicitly. The CLI quotes the exact transaction before signing and waits by default.':
@@ -1335,8 +1266,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '最初のビルドでは、成果物と認証済みの付随ファイルを生成します。2 回目のビルドは読み取り専用の `--verify` モードで実行され、既存の出力が現在のソースと完全に一致しない場合は失敗します。`.to` ファイルとそのマニフェストは、レビュー済みの 1 つのビルド出力として扱ってください。',
     '- If submission times out after returning a hash, query that hash before building another transaction. Blind resubmission creates a new quoted and signed payload.':
       '- 送信処理がハッシュを返した後にタイムアウトした場合は、別のトランザクションを作成する前にそのハッシュを照会してください。確認せずに再送信すると、手数料見積もり済みで署名済みの新しいペイロードが作成されます。',
-    '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.':
-      '4. すべての決済区間について Prepare 証明書がそろったら、変更不能な完全 Prepare バリアを構築します。標準形式の 3-of-4 Commit 証明書を要求して永続化します。コーディネーターが再起動した場合は、参加ノードにローカルで永続化された Prepare 証明書と Commit 証明書を照会し、標準形式でクォーラムと同等の証明書を選択して、処理を続行する前に再配布します。認証されていないローカルキャッシュから証明書を再構築してはいけません。',
+    '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Have the manifest sponsor submit it in one `RegisterAtomicPrivateSettlementPrepareV1` control carrier and wait for finality; Commit voters consult that replicated lock. Then request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.':
+      '4. すべての決済区間について Prepare 証明書がそろったら、変更不能な完全 Prepare バリアを構築します。マニフェストのスポンサーに、それを 1 つの `RegisterAtomicPrivateSettlementPrepareV1` 制御用コンテナ取引で提出させ、ファイナリティを待ちます。Commit の投票者は、その複製されたロックを参照します。その後、標準形式の 3-of-4 Commit 証明書を要求して永続化します。コーディネーターが再起動した場合は、参加ノードにローカルで永続化された Prepare 証明書と Commit 証明書を照会し、標準形式でクォーラムと同等の証明書を選択して、処理を続行する前に再配布します。認証されていないローカルキャッシュから証明書を再構築してはいけません。',
     '- both formal layers: the 3/255-leg count-symmetry checks and the exact four-validator committee-indexed N=2 validator-focused plus full bounded- fault, paper-primary N=3 fault, N=4 clean, and N=3 expiry/replay configurations, with fault budgets independent per committee':
       '- 2 つの形式レイヤーの両方：3/255 区間の個数対称性チェックと、正確に 4 台のバリデータを使う委員会インデックス付き構成（N=2 のバリデータ重点構成と完全な有界障害構成、論文で主要対象とする N=3 障害構成、N=4 正常構成、N=3 有効期限切れ／リプレイ構成）。障害予算は委員会ごとに独立させます',
     '[^1]: `Register<Account>` creates ledger state for a canonical, domainless `AccountId`; domain routing and aliases are managed separately.':
@@ -1360,23 +1291,17 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'The first build publishes the artifact and authenticated sidecars. The second runs in read-only `--verify` mode and fails if any existing output does not exactly match the current source. Treat the `.to` file and its manifest as one reviewed build output.':
       'პირველი აგება აქვეყნებს არტეფაქტსა და ავთენტიფიცირებულ თანმხლებ ფაილებს. მეორე მხოლოდ წაკითხვის `--verify` რეჟიმში მუშაობს და შეცდომით სრულდება, თუ არსებული რომელიმე შედეგი მიმდინარე წყაროს ზუსტად არ ემთხვევა. `.to` ფაილი და მისი მანიფესტი ერთ, შემოწმებულ აგების შედეგად განიხილეთ.',
     'Consume live Taira pipeline events over server-sent events (SSE), reconnect with bounded backoff, and refresh durable state after the replacement stream is open. Because the endpoint has no replay cursor, treat events as notifications rather than a complete history.':
-      'მიიღეთ Taira-ს დამუშავების ნაკადის ცოცხალი მოვლენები სერვერის მიერ გამოგზავნილი მოვლენების (SSE) საშუალებით, კავშირი შეზღუდული მზარდი დაყოვნებით აღადგინეთ და შემცვლელი ნაკადის გახსნის შემდეგ მდგრადი მდგომარეობა განაახლეთ. რადგან API-ის საბოლოო წერტილს განმეორებითი დაკვრის კურსორი არ აქვს, მოვლენები სრულ ისტორიად კი არა, შეტყობინებებად განიხილეთ.',
-    'This is content confidentiality, not traffic-flow anonymity. Timing, participant count, dataspace identity, and stable-pool activity remain public. A dataspace that hosts only one CBDC may also make the asset inferable from the route even though no literal asset identifier is published.':
+      'მიიღეთ Taira-ს დამუშავების ნაკადის ცოცხალი მოვლენები სერვერის მიერ გამოგზავნილი მოვლენების (SSE) საშუალებით, კავშირი შეზღუდული მზარდი დაყოვნებით აღადგინეთ და შემცვლელი ნაკადის გახსნის შემდეგ მდგრადი მდგომარეობა განაახლეთ. რადგან საბოლოო წერტილს განმეორებითი დაკვრის კურსორი არ აქვს, მოვლენები სრულ ისტორიად კი არა, შეტყობინებებად განიხილეთ.',
+    'This is content confidentiality, not traffic-flow anonymity. Timing, participant count, data space identity, and stable-pool activity remain public. A data space that hosts only one CBDC may also make the asset inferable from the route even though no literal asset identifier is published.':
       'ეს არის შინაარსის კონფიდენციალურობა და არა ტრაფიკის ნაკადის ანონიმურობა. დრო, მონაწილეთა რაოდენობა, მონაცემთა სივრცის იდენტობა და სტაბილური პულის აქტივობა საჯარო რჩება. მონაცემთა სივრცემ, რომელშიც მხოლოდ ერთი CBDC არის განთავსებული, შეიძლება აქტივი მარშრუტიდან გამოსაცნობიც გახადოს, მიუხედავად იმისა, რომ აქტივის პირდაპირი იდენტიფიკატორი არ ქვეყნდება.',
-    'All production behavior comes from the node configuration. Environment variables cannot activate this path. The shipped default is `enabled = false`; leaving the feature disabled requires no settlement-specific configuration.':
-      'საწარმოო გარემოში მთელი ქცევა კვანძის კონფიგურაციიდან მოდის. გარემოს ცვლადები ამ გზას ვერ ააქტიურებს. მიწოდებული ნაგულისხმევი მნიშვნელობაა `enabled = false`; ფუნქციის გამორთულად დატოვება ანგარიშსწორებისთვის სპეციფიკურ კონფიგურაციას არ მოითხოვს.',
-    'Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation\'s activation height; the instruction rejects that boundary.':
+    "Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation's activation height; the instruction rejects that boundary.":
       'გამოიყენეთ კონფიდენციალურობის მმართველობის მიერ ავტორიზებული `RotatePrivateSettlementPoolPolicyV1` ინსტრუქცია. მან ზუსტად უნდა მიუთითოს მმართველობის მიმდინარე დაიჯესტი, შეინარჩუნოს იგივე მარშრუტი, პული და აქტივთან დამაკავშირებელი ვალდებულება, მმართველობის რევიზია ერთით გაზარდოს, გამოიყენოს მკაცრად უფრო ახალი გასაღების ეპოქა და განსხვავებული პოლიტიკისა და მმართველობის დაიჯესტები და გააქტიურდეს როტაციის შემცველ ბლოკში. პულის საზღვარი, ფესვები, ნულიფიკატორები, შედეგები, განმეორებითი დაკვრის ნაკრებები და საბოლოო ქვითრები უცვლელად რჩება. როტაციის აქტივაციის სიმაღლეზე იმავე მარშრუტს ან პულს არ უნდა ეხებოდეს არცერთი ქვითარი; ინსტრუქცია ასეთ საზღვარს უარყოფს.',
     '- both formal layers: the 3/255-leg count-symmetry checks and the exact four-validator committee-indexed N=2 validator-focused plus full bounded- fault, paper-primary N=3 fault, N=4 clean, and N=3 expiry/replay configurations, with fault budgets independent per committee':
       '- ორივე ფორმალური ფენა: 3/255 ნაწილის რაოდენობის სიმეტრიის შემოწმებები და ზუსტად ოთხი ვალიდატორისგან შემდგარი, კომიტეტის ინდექსით განსაზღვრული N=2 ვალიდატორზე ორიენტირებული და სრულად შეზღუდული ხარვეზის, ნაშრომის ძირითადი N=3 ხარვეზის, N=4 სუფთა და N=3 ვადის გასვლის/განმეორებითი დაკვრის კონფიგურაციები; ხარვეზის ბიუჯეტი თითოეული კომიტეტისთვის დამოუკიდებელია',
-    'Do not use `gas_asset_id` for the "local-token fee" pattern unless you want the sponsor to be charged in that gas asset too. In the current runtime, `fee_sponsor` also makes the sponsor the payer for configured pipeline-gas asset debits. For local-token user fees, collect the token explicitly with a transfer or contract rule.':
-      'არ გამოიყენოთ `gas_asset_id` „ლოკალური ტოკენის საფასურის“ ნიმუშისთვის, თუ არ გსურთ, რომ სპონსორს ამ გაზის აქტივშიც დაეკისროს საფასური. მიმდინარე შესრულების გარემოში `fee_sponsor` სპონსორს კონფიგურირებული დამუშავების ნაკადის გაზის აქტივიდან ჩამოჭრის გადამხდელადაც აქცევს. ლოკალური ტოკენით მომხმარებლის საფასურის მისაღებად ტოკენი პირდაპირ, გადარიცხვით ან კონტრაქტის წესით შეაგროვეთ.',
-    'The top-level `chain` is the current Nexus mainnet chain ID. `[account].profile = "minamoto"` selects the Minamoto I105 chain discriminant; the endpoint hostname and chain ID do not select it implicitly.':
-      'ზედა დონის `chain` არის Nexus-ის მიმდინარე ძირითადი ქსელის ჯაჭვის ID. `[account].profile = "minamoto"` ირჩევს Minamoto I105-ის ჯაჭვის დისკრიმინანტს; API-ის საბოლოო წერტილის ჰოსტის სახელი და ჯაჭვის ID მას ავტომატურად არ ირჩევს.',
     'Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible development fixtures. For production deployment, omit it so Kagami uses operating-system randomness, then move the unencrypted private-key export into the approved custody boundary. The command never prints private keys.':
       'გამოიყენეთ `--seed-hex` მხოლოდ ზუსტად 32-ბაიტიან თექვსმეტობით საიდუმლოსთან ერთად, განმეორებადი განვითარების სატესტო მონაცემებისთვის. საწარმოო განთავსებისას გამოტოვეთ იგი, რათა Kagami-მ ოპერაციული სისტემის შემთხვევითობის წყარო გამოიყენოს, შემდეგ კი დაშიფვრის გარეშე ექსპორტირებული პირადი გასაღები დამტკიცებულ დაცულ საზღვარში გადაიტანეთ. ბრძანება პირად გასაღებებს არასოდეს ბეჭდავს.',
-    'The current JavaScript SDK is the `@iroha/iroha-js` package in the Iroha source tree. It is the Node.js-first SDK for Torii, Norito builders, signing, pagination, Connect previews, and Kagemusha command transport.':
-      'მიმდინარე JavaScript SDK არის Iroha-ს წყაროს ხეში არსებული `@iroha/iroha-js` პაკეტი. ეს არის Node.js-ზე ორიენტირებული SDK Torii-სთვის, Norito-ს შემქმნელებისთვის, ხელმოწერისთვის, გვერდებად დაყოფისთვის, Connect-ის წინასწარი დათვალიერებისთვის და Kagemusha-ს ბრძანებების ტრანსპორტისთვის.',
+    'The current JavaScript SDK is the `@iroha/iroha-js` package in the Iroha source tree. It is the Node.js-first SDK for Torii, Norito builders, signing, pagination, and Connect previews.':
+      'მიმდინარე JavaScript SDK არის Iroha-ს წყაროს ხეში არსებული `@iroha/iroha-js` პაკეტი. ეს არის Node.js-ზე ორიენტირებული SDK Torii-სთვის, Norito-ს შემქმნელებისთვის, ხელმოწერისთვის, გვერდებად დაყოფისთვის და Connect-ის წინასწარი დათვალიერებისთვის.',
     '### JSON Escape Hatch {#json-escape-hatch}': '### JSON-ის სარეზერვო გზა {#json-escape-hatch}',
     '| Repo/settlement extensions                                                                     | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp`                                                                                                      |':
       '| რეპოს/ანგარიშსწორების გაფართოებები | `repo_initiate`, `repo_unwind`, `repo_margin_call`, `settlement_dvp`, `settlement_pvp` |',
@@ -1386,8 +1311,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| ნაკადური გადაცემა | Norito ნაკადური გადაცემა იყენებს Norito-ს მანიფესტებს, სეგმენტის სათაურებს, მართვის ჩარჩოებსა და შესაბამისობის სატესტო მონაცემებს. |',
     '| `to_compressed_bytes` | Encode with Zstd and record the compression tag in the header. |':
       '| `to_compressed_bytes` | Zstd-ით კოდირება და შეკუმშვის ტეგის სათაურში ჩაწერა. |',
-    'Debug-only switch for exercising Sumeragi soft-fork handling paths. Leave this disabled outside controlled tests; changing it on a running production network can make peers disagree about consensus behavior.':
-      'მხოლოდ გამართვისთვის განკუთვნილი გადამრთველი, რომლითაც Sumeragi-ის რბილი ფორკის დამუშავების გზები მოწმდება. კონტროლირებული ტესტების გარეთ იგი გამორთული დატოვეთ; მოქმედ საწარმოო ქსელში მისმა შეცვლამ შეიძლება კვანძებს შორის კონსენსუსის ქცევაზე უთანხმოება გამოიწვიოს.',
     'Frequency of snapshots.': 'მდგომარეობის ანაბეჭდების შექმნის სიხშირე.',
     'Directory where to store snapshots.': 'კატალოგი, სადაც მდგომარეობის ანაბეჭდები ინახება.',
     '## JSON vs. Norito {#json-vs-norito}': '## JSON და Norito: შედარება {#json-vs-norito}',
@@ -1395,10 +1318,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'ღია ტექსტის კლიენტის კონფიგურაცია გამოდგება მხოლოდ ლოკალური შემუშავებისა და კონტროლირებადი ტესტებისთვის. საწარმოო ინტეგრაციამ ხელმოწერები უნდა მიიღოს დამტკიცებული დაცული შენახვის საზღვრის მეშვეობით. სტანდარტული Iroha CLI კითხულობს პირად გასაღებს კლიენტის კონფიგურაციიდან და ზოგად გარე ხელმომწერის ადაპტერს არ უზრუნველყოფს. სპეციალიზებულ კლიენტებს შეუძლიათ შექმნან ტრანზაქციის სასარგებლო დატვირთვის ჰეში და დაურთონ გარე ხელმომწერის მიერ შექმნილი ხელმოწერა.',
     '- When repetitions reach zero, minting more repetitions is another privileged write. Do not silently change this recipe to an indefinite trigger.':
       '- როდესაც გამეორებების რაოდენობა ნულს მიაღწევს, დამატებითი გამეორებების მინიჭება კიდევ ერთი პრივილეგირებული ჩაწერის ოპერაციაა. ეს რეცეპტი შეუმჩნევლად არ გადააკეთოთ განუსაზღვრელი რაოდენობის გამეორების მქონე ტრიგერად.',
-    'In an Iroha network, a peer is selected randomly and granted the special privilege of forming the next block. This privilege can be revoked in networks that achieve [Byzantine fault tolerance](#byzantine-fault-tolerance-bft) via [view change](#view-change).':
-      'Iroha-ს ქსელში ქსელის კვანძი შემთხვევით შეირჩევა და მას მომდევნო ბლოკის ფორმირების განსაკუთრებული უფლება ენიჭება. ეს უფლება შეიძლება გაუქმდეს იმ ქსელებში, რომლებიც [ბიზანტიური ხარვეზებისადმი მედეგობას](#byzantine-fault-tolerance-bft) [ხედის შეცვლის](#view-change) მეშვეობით აღწევენ.',
-    'For browser access, SoraDNS derives gateway hosts from a registered FQDN. The registered vanity host remains the canonical application origin, while deployed gateway profiles expose browser and Torii fallback routes for that origin.':
-      'ბრაუზერიდან წვდომისთვის SoraDNS რეგისტრირებული FQDN-ის საფუძველზე კარიბჭის ჰოსტებს წარმოქმნის. რეგისტრირებული ინდივიდუალური ჰოსტი აპლიკაციის კანონიკურ საწყის მისამართად რჩება, ხოლო განთავსებული კარიბჭის პროფილები ამ მისამართისთვის ბრაუზერისა და Torii-ის სარეზერვო მარშრუტებს აქვეყნებს.',
+    'For each height and view, Sumeragi derives the proposer deterministically from the committee, authenticated leader seed, and committed skipped-leader history. A [view change](#view-change) rotates to the next eligible committee member under the same [Byzantine fault tolerance](#byzantine-fault-tolerance-bft) rules.':
+      'თითოეული სიმაღლისა და ხედისთვის Sumeragi წინადადების ავტორს დეტერმინისტულად განსაზღვრავს კომიტეტის, ლიდერის შერჩევის დამოწმებული საწყისი მნიშვნელობისა და გამოტოვებული ლიდერების ჯაჭვში დაფიქსირებული ისტორიის მიხედვით. [ხედის ცვლილება](#view-change) რიგს გადასცემს კომიტეტის შემდეგ უფლებამოსილ წევრს [ბიზანტიური შეცდომებისადმი მდგრადობის](#byzantine-fault-tolerance-bft) იმავე წესების შესაბამისად.',
     'A value such as `treasury@payments.universal` is an account alias, not another spelling of the I105 ID.':
       'ისეთი მნიშვნელობა, როგორიცაა `treasury@payments.universal`, ანგარიშის ალიასია და არა I105 ID-ის ჩაწერის სხვა ფორმა.',
     'Deriving an I105 ID does not register or fund the account.':
@@ -1489,12 +1410,11 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'როდესაც გარე ანგარიშის ID არის საჭირო, გამოიძახეთ `AccountAddress`-ის ცხადი I105 ენკოდერი.',
   },
   kk: {
-    '- [Torii endpoints](/reference/torii-endpoints.md)':
-      '- [Torii API соңғы нүктелері](/kk/reference/torii-endpoints.md)',
+    'The option summary above follows the `iroha3d` argument definitions at the pinned Iroha commit. To inspect the exact help for your checkout, run:':
+      'Жоғарыдағы параметрлердің қысқаша сипаттамасы бекітілген Iroha коммитіндегі `iroha3d` аргумент анықтамаларына сәйкес келеді. Жұмыс көшірмеңіздегі дәл анықтаманы көру үшін мынаны іске қосыңыз:',
+    '- [Torii endpoints](/reference/torii-endpoints.md)': '- [Torii соңғы нүктелері](/kk/reference/torii-endpoints.md)',
     '- **SORA Nexus service planes** add Soracloud, Inrou, SoraNet, SoraFS, and SoraDNS for app hosting, privacy transport, storage, and naming':
       '- **SORA Nexus сервис деңгейлері** қолданбаларды орналастыру, құпия трафикті тасымалдау, сақтау және атау қызметтері үшін Soracloud, Inrou, SoraNet, SoraFS және SoraDNS мүмкіндіктерін қосады',
-    'Challenge calls append the full digest to the transcript state. The replay order is:':
-      'Сынақ мәнін алу шақырулары толық дайджесті транскрипт күйіне қосады. Қайта ойнату реті:',
     '| Inrou                  | Soracloud hosted HTTP runtime for service revisions that need a live HTTP plane.                                                            | Soracloud runtime config, host capability adverts, replica runtime state                 |':
       '| Inrou | Тікелей HTTP деңгейін қажет ететін сервис нұсқаларына арналған Soracloud басқаратын HTTP орындау ортасы. | Soracloud орындау ортасының конфигурациясы, хост мүмкіндіктері туралы хабарландырулар, реплика орындау ортасының күйі |',
     '| Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |':
@@ -1512,7 +1432,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     '- Record who owns each authority, where its signer is held, and how it can be replaced or revoked.':
       '- Әр уәкілетті субъектінің иесін, оның қол қоюшысы қайда сақталатынын және оны қалай ауыстыруға немесе кері қайтарып алуға болатынын тіркеңіз.',
     "Account inventory helpers require an account identifier accepted by the SDK's normalizer. Use canonical I105 account IDs or on-chain aliases; if a block explorer or raw endpoint returns an ID that the SDK rejects, resolve it to a canonical account ID before calling these helpers:":
-      'Есептік жазба қорын түгендеу көмекшілері SDK қалыптандырғышы қабылдайтын есептік жазба идентификаторын талап етеді. Канондық I105 есептік жазба ID-лерін немесе тізбектегі алиастарды пайдаланыңыз; блок шолушысы не өңделмеген API соңғы нүктесі SDK қабылдамайтын ID қайтарса, бұл көмекшілерді шақырмас бұрын оны канондық есептік жазба ID-іне түрлендіріңіз:',
+      'Есептік жазба қорын түгендеу көмекшілері SDK қалыптандырғышы қабылдайтын есептік жазба идентификаторын талап етеді. Канондық I105 есептік жазба ID-лерін немесе тізбектегі алиастарды пайдаланыңыз; блок шолушысы не өңделмеген соңғы нүктесі SDK қабылдамайтын ID қайтарса, бұл көмекшілерді шақырмас бұрын оны канондық есептік жазба ID-іне түрлендіріңіз:',
     'Configure the URL as a user-local MCP server in the agent runtime. Do not commit agent MCP config, API tokens, forwarded auth headers, `authority`, or `private_key` values into this docs repo or an application repo.':
       'URL-ді агенттің орындау ортасында пайдаланушыға жергілікті MCP сервері ретінде баптаңыз. Агенттің MCP конфигурациясын, API токендерін, қайта бағытталған аутентификация тақырыптарын, `authority` немесе `private_key` мәндерін осы құжаттама репозиторийіне не қолданба репозиторийіне нұсқаларды басқару үшін қоспаңыз.',
     '- Keep live testnet writes opt-in so ordinary test runs do not depend on network availability or spend testnet funds.':
@@ -1526,34 +1446,28 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Екі нақты балансты, содан кейін анықтаманы оқыңыз. Күй өзгергеннен кейінгі осы сұраулар — сәттілік өлшемі; тек жіберу түбіртегінің өзі жеткіліксіз.',
     '- [Escrow and proof queries](/reference/queries.md#escrow-and-proof-records)':
       '- [Эскроу және дәлел жазбаларына арналған сұраулар](/kk/reference/queries.md#escrow-and-proof-records)',
-    'Do not use `gas_asset_id` for the "local-token fee" pattern unless you want the sponsor to be charged in that gas asset too. In the current runtime, `fee_sponsor` also makes the sponsor the payer for configured pipeline-gas asset debits. For local-token user fees, collect the token explicitly with a transfer or contract rule.':
-      'Демеушіден осы газ активімен де ақы алынсын демесеңіз, «жергілікті токен төлемі» үлгісінде `gas_asset_id` қолданбаңыз. Ағымдағы орындау ортасында `fee_sponsor` демеушіні бапталған өңдеу ағынының газ активінен шегерімдер үшін де төлеуші етеді. Пайдаланушыдан жергілікті токенмен ақы алу үшін токенді аударым немесе келісімшарт ережесі арқылы тікелей жинаңыз.',
     'Feature availability can differ between SDKs and release profiles. The wire format remains governed by the header and schema, not by local build flags.':
       'Мүмкіндіктердің қолжетімділігі SDKs пен шығарылым профильдеріне қарай өзгеруі мүмкін. Сериализация пішімін жергілікті құрастыру жалаушалары емес, тақырып пен схема анықтайды.',
     'Use `--seed-hex` only with an exact 32-byte hexadecimal secret for reproducible development fixtures. For production deployment, omit it so Kagami uses operating-system randomness, then move the unencrypted private-key export into the approved custody boundary. The command never prints private keys.':
       'Қайта өндіруге болатын әзірлеу сынақ деректерін жасау үшін `--seed-hex` параметрін дәл 32 байттық он алтылық құпиямен ғана пайдаланыңыз. Өндірістік орналастыруда оны алып тастаңыз: сонда Kagami операциялық жүйенің кездейсоқтық көзін пайдаланады. Одан кейін шифрланбаған жеке кілт экспортын бекітілген сақтау шекарасына көшіріңіз. Команда жеке кілттерді ешқашан басып шығармайды.',
     'Typical SoraFS uses include static application assets, documentation builds, zone bundles, model or artifact references, and governance evidence bundles. The Iroha data model exposes SoraFS gateway events and a [`FindSorafsProviderOwner`](/reference/queries.md#nexus-data-availability-and-packages) query for provider ownership resolution.':
       'SoraFS әдетте қолданбаның статикалық ресурстары, құжаттама жинақтары, аймақ бумалары, модельдерге не артефактілерге сілтемелер және басқару дәлелдерінің бумалары үшін пайдаланылады. Iroha деректер моделі SoraFS шлюз оқиғаларын және провайдер иесін анықтауға арналған [`FindSorafsProviderOwner`](/kk/reference/queries.md#nexus-data-availability-and-packages) сұрауын ұсынады.',
-    'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory dataspace bindings for that UAID.':
+    'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory data space bindings for that UAID.':
       'UAID — осы ағынның сәйкестендіру және мүмкіндік тірегі. Деректер моделінде `UniversalAccountId` хэшке негізделген және `uaid:<hash>` түрінде көрсетіледі. Парсерлер `uaid:<hash>` пішімін де, өңделмеген 64 он алтылық таңбалы криптографиялық дайджестті де қабылдайды. `Account` пен `NewAccount` міндетті емес `uaid` және `opaque_ids` өрістерін қамтиды. Орындау ортасы тіркеу кезінде UAID пен тіркелгі арасында бір-біріне сәйкесті индексті қамтамасыз етеді, қайталанатын не өзара соқтығысатын мөлдір емес идентификаторларды және UAID-ы жоқ мөлдір емес идентификаторларды қабылдамайды. UAID пен тіркелгі байланысы өзгерген сайын, орындау ортасы осы UAID үшін Кеңістік каталогындағы деректер кеңістігі байланыстарын қайта құрады.',
-    'UAID is not the ciphertext and not the FHE policy itself. It is the stable account capability anchor used to find the account, opaque identifier claims, and Space Directory bindings that authorize a service or dataspace flow. FHE schemas govern encrypted payload admission and execution separately through parameter sets, execution policies, ciphertext commitments, and decryption authority policies.':
+    'UAID is not the ciphertext and not the FHE policy itself. It is the stable account capability anchor used to find the account, opaque identifier claims, and Space Directory bindings that authorize a service or data space flow. FHE schemas govern encrypted payload admission and execution separately through parameter sets, execution policies, ciphertext commitments, and decryption authority policies.':
       'UAID — шифрмәтін де, FHE саясатының өзі де емес. Ол қызметке не деректер кеңістігі ағынына рұқсат беретін тіркелгіні, мөлдір емес идентификатор талаптарын және Кеңістік каталогы байланыстарын табуға пайдаланылатын тұрақты тіркелгі мүмкіндігінің тірегі. FHE схемалары шифрланған пайдалы жүктемені қабылдау мен орындауды параметрлер жиынтықтары, орындау саясаттары, шифрмәтін міндеттемелері және шифрды ашу өкілеттігінің саясаттары арқылы бөлек басқарады.',
     '| `PACKED_STRUCT` | `0x04` | Supported | Encodes derive-generated structs as packed field payloads. |':
       '| `PACKED_STRUCT` | `0x04` | Қолдау көрсетіледі | derive арқылы жасалған құрылымдарды ықшам өріс жүктемелері ретінде кодтайды. |',
     'The current source-backed localnet flow is generated by Kagami. It writes peer configs, genesis artifacts, client config, helper scripts, and an optional Compose file that matches the checked-out code:':
       'Ағымдағы бастапқы кодқа негізделген жергілікті желі ағынын Kagami жасайды. Ол желі түйіндерінің конфигурацияларын, genesis артефактілерін, клиент конфигурациясын, көмекші сценарийлерді және жұмыс көшірмесіндегі кодқа сәйкес келетін міндетті емес Compose файлын жазады:',
-    'Too-small bounds create queue or payload-recovery pressure; oversized bounds increase retained memory and the amount of work available to an abusive peer. Compare the diagnostics snapshot with process memory, message handling, and missing-body metrics before changing one bound at a time:':
-      'Тым төмен шектер кезекке немесе пайдалы жүктемені қалпына келтіруге қысым түсіреді; тым жоғары шектер сақталатын жадты және жүйені теріс пайдаланатын түйін орындай алатын жұмыс көлемін арттырады. Әр жолы бір шекті өзгертпес бұрын диагностикадағы күй кескінін процесс жадымен, хабарларды өңдеумен және денесі жетіспейтін хабар метрикаларымен салыстырыңыз:',
-    '`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody directory. Signed genesis requires a matching PoP for every voting validator. In peer configuration, a non-empty `trusted_peers_pop` map selects the validator subset; trusted peers omitted from that non-empty map are observers. If the map is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with voter PoPs still supplied by signed genesis.':
-      '`--pop` тек `bls_normal` алгоритмімен жарамды; ол кілттерді сақтау каталогына `pop.hex` файлын қосады. Қол қойылған genesis әрбір дауыс беретін валидатор үшін сәйкес PoP талап етеді. Түйін конфигурациясындағы бос емес `trusted_peers_pop` картасы валидаторлар ішкі жиынын таңдайды; бұл картада жоқ сенімді түйіндер бақылаушы болады. Карта бос болса, барлық BLS-normal сенімді түйіндер бастапқы жүктеу үміткерлерінің жиынына кіреді, ал дауыс берушілердің PoPs мәндерін қол қойылған genesis береді.',
+    '`--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody directory. Signed genesis requires a matching PoP for every voting validator. In peer configuration, list each validator\'s PoP in `trusted_peers_pop`: trusted peers without a valid PoP are excluded from the consensus roster, and an empty map yields no validators, so a node whose map omits the genesis validators refuses to start. Run a sync-only node with `[sumeragi] role = "observer"`.':
+      '`--pop` тек `bls_normal` алгоритмімен жарамды; ол кілттерді сақтау каталогына `pop.hex` файлын қосады. Қол қойылған генезис әрбір дауыс беретін валидатор үшін сәйкес PoP талап етеді. Түйін конфигурациясында әр валидатордың PoP мәнін `trusted_peers_pop` ішінде көрсетіңіз: жарамды PoP мәні жоқ сенімді түйіндер консенсус тізімінен шығарылады, ал бос карта ешбір валидатор бермейді, сондықтан картасында генезис валидаторлары жоқ түйін іске қосылудан бас тартады. Тек синхрондайтын түйінді `[sumeragi] role = "observer"` арқылы іске қосыңыз.',
     'When a Python helper is not available, feed canonical data-model `InstructionBox` JSON into `Instruction.from_json`. This is the recommended path for `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT registration, and non-trigger unregister variants until those helpers are typed.':
       'Python көмекшісі қолжетімсіз болса, канондық деректер моделінің `InstructionBox` JSON мәнін `Instruction.from_json` функциясына беріңіз. Бұл көмекшілер типтелгенше, `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, түйін/рөл/NFT тіркеуі және триггерге қатысы жоқ тіркеуден шығару нұсқалары үшін осы жолды пайдалану ұсынылады.',
-    'Each request is labelled with the API version to which it belongs. It allows a combination of different binary versions of Iroha client/peer software to interoperate, which in turn allows software upgrades in the Iroha network.':
-      'Әр сұрау өзі тиесілі API нұсқасымен белгіленеді. Бұл Iroha клиенті мен түйіні бағдарламалық жасақтамасының әртүрлі бинарлық нұсқаларына өзара жұмыс істеуге мүмкіндік береді, ал соның арқасында Iroha желісіндегі бағдарламалық жасақтаманы жаңартуға болады.',
+    "Iroha 3's first release supports one canonical block-wire version. The `/v1/api/version` endpoint reports `SignedBlock::WIRE_VERSION` after genesis is applied and returns an unavailable response before then. This reports the supported wire format; it does not negotiate compatibility between different protocol layouts or authorize a network upgrade.":
+      'Iroha 3 алғашқы шығарылымы блоктарды тасымалдаудың бір ғана канондық пішім нұсқасын қолдайды. Бастапқы блок қолданылғаннан кейін `/v1/api/version` соңғы нүктесі `SignedBlock::WIRE_VERSION` мәнін хабарлайды, ал оған дейін қолжетімсіздік жауабын қайтарады. Бұл қолдау көрсетілетін тасымалдау пішімін ғана көрсетеді; хаттаманың әртүрлі орналасу пішімдері арасындағы үйлесімділікті келіспейді және желіні жаңартуға рұқсат бермейді.',
     'For the public Taira testnet, the release image uses `iroha3d_taira`. It accepts the same CLI but additionally enforces the canonical Taira chain, validator, storage, and runtime-signer profile. Validate a Taira configuration without opening runtime credentials like this:':
       'Жалпыға ашық Taira сынақ желісінде шығарылым кескіні `iroha3d_taira` пайдаланады. Ол сол CLI пәрмендерін қабылдайды, сонымен бірге канондық Taira тізбегі, валидатор, сақтау және орындау ортасының қол қою профилін міндетті етеді. Орындау ортасының тіркелгі деректерін ашпай, Taira конфигурациясын былай тексеріңіз:',
-    'The option summary above is verified against the current `iroha3d` argument definitions. The checked-in generated help snapshot is intentionally not rendered while its provenance status is pending. To inspect the exact help for your checkout, run:':
-      'Жоғарыдағы опциялар жиынтығы ағымдағы `iroha3d` аргумент анықтамаларымен салыстырылып тексерілген. Репозиторийге тіркелген генерацияланған анықтама кескіні оның шығу тегі мәртебесі анықталғанша әдейі көрсетілмейді. Жұмыс көшірмеңіздегі дәл анықтаманы көру үшін мынаны орындаңыз:',
     'Use a draft when one business action should become one signed transaction. The business receipt number goes in `primary_reference`; the ledger ID is generated after the transaction commits.':
       'Бір іскерлік әрекет бір қол қойылған транзакцияға айналуы тиіс болса, жоба-нұсқаны пайдаланыңыз. Іскерлік түбіртек нөмірі `primary_reference` өрісіне жазылады; тізілім идентификаторы транзакция бекітілгеннен кейін жасалады.',
     'A value such as `treasury@payments.universal` is an account alias, not another spelling of the I105 ID.':
@@ -1597,10 +1511,9 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
   },
   mn: {
     '# Iroha Special Instructions': '# Iroha-гийн тусгай зааврууд',
-    'When we spoke about [how Iroha operates](/blockchain/iroha-explained), we said that Iroha Special Instructions are the only way to modify the world state. So, what kind of special instructions do we have? If you\'ve read the language-specific guides in this tutorial, you\'ve already seen a couple of instructions: `Register<Account>` and `Mint<Numeric>`.':
+    "When we spoke about [how Iroha operates](/blockchain/iroha-explained), we said that Iroha Special Instructions are the only way to modify the world state. So, what kind of special instructions do we have? If you've read the language-specific guides in this tutorial, you've already seen a couple of instructions: `Register<Account>` and `Mint<Numeric>`.":
       'Бид [Iroha хэрхэн ажилладаг](/mn/blockchain/iroha-explained) талаар тайлбарлахдаа дэлхийн төлөвийг зөвхөн Iroha-гийн тусгай заавруудаар өөрчилдөг гэж хэлсэн. Тэгвэл ямар тусгай зааврууд байдаг вэ? Хэрэв та энэ зааврын хэл тус бүрийн гарын авлагыг уншсан бол `Register<Account>` болон `Mint<Numeric>` зэрэг хэд хэдэн заавартай аль хэдийн танилцсан.',
-    'Here is the full list of Iroha Special Instructions:':
-      'Iroha-гийн тусгай заавруудын бүрэн жагсаалт:',
+    'Here is the full list of Iroha Special Instructions:': 'Iroha-гийн тусгай заавруудын бүрэн жагсаалт:',
     '| Instruction                                               | Descriptions                                     |':
       '| Заавар | Тайлбар |',
     '| [Register/Unregister](#un-register)                       | Give an ID to a new entity on the blockchain.    |':
@@ -1622,14 +1535,12 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Заавар бүрд түүнийг хэрэгжүүлж болох объектуудын жагсаалт бий. Жишээлбэл, шилжүүлгийн хувилбарууд нь өмчлөх боломжтой леджерийн объектууд болон тоон хөрөнгийг хамардаг бол гаргах үйлдэл нь тоон хөрөнгө болон триггерийн давталтыг хамарна.',
     '| Instruction                                               | Objects                                                                                                 | Destination          |':
       '| Заавар | Объектууд | Хүлээн авагч |',
-    '| [EnsureAlias](#ensurealias)                               | ordinary domain, dataspace-alias, and account-alias setup                                                 |                      |':
-      '| [EnsureAlias](#ensurealias) | энгийн домэйн, өгөгдлийн орон зайн alias болон дансны alias тохиргоо | |',
     '| [Register/Unregister](#un-register)                       | accounts, asset definitions, NFTs, roles, triggers, peers; domain removal                                |                      |':
       '| [Бүртгэх/Бүртгэлээс хасах](#un-register) | данс, хөрөнгийн тодорхойлолт, NFTs, үүрэг, триггер, peer-үүд; домэйн устгах | |',
     '| [Mint/Burn](#mint-burn)                                   | numeric assets, trigger repetitions                                                                     | accounts or triggers |':
       '| [Mint/Burn](#mint-burn) | тоон хөрөнгө, триггерийн давталт | данс эсвэл триггер |',
-    '| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, anonymous escrow commitments                                    | buyers, destinations, or dispute splits |':
-      '| [Протоколын эскроу ба хөрөнгийн түгжээ](#native-escrow-and-asset-locks) | тоон хөрөнгийн эскроу, хөрөнгийн түгжээ, нэргүй эскроугийн криптографийн коммитментууд | худалдан авагч, хүлээн авагч эсвэл маргааны хуваарилалт |',
+    '| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, conditional escrows                                              | buyers, destinations, or dispute splits |':
+      '| [Протоколын эскроу ба хөрөнгийн түгжээ](#native-escrow-and-asset-locks) | тоон хөрөнгийн эскроу, хөрөнгийн түгжээ, нөхцөлт эскроу | худалдан авагч, хүлээн авагч эсвэл маргааны хуваарилалт |',
     '| [Atomic private settlement](#atomic-private-settlement)   | route-scoped confidential pools, policy rotations, finalized bundles, and abort markers                 |                      |':
       '| [Атомар нууц тооцоо](#atomic-private-settlement) | маршрут тус бүрийн нууц пулууд, бодлогын сэлгэлт, эцэслэсэн багцууд болон цуцлалтын тэмдэглэгээ | |',
     '| [ExecuteTrigger](#executetrigger)                         | triggers                                                                                                |                      |':
@@ -1660,8 +1571,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| Дэлхий | peer болон үүрэг бүртгэх/бүртгэлээс хасах, параметр тохируулах, гүйцэтгэгчийг шинэчлэх |',
     'The examples in this page assume you are running commands from the upstream Iroha workspace against the default local client configuration:':
       'Энэ хуудсын жишээнүүдийг upstream Iroha ажлын орчноос анхдагч локал клиент тохиргоотой ажиллуулна гэж үзнэ:',
-    'When targeting the public Taira testnet, use a Taira client configuration. Before running fee-paying examples, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, then claim testnet XOR from the faucet:':
-      'Нийтийн Taira testnet-д холбогдохдоо Taira клиент тохиргоог ашиглана. Төлбөртэй жишээг ажиллуулахын өмнө [Taira дээр testnet XOR авах](/mn/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) хэсгийн faucet туслахыг `taira_faucet_claim.py` нэрээр хадгалаад faucet-аас testnet XOR авна:',
     '| [Grant/Revoke](#grant-revoke)                             | Give or remove permissions and roles.            |':
       '| [Grant/Revoke](#grant-revoke) | Зөвшөөрөл болон үүрэг олгох эсвэл цуцлах. |',
     '| [Transfer](#transfer)                                     | Transfer ownership or asset value.               |':
@@ -1786,7 +1695,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '`AccountId`-ийн дэлгэц болон JSON дүрслэл каноник I105-г ашиглана.',
   },
   my: {
-    '## Anonymous Asset Escrow': '## အမည်မဖော် ပိုင်ဆိုင်မှု အာမခံအပ်နှံမှု',
     'The public ledger still records that a confidential operation happened. It records commitments, nullifiers, proof hashes, and events, but it does not record the note owner, recipient, or amount for shielded-to-shielded movement. The normal transaction envelope may still reveal the submitting account, so "anonymous" here means anonymous asset movement, not automatic network-level or account-level anonymity.':
       'အများမြင် လယ်ဂျာတွင် လျှို့ဝှက်လုပ်ဆောင်ချက် ဖြစ်ပွားခဲ့ကြောင်းကို မှတ်တမ်းတင်ထားဆဲဖြစ်သည်။ ကတိပြုတန်ဖိုးများ၊ နလီဖိုင်ယာများ၊ သက်သေ ဟက်ရှ်များနှင့် ဖြစ်ရပ်များကို မှတ်တမ်းတင်သော်လည်း အကာအကွယ်ပေးထားသည့်တန်ဖိုးကို အကာအကွယ်ပေးထားသည့်တန်ဖိုးသို့ လွှဲပြောင်းရာတွင် မှတ်စု၏ ပိုင်ရှင်၊ လက်ခံသူ သို့မဟုတ် ပမာဏကို မှတ်တမ်းမတင်ပါ။ ပုံမှန် ငွေလွှဲအိတ်ပုံစံသည် တင်သွင်းသည့် အကောင့်ကို ဖော်ပြနိုင်သေးသောကြောင့် ဤနေရာတွင် “အမည်မဖော်” ဆိုသည်မှာ ပိုင်ဆိုင်မှုတန်ဖိုး ရွှေ့ပြောင်းမှုကို အမည်မဖော်ခြင်းသာ ဖြစ်ပြီး ကွန်ရက်အဆင့် သို့မဟုတ် အကောင့်အဆင့် အမည်ဝှက်ခြင်းကို အလိုအလျောက် ဆိုလိုခြင်းမဟုတ်ပါ။',
     '- `Shield`: debits a public balance and appends a shielded note commitment.':
@@ -1805,8 +1713,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'လိမ်လည်မှု စောင့်ကြည့်ရေးကို အတည်ပြုသူထဲတွင် ထည့်သွင်းထားသော လော့ဂျစ်အဖြစ် မထားဘဲ သီးခြားဝန်ဆောင်မှုတစ်ခုအဖြစ် သတ်မှတ်ပါ။ ထိုဝန်ဆောင်မှုသည် ဘလော့ခ်ချိန်း စာရင်းလယ်ဂျာ လှုပ်ရှားမှုကို စာရင်းသွင်းနားထောင်ရမည်၊ ကွန်ရက်ပြင်ပ အန္တရာယ်ဆိုင်ရာ အကြောင်းအရာများဖြင့် ဖြည့်စွက်ရမည်၊ အထောက်အထားများကို ရေရှည်သိမ်းဆည်းရမည်၊ ထင်ရှားသော ခွင့်ပြုချက်များရှိသည့် အကောင့်များမှတစ်ဆင့်သာ တုံ့ပြန်ရေး ငွေလွှဲမှုများကို တင်သွင်းရမည်။',
     'For public Taira or Minamoto usage, treat the off-chain payment rail and any support or court workflow as application policy. Iroha records the custody state, lifecycle events, evidence hashes, and final asset movement; it does not verify fiat settlement by itself.':
       'အများသုံး Taira သို့မဟုတ် Minamoto အသုံးပြုမှုအတွက် off-chain ငွေပေးချေမှုလမ်းကြောင်းနှင့် ပံ့ပိုးကူညီမှု သို့မဟုတ် တရားရုံးဆိုင်ရာ လုပ်ငန်းစဉ်များကို အပလီကေးရှင်းမူဝါဒအဖြစ် သတ်မှတ်ပါ။ Iroha သည် ထိန်းသိမ်းပိုင်ခွင့်အခြေအနေ၊ သက်တမ်းစက်ဝန်းဖြစ်ရပ်များ၊ သက်သေအထောက်အထားဆိုင်ရာ cryptographic hash များနှင့် ပိုင်ဆိုင်မှု၏ နောက်ဆုံးရွှေ့ပြောင်းမှုကို မှတ်တမ်းတင်သည်။ fiat ငွေရှင်းခြင်းကို မိမိဘာသာ အတည်မပြုပါ။',
-    'Challenge calls append the full digest to the transcript state. The replay order is:':
-      'စိန်ခေါ်တန်ဖိုးကို တွက်ချက်သည့် ခေါ်ဆိုမှုများက ဟက်ရှ်အနှစ်ချုပ်တန်ဖိုး အပြည့်အစုံကို မှတ်တမ်းအခြေအနေထဲသို့ နောက်ဆက်တွဲ ပေါင်းထည့်သည်။ ပြန်လည်လုပ်ဆောင်သည့် အစီအစဉ်မှာ အောက်ပါအတိုင်းဖြစ်သည်-',
     '| Domain           | ensure domain setup, unregister domains, transfer domain ownership, update domain metadata                    |':
       '| ဒိုမိန်း | ဒိုမိန်းဖွဲ့စည်းမှုကို သေချာစေခြင်း၊ ဒိုမိန်းများကို မှတ်ပုံတင်မှ ပယ်ဖျက်ခြင်း၊ ဒိုမိန်းပိုင်ဆိုင်မှုကို လွှဲပြောင်းခြင်း၊ ဒိုမိန်း မက်တာဒေတာကို ပြင်ဆင်ခြင်း |',
     '- Select the network profile before encoding or validating an address.':
@@ -1815,7 +1721,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- စာလုံးအကြီးအသေးကို မပြောင်းဘဲ ထိန်းသိမ်းပြီး `Unicode` normalization ကို မပြုလုပ်ပါနှင့်။',
     '- An I105 ID must not have an `@domain` or `@domain.dataspace` suffix.':
       '- I105 ID တွင် `@domain` သို့မဟုတ် `@domain.dataspace` နောက်ဆက် မပါရပါ။',
-    '- A regular expression is not an I105 validator.': '- regular expression သည် I105 validator မဟုတ်ပါ။',
+    '- A regular expression is not an I105 validator.':
+      '- စာသားပုံစံစစ်ဆေးသည့် ပုံမှန်အသုံးအနှုန်းတစ်ခုတည်းဖြင့် I105 မှန်ကန်မှုစစ်ဆေးကိရိယာကို အစားမထိုးနိုင်ပါ။',
     '| Part             | Purpose                                                            | Checksum coverage |':
       '| အပိုင်း | ရည်ရွယ်ချက် | checksum လွှမ်းခြုံမှု |',
     '| Network sentinel | Maps the text to one `u16` chain discriminant                      | Not covered       |':
@@ -1831,7 +1738,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'A decoder must enforce the expected discriminant.':
       'decoder သည် မျှော်မှန်းထားသော discriminant ကို မဖြစ်မနေ စစ်ဆေးရမည်။',
     'Choosing an endpoint or chain ID does not implicitly choose the address profile.':
-      'endpoint သို့မဟုတ် chain ID ကို ရွေးခြင်းက address profile ကို အလိုအလျောက် ရွေးပေးခြင်းမဟုတ်ပါ။',
+      'endpoint သို့မဟုတ် chain ID ကို ရွေးချယ်ခြင်းက လိပ်စာပရိုဖိုင်ကို အလိုအလျောက် ရွေးပေးခြင်း မဟုတ်ပါ။',
     "The Taira form applies Taira's sentinel to the same payload:":
       'Taira ပုံစံသည် တူညီသော payload ပေါ်တွင် Taira sentinel ကို အသုံးပြုသည်:',
     'The `convert`, `normalize`, and `audit` commands operate on the lower-level `AccountAddress` codec.':
@@ -1847,19 +1754,19 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'All multi-byte integers below are unsigned and `big-endian`.':
       'အောက်ပါ multi-byte integer အားလုံးသည် unsigned ဖြစ်ပြီး `big-endian` ဖြစ်သည်။',
     'Use the compact form when the raw public-key payload is at most 255 bytes:':
-      'raw public-key payload သည် 255 ဘိုက်အထိသာ ရှိပါက compact form ကို အသုံးပြုပါ:',
+      'အများသုံးကီး payload အကြမ်းသည် အများဆုံး ၂၅၅ ဘိုက်ရှိလျှင် ကျစ်လျစ်သောပုံစံကို အသုံးပြုပါ။',
     '| `public_key` | `key_len` bytes | Raw public-key payload   |':
-      '| `public_key` | `key_len` ဘိုက် | raw public-key payload |',
+      '| `public_key` | `key_len` ဘိုက် | အများသုံးသော့၏ မူလဘိုက်ဒေတာ |',
     'Keys longer than 255 bytes use the extended form:':
       '255 ဘိုက်ထက်ရှည်သော key များသည် extended form ကို အသုံးပြုသည်:',
     'An extended encoding is not canonical for a key that fits the compact form.':
-      'compact form နှင့် ကိုက်ညီသော key အတွက် extended encoding သည် canonical မဟုတ်ပါ။',
+      'အကျဉ်းပုံစံဖြင့် ဖော်ပြနိုင်သော သော့တစ်ခုအတွက် တိုးချဲ့ကုဒ်သွင်းပုံသည် စံပုံစံမဟုတ်ပါ။',
     '| `threshold`      |  2 bytes | Required total approval weight |':
       '| `threshold` | 2 ဘိုက် | လိုအပ်သော approval weight စုစုပေါင်း |',
     'A valid policy has at least one member, positive weights, no duplicate public keys, and a threshold from `1` through the sum of member weights.':
       'မှန်ကန်သော policy တစ်ခုတွင် အနည်းဆုံး member တစ်ဦး၊ သုညထက်ကြီးသော weight များ၊ duplicate public key မရှိခြင်းနှင့် `1` မှ member weight စုစုပေါင်းအထိရှိသည့် threshold တစ်ခု ပါရမည်။',
     "Canonical construction sorts members by the signing algorithm's stable name, a zero separator byte, and then the raw public-key bytes.":
-      'Canonical construction သည် member များကို signing algorithm ၏ stable name၊ zero separator byte၊ ထို့နောက် raw public-key bytes အလိုက် စီစဉ်သည်။',
+      'စံသတ်မှတ်တည်ဆောက်မှုတွင် အဖွဲ့ဝင်များကို လက်မှတ်ထိုး algorithm ၏ တည်ငြိမ်သောအမည်၊ သုညခြားနားဘိုက်နှင့် ထို့နောက် အများသုံးကီးဘိုက်အကြမ်းများအလိုက် အစဉ်လိုက်စီသည်။',
     'For an untrusted string, a conforming application should:':
       'မယုံကြည်ရသော string တစ်ခုအတွက် စံနှုန်းနှင့်ကိုက်ညီသော application သည် အောက်ပါတို့ကို လုပ်ဆောင်သင့်သည်:',
     '1. Trim only permitted transport whitespace around the complete value.':
@@ -1877,7 +1784,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     '- a string with changed uppercase or lowercase letters, character widths, `kana`, payload, or checksum':
       '- စာလုံးအကြီးအသေး၊ character width၊ `kana`၊ payload သို့မဟုတ် checksum ပြောင်းလဲထားသော string',
     '| `ERR_INVALID_PUBLIC_KEY`         | The key is invalid for the algorithm selected by its `CurveId`      |':
-      '| `ERR_INVALID_PUBLIC_KEY` | key သည် ၎င်း၏ `CurveId` ရွေးထားသော algorithm အတွက် မမှန်ကန်ပါ |',
+      '| `ERR_INVALID_PUBLIC_KEY` | သော့သည် ၎င်း၏ `CurveId` က ရွေးထားသော အယ်လ်ဂိုရစ်သမ်အတွက် မမှန်ကန်ပါ |',
     '- Send the exact I105 UTF-8 string in JSON account fields.':
       '- တိကျသော I105 UTF-8 string ကို JSON account field များတွင် ပို့ပါ။',
     '- `Percent-encode` the complete account ID before placing it in a URL path segment.':
@@ -1916,8 +1823,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Приложения должны сохранять бизнес-идентификатор в `primary_reference` или `metadata`, а затем получать созданный `RwaId` из `RwaEvent::Created`, `FindRwas`, `/v1/rwas` или набора маршрутов обозревателя после финализации транзакции.',
     'Torii exposes chain-state routes such as `/v1/rwas` and `/v1/rwas/query`, plus explorer routes such as `/v1/explorer/rwas` and `/v1/explorer/rwas/{rwa_id}` when that route family is enabled. Generated clients should prefer the live [`/openapi.json`](/reference/torii-endpoints.md#common-endpoints) document for the exact response shape exposed by a node.':
       'Torii предоставляет маршруты состояния цепочки, например `/v1/rwas` и `/v1/rwas/query`, а при включении соответствующего семейства — маршруты обозревателя, например `/v1/explorer/rwas` и `/v1/explorer/rwas/{rwa_id}`. Чтобы получить точную форму ответа конкретного узла, сгенерированные клиенты должны использовать актуальный документ [`/openapi.json`](/ru/reference/torii-endpoints.md#common-endpoints).',
-    'Challenge calls append the full digest to the transcript state. The replay order is:':
-      'Вызовы функции получения испытаний добавляют полный дайджест в состояние транскрипта. Порядок воспроизведения:',
     'The explorer is a second, read-only observation surface. It can lag briefly behind pipeline finality.':
       'Обозреватель — это вторичный интерфейс наблюдения только для чтения. Он может ненадолго отставать от финальности конвейера обработки.',
     '- An explorer `404` immediately after Applied can be indexing lag. Retry the read; do not resubmit the transaction.':
@@ -1926,7 +1831,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '2. Вычислите хеш полезной нагрузки и опишите её в манифесте Norito или в записи коммитмента, относящейся к маршруту.',
     '- stable opaque pool identifiers, roots, nullifiers, commitments, and fixed ciphertext slots':
       '- стабильные непрозрачные идентификаторы пулов, корни, нуллификаторы, коммитменты и слоты шифротекста фиксированного размера',
-    '3. a governed confidential settlement pool and initial root in every dataspace':
+    '3. a governed confidential settlement pool and initial root in every data space':
       '3. управляемый конфиденциальный расчётный пул и начальный корень в каждом пространстве данных',
     '| [Atomic private settlement](#atomic-private-settlement)   | Govern confidential pools and atomic bundles.    |':
       '| [Атомарные конфиденциальные расчёты](#atomic-private-settlement) | Управление конфиденциальными пулами и атомарными пакетами. |',
@@ -1943,7 +1848,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Используйте строгую проверку `AccountId` перед авторизацией или постоянным сохранением.',
     'Do not apply NFC, NFKC, width conversion, case folding, or look-alike substitution.':
       'Не применяйте NFC, NFKC, преобразование ширины символов, приведение регистра или замену визуально похожих символов.',
-    'Domain, dataspace, alias, UAID, and account metadata bytes are not present.':
+    'Domain, data space, alias, UAID, and account metadata bytes are not present.':
       'Домен, пространство данных, псевдоним, UAID и байты метаданных учётной записи отсутствуют.',
     '`CurveId` registry value': 'Значение из реестра `CurveId`',
     '1. Trim only permitted transport whitespace around the complete value.':
@@ -1988,10 +1893,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- Проверьте процедуры восстановления учётных записей до запуска в промышленной среде.',
     'When a Python helper is not available, feed canonical data-model `InstructionBox` JSON into `Instruction.from_json`. This is the recommended path for `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT registration, and non-trigger unregister variants until those helpers are typed.':
       'Если вспомогательной функции Python нет, передайте канонический JSON модели данных `InstructionBox` в `Instruction.from_json`. Это рекомендуемый способ для `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, регистрации пиров, ролей и NFT, а также вариантов отмены регистрации, не связанных с триггерами, пока эти вспомогательные функции не получат типизированный интерфейс.',
-    'The optional single-delta transfer digest commits the encoded transfer preimage:':
-      'Необязательный дайджест передачи с одной дельтой криптографически связывает закодированный прообраз передачи:',
-    '- a single-delta Poseidon digest, when present, must match the transcript preimage':
-      '- дайджест Poseidon с одной дельтой, если он присутствует, должен совпадать с прообразом транскрипта',
     '| `GET /v1/identifiers/receipts/{receipt_hash}` | Look up a persisted identifier claim by receipt hash for audit and support tooling. |':
       '| `GET /v1/identifiers/receipts/{receipt_hash}` | Найти сохранённое утверждение об идентификаторе по хэшу подтверждения для аудита и средств поддержки. |',
     '| [Connect to Taira](./connect-to-taira.md)                             | Write-ready  | A funded I105 signer, live fee asset, and applied canary transaction |':
@@ -2008,7 +1909,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '| طریقہ اور اینڈ پوائنٹ | توثیق اور مرئیت |',
     'Subscription reads and draft builders are inherited from the shared Torii client used by `iroha_python.ToriiClient`. Every mutation is admitted with a body-bound canonical account signature and returns an unsigned transaction draft. Torii never accepts a private key and does not submit the draft for you.':
       'سبسکرپشن ریڈز اور ڈرافٹ بلڈرز، `iroha_python.ToriiClient` کے زیرِ استعمال مشترکہ Torii کلائنٹ سے وراثت میں ملتے ہیں۔ ہر تغیر کو درخواست کے متن سے منسلک کینونیکل اکاؤنٹ دستخط کے ساتھ قبول کیا جاتا ہے اور جواب میں ایک غیر دستخط شدہ ٹرانزیکشن ڈرافٹ ملتا ہے۔ Torii کبھی نجی کلید قبول نہیں کرتا اور نہ آپ کی جانب سے ڈرافٹ جمع کراتا ہے۔',
-    'Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation\'s activation height; the instruction rejects that boundary.':
+    "Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation's activation height; the instruction rejects that boundary.":
       'رازداری کی حکمرانی سے مجاز `RotatePrivateSettlementPoolPolicyV1` ہدایت استعمال کریں۔ اس میں موجودہ حکمرانی کے عین ڈائجسٹ کا نام ہونا چاہیے، وہی راستہ، پول اور اثاثہ-بائنڈنگ کمٹمنٹ برقرار رہنا چاہیے، حکمرانی کی نظرثانی میں ایک کا اضافہ ہونا چاہیے، کلید کا دور لازماً نیا اور پالیسی و حکمرانی کے ڈائجسٹ مختلف ہونے چاہییں، اور گردش اسی بلاک میں فعال ہونی چاہیے جس میں وہ شامل ہو۔ پول کا فرنٹیئر، روٹس، نلفائرز، آؤٹ پٹس، ری پلے مجموعے اور حتمی رسیدیں محفوظ رہتی ہیں۔ گردش کے فعال ہونے کی اونچائی پر اسی راستے یا پول کو چھونے والی رسید شامل نہ کریں؛ ہدایت اس حد کو مسترد کرتی ہے۔',
     'The `base-105` body encodes a binary account payload, not a public-key string and not a Norito JSON object:':
       '`base-105` باڈی ایک بائنری اکاؤنٹ پے لوڈ کو انکوڈ کرتی ہے، نہ کہ عوامی کلید کی اسٹرنگ کو اور نہ ہی Norito JSON آبجیکٹ کو:',
@@ -2018,8 +1919,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'اس قسم کی باریک غلطیوں سے، مثلاً سٹرنگ لٹرلز سے براہِ راست ڈی سیریلائز کر کے، یا جہاں مناسب ہو وہاں کلیدوں کا نیا جوڑا بنا کر، بچا جا سکتا ہے۔',
     '- When metadata points to off-chain data, store a verifiable reference such as a content hash, URI, SoraFS path, manifest reference, or compact commitment.':
       '- جب میٹا ڈیٹا آف چین ڈیٹا کی طرف اشارہ کرے تو قابل تصدیق حوالہ محفوظ کریں، مثلاً مواد کا کرپٹوگرافک ہیش، URI، SoraFS پاتھ، تکنیکی مینی فیسٹ کا حوالہ، یا مختصر کمٹمنٹ۔',
-    'Pipeline events are emitted when transactions are submitted, executed, or committed to a block. A pipeline event contains the following information: the kind of entity that caused an event (transaction or block), its hash and status. The status can be either `Validating` (validation in progress), `Rejected`, or `Committed`. If an entity was rejected, the reason for the rejection is provided.':
-      'پروسیسنگ پائپ لائن کے واقعات اس وقت خارج ہوتے ہیں جب لین دین جمع کرائے جائیں، چلائے جائیں یا کسی بلاک میں حتمی طور پر شامل کیے جائیں۔ پروسیسنگ پائپ لائن کا واقعہ درج ذیل معلومات رکھتا ہے: واقعہ پیدا کرنے والی ہستی کی قسم (لین دین یا بلاک)، اس کا کرپٹوگرافک ہیش، اور اس کی حالت۔ حالت `Validating` (توثیق جاری ہے)، `Rejected` یا `Committed` میں سے کوئی ایک ہو سکتی ہے۔ اگر کسی ہستی کو مسترد کیا گیا ہو تو اس کی وجہ بھی فراہم کی جاتی ہے۔',
+    'Pipeline events are emitted as transactions and blocks move through the pipeline. A transaction event carries the transaction hash, block height, lane and data space IDs, and a status: `Queued`, `Expired`, `Approved`, or `Rejected` with the rejection reason. A block event carries the block header and a status: `Created`, `Approved`, `Rejected` with the reason, `Committed`, or `Applied`.':
+      'پائپ لائن کے واقعات اس وقت خارج ہوتے ہیں جب لین دین اور بلاکس پائپ لائن سے گزرتے ہیں۔ لین دین کا واقعہ لین دین کا ہیش، بلاک کی اونچائی، لین اور ڈیٹا اسپیس کی شناختیں، اور ایک حالت رکھتا ہے: `Queued`، `Expired`، `Approved`، یا مسترد ہونے کی وجہ کے ساتھ `Rejected`۔ بلاک کا واقعہ بلاک ہیڈر اور ایک حالت رکھتا ہے: `Created`، `Approved`، وجہ کے ساتھ `Rejected`، `Committed`، یا `Applied`۔',
     '- Store and compare the canonical UTF-8 string exactly.':
       '- کینونیکل UTF-8 سٹرنگ کو بعینہٖ ذخیرہ کریں اور اسی طرح اس کا موازنہ کریں۔',
     '- Preserve letter case and do not apply `Unicode` normalization.':
@@ -2068,14 +1969,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     '- Preserve every `kana` character exactly.': '- ہر `kana` حرف کو بعینہٖ محفوظ رکھیں۔',
   },
   uz: {
-    'Domains do not have a separate `DomainAlias` object. A domain identifier is already a dataspace-qualified name such as `payments.universal`. SNS tracks lease ownership for domain names in the `domain` namespace and for dataspace aliases in the `dataspace` namespace. The reserved `universal` dataspace alias must remain defined.':
+    'Domains do not have a separate `DomainAlias` object. A domain identifier is already a data space-qualified name such as `payments.universal`. SNS tracks lease ownership for domain names in the `domain` namespace and for data space aliases in the `dataspace` namespace. The reserved `universal` data space alias must remain defined.':
       'Domenlarda alohida `DomainAlias` obyekti yo‘q. Domen identifikatorining o‘zi `payments.universal` kabi ma’lumotlar makoni bilan aniqlashtirilgan nomdir. SNS `domain` nomlar makonidagi domen nomlari va `dataspace` nomlar makonidagi ma’lumotlar makoni taxalluslari uchun ijara egaligini kuzatadi. Zaxiralangan `universal` ma’lumotlar makoni taxallusi ta’riflangan holda qolishi shart.',
     'Transactions enter a queue before Sumeragi proposes them in a block. Validators independently validate and execute the proposal, then sign only the state transition they can reproduce. A block commits after the required validator quorum agrees on that result and the matching payload is available.':
       'Tranzaksiyalar Sumeragi ularni blok sifatida taklif qilishidan oldin navbatga tushadi. Validatorlar taklifni mustaqil tekshiradi va bajaradi, so‘ng faqat o‘zlari qayta hosil qila oladigan holat o‘tishini imzolaydi. Talab etilgan validatorlar kvorumi natijaga rozi bo‘lgach va mos foydali yuk mavjud bo‘lgach, blok yakuniy ravishda yoziladi.',
     'Sumeragi runs the ledger forward one block height at a time. At each height, one validator acts as proposer for the current view. The proposer drains eligible transactions from the queue, builds a candidate block, and announces the proposal to the active validator set.':
       'Sumeragi reyestrni har safar bitta blok balandligiga oldinga siljitadi. Har bir balandlikda bitta validator joriy ko‘rinish uchun taklifchi vazifasini bajaradi. Taklifchi mos tranzaksiyalarni navbatdan oladi, nomzod blokni tuzadi va taklifni faol validatorlar to‘plamiga e’lon qiladi.',
-    '| NPoS         | Public or Nexus-oriented networks where validation follows nomination and stake policy | Validators are selected by the NPoS profile, usually across epochs, and require BLS keys plus Proofs-of-Possession | Keep stake snapshots, signed epoch and election inputs, validator PoPs, and immutable block cadence aligned across the network |':
-      '| NPoS | Tekshirish nominatsiya va ulush siyosatiga amal qiladigan ommaviy yoki Nexus yo‘nalishidagi tarmoqlar | Validatorlar NPoS profili bo‘yicha, odatda davrlar kesimida tanlanadi; ular uchun BLS kalitlari va egalik isbotlari talab etiladi | Ulush oniy tasvirlari, imzolangan davr va saylov kirishlari, validatorlarga tegishli PoPs hamda o‘zgarmas blok sur’atini butun tarmoq bo‘ylab muvofiq saqlang |',
+    '| NPoS         | Public or SORA Nexus-oriented networks where validation follows nomination and stake policy | Validators are selected by the NPoS profile, usually across epochs, and require BLS keys plus Proofs-of-Possession | Keep stake snapshots, signed epoch and election inputs, validator PoPs, and immutable block cadence aligned across the network |':
+      '| NPoS | Tekshirish nominatsiya va ulush siyosatiga amal qiladigan ommaviy yoki SORA Nexus yo‘nalishidagi tarmoqlar | Validatorlar NPoS profili bo‘yicha, odatda davrlar kesimida tanlanadi; ular uchun BLS kalitlari va egalik isbotlari talab etiladi | Ulush oniy tasvirlari, imzolangan davr va saylov kirishlari, validatorlarga tegishli PoPs hamda o‘zgarmas blok sur’atini butun tarmoq bo‘ylab muvofiq saqlang |',
     'Use NPoS mode when the deployment profile expects validator participation to be driven by nomination and stake state. Public SORA Nexus deployments use NPoS, and their generated profiles include the BLS validator identities, Proofs-of-Possession, epoch settings, and Sumeragi NPoS parameters needed at startup. Epoch changes can replace the active validator set at defined heights, so operators need to monitor both consensus health and the stake or nomination state that feeds the next roster.':
       'Joylashtirish profili validatorlar ishtiroki nominatsiya va ulush holati bilan boshqarilishini nazarda tutsa, NPoS rejimidan foydalaning. Ommaviy SORA Nexus joylashtirishlari NPoS dan foydalanadi; ularning yaratilgan profillari ishga tushirish uchun zarur bo‘lgan BLS asosidagi validator identifikatorlari, egalik isbotlari, davr sozlamalari va Sumeragi NPoS parametrlarini o‘z ichiga oladi. Davr almashishi belgilangan blok balandliklarida faol validatorlar to‘plamini almashtirishi mumkin, shu sababli operatorlar konsensus holatini ham, keyingi tarkibni shakllantiradigan ulush yoki nominatsiya holatini ham kuzatishi kerak.',
     'For guidance on choosing metadata, assets, NFTs, RWAs, or off-chain storage, see [Metadata and Ledger Storage Choices](/guide/configure/metadata-and-store-assets.md).':
@@ -2089,14 +1990,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Inrou — Soracloud foydalanadigan, joylashtirib beriladigan HTTP bajarish muhiti. Ichiga Soracloud bajarish muhiti o‘rnatilgan Iroha tuguni qabul qilingan Soracloud holatini mahalliy moddiylashtirish rejasiga aks ettiradi, tayinlangan xizmat nusxalarini faqat mahalliy interfeysda ishlaydigan xizmatlar sifatida ishga tushiradi va nusxalarning bajarilish holatini vakolatli modelga qaytarib yozadi.',
     "The protected fetch tuple is provider-specific. Obtain its provider ID and advertised base URL from Taira's provider catalog, and obtain the gateway key and stream token through that provider's admission flow. These values are not validator-storage settings. The checked-in Taira validators have embedded storage disabled, so do not substitute a validator pin URL for a provider URL.":
       'Himoyalangan olish korteji xizmat ko‘rsatuvchiga xosdir. Uning xizmat ko‘rsatuvchi identifikatori va e’lon qilingan asosiy URL manzilini Taira xizmat ko‘rsatuvchilar katalogidan, shlyuz kaliti va oqim tokenini esa shu xizmat ko‘rsatuvchining qabul jarayonidan oling. Bu qiymatlar validator saqlash sozlamalari emas. Repozitoriydagi Taira validatorlarida ichki saqlash o‘chirilgan, shuning uchun xizmat ko‘rsatuvchi URL manzili o‘rniga validatorning mahkamlash URL manzilini qo‘ymang.',
-    'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory dataspace bindings for that UAID.':
+    'The UAID is the identity and capability anchor around that flow. In the data model, `UniversalAccountId` is hash-backed and displays as `uaid:<hash>`. Parsers accept either `uaid:<hash>` or the raw 64-hex digest. `Account` and `NewAccount` include optional `uaid` and `opaque_ids` fields. Runtime registration enforces a one-to-one UAID-to-account index, rejects duplicate or colliding opaque identifiers, and rejects opaque identifiers without a UAID. Whenever a UAID account binding changes, the runtime rebuilds Space Directory data space bindings for that UAID.':
       'UAID bu jarayonning identifikatsiya va imkoniyat tayanchidir. Ma’lumotlar modelida `UniversalAccountId` xeshga asoslanadi va `uaid:<hash>` ko‘rinishida chiqadi. Tahlilchilar `uaid:<hash>` shaklini ham, 64 ta o‘n oltilik belgidan iborat xom dayjestni ham qabul qiladi. `Account` va `NewAccount` tarkibida ixtiyoriy `uaid` va `opaque_ids` maydonlari bor. Bajarish muhiti ro‘yxatdan o‘tkazishda UAID bilan hisob o‘rtasidagi birga-bir indeksni ta’minlaydi, takrorlangan yoki to‘qnashuvchi yashirin identifikatorlarni hamda UAID bo‘lmagan yashirin identifikatorlarni rad etadi. UAID bilan hisob bog‘lanishi o‘zgarganida, bajarish muhiti shu UAID uchun Makon katalogining ma’lumotlar makoni bog‘lanishlarini qayta yaratadi.',
-    'Space Directory manifests attach capabilities to a UAID. An `AssetPermissionManifest` names the UAID, dataspace, activation and optional expiry epoch, and ordered allow/deny entries scoped by dataspace, program, method, asset, and AMX role. Evaluation is deny-wins: the first matching deny rejects the request, otherwise the latest matching allow candidate is checked against any amount limit. Publishing, expiring, and revoking these manifests is guarded by `CanPublishSpaceDirectoryManifest`.':
+    'Space Directory manifests attach capabilities to a UAID. An `AssetPermissionManifest` names the UAID, data space, activation and optional expiry epoch, and ordered allow/deny entries scoped by data space, program, method, asset, and AMX role. Evaluation is deny-wins: the first matching deny rejects the request, otherwise the latest matching allow candidate is checked against any amount limit. Publishing, expiring, and revoking these manifests is guarded by `CanPublishSpaceDirectoryManifest`.':
       'Makon katalogi manifestlari imkoniyatlarni UAID identifikatoriga biriktiradi. `AssetPermissionManifest` UAID identifikatorini, ma’lumotlar makonini, faollashish davrini, ixtiyoriy tugash davrini hamda ma’lumotlar makoni, dastur, usul, aktiv va AMX roli doirasidagi tartiblangan ruxsat berish yoki rad etish yozuvlarini belgilaydi. Baholashda rad etish ustun keladi: birinchi mos rad yozuvi so‘rovni rad etadi; aks holda eng so‘nggi mos ruxsat nomzodi mavjud miqdor chegarasiga nisbatan tekshiriladi. Ushbu manifestlarni nashr qilish, muddatini tugatish va bekor qilish `CanPublishSpaceDirectoryManifest` bilan himoyalangan.',
-    'UAID is not the ciphertext and not the FHE policy itself. It is the stable account capability anchor used to find the account, opaque identifier claims, and Space Directory bindings that authorize a service or dataspace flow. FHE schemas govern encrypted payload admission and execution separately through parameter sets, execution policies, ciphertext commitments, and decryption authority policies.':
+    'UAID is not the ciphertext and not the FHE policy itself. It is the stable account capability anchor used to find the account, opaque identifier claims, and Space Directory bindings that authorize a service or data space flow. FHE schemas govern encrypted payload admission and execution separately through parameter sets, execution policies, ciphertext commitments, and decryption authority policies.':
       'UAID shifrlangan matn ham, FHE siyosatining o‘zi ham emas. U hisobni, yashirin identifikator da’volarini va xizmat yoki ma’lumotlar makoni jarayoniga ruxsat beradigan Makon katalogi bog‘lanishlarini topish uchun ishlatiladigan barqaror hisob imkoniyati tayanchidir. FHE sxemalari shifrlangan foydali yukni qabul qilish va bajarishni parametrlar to‘plami, bajarish siyosati, shifrlangan matn majburiyatlari va shifrni ochish vakolati siyosatlari orqali alohida boshqaradi.',
-    '- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)':
-      '- [Mahkamlangan manba kodi tahriridagi kanonik Taira validatori konfiguratsiyasi](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/configs/soranexus/taira/config.toml)',
+    '- [Canonical Taira validator configuration at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/configs/soranexus/taira/config.toml)':
+      '- [Mahkamlangan manba kodi tahriridagi kanonik Taira validatori konfiguratsiyasi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/configs/soranexus/taira/config.toml)',
     'The ledger cannot observe a conflicting offline handoff until note state returns through the online lifecycle. Wallet and operator policy should therefore enforce value limits, expiry, accepted issuers, durable local storage, and reconciliation windows.':
       'Banknota holati onlayn hayot sikliga qaytmaguncha reyestr ziddiyatli oflayn topshirishni kuzata olmaydi. Shu sababli hamyon va operator siyosati qiymat chegaralari, amal qilish muddati, qabul qilinadigan emitentlar, ishonchli mahalliy saqlash va solishtirish muddatlarini majburiy qo‘llashi kerak.',
     '- An I105 prefix error means the public key was encoded with the wrong profile. Re-run `iroha tools address convert --profile taira`.':
@@ -2105,10 +2006,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       'Kapsula va har bir auditor uchun DEK o‘ramining autentifikatsiyalangan ma’lumotlari aniq holatga biriktirilgan qo‘mita dayjesti va `authority_context_height` qiymatini, shuningdek tarmoq, yo‘nalish/inkarnatsiya, to‘plam, bosqich, siyosat, kalit davri va ochiq matn majburiyatini o‘z ichiga oladi. O‘ralgan kalitni boshqa tarkibga yoki vakolatning boshqa tarixiy kontekstiga ko‘chirib bo‘lmaydi.',
     "Use the privacy-governance-authorized `RotatePrivateSettlementPoolPolicyV1` instruction. It must name the exact current governance digest, keep the same route, pool, and asset-binding commitment, advance the governance revision by one, use a strictly newer key epoch and different policy/governance digests, and activate at the block that contains the rotation. The pool frontier, roots, nullifiers, outputs, replay sets, and finalized receipts are preserved. Do not include a receipt touching that same route/pool at the rotation's activation height; the instruction rejects that boundary.":
       'Maxfiylik boshqaruvi ruxsat bergan `RotatePrivateSettlementPoolPolicyV1` ko‘rsatmasidan foydalaning. U joriy boshqaruv dayjestini aynan ko‘rsatishi, ayni yo‘nalish, protokol guruhi va aktivni bog‘lash majburiyatini saqlashi, boshqaruv tahririni bittaga oshirishi, albatta yangiroq kalit davri hamda boshqa siyosat va boshqaruv dayjestlaridan foydalanishi va aylantirishni o‘z ichiga olgan blokda faollashishi kerak. Protokol guruhi chegarasi, ildizlar, nullifikatorlar, natijalar, takroriy ijro to‘plamlari va yakunlangan kvitansiyalar saqlanadi. Aylantirish faollashadigan blok balandligida ayni yo‘nalish yoki protokol guruhiga tegishli kvitansiyani kiritmang; ko‘rsatma bu chegarani rad etadi.',
-    '- a Space Directory manifest or equivalent rollout evidence, when the dataspace exposes UAID capabilities':
+    '- a Space Directory manifest or equivalent rollout evidence, when the data space exposes UAID capabilities':
       '- ma’lumotlar makoni UAID imkoniyatlarini taqdim etsa, Makon katalogi manifesti yoki ishga tushirilganini tasdiqlovchi teng kuchli dalil',
-    '| Pick a dataspace            | Use public `universal` unless your app needs a governed lane | Use the same dataspace only after mainnet approval |':
-      '| Ma’lumotlar makonini tanlash | Ilovangiz boshqariladigan yo‘lakka muhtoj bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |',
     '| Test writes                 | Use faucet-funded test XOR                                   | Do not use test tooling; writes spend real XOR     |':
       '| Sinov yozuvlari | Sinov uchun ajratilgan XOR mablag‘idan foydalaning | Sinov vositalarini ishlatmang; yozuvlar haqiqiy XOR sarflaydi |',
     '3. Exercise your app logic against Taira until failures are boring and observable.':
@@ -2241,8 +2140,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'ASCII `0`, `O`, `I`, and `l` are not alphabet symbols.': 'ASCII `0`, `O`, `I` va `l` alifbo belgilari emas.',
   },
   'zh-hans': {
-    'Domain setup is a fee-paying write. Before trying it on Taira, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, fund the signer through the public faucet, and attach fee metadata:':
-      '配置域是一项需要付费的写入操作。在 Taira 上尝试之前，请将在[在 Taira 上获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中提供的水龙头辅助脚本保存为 `taira_faucet_claim.py`，通过公共水龙头为签名者充值，并附加费用元数据：',
+    'For public global execution, lane `0` is sequenced by the global Sumeragi instance. Each other active lane incarnation runs a separate instance of the same Sumeragi core with its pinned committee and consensus parameters. Its certified block contains an ordered transaction batch checked for admission against a committed global anchor. Lane certification does not mutate the global State.':
+      '对于公共全局执行，通道 `0` 由全局 Sumeragi 实例排序。其他每个处于活动状态的通道世代都以固定的委员会和共识参数运行同一 Sumeragi 核心的独立实例。其认证的区块包含按顺序排列的交易批次，这些交易须依据已提交的全局锚点通过准入检查。通道认证不会修改全局 State。',
     'The authority submitting the transaction must have the permission required by the active runtime validator. For the default permission surface, see [Permission Tokens](/reference/permissions.md).':
       '提交交易的授权主体必须具备当前运行时验证器要求的权限。有关默认权限接口，请参阅[权限令牌](/zh-hans/reference/permissions.md)。',
     'Multiplication is the expensive operation. A product of two two-component ciphertexts naturally creates a three-component ciphertext that decrypts with \\(1\\), \\(s_k\\), and \\(s_k^2\\). Relinearization uses a published evaluation key to fold the \\(s_k^2\\) term back into a normal two-component ciphertext. That keeps later additions and multiplications using the same ciphertext shape.':
@@ -2255,23 +2154,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- 即使此金丝雀测试成功，注册、铸造或命名空间管理操作仍可能被拒绝。这些操作需要各自的运行时权限；如果尚未获得 Taira 访问权限，请在生成的本地网络上演练。',
     'Use a second client configuration for the delegate when proving the write:':
       '验证写入操作时，请为被授权者使用另一份客户端配置：',
-    "Fee sponsorship lets users submit private-dataspace transactions without holding XOR. The user still signs the transaction. The transaction metadata points at a sponsor account, and the runtime debits the sponsor's XOR balance for the network fee.":
-      '费用赞助允许用户在不持有 XOR 的情况下提交私有数据空间交易。用户仍需签署交易。交易元数据指向赞助者账户，运行时从该账户的 XOR 余额中扣除网络费用。',
-    'The canary submits a signed ping, waits for confirmation, and writes the runtime signer config when `--write-config` is provided. Taira is a public testnet, so queue saturation can make the signed ping fail even when the faucet itself works. If `taira doctor` reports a saturated queue or the canary returns `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, wait and retry before treating it as a client configuration error.':
-      '金丝雀测试会提交已签名的 ping、等待确认，并在提供 `--write-config` 时写入运行时签名者配置。Taira 是公共测试网，因此即使水龙头本身正常，队列饱和也可能导致已签名的 ping 失败。如果 `taira doctor` 报告队列饱和，或金丝雀测试返回 `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`，请先等待并重试，再将其视为客户端配置错误。',
-    'The faucet is a public testnet service. If the puzzle or claim endpoint returns `502`, a timeout, or another gateway-level error, wait and retry before changing your keys or client config.':
-      '水龙头是公共测试网服务。如果谜题或领取端点返回 `502`、超时或其他网关级错误，请先等待并重试，再更改密钥或客户端配置。',
     '- governance, runtime upgrade, Sumeragi, node-admin, SoraFS, UAID, and Kaigi endpoint wrappers where the node exposes those features':
       '- 当节点提供相应功能时，用于治理、运行时升级、Sumeragi、节点管理、SoraFS、UAID 和 Kaigi 端点的封装器',
-    'Module with the incoming request handling logic for the [peer](#peer). It is used to receive, accept and route incoming instructions, and HTTP queries, as well as run-time configuration updates.':
-      '包含[对等节点](#peer)传入请求处理逻辑的模块。它用于接收、接受和路由传入的指令及 HTTP 查询，也用于处理运行时配置更新。',
     'Consensus validators must use BLS-Normal peer keys. For each validator, also provide a matching [`trusted_peers_pop`](#param-trusted-peers-pop) entry.':
       '共识验证器必须使用 BLS-Normal 对等节点密钥。还要为每个验证器提供匹配的 [`trusted_peers_pop`](#param-trusted-peers-pop) 条目。',
     '- the submitting transaction authority unless the application uses a private entrypoint or relayer pattern':
       '- 提交交易的授权主体，除非应用程序使用私有入口点或中继器模式',
     'Client configuration stores the signing authority separately from peer configuration:':
       '客户端配置将签名授权主体与网络对等节点配置分开存储：',
-    'The runtime configuration builds three pieces of lane state:': '软件执行环境配置构建三部分执行通道状态：',
     'Either original party can read its message record and generated outbox documents. The audit endpoint returns only records in which the authenticated participant is the originator or counterparty. A separately configured audit administrator receives a global read-only audit view and cannot submit or change messages. Unknown participants and unrelated message identifiers are not disclosed.':
       '原始交易的任一方都可以读取其消息记录和生成的发件箱文档。审计端点只返回已认证参与者为发起方或交易对手方的记录。单独配置的审计管理员可以获得全局只读审计视图，但不能提交或更改消息。系统不会泄露未知参与者或无关消息标识符是否存在。',
     '- Store and compare the canonical UTF-8 string exactly.': '- 精确存储并比较规范 UTF-8 字符串。',
@@ -2341,7 +2231,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '10. 要求与去除首尾空白后的输入 `byte-for-byte` 相等。',
     'A successful checksum or low-level `AccountAddress` parse is not a substitute for this check.':
       '校验和成功或低层级 `AccountAddress` 解析不能替代此检查。',
-    'Domain, dataspace, alias, UAID, and account metadata bytes are not present.':
+    'Domain, data space, alias, UAID, and account metadata bytes are not present.':
       '其中不包含域、数据空间、别名、UAID 或账户元数据字节。',
     '- a string with changed uppercase or lowercase letters, character widths, `kana`, payload, or checksum':
       '- 大写或小写字母、字符宽度、`kana`、有效载荷或校验和被更改的字符串',
@@ -2367,8 +2257,8 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
     'Supported with requirements': '有条件支持',
   },
   'zh-hant': {
-    'Domain setup is a fee-paying write. Before trying it on Taira, save the faucet helper from [Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, fund the signer through the public faucet, and attach fee metadata:':
-      '設定網域是一項需要付費的寫入操作。在 Taira 上嘗試之前，請將[在 Taira 上取得測試網 XOR](/zh-hant/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中提供的水龍頭輔助指令碼儲存為 `taira_faucet_claim.py`，透過公共水龍頭為簽署者儲值，並附加費用中繼資料：',
+    'For public global execution, lane `0` is sequenced by the global Sumeragi instance. Each other active lane incarnation runs a separate instance of the same Sumeragi core with its pinned committee and consensus parameters. Its certified block contains an ordered transaction batch checked for admission against a committed global anchor. Lane certification does not mutate the global State.':
+      '對於公共全域執行，通道 `0` 由全域 Sumeragi 實例排序。其他每個處於活動狀態的通道世代都以固定的委員會和共識參數執行同一 Sumeragi 核心的獨立實例。其認證的區塊包含按順序排列的交易批次，這些交易須依據已提交的全域錨點通過准入檢查。通道認證不會修改全域 State。',
     'The authority submitting the transaction must have the permission required by the active runtime validator. For the default permission surface, see [Permission Tokens](/reference/permissions.md).':
       '提交交易的授權主體必須具備目前執行階段驗證器要求的權限。如需預設權限介面，請參閱[權限權杖](/zh-hant/reference/permissions.md)。',
     'Multiplication is the expensive operation. A product of two two-component ciphertexts naturally creates a three-component ciphertext that decrypts with \\(1\\), \\(s_k\\), and \\(s_k^2\\). Relinearization uses a published evaluation key to fold the \\(s_k^2\\) term back into a normal two-component ciphertext. That keeps later additions and multiplications using the same ciphertext shape.':
@@ -2381,23 +2271,14 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- 即使此金絲雀測試成功，註冊、鑄造或命名空間管理操作仍可能被拒絕。這些操作需要各自的執行階段權限；如果尚未取得 Taira 存取權，請在產生的本機網路上演練。',
     'Use a second client configuration for the delegate when proving the write:':
       '驗證寫入操作時，請為被授權者使用另一份用戶端設定：',
-    "Fee sponsorship lets users submit private-dataspace transactions without holding XOR. The user still signs the transaction. The transaction metadata points at a sponsor account, and the runtime debits the sponsor's XOR balance for the network fee.":
-      '費用贊助允許使用者在不持有 XOR 的情況下提交私有資料空間交易。使用者仍需簽署交易。交易中繼資料指向贊助者帳戶，執行階段會從該帳戶的 XOR 餘額扣除網路費用。',
-    'The canary submits a signed ping, waits for confirmation, and writes the runtime signer config when `--write-config` is provided. Taira is a public testnet, so queue saturation can make the signed ping fail even when the faucet itself works. If `taira doctor` reports a saturated queue or the canary returns `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, wait and retry before treating it as a client configuration error.':
-      '金絲雀測試會提交已簽署的 ping、等待確認，並在提供 `--write-config` 時寫入執行階段簽署者設定。Taira 是公共測試網，因此即使水龍頭本身正常，佇列飽和也可能導致已簽署的 ping 失敗。如果 `taira doctor` 回報佇列飽和，或金絲雀測試傳回 `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`，請先等待並重試，再將其視為用戶端設定錯誤。',
-    'The faucet is a public testnet service. If the puzzle or claim endpoint returns `502`, a timeout, or another gateway-level error, wait and retry before changing your keys or client config.':
-      '水龍頭是公共測試網服務。如果謎題或領取端點傳回 `502`、逾時或其他閘道層級錯誤，請先等待並重試，再變更金鑰或用戶端設定。',
     '- governance, runtime upgrade, Sumeragi, node-admin, SoraFS, UAID, and Kaigi endpoint wrappers where the node exposes those features':
       '- 當節點提供相應功能時，用於治理、執行階段升級、Sumeragi、節點管理、SoraFS、UAID 和 Kaigi 端點的封裝器',
-    'Module with the incoming request handling logic for the [peer](#peer). It is used to receive, accept and route incoming instructions, and HTTP queries, as well as run-time configuration updates.':
-      '包含[對等節點](#peer)傳入要求處理邏輯的模組。它用於接收、接受和路由傳入的指令及 HTTP 查詢，也用於處理執行階段設定更新。',
     'Consensus validators must use BLS-Normal peer keys. For each validator, also provide a matching [`trusted_peers_pop`](#param-trusted-peers-pop) entry.':
       '共識驗證器必須使用 BLS-Normal 對等節點金鑰。還要為每個驗證器提供相符的 [`trusted_peers_pop`](#param-trusted-peers-pop) 項目。',
     '- the submitting transaction authority unless the application uses a private entrypoint or relayer pattern':
       '- 提交交易的授權主體，除非應用程式使用私有進入點或中繼器模式',
     'Client configuration stores the signing authority separately from peer configuration:':
       '用戶端設定將簽署授權主體與網路對等節點設定分開儲存：',
-    'The runtime configuration builds three pieces of lane state:': '軟體執行環境設定會建構三部分的執行通道狀態：',
     'Either original party can read its message record and generated outbox documents. The audit endpoint returns only records in which the authenticated participant is the originator or counterparty. A separately configured audit administrator receives a global read-only audit view and cannot submit or change messages. Unknown participants and unrelated message identifiers are not disclosed.':
       '原始交易的任一方都可以讀取其訊息記錄及產生的寄件匣文件。稽核端點只會傳回已驗證參與者為發起方或交易對手方的記錄。另行設定的稽核管理員可取得全域唯讀稽核檢視，但不能提交或變更訊息。系統不會揭露未知參與者或不相關訊息識別碼是否存在。',
     '- Store and compare the canonical UTF-8 string exactly.': '- 精確儲存並比較規範 UTF-8 字串。',
@@ -2467,7 +2348,7 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '10. 要求與去除首尾空白後的輸入 `byte-for-byte` 相等。',
     'A successful checksum or low-level `AccountAddress` parse is not a substitute for this check.':
       '校驗和成功或低層級 `AccountAddress` 解析不能替代此檢查。',
-    'Domain, dataspace, alias, UAID, and account metadata bytes are not present.':
+    'Domain, data space, alias, UAID, and account metadata bytes are not present.':
       '其中不包含網域、資料空間、別名、UAID 或帳戶中繼資料位元組。',
     '- a string with changed uppercase or lowercase letters, character widths, `kana`, payload, or checksum':
       '- 大寫或小寫字母、字元寬度、`kana`、有效載荷或校驗和被更改的字串',
@@ -2639,12 +2520,24 @@ function protectMachineTranslationLiterals(content: string): { masked: string; r
     return marker
   }
 
-  let masked = content.replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, protect)
+  // Protect full technical link labels before clarifying words such as "crate".
+  let masked = content
+  for (const link of directMarkdownLinks(content).reverse()) {
+    if (isPreservedTechnicalLinkLabel(link.label.trim())) {
+      masked = masked.slice(0, link.labelStart) + protect(link.label) + masked.slice(link.labelEnd)
+    }
+  }
+  masked = masked.replace(/^ {0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?^ {0,3}\1[^\n]*(?:\n|$)/gmu, protect)
   masked = masked.replace(/(`+)([\s\S]*?)\1/gu, protect)
   masked = masked.replace(/\$\$[\s\S]*?\$\$/gu, protect)
   masked = masked.replace(/\\\[[\s\S]*?\\\]/gu, protect)
   masked = masked.replace(/\\\((?:(?!\\\))[^\n])*\\\)/gu, protect)
   masked = masked.replace(/(?<!\\)\$(?!\s)(?:\\.|[^$\n])+(?<!\s)\$/gu, protect)
+  masked = masked.replace(
+    /(!?\[)([^\]\n]+)(\](?:\((?:\\.|[^)\n])+\)|\[[^\]\n]*\]))/gu,
+    (match, prefix: string, label: string, suffix: string) =>
+      isPreservedTechnicalLinkLabel(label.trim()) ? `${prefix}${protect(label)}${suffix}` : match,
+  )
   masked = masked.replace(/(\]\(\s*)(?:<([^>\n]+)>|([^\s)\n]+))/gu, (match) => protect(match))
   masked = masked.replace(/<[^>\n]+>/gu, protect)
   masked = masked.replace(/\bhttps?:\/\/[^\s<>)\]]+/giu, protect)
@@ -2656,6 +2549,7 @@ function protectMachineTranslationLiterals(content: string): { masked: string; r
   )
   masked = masked.replace(/[\p{L}\p{N}]+(?:(?:__|::|[_$])[\p{L}\p{N}]+)+/gu, protect)
   masked = masked.replace(PROSE_EXAMPLE_IDENTIFIER_PATTERN, protect)
+  masked = masked.replace(/\bAPI endpoints?\b/gu, protect)
   masked = masked.replace(TECHNICAL_TERM_PATTERN, protect)
   masked = masked.replace(CAMEL_CASE_IDENTIFIER_PATTERN, protect)
   masked = masked.replace(UPPERCASE_IDENTIFIER_PATTERN, (value) =>
@@ -3071,9 +2965,7 @@ const AMHARIC_CONSUME_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['የሚበላ', 'የሚጠቀም'],
 ]
 
-const AMHARIC_SIBLING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ወንድም እህት', 'አጎራባች'],
-]
+const AMHARIC_SIBLING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ወንድም እህት', 'አጎራባች']]
 
 const AMHARIC_LINEAGE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ዘር ሀረጉን', 'ተከታታይነቱን'],
@@ -3084,9 +2976,7 @@ const AMHARIC_LINEAGE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['ዘር ሐረግ', 'ተከታታይነት'],
 ]
 
-const AMHARIC_ROUTING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ማዞሪያ', 'ማስተላለፊያ'],
-]
+const AMHARIC_ROUTING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ማዞሪያ', 'ማስተላለፊያ']]
 
 const AMHARIC_PAYLOAD_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['የሁኔታ ክፍያ ጭነት', 'የሁኔታ ጭነት'],
@@ -3155,9 +3045,7 @@ const AMHARIC_MINT_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string
   ['አዝሙድ', 'ሚንት'],
 ]
 
-const AMHARIC_ISSUE_TIME_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['የጉዳይ ጊዜ', 'የተሰጠበት ጊዜ'],
-]
+const AMHARIC_ISSUE_TIME_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['የጉዳይ ጊዜ', 'የተሰጠበት ጊዜ']]
 
 const AMHARIC_FAIL_CLOSED_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['በመዘጋት ይከሽፋሉ', 'በአስተማማኝ ሁኔታ ውድቅ ይሆናሉ'],
@@ -3252,21 +3140,13 @@ const AMHARIC_BLOCKER_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['ማገጃ', 'እንቅፋት'],
 ]
 
-const AMHARIC_ROUNDING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['የማዞሪያ ሁነታ', 'የማጠጋጋት ሁነታ'],
-]
+const AMHARIC_ROUNDING_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['የማዞሪያ ሁነታ', 'የማጠጋጋት ሁነታ']]
 
-const AMHARIC_STOCK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['አክሲዮኑ', 'መደበኛው'],
-]
+const AMHARIC_STOCK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['አክሲዮኑ', 'መደበኛው']]
 
-const AMHARIC_STATE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ግዛት', 'ሁኔታ'],
-]
+const AMHARIC_STATE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ግዛት', 'ሁኔታ']]
 
-const AMHARIC_FORK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ሹካ', 'ፎርክ'],
-]
+const AMHARIC_FORK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ሹካ', 'ፎርክ']]
 
 const AMHARIC_EXECUTION_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ግድያዎችን', 'አፈጻጸሞችን'],
@@ -3276,9 +3156,7 @@ const AMHARIC_EXECUTION_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, s
   ['ግድያ', 'አፈጻጸም'],
 ]
 
-const AMHARIC_OUTBOX_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['የወጪ ሳጥን', 'የወጪ መልዕክት ሳጥን'],
-]
+const AMHARIC_OUTBOX_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['የወጪ ሳጥን', 'የወጪ መልዕክት ሳጥን']]
 
 const AMHARIC_COMMITMENT_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ምስጠራ ቁርጠኝነት እሴቶችን', 'ክሪፕቶግራፊያዊ ኮሚትመንቶችን'],
@@ -3323,9 +3201,7 @@ const AMHARIC_LEDGER_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, stri
   ['ደብተር', 'መዝገብ'],
 ]
 
-const AMHARIC_STAKE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['አክሲዮን', 'ድርሻ'],
-]
+const AMHARIC_STAKE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['አክሲዮን', 'ድርሻ']]
 
 const AMHARIC_BLOCK_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['ማገጃዎችን', 'ብሎኮችን'],
@@ -3363,9 +3239,7 @@ const AMHARIC_BALANCE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, str
   ['ሚዛን', 'ቀሪ ሒሳብ'],
 ]
 
-const AMHARIC_GENESIS_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
-  ['ዘፍጥረት', 'ጀነሲስ'],
-]
+const AMHARIC_GENESIS_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [['ዘፍጥረት', 'ጀነሲስ']]
 
 const AMHARIC_WRITE_FALSE_FRIEND_REPLACEMENTS: readonly (readonly [string, string])[] = [
   ['የጽሑፎቹን', 'የመጻፍ ክዋኔዎቹን'],
@@ -3407,9 +3281,7 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     }
   }
   if (locale.key === 'kk') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\bledgers?\b/iu, KAZAKH_LEDGER_FALSE_FRIEND_REPLACEMENTS],
       [/(?:\bauthorit(?:y|ies)\b|\bprincipals?\b)/iu, KAZAKH_AUTHORITY_FALSE_FRIEND_REPLACEMENTS],
       [/\bexplorers?\b/iu, KAZAKH_EXPLORER_FALSE_FRIEND_REPLACEMENTS],
@@ -3417,7 +3289,8 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   if (locale.key === 'ru' && /\bexplorers?\b/iu.test(source)) {
@@ -3447,9 +3320,7 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     }
   }
   if (locale.key === 'az') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\bpeers?\b/iu, AZERBAIJANI_PEER_PROSE_REPLACEMENTS],
       [/\bvalidators?\b/iu, AZERBAIJANI_VALIDATOR_PROSE_REPLACEMENTS],
       [/\bruntime\b/iu, AZERBAIJANI_RUNTIME_PROSE_REPLACEMENTS],
@@ -3457,13 +3328,12 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   if (locale.key === 'ka') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\bquer(?:y|ies)\b/iu, GEORGIAN_QUERY_FALSE_FRIEND_REPLACEMENTS],
       [/\balias(?:es)?\b/iu, GEORGIAN_ALIAS_FALSE_FRIEND_REPLACEMENTS],
       [/\bledgers?\b/iu, GEORGIAN_LEDGER_FALSE_FRIEND_REPLACEMENTS],
@@ -3473,21 +3343,17 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   if (locale.key === 'am') {
-    const sourceAwareRepairs: ReadonlyArray<
-      readonly [RegExp, ReadonlyArray<readonly [string, string]>]
-    > = [
+    const sourceAwareRepairs: ReadonlyArray<readonly [RegExp, ReadonlyArray<readonly [string, string]>]> = [
       [/\b(?:recipes?|cookbooks?)\b/iu, AMHARIC_RECIPE_FALSE_FRIEND_REPLACEMENTS],
       [/\bdigests?\b/iu, AMHARIC_DIGEST_FALSE_FRIEND_REPLACEMENTS],
       [/\btokens?\b/iu, AMHARIC_TOKEN_FALSE_FRIEND_REPLACEMENTS],
       [/\bfixtures?\b/iu, AMHARIC_FIXTURE_FALSE_FRIEND_REPLACEMENTS],
-      [
-        /^(?![\s\S]*\bart[ei]facts?\b)[\s\S]*\bfixtures?\b/iu,
-        AMHARIC_BARE_FIXTURE_FALSE_FRIEND_REPLACEMENTS,
-      ],
+      [/^(?![\s\S]*\bart[ei]facts?\b)[\s\S]*\bfixtures?\b/iu, AMHARIC_BARE_FIXTURE_FALSE_FRIEND_REPLACEMENTS],
       [/\bart[ei]facts?\b/iu, AMHARIC_ARTIFACT_FALSE_FRIEND_REPLACEMENTS],
       [/\bconsum(?:e|es|ed|ing)\b/iu, AMHARIC_CONSUME_FALSE_FRIEND_REPLACEMENTS],
       [/\bsibling\b/iu, AMHARIC_SIBLING_FALSE_FRIEND_REPLACEMENTS],
@@ -3534,7 +3400,8 @@ export function normalizeMachineTranslationArtifacts(content: string, locale: Do
     ]
     for (const [sourcePattern, replacements] of sourceAwareRepairs) {
       if (!sourcePattern.test(source)) continue
-      for (const [falseFriend, replacement] of replacements) normalized = normalized.replaceAll(falseFriend, replacement)
+      for (const [falseFriend, replacement] of replacements)
+        normalized = normalized.replaceAll(falseFriend, replacement)
     }
   }
   normalized = normalized.replace(/^(\s*\[\^[^\]\n]+\])：/gmu, '$1:')
@@ -3825,6 +3692,13 @@ function sha256(content: string): string {
 
 /** Return exact technical tokens whose spelling translations must preserve. */
 export function technicalIdentifiers(source: string): Map<string, number> {
+  // Translation joins soft-wrapped prose and may omit emphasis delimiters.
+  // Count identifiers in the same visible prose on both sides; keep code literal.
+  const text = markdownTranslationUnits(source)
+    .map((unit) =>
+      unit.translate && unit.content.includes('_') ? removeTranslatableEmphasis(unit.content) : unit.content,
+    )
+    .join('')
   const counts = new Map<string, number>()
   for (const pattern of [
     TECHNICAL_TERM_PATTERN,
@@ -3832,16 +3706,16 @@ export function technicalIdentifiers(source: string): Map<string, number> {
     UPPERCASE_IDENTIFIER_PATTERN,
     DOMAIN_NAME_PATTERN,
   ]) {
-    for (const match of source.matchAll(pattern)) {
+    for (const match of text.matchAll(pattern)) {
       if (pattern === UPPERCASE_IDENTIFIER_PATTERN && !shouldProtectUppercaseIdentifier(match[0])) continue
       counts.set(match[0], (counts.get(match[0]) ?? 0) + 1)
     }
   }
-  const irohaVersionMatches = source.match(/\bIroha 3\b/gu) ?? []
+  const irohaVersionMatches = text.match(/\bIroha 3\b/gu) ?? []
   if (irohaVersionMatches.length > 0) {
     counts.set('Iroha', (counts.get('Iroha') ?? 0) + irohaVersionMatches.length)
   }
-  const nexusMatches = source.match(/\bNexus\b/gu) ?? []
+  const nexusMatches = text.match(/\bNexus\b/gu) ?? []
   if (nexusMatches.length > 0) counts.set('Nexus', nexusMatches.length)
   return counts
 }
@@ -6397,9 +6271,7 @@ export async function synchronizeReviewedTranslations(
 }
 
 /** Apply source-aware normalization repairs to existing translations without calling a provider. */
-export async function normalizeExistingTranslations(
-  options: NormalizeExistingTranslationOptions = {},
-): Promise<void> {
+export async function normalizeExistingTranslations(options: NormalizeExistingTranslationOptions = {}): Promise<void> {
   const sourceRoot = options.sourceRoot ?? path.resolve(process.cwd(), 'src')
   const locales = options.locales ?? TRANSLATED_LOCALES
   const availableRoutes = await englishRoutes(sourceRoot)
@@ -6686,7 +6558,9 @@ export function parseTranslationCli(argv: string[]): TranslationCliOptions {
     locales = locales.filter((locale) => BING_RECOMMENDED_LOCALE_KEY_SET.has(locale.key))
   }
   if ([normalizeExisting, synchronizeAnchors, synchronizeReviewed, synchronizeStructure].filter(Boolean).length > 1) {
-    throw new Error('--normalize-existing, --sync-anchors, --sync-reviewed, and --sync-structure are mutually exclusive')
+    throw new Error(
+      '--normalize-existing, --sync-anchors, --sync-reviewed, and --sync-structure are mutually exclusive',
+    )
   }
   const synchronizeOnly = normalizeExisting || synchronizeAnchors || synchronizeReviewed || synchronizeStructure
   if (!synchronizeOnly && providerName === 'nllb' && !model) {

@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # הגדרת Iroha {#configuring-iroha}
 
 תצורת הצומת המקומית מוגדרת בקובצי TOML. היא שונה מן התצורה בשרשרת שמשתנה באמצעות הוראות [`SetParameter`](/he/blockchain/instructions.md#setparameter). התנהגות הייצור חייבת להיות מיוצגת בקובץ תצורה או בפרמטר בשרשרת; משתני סביבה אינם שערי הפעלה לתכונות.

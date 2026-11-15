@@ -1,27 +1,26 @@
 ---
 translation_locale: ba
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Сетьте урынлаштырыу өсөн асҡыстар {#keys-for-network-deployment}
 
-Һәр селтәр өсөн клиенттар, пирҙары, генез ҡултамғаһы һәм, NPoS йәки Nexus профилдәре өсөн, BLS раҫлаусы идентификаторҙар өсөн айырым төп материалдар кәрәк.
+Һәр селтәргә клиенттар, генезисҡа ҡул ҡуйыу һәм эйә булыу иҫбаттары менән BLS-normal валидатор идентификаторҙары өсөн айырым асҡыс материалдары кәрәк.
 
 ## Ҡайҙа асҡыстар ҡулланыла {#where-keys-are-used}
 
 - Клиенттың ҡултамғалау асҡыстары `client.toml` аҫтында `[account]` һаҡлана.
 - Пирҙар менән танышыу өсөн асҡыстар һәр пирҙа һаҡлана `config.toml` тип `public_key` һәм `private_key`.
-- Peer Discovery `trusted_peers`-ла һәр бер peer-тың асыҡ асҡысын ҡуллана.
-- BLS раҫлаусы НПОС профилдәре өсөн милек иҫәбе `trusted_peers_pop` ҡатында һаҡланған.
+- Селтәр төйөндәрен табыу өсөн `trusted_peers` исемлегендәге һәр төйөндөң асыҡ асҡысы ҡулланыла.
+- BLS валидаторҙарының эйә булыу иҫбаттары консенсус режимына ҡарамаҫтан һәр валидатор өсөн `trusted_peers_pop` эсендә һаҡлана.
 - Яратылыш ҡултамғаһы манифестҡа ҡул ҡуйғанда `[genesis].public_key` тигеҙ конфигурацияһында һәм тейешле шәхси асҡыс менән ҡулланыла.
 
 Урындағы йәки һынау урынлаштырыу өсөн, Kagami был файлдарҙың бөтәһен дә бергә барлыҡҡа килтерергә тейеш:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Булған селтәр йәки профиль өсөн, етәкселек итеүсе ағымды ҡулланығыҙ:
@@ -39,7 +38,7 @@ cargo run --bin kagami -- keys --algorithm ed25519 \
   --out-dir ./client-key
 ```
 
-BLS validator материалы өсөн эйә булыу дәлилен дә өҫтәгеҙ:
+Валидаторҙың BLS асҡыстары өсөн асҡысҡа эйә булыу иҫбатын да өҫтәгеҙ:
 
 ```bash
 cargo run --bin kagami -- keys --algorithm bls_normal --pop \
@@ -52,7 +51,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 
 Барлыҡ валидаторҙар бер үк генез транзакцияһы, топологияһы, ышаныслы йәмәғәт асҡыстары һәм валидаторы PoPs тураһында килешергә тейеш. Берҙән-бер юғалған йәки тап килмәгән пир асҡысы селтәрҙең башланғанын йә консенсусҡа өлгәшеүен ҡамасаулай ала.
 
-Минималь Byzantine-fault-tolerant deployment өсөн кәмендә дүрт peer ҡулланығыҙ. Һәр peer-ҙың үҙ private key-ы булырға тейеш, ләкин һәр peer configuration бер үк trusted peer set-ты ҡулланырға тейеш.
+Византия тибындағы етешһеҙлектәргә сыҙайлы иң бәләкәй селтәр өсөн кәм тигәндә дүрт төйөн кәрәк. Һәр төйөндөң үҙ шәхси асҡысы булырға тейеш; бөтә төйөндәрҙең көйләүҙәрендә иһә бер үк ышаныслы төйөндәр йыйылмаһы күрһәтелә.
 
 ## Клиенттар иҫәбтәре {#client-accounts}
 

@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Иң яҡшы ғәмәлдәр {#best-practices}
 
 Был бүлектә Iroha ҡушымталары һәм селтәрҙәре өсөн производствоға йүнәлтелгән күрһәтмәләр туплана. Уны тормошҡа ашырыусы үҙенсәлек түгел, ә үҙеңдең ҡабул итергә тейешле ҡарарың менән ойоштороу.

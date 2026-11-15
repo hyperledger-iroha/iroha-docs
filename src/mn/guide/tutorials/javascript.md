@@ -1,14 +1,13 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript ба TypeScript {#javascript-and-typescript}
 
-Одоогийн JavaScript SDK нь Iroha эх үүсвэр модны `@iroha/iroha-js` багц юм. Энэ нь Torii, Norito баригчид, гарын үсэг зурах, хуудаслах, Connect урьдчилсан үзэлт, болон Kagemusha команд дамжуулалтын хувьд Node.js-р SDK юм.
+Одоогийн JavaScript SDK нь Iroha-ийн эх кодын мод дахь `@iroha/iroha-js` багц юм. Энэ нь Torii, Norito үүсгэгчид, гарын үсэг зурах, хуудаслалт болон Connect урьдчилсан хувилбаруудад зориулсан, Node.js-ийг тэргүүлэх SDK юм.
 
 ## Эх сурвалжаас бүтээх {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ SDK нь дараах зүйлд төвлөрдөг:
 - Ed25519 гарын үсэг зуралт ба түлхүүр үүсгэх
 - хуудаслал болон дахин оролдох туслагчид
 - Хөтчийн bootstrap туслах хэрэгслүүдтэй холбох
-- Кагемуша бэлэн байдал, нөхөх, буцаан авах, ба үйлдлийн төлөвийг тээвэрлэх туслахууд
 
 ## Дээшээ чиглэсэн лавлагаа {#upstream-references}
 

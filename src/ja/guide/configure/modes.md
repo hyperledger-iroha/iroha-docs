@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # パブリックおよびプライベートブロックチェーン {#public-and-private-blockchains}
 
 Iroha はさまざまな構成で実行できます。自身のネットワークの管理者として、どの実行者と権限ポリシーが取引の承認を決定するかを決定します。

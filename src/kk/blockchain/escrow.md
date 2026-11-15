@@ -1,24 +1,22 @@
 ---
 translation_locale: kk
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Туынды активтерді сенімхатта сақтау {#native-asset-escrow}
 
 Туған жердегі эскроу сандық активтерге арналған блокчейн тізбесімен басқарылатын қамау механизмі болып табылады. Активтерді қосымшаға тиесілі есепшотқа жіберу және оған сену орнына сол аккаунтты қорғау үшін қолданба коды, эскроу ISIs мәнін детерминистикалық хаттама сақтау аккаунтына аудару және эскроу өмірлік циклін әлемдік күйде тіркеу.
 
-Нарықтағы қаржылық транзакцияларды settlements үшін жергілікті эскроу пайдаланыңыз, Аитай стиліндегі офф-ченнел төлем үйлестіру, кезеңдік құлыптар және блокчейн есептік жазба өмірлік циклінде көрінетін қорғалған эскроу жұмыс ағындары.
+Нарықтағы қаржылық есеп айырысу, Aitai стиліндегі тізбектен тыс төлемдерді үйлестіру, кезеңдік құлыптар және тізілімде көрінетін өмірлік цикл күйін қажет ететін, аттестаторға байланған шартты босатулар үшін жергілікті эскроу пайдаланыңыз.
 
 ## Түсініктер {#concepts}
 
 |ұғым|Сипаттама|
 | --- | --- |
-| `EscrowId` |клиент таңдайтын идентификаторды криптографиялық хэшпен орай отырып сұрау. Ол ашық және анонимді кепілдіктер арасында бірегей болу керек.|
+| `EscrowId` |Шақырушы таңдайтын, хэшті орайтын идентификатор. Ол барлық эскроу жазбалары арасында бірегей болуы керек.|
 | `AssetEscrowRecord` |Транспарент сандық активтерді тіркеу немесе құлыптау жазбасы.|
-| `AnonymousAssetEscrowRecord` |Нөлдендіргіштермен, криптографиялық міндеттеме мәндерімен және дәлелдік қоса тіркемелерімен қамтамасыз етілген қорғалған эскроу жазбасы.|
 |Сақтау шоты|Тізбек идентификаторы, кепілдік идентификаторы және актив анықтамасынан алынған детерминистік протокол аккаунты.|
 |Дәлелді криптографиялық хэштер|Дәлелдік криптографиялық хэштер шот-фактураларды, сот шешімдерін, хабарламаларды, сақтау техникалық манифесттерін немесе басқа сыртқы дәлелдерді анықтай алатынын көрсете алады. Дәлелдік жүктеме өзі эскроу жазбасында сақталмайды.|
 
@@ -174,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python қазіргі уақытта жалпы құлыптар үшін жоғары деңгейдегі көмекшілерді ұсынады: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, және `expire_asset_lock`. Нарық және Python-дан жасырын кепіл үшін, бір ғана протокол-стандартты `InstructionBox` JSON арқылы SDK-ның JSON қашу люкінен пайдаланыңыз, немесе бірінші класты эскроу жасаушыларын көрсететін SDK арқылы жіберіңіз.
+Python қазіргі уақытта жалпы құлыптар үшін жоғары деңгейдегі көмекшілерді ұсынады: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, және `expire_asset_lock`. Python-дан нарықтық және шартты эскроу үшін, бір ғана протокол-стандартты `InstructionBox` JSON арқылы SDK-ның JSON қашу люкінен пайдаланыңыз, немесе бірінші класты эскроу жасаушыларын көрсететін SDK арқылы жіберіңіз.
 
 ## Даулар {#disputes}
 
@@ -226,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Анонимді эскроу {#anonymous-escrow}
+## Шартты эскроу {#conditional-escrow}
 
-Анонимді эскроу сол нарықтың өмірлік цикліне сүйенеді, бірақ қаржыландыру және активті жабу қозғалысы қорғалған. Қоғамдық жазба әлі де сатушыны, сатып алушыны, мәртебені сақтайды, криптографиялық хэштер, уақыт белгілеулері және дәлелге байланысты қозғалыс жазбаларының дәлелі. Қорғалған жазбалар ішіндегі сомалар мен алушылар криптографиялық міндеттемелер мәндерімен, нөлдеушілермен және дәлелдік тіркемелермен көрсетіледі.
+Шартты эскроу сандық активті бенефициар үшін құлыптайды және оны барлық шарттар ретімен орындалғаннан кейін ғана босатады. Әр шарт аттестатордың есептік жазбасын, тізілім бағалайтын предикатты (типтелген мәнге `Equals` немесе шекке қатысты `QuantityAtMost`) және бірден басталатын реттік нөмірін көрсетеді. Міндетті емес тізілім уақыты терезесі барлық аттестацияларды шектейді.
 
-|Мөлдір ISI|Аноним ISI|
-| --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
-
-Әмиян немесе тексеруші құралдары дәлелді тіркеме мен қоғамдық енгізулерді құруы керек. Ашуы бір депозиттік криптографиялық міндеттеме мәнін жасайды. Шығару, болдырмау, және аноним дау шешімі дәл бір эскроу криптографиялық міндеттеме мәнін жұмсауы және әрекетке қажет сатып алушы, сатушы немесе бөлу шығыс криптографиялық міндеттеме мәндерін жасауы керек.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-Негізгі қорғалған транзакция моделін қарау үшін, қараңыз [Анонимдік транзакциялар](/kk/blockchain/anonymous-transactions.md).
+| ISI | Шақырушы | Әсері |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Ашушы | Соманы өзгермейтін шарттармен және абсолютті мерзіммен протоколдық сақтауда құлыптайды. |
+| `AttestEscrowCondition` | Шарттың аттестаторы | Келесі шарт үшін `Bool`, `Text` немесе `Quantity` мәнін береді. Соңғы шарт орындалғанда эскроу бенефициарға босатылады. |
+| `ExpireConditionalEscrow` | Кез келген есептік жазба | Эскроу босатылмаған болса, мерзімі өткеннен кейін соманы ашушыға қайтарады. |
 
 ## SDK Пайдалanу {#sdk-usage}
 
-Эскроу қолдауы SDKs арқылы әртүрлі көрсетіледі. Rust бір протокол-стандартты типтелген деректер моделіне ие. Python қазіргі уақытта жалпы активті құлыптау көмектерін ұсынады. JavaScript және TypeScript Kotodama эскроу хост-функция шақыруларын пайдаланады. Kotlin/JVM және Swift нарық пен анонимді эскроу үшін типтелген деректер жиынтығы құрастырушыларын қамтамасыз етеді.
+Эскроу қолдауы SDKs арқылы әртүрлі көрсетіледі. Rust бір протокол-стандартты типтелген деректер моделіне ие. Python қазіргі уақытта жалпы активті құлыптау көмектерін ұсынады. JavaScript және TypeScript Kotodama эскроу хост-функция шақыруларын пайдаланады. Kotlin/JVM және Swift нарықтық эскроу үшін типтелген деректер жиынтығы құрастырушыларын қамтамасыз етеді.
 
 | SDK |Бұл бетті пайдаланыңыз|Көлем|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Нарықтық эскроу, жалпы құлыптар, анонимді эскроу, сұраулар және оқиғалар.|
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` және клиент `*_and_wait` көмекшілері|Жалпы активтерді құлыптау. Нарық және анонимдік депозиткуратор көмекшілері әлі негізгі Python әдістер емес.|
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Нарықтық эскроу, жалпы құлыптар, шартты эскроу, сұраулар және оқиғалар.|
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` және клиент `*_and_wait` көмекшілері|Жалпы активтерді құлыптау. Нарықтық және шартты эскроу көмекшілері әлі негізгі Python әдістер емес.|
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` бастап `@iroha/iroha-js/kotodama-compiler` |Kotodama келісімшарттарындағы эскроу хост-функциясын шақырулар.|
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` сыныптары `org.hyperledger.iroha.sdk.core.model.instructions`-де|Marketplace және анонимді эскроу үшін арнайы нұсқаулық үлгілері.|
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` және `IrohaSDK.build*Escrow*` көмекшілер|Нарық және анонимдік эскроу Norito JSON нұсқаулық жүктемелері.|
+| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` сыныптары `org.hyperledger.iroha.sdk.core.model.instructions`-де|Нарықтық эскроу үшін арнайы нұсқаулық үлгілері.|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` және `IrohaSDK.build*Escrow*` көмекшілер|Нарықтық эскроу Norito JSON нұсқаулық жүктемелері.|
 
 Төмендегі мысалдар нұсқаулық құруға бағытталған. Шотты қаржыландыру, қолтаңба басқару және транзакцияларды жіберу әрбір SDK үшін әдеттегі ағымға сәйкес жүргізіледі.
 
 ### Rust SDK {#rust-sdk}
 
-Толық жергілікті қамтуды немесе сұрау/оқиға қолдауын қажет еткенде Rust SDK пайдаланыңыз. Жоғарыдағы мысалдар нарықтық релизді, жалпы құлыпты төмендетуді, дауды шешуді және `iroha::data_model::isi::escrow` арқылы анонимді сенімділік құрылығын көрсетеді.
+Толық жергілікті қамтуды немесе сұрау/оқиға қолдауын қажет еткенде Rust SDK пайдаланыңыз. Жоғарыдағы мысалдар `iroha::data_model::isi::escrow` арқылы нарықтық босатуды, жалпы құлыптан қаражат алуды және дауды шешуді көрсетеді.
 
 ```rust
 use iroha::{
@@ -397,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Даулар үшін `escrow_open_dispute(offer, evidence)` және `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` пайдаланыңыз. Анонимді эскроу хост-функция шақырулары Norito сұрау жүктемесі байттарын қабылдайды, мысалы `anonymous_escrow_open_offer(request)`.
+Даулар үшін `escrow_open_dispute(offer, evidence)` және `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` пайдаланыңыз.
 
 ### Kotlin және JVM {#kotlin-and-jvm}
 
@@ -431,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Анонимді үлгілер `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction` және `ResolveAnonymousEscrowDisputeInstruction` ретінде қолжетімді. Android Java сұрау салатын клиенттері Android артефактісіндегі сәйкес `NativeEscrowInstructions.*` құрастырушыларды пайдалана алады.
-
 ### Swift және iOS {#swift-and-ios}
 
 Swift SDK Norito JSON деректер пакеттері ретінде сенімділік нұсқауларын құрады. `NativeEscrowInstructionBuilders` тікелей пайдаланыңыз немесе қосымшаңызда 이미 `IrohaSDK` данасы бар болса, эквивалентті `IrohaSDK.build*Escrow*` көмекшісін шақырыңыз.
@@ -463,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Анонимды Swift құрылысшылар нөлге айналдыратын тізімдерді, криптографиялық міндеттеме мәндерінің тізімдерін, дәлел сөздігін және таңдаулы `rootHint` мәндерін алады. Дауларды шешуші рұқсат белгісі `NativeEscrowPermissions.canResolveEscrowDispute` ретінде қолжетімді.
+Дауларды шешуші рұқсат белгісі `NativeEscrowPermissions.canResolveEscrowDispute` ретінде қолжетімді.
 
 ## Сұраулар мен оқиғалар {#queries-and-events}
 
@@ -476,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 | `FindAssetEscrowsBySeller` |Сатушы немесе құлып ашқыш ашқан жазбаларды тізімдеңіз.|
 | `FindAssetEscrowsByBuyer` |Сатып алушы қабылдаған немесе тағайындалған жерге бағытталған құлыптарды нарықтық делдалдар тізімін жасаңыз.|
 | `FindAssetEscrowsByStatus` |Жазбаларды `AssetEscrowStatus` бойынша тізімдеңіз.|
-| `FindAnonymousAssetEscrowById` |`EscrowId` жазған бір анонимді эскроуды оқыңыз.|
-| `FindAnonymousAssetEscrows*` |Барлық жазбалар, сатушы, сатып алушы немесе мәртебе бойынша анонимді эскроуды тізімдеңіз.|
 
-`EscrowEventFilter` эскроу идентификаторы, сатушы, сатып алушы, күй және оқиға жиынтығы маскасы бойынша мөлдір жергілікті эскроу және құлыптау оқиғаларын жазыла алады. Оқиға отбасы `Opened` қамтиды, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` және `Resolved`. Анонимді эскроу жазбалары анонимді эскроу сұраулары арқылы тексеріледі.
+`EscrowEventFilter` эскроу идентификаторы, сатушы, сатып алушы, күй және оқиға жиынтығы маскасы бойынша мөлдір жергілікті эскроу және құлыптау оқиғаларына жазыла алады. Оқиғалар тобына `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` және `Resolved` кіреді.
 
 ## Операциялық ескертпелер {#operational-notes}
 

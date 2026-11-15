@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # 詞彙表 <!-- omit in toc --> {#glossary}
 
 在此,您可以找到所有與 Iroha 有關的實體的定義.
@@ -42,7 +41,7 @@ translation_engine: nllb-200-ct2
 
 ## 對等節點 {#peer}
 
-在 Iroha 中的對等節點是指其他 Iroha 程序和客戶端應用程式可以連線到的 Iroha 過程例項. 一臺機器可以容納多個 Iroha 對等節點.對等節點在資源和能力方面是平等的,但有一個重要例外:只有一個對等節點在 Iroha 網路啟動階段執行創世塊.
+對等節點是一個 Iroha 節點程序，可接受其他對等節點和用戶端應用程式的連線。一部機器可以執行多個對等節點，各自使用獨立的設定與儲存空間。每個從空狀態啟動共識的對等節點都會驗證並套用網路已簽署的創世資料；從已驗證快照還原的對等節點則從該狀態恢復執行。
 
 其他區塊鏈可能與節點或驗證符相同的概念.
 
@@ -80,7 +79,7 @@ translation_engine: nllb-200-ct2
 
 ## 拜占庭的故障耐受性 (BFT) {#byzantine-fault-tolerance-bft}
 
-能夠在包含一定比例的惡意行為者網路中正常執行的特性.Iroha 能夠與其同等網路中最多33%的惡意行為者進行操作.
+在包含一定比例惡意參與者的網路中仍能正常運作的特性。Sumeragi 委員會恰好有 `3f + 1` 個驗證者，最多可容忍 `f` 個拜占庭驗證者，即少於委員會的三分之一。
 
 ## Iroha 元件 {#iroha-components}
 
@@ -92,7 +91,7 @@ translation_engine: nllb-200-ct2
 
 ### Torii (門) {#torii-gate}
 
-包含[對等節點](#peer)傳入要求處理邏輯的模組。它用於接收、接受和路由傳入的指令及 HTTP 查詢，也用於處理執行階段設定更新。
+此模組包含[對等節點](#peer)處理輸入請求的邏輯，用來接收、接受及路由傳入的指令、HTTP 查詢，以及操作員設定檢視請求。
 
 ### Kura (倉庫) {#kura-warehouse}
 
@@ -108,7 +107,7 @@ translation_engine: nllb-200-ct2
 
 ### 智慧合同 {#smart-contracts}
 
-智慧合同是基於區塊鏈的程式,在滿足特定條件時執行. 在 Iroha 中,智慧合約使用[核心 Iroha 特殊指令](#core-iroha-special-instructions)實現.
+智慧合約是基於區塊鏈的程式，在滿足特定條件時執行。在 Iroha 3 中，智慧合約以 Kotodama 撰寫，並編譯為 IVM 位元組碼（`.to`）；合約透過主機呼叫發出 [Iroha 特殊指令](#core-iroha-special-instructions)來變更狀態。
 
 ### 觸發器 {#triggers}
 
@@ -116,11 +115,11 @@ translation_engine: nllb-200-ct2
 
 ### 版本化 {#versioning}
 
-每個請求都標記著它屬於的 API 版本. 它允許 Iroha 客戶端/對等節點軟體的不同二進製版本的組合相互操作,這反過來可以在 Iroha 網路中進行軟體升級.
+Iroha 3 的首個版本只支援一種規範的區塊線上傳輸格式版本。套用創世資料後，`/v1/api/version` 端點會回報 `SignedBlock::WIRE_VERSION`；在此之前會傳回不可用的回應。這項資訊用於指出所支援的傳輸格式，不會協商不同協定布局之間的相容性，也不會授權網路升級。
 
 ### 希吉里 (對等節點聲譽系統) {#hijiri-peer-reputation-system}
 
-Iroha 的聲譽系統.它允許優先與具有良好的軌跡記錄的[對等節點](#peer)進行溝通,並減少惡意的[對等節點](#peer)造成的傷害.
+Iroha 的對等節點與帳戶信譽系統。其由共識掌管的參數保存 Hijiri 費用政策與帳戶風險記錄，而受治理的觀察者登錄表會簽發帳戶證明，以調整帳戶的風險評分。
 
 ## Iroha 模組 {#iroha-modules}
 
@@ -132,7 +131,7 @@ Iroha 的第三方擴充套件,提供了定製功能.
 
 #### 實用性 Iroha 特殊指示 {#utility-iroha-special-instructions}
 
-這套 [isi](#iroha-special-instructions-isi)包含像 `If`這樣的邏輯指令,類似於 `Notify`這樣的I/O相關指令和`Sequence`這樣的組合.它們主要被用作[定製指令](#custom-iroha-special-instruction).
+這組 [isi](#iroha-special-instructions-isi) 包含不會變更特定於網域之實體的指令，例如 `Log`、`ExecuteTrigger`、`SetParameter` 和 `Upgrade`。Iroha 3 沒有 `If`、`Notify` 或 `Sequence` 指令。
 
 ### 核心 Iroha 特殊指示 {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ Iroha 的第三方擴充套件,提供了定製功能.
 
 ## 領導者 {#leader}
 
-在 Iroha 網路中，系統會隨機選出一個對等節點，並賦予其建立下一個區塊的特殊權限。在達成[拜占庭容錯](#byzantine-fault-tolerance-bft)的網路中，可透過[檢視變更](#view-change)撤銷此權限。
+對於每個高度和視圖，Sumeragi 會依據委員會、已驗證的領導者種子，以及已提交的略過領導者歷史，以確定性的方式選出提議者。[視圖切換](#view-change) 會依照相同的[拜占庭容錯](#byzantine-fault-tolerance-bft)規則，輪替至下一個符合資格的委員會成員。

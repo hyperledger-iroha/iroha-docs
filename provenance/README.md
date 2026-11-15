@@ -1,32 +1,30 @@
 # Generated Reference Provenance
 
 `iroha.json` is the machine-readable source of truth for artifacts imported or
-generated from the Iroha implementation repository.
+generated from the Iroha implementation repository. Normal documentation
+installs and builds consume the checked-in outputs without fetching Iroha.
 
-The manifest pins a full Git commit, records every source-to-target mapping or
-generator command, and stores SHA-256 hashes for checked-in outputs. Normal
-documentation installs and builds consume those outputs without fetching Iroha.
+- `source.track` names what refreshes follow: the newest commit on `branch`
+  whose signature GitHub verifies, or a newer release tag matching the
+  `release_tags` glob.
+- `source.ref` and `source.commit` record the public ref and the exact commit
+  that every artifact was generated from. GitHub verifies the commit's
+  signature (for a tag, the tag's signature also counts), and the commit is
+  reachable from the ref, so a signed commit that exists only in a fork or an
+  unmerged pull request is never pinned.
+- Each artifact records its source path (`copy` keeps the file as it is;
+  `render` converts it with the renderer registered for the artifact in
+  `etc/generated-references.ts`) or its generator command (`command`), its
+  checked-in target, and SHA-256 hashes. `pnpm validate:provenance` checks the
+  manifest and the hashes offline.
 
-The recorded candidate commit is publicly fetchable, and every copied source
-path and hash matches its public Git tree. The candidate commit is unsigned,
-so it does not establish release provenance for the final source-repository
-documentation relocation or current implementation truth. The manifest keeps
-every artifact `pending-signed-source-commit` under the explicit
-`awaiting-signed-source-commit` source state.
+`pnpm select:iroha` chooses the next pin. Then
+`pnpm refresh:iroha --source /path/to/clean/iroha --pin <commit> --ref <ref>`
+verifies it and regenerates every artifact from that commit. Generators run
+only in a clean checkout of the pinned commit, and a failed generator leaves the
+manifest and the artifacts unchanged. Do not hand-edit generated outputs.
 
-The copied artifacts have been refreshed from that exact candidate. Its
-workspace does not currently complete the command-based generator build, so
-the data-model schema and CLI help outputs remain pending and must not be
-hand-edited or presented as current generated reference material.
-
-After the final source truth receives its required compliant signed public
-commit, advance `source.commit` to that commit and run:
-
-```bash
-pnpm refresh:iroha --source /path/to/clean/iroha
-pnpm validate:provenance
-```
-
-Do not relax the clean-checkout or exact-commit guards to bridge this transition.
-The refresh workflow is expected to remain blocked until the signed source
-commit contains every recorded source path.
+Pages cite Iroha source at the pinned commit, and the cookbook validator
+requires every recipe to cite it. A new pin therefore fails
+`pnpm validate:cookbook` until the citing pages are checked against it and
+`pnpm move:iroha-citations --source /path/to/iroha` moves their citations.

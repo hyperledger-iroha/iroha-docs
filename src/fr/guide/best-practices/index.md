@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Meilleures pratiques {#best-practices}
 
 Cette section rassemble des conseils orientés vers la production pour les applications et réseaux Iroha. Elle est organisée en fonction de la décision que vous devez prendre, et non pas en fonction de la fonctionnalité qui se trouve à la mettre en œuvre.

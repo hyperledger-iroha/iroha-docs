@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Рөхсәт биреү билдәләре {#permission-tokens}
 
 Был биттәрҙә хәҙерге Iroha башҡарыусы мәғлүмәт моделе менән асыҡланған дифолт рөхсәт-токен төрҙәре исемләнә. Рольдәр һәм рөхсәттәргә концептуаль етәкселек өсөн ҡарағыҙ [Хәҡиҡәттәре](/ba/blockchain/permissions.md).
@@ -17,7 +16,6 @@ translation_engine: nllb-200-ct2
 |Рөхсәт билдәһе |Категория |Операция |
 | --- | --- | --- |
 |`CanManagePeers` |Яҡындары |Яҡташтарығыҙҙы теркәгеҙ, теркәлмәгеҙ йәки башҡа юл менән идара итегеҙ. |
-|`CanManageLaneRelayEmergency` |Яҡындары |Ғәҙәттән тыш хәл режимы буйынса идара итеү. |
 |`CanRegisterDomain` |Домен |Доменды теркәгеҙ. |
 |`CanUnregisterDomain` |Домен |Доменды теркәүҙе бөтөрөү. |
 |`CanModifyDomainMetadata` |Домен |Домен метамәғлүмәттәрен үҙгәртергә. |
@@ -29,7 +27,7 @@ translation_engine: nllb-200-ct2
 |`CanMintAssetWithDefinition` |Активтар |Махсус билдәләү өсөн минтлау активтары. |
 |`CanBurnAssetWithDefinition` |Активтар |Билдәле билдәләү өсөн активтарҙы яндырыу. |
 |`CanTransferAssetWithDefinition` |Активтар |Конкрет билдәләү өсөн активтарҙы күсереү. |
-|`CanMintAsset` |Активтар |Билдәле активтар балансын һала. |
+|`CanMintAssetToAccount` |Активтар |Билдәле активтар балансын һала. |
 |`CanBurnAsset` |Активтар |Конкрет активтар балансын яндырығыҙ. |
 |`CanTransferAsset` |Активтар |Билдәле активтар балансын күсереү. |
 |`CanRegisterNft` |NFT |NFT теркәлгән. |
@@ -44,8 +42,9 @@ translation_engine: nllb-200-ct2
 |`CanModifyTrigger` |Триггер |Тэггер конфигурацияһын үҙгәртергә. |
 |`CanModifyTriggerMetadata` |Триггер |Утҡарыусы метамәғлүмәттәрҙе үҙгәртергә. |
 |`CanUpgradeExecutor` |Үтәүсе |Эшләү ваҡытын башҡарыусыны яңыртыу. |
-|`CanRegisterSmartContractCode` |Аҡыллы килешеү |Аҡыллы килешеү кодын теркәгеҙ. |
-|`CanUseFeeSponsor` |Nexus |Nexus түләүҙәр билдәләнгән спонсор иҫәбенә түләнә. |
+|`CanManageSmartContractCode` |Аҡыллы килешеү |Һылтанма булмаған код артефакттарын юйыу һәм контракт инеү нөктәләрен делегациялау. Теркәлгән иҫәптәр тикшерелгән артефакттарҙы был рөхсәтһеҙ ҙә булдыра ала. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | Теүәл бағыусы иҫәбенә ҡараған программаларҙы идара итеү. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Бер теүәл бағыусы программаһының файҙа алыусыларын идара итеү. |
 
 ## Хужалыҡ {#ownership}
 

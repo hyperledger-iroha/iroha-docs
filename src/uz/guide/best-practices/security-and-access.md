@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/best-practices/security-and-access.md
-translation_source_hash: f0163734d618d91337b437da703743014d01c57c4cb603fbc2e66316f3654779
+translation_source_hash: b1cb0cdbeec55f7db03f1c64b6581a21c09fc80a57344cf6e27df1d126c0ec92
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Xavfsizlik va kirish {#security-and-access}
 
 Iroha dagi xavfsizlik amaliyoti tor vakolat prinsipi, nazorat qilinadigan kalit saqlash, ochiq tarmoq taʼsirini va audit qilinadigan o‘zgarishlarga asoslangan bo‘lishi kerak.
@@ -23,7 +22,7 @@ Iroha dagi xavfsizlik amaliyoti tor vakolat prinsipi, nazorat qilinadigan kalit 
 
 - Ish oqimini qo‘llab-quvvatlaydigan eng kichik ruxsat tokeni yoki rolni bering.
 - Xizmatlar, triggerlar, agentlar va avtomatlashtirish uchun bag‘ishlangan texnik hisoblarni afzal ko‘ring. Shaxsiy operator hisobingiz orqali uzoq muddat ishlaydigan avtomatlashtirishni bajarishdan saqlaning.
-- Ishlab chiqarishga ishga tushirishdan oldin tarmoq tengdoshini boshqarish, metama'lumotlarni o'zgartirish, chiqarish, yo'q qilish, trigger ro'yxatdan o'tkazish, bajaruvchi o'zgarishlari va SORA/Nexus boshqaruv huquqlarini ko'rib chiqing.
+- Ishlab chiqarishga ishga tushirishdan oldin tarmoq tengdoshini boshqarish, metama'lumotlarni o'zgartirish, chiqarish, yo'q qilish, trigger ro'yxatdan o'tkazish, bajaruvchi o'zgarishlari va SORA Nexus boshqaruv huquqlarini ko'rib chiqing.
 - Ularni talab qilgan texnik xizmat oynasi yoki ko‘chirishdan so‘ng vaqtinchalik ruxsatlarni bekor qiling.
 
 Buni [Ruxsatlar](/uz/blockchain/permissions.md) va [Ruxsat tokenlari](/uz/reference/permissions.md) ko‘ring.

@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/anonymous-transactions.md
-translation_source_hash: c5f10d1395e0b7704d29f4a535dd317b2cabe9c838208f76b7b776dd029089c0
+translation_source_hash: c498808369cd53406960e2dc7d88cea1d9c24affe1ba9a351a3192422959ed2e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Transações Anônimas {#anonymous-transactions}
 
 Transações anônimas em Iroha são construídas a partir de operações de ativos confidenciais. Em vez de registrar transferências públicas de conta para conta com valores públicos, uma carteira move o valor para um livro-razão blockchain protegido e, em seguida, gasta notas opacas com provas de conhecimento zero.
@@ -47,7 +46,7 @@ Uma definição de ativo também carrega um [`AssetConfidentialPolicy`](/pt/refe
 4. Proteja os fundos públicos com `Shield`. A carteira cria um compromisso de nota e um payload criptografado para o destinatário antes de enviar a transação.
 5. Transfira privadamente com `ZkTransfer`. A carteira cria uma prova de que possui as notas de entrada, de que os valores de entrada e saída estão equilibrados e de que cada nota gasta está ancorada em uma árvore de compromissos recente.
 6. Desproteja apenas quando a política do ativo permitir. `Unshield` revela o valor público e a conta do destinatário, gasta o anulador da nota privada e pode criar saídas de troco privadas.
-7. Auditoria lendo eventos confidenciais, registros de provas, status do anulador e registros de custódia anônima por meio de consultas digitadas e endpoints Torii API.
+7. Auditoria lendo eventos confidenciais, registros de provas e o status do anulador por meio de consultas tipadas e endpoints do Torii.
 
 ## CLI Exemplos {#cli-examples}
 
@@ -151,23 +150,6 @@ fn unshield_instruction(
 }
 ```
 
-## Escrow de Ativos Anônimo {#anonymous-asset-escrow}
-
-O escrow de ativos anônimo usa o mesmo mecanismo de transferência protegido para valor em escrow. As partes e o estado do escrow ainda são registrados no registro do escrow, mas os estágios de financiamento, liberação, cancelamento e resolução usam anuladores e compromissos de saída protegidos.
-
-Para detalhes sobre o comportamento e exemplos de escrow ISI, consulte [Escrow de Ativo Nativo](/pt/blockchain/escrow.md#anonymous-escrow).
-
-O ciclo de vida é:
-
-1. `OpenAnonymousAssetEscrow` gasta notas de financiamento protegidas e cria um compromisso de custódia.
-2. `AcceptAnonymousAssetEscrow` registra o comprador.
-3. `MarkAnonymousEscrowPaymentSent` registra que o comprador enviou o pagamento fora da cadeia.
-4. `ReleaseAnonymousAssetEscrow` gasta o compromisso de depósito em garantia nos compromissos de saída do comprador.
-5. `CancelAnonymousAssetEscrow` devolve o compromisso de caução para os compromissos de saída do vendedor quando o pagamento não foi marcado.
-6. `OpenAnonymousEscrowDispute` e `ResolveAnonymousEscrowDispute` lidam com depósitos em disputa com provas de hashes criptográficos e uma divisão controlada por um resolvedor.
-
-Use as consultas de custódia anônimas listadas em [Consultas](/pt/reference/queries.md#escrow-and-proof-records) para inspecionar registros e status de custódia.
-
 ## Matemática {#math}
 
 A notação abaixo descreve o fluxo de ativos confidenciais. As implementações usam o circuito ativo e os IDs de parâmetros da política de ativos e do registro de verificadores, portanto os clientes devem tratar compromissos, aniquiladores e bytes de prova como saídas opacas da carteira/provedor.
@@ -236,7 +218,6 @@ Transações anônimas não tornam todos os fatos observáveis privados. Os segu
 - anuladores e compromissos de saída
 - provas de hashes criptográficos, referências de chaves de verificação e hashes criptográficos de contêineres de dados opcionais
 - valor público e conta do destinatário para `Unshield`
-- vendedor de escrow anônimo, comprador, status, carimbos de data e hora e hashes criptográficos de evidência
 
 Projete aplicativos de forma que esses metadados públicos não revelem o relacionamento comercial que você está tentando proteger.
 

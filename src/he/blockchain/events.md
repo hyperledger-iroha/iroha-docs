@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # אירועים {#events}
 
 אירועים יוצרים כאשר דברים מסוימים מתרחשים בתוך blockchain, למשל חשבון חדש נוצר או בלוק נחויב. ישנם סוגים שונים של אירועים:
@@ -17,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 ## אירועי שרשרת עיבוד העיבוד {#pipeline-events}
 
-אירועי שרשרת עיבוד העיבוד נפלטים כאשר עסקאות נשלחות, מתבצעות או נרשמות בבלוק. אירוע כזה מכיל את סוג הישות שגרמה לאירוע (עסקה או בלוק), את ה־hash שלה ואת מצבה. המצב יכול להיות `Validating` (האימות מתבצע), `Rejected` או `Committed`. אם הישות נדחתה, מצורפת גם סיבת הדחייה.
+אירועי שרשרת העיבוד נפלטים ככל שעסקאות ובלוקים מתקדמים בשרשרת העיבוד. אירוע עסקה נושא את גיבוב העסקה, את גובה הבלוק, את מזהי הנתיב ומרחב הנתונים ואת המצב: `Queued`, `Expired`, `Approved` או `Rejected` יחד עם סיבת הדחייה. אירוע בלוק נושא את כותרת הבלוק ואת המצב: `Created`, `Approved`, `Rejected` יחד עם הסיבה, `Committed` או `Applied`.
 
 ### נסה את זה על Taira {#try-it-on-taira}
 
@@ -31,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 כדי לקבל תמונת מצב שתוכלו לבדוק מבלי לשמור על זרם פתוח, קראו את העסקאות האחרונות של חוקרים:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 פתח את מסלול SSE בטרמינל כאשר אתה צריך אירועי חי:
@@ -45,11 +44,11 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## אירועים נתונים {#data-events}
 
-אירועי נתונים יוצרים כאשר מתרחשים שינויים הקשורים לנתונים של הספרים הגדולים כגון צמתים, דומנים, חשבונות, נכסים, הגדרות נכסים, NFTs, טריגרים, תפקידים, קונפיגורת שרשרת, מצב המבצע, הוכחות, נכסים סודיים, גשרים או אובייקטים ספציפיים של SORA/Nexus. סוגים אלה של אירועים משמשים ב-filters [ של אירועי נתונים ](./filters.md#data-event-filters).
+אירועי נתונים יוצרים כאשר מתרחשים שינויים הקשורים לנתונים של הספרים הגדולים כגון צמתים, דומנים, חשבונות, נכסים, הגדרות נכסים, NFTs, טריגרים, תפקידים, קונפיגורת שרשרת, מצב המבצע, הוכחות, נכסים סודיים, גשרים או אובייקטים ספציפיים של SORA Nexus. סוגים אלה של אירועים משמשים ב-filters [ של אירועי נתונים ](./filters.md#data-event-filters).
 
 ## אירועים בזמן {#time-events}
 
-אירועים בזמן נחשפים כאשר תצפית המצב העולמי מוכנה להתמודד עם גורמים מפעילים זמן [ ](./triggers.md#time-triggers).
+אירועי זמן נפלטים כאשר תצוגת מצב המערכת מוכנה לטפל ב[טריגרים מבוססי זמן](./triggers.md#time-triggers).
 
 ## אירועים להוציא לפועל {#trigger-execution-events}
 

@@ -1,7 +1,7 @@
 ---
 translation_locale: he
 translation_source: /guide/best-practices/network-deployment.md
-translation_source_hash: 7839268b8c1f6700b0c26652e3308fa4e8acef4717d8527c609b6f30fb8c84ab
+translation_source_hash: 489b174b9bdd21a4c4c2c896911686a6020e2833c8808304cfd37a5bf31c7780
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -24,6 +24,8 @@ translation_engine: nllb-200-ct2
 - השתמשו לפחות בארבעה בדיקנים עבור מינימום פיתוח סובלני לטעויות ביזנטיות.
 - בתכנון קיבולת, הפרידו בין מאמתים לבין observers. observers אינם מצביעים, מציעים או אוספים, אך עדיין צורכים אחסון, סנכרון בלוקים ורוחב פס של הרשת.
 - מתייחסו לשינויים בגנזה, ביצוע, וטופולוגיה כמגירה מתואמת במקום תיקונים צמתים חד-פעמיים.
+
+[המדריך להפעלת ארבעה מאמתים](/he/get-started/launch-iroha.md) מסביר כיצד להפעיל את הרשת בעזרת Docker ולבדוק את התאוששותה לאחר עצירת אחד המאמתים.
 
 ראו [תחילת](/he/reference/genesis.md), [ניהול צמתים](/he/guide/configure/peer-management.md), ו [ ביצועים ומטריקות ](/he/guide/advanced/metrics.md#node-count-and-quorum).
 

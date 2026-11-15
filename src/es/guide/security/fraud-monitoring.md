@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Monitoreo de fraudes {#fraud-monitoring}
 
 La monitorización de fraudes para un despliegue Iroha es un control operativo construido en torno a eventos del libro mayor de blockchain, consultas, permisos y contexto de la aplicación. Iroha registra lo que fue enviado, aceptado, rechazado y confirmado. Su sistema de monitoreo decide qué patrones son sospechosos para su proceso empresarial y dirige esos casos a revisores o controles de respuesta automatizados.

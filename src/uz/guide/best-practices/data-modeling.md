@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Ma'lumotlarni modellashtirish {#data-modeling}
 
 reyestr ma'lumotlari egalik, uzatish xatti-harakati, ruxsat chegaralari va so'rov naqshlari atrofida modellanishi kerak. Audit qilish va deterministik bajarilishni qo'llab-quvvatlay oladigan eng kichik on-chain ifodani tanlang.

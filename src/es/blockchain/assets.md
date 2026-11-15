@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Activos {#assets}
 
 Un activo Iroha es un saldo numérico mantenido por una cuenta. Cada saldo concreto apunta a un `AssetDefinition`, y la definición describe cómo se puede nombrar, emitir, mostrar y dividir ese activo.
@@ -23,6 +22,7 @@ Un `AssetDefinition` contiene:
 - `logo`: opcional `SoraFS` URI
 - `metadata`: metadatos arbitrarios de clave-valor
 - `balance_scope_policy`: si los saldos son globales o restringidos al espacio de datos
+- `owning_domain`: el dominio propietario de una definición perteneciente a un dominio; ausente en las definiciones registradas directamente en un espacio de datos
 - `owned_by`: la cuenta que registró o posee la definición
 - `total_quantity`: cantidad total emitida
 - `confidential_policy`: política para operaciones con activos protegidos
@@ -34,7 +34,7 @@ Los ID de definición de activos son direcciones opacas canónicas. Cuando se co
 Un `Asset` contiene:
 
 - `id`: un `AssetId`, que combina la definición del activo, la cuenta del titular y el alcance opcional del saldo del activo
-- `value`: un saldo `Numeric`
+- `value`: un saldo `Quantity`
 
 La cuenta del titular es canónica y sin dominio. La definición del activo puede proyectarse bajo un dominio calificado por espacio de datos, por ejemplo `payments.universal`.
 
@@ -58,7 +58,7 @@ El `balance_scope_policy` controla cómo se particionan los saldos:
 - `Global`: una partición de saldo por cuenta y definición de activo
 - `DataspaceRestricted`: los saldos se dividen por el contexto del espacio de datos
 
-Los saldos restringidos al espacio de datos son útiles cuando la misma definición de activo se utiliza en múltiples espacios de datos Nexus, pero los saldos deben permanecer aislados.
+Los saldos restringidos a un espacio de datos son útiles cuando la misma definición de activo se utiliza en varios espacios de datos de SORA Nexus, pero los saldos deben permanecer aislados.
 
 ## Pruébalo en Taira {#try-it-on-taira}
 
@@ -89,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Los tres ejemplos son lecturas. Para emitir, quemar o transferir activos en Taira, utiliza una cuenta financiada con testnet y el flujo protegido en [Conectar a los Espacios de Datos SORA Nexus](/es/get-started/sora-nexus-dataspaces.md).
+Los tres ejemplos son lecturas. Para emitir, quemar o transferir activos en Taira, utilice una cuenta con fondos obtenidos del servicio de fondos de prueba y el flujo protegido de [Desarrollar sobre SORA Nexus con Taira y Minamoto](/es/get-started/sora-nexus-dataspaces.md).
 
-Para ver un activo de Taira usado para pagar tarifas, guarde el auxiliar de [Obtener XOR de prueba en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) como `taira_faucet_claim.py`, solicite primero fondos al dispensador y use el activo recibido para pagar el gas de la transacción:
+Para un ejemplo de activos de Taira que pagan comisiones, primero asigne fondos al firmante mediante el flujo preparado del servicio de fondos de prueba en [Obtener XOR de testnet en Taira](/es/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). Después, pase `--fee-payer authority` a los comandos `ledger asset mint`, `ledger asset burn` y `ledger asset transfer`; la CLI indica la comisión exacta, expresada en el activo de comisiones de Taira, antes de firmar:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Luego incluye `--metadata ./taira.tx-metadata.json` en los comandos `ledger asset mint`, `ledger asset burn` y `ledger asset transfer`.
 
 ## Instrucciones {#instructions}
 

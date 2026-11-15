@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # Développement d'applications {#application-development}
 
 Les applications Iroha devraient rendre le comportement des transactions explicite, garder l'état de la signature contenu, et utiliser les requêtes et les événements de manière à ce qu'ils soient faciles à observer en production.
@@ -34,7 +33,7 @@ Pour la mécanique des transactions, voir [Transactions](/fr/blockchain/transact
 - Utilisez des requêtes pour l'état actuel et des flux d'événements pour les notifications de changement. Évitez de remplacer la gestion des événements par des requêtes larges répétées.
 - Paginer des requêtes itérables larges telles que les listes de comptes, d'actifs et de blocs.
 - Privilégiez les filtres étroits pour les abonnements et les déclencheurs. Les filtres larges sont utiles pour le diagnostic mais peuvent ajouter une exécution et un traitement côté client inutiles.
-- Gardez les vérifications de fumée en lecture seule séparées des tests de transaction signés afin qu'il soit plus facile de diagnostiquer la disponibilité du point de terminaison API.
+- Séparez les vérifications élémentaires de fonctionnement en lecture seule des tests de transactions signées, afin de faciliter le diagnostic de la disponibilité du point d’accès.
 
 Voir [Requêtes](/fr/blockchain/queries.md), [Événements](/fr/blockchain/events.md), et [Filtres](/fr/blockchain/filters.md).
 
@@ -45,7 +44,7 @@ Voir [Requêtes](/fr/blockchain/queries.md), [Événements](/fr/blockchain/event
 - Ne collez pas de clés privées, de matériel de récupération de compte, de jetons API ou d'en-têtes d'authentification transférés dans les invites.
 - Exiger un plan de transaction avant qu'un agent ne soumette une transaction sur le testnet en direct. Le plan doit indiquer le réseau, le principal d'autorisation, les instructions, l'actif de frais, les lectures préalables, le résultat attendu et le comportement en cas de nouvelle tentative.
 
-Pour le flux de travail Taira MCP, voir [Construire sur SORA 3 : Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Pour le flux de travail Taira MCP, consultez [Développer sur SORA Nexus : Taira et Minamoto](/fr/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK Hygiène {#sdk-hygiene}
 

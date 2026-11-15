@@ -1,11 +1,10 @@
 ---
 translation_locale: my
 translation_source: /blockchain/nfts.md
-translation_source_hash: 6dd2d21a29f352a14cb17046c66cfa541ef501b733b95bb6874d2d3f86ec0504
+translation_source_hash: 76608347790f14eb5a2d58ac26f0e194ccc34b1cb5e8983e2d6ac390fcb60ec6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # NFTs {#nfts}
 
 Iroha NFT သည် ပိုင်ရှင်တစ်ဦးတည်းရှိသော ထူးခြားသော blockchain ledger ပစ္စည်းဖြစ်သည်။ မှတ်တမ်းတစ်ခုသည် ၎င်း၏ ကိုယ်ပိုင်လက္ခဏာ၊ မီတာဒေတာ၊ ဘဝပတ်ဝန်းကျင်ဖြစ်ရပ်များနှင့် ပိုင်ဆိုင်မှုလွှဲပြောင်းမှု အဓိပ္ပာယ်ကောက်ယူမှုလိုအပ်သော်လည်း ကိန်းဂဏန်းညီမျှမှုမရှိတဲ့အခါ NFTs ကိုအသုံးပြုပါ။
@@ -27,7 +26,7 @@ NFT သည် ကိန်းဂဏန်း [အရင်းအမြစ်](/m
 အများပြည်သူ Taira testnet မှာ လက်ရှိမှာ NFT မှတ်တမ်းတွေ ရှိမရှိကို စစ်ဆေးပါ။
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/nfts?limit=5' \
+curl -fsS 'https://taira.sora.org/v1/nfts?limit=5&include_total=true' \
   | jq '{total, nft_ids: [.items[].id]}'
 ```
 
@@ -49,7 +48,7 @@ name$domain
 name$domain.dataspace
 ```
 
-ဥပမာ၊ `badge$docs.universal` သည် `badge` NFT ကို `docs.universal` ဒိုမင်ထဲတွင် ဖော်ထုတ်သည်။ အချက်အလက်နေရာကို ချန်ထားပါက လက်ရှိစစ်ဆေးသူသည် `universal` အချက်အလက်နေရာအား အသုံးပြု၍ `badge$docs` ကို `badge$docs.universal` သို့ ဖြေရှင်းပေးပါသည်။
+ဥပမာ `badge$docs.universal` သည် `docs.universal` domain အတွင်းရှိ `badge` NFT ကို သတ်မှတ်သည်။ Data space ကို ချန်ထားပါက လက်ရှိ parser သည် `universal` data space ကို သုံးသဖြင့် `badge$docs` ကို `badge$docs.universal` အဖြစ် ဖြေရှင်းသည်။
 
 NFT ID များအတွက် တည်ငြိမ်သောနာမည်များကို အသုံးပြုပါ။ ID သည် ညွှန်ကြားချက်များ၊ မေးမြန်းမှုများ၊ ခွင့်ပြုချက်များ၊ ဖြစ်ရပ်စစ် filter များနှင့် application references များတွင်အသုံးပြုသည့် အရာဝတ္ထုသမိုင်းဖြစ်သည်။
 
@@ -68,17 +67,17 @@ NFT သက်တမ်း စက်ဝန်း လုပ်ငန်းမျ�
 
 ```bash
 export IROHA_CONFIG=./localnet/client.toml
-export NFT_DOMAIN=wonderland.universal
-export NFT_ID='badge_intro$wonderland.universal'
+export NFT_DOMAIN='<OWNED_DOMAIN>.universal'
+export NFT_ID="badge_intro\$$NFT_DOMAIN"
 ```
 
-Generated localnet ကို Setup လုပ်ပြီးသားပါ။ `wonderland.universal` ၎င်း၏ SNS ခြားနားတဲ့ ဒိုမင်တစ်ခု သုံးချင်ရင် ပထမဦးဆုံးအနေနဲ့ ကြေညာချက်နဲ့ ဖန်တီးပါ။ `app alias setup plan` နှင့် `app alias setup apply` Workflow ကို [ဒိုမင်များ](/my/blockchain/domains.md#registration).
+ထုတ်လုပ်ထားသော localnet သည် ၎င်း၏ client အတွက် အက်ပ်သုံး domain ကို မှတ်ပုံမတင်ပေးပါ။ `NFT_DOMAIN` ကို လက်မှတ်ထိုးသည့် အကောင့်က ပိုင်ဆိုင်သော သို့မဟုတ် `CanRegisterNft` ခွင့်ပြုချက် ရှိသော domain အဖြစ် သတ်မှတ်ပါ။ အသစ်ဖန်တီးရန် [Domains](/my/blockchain/domains.md#registration) တွင် ဖော်ပြထားသည့် လိုချင်သောအခြေအနေကို ကြေညာသတ်မှတ်သည့် `app alias setup plan` နှင့် `app alias setup apply` လုပ်ငန်းစဉ်ကို သုံးပါ။
 
 NFT ကို မှတ်ပုံတင်ပါ။ မှတ်ပုံတင်သည် စံဝင်မှတ်သွင်းချက်မှ အစောပိုင်းစာရင်း JSON ကိုဖတ်သည်။
 
 ```bash
 printf '{"kind":"badge","level":"intro","issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft register --id "$NFT_ID"
 ```
 
@@ -89,48 +88,48 @@ cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger nft list all --verbose
+  ledger nft list --all
 ```
 
-metadata key ကိုထည့်ပြီး NFT ကိုပြန်ဖတ်ပါ။
+Metadata ကီးတစ်ခု ထည့်ပြီး NFT ကို ပြန်ဖတ်ပါ။
 
 ```bash
 printf '{"color":"blue","rarity":"tutorial"}\n' |
-  cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+  cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta set --id "$NFT_ID" --key traits
 
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
   ledger nft get --id "$NFT_ID"
 ```
 
-metadata key ကို ဖယ်ရှားပါ။
+Metadata ကီးကို ဖယ်ရှားပါ။
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft meta remove --id "$NFT_ID" --key traits
 ```
 
-NFT ကို ရွေးချယ်ပြီး လွှဲပြောင်းပါ။ လက်ရှိပိုင်ရှင်ကို `owned_by` မှဖတ်ဖို့ `ledger nft get` ကိုသုံးပြီး ရည်ရွယ်ချက် အကောင့် ID ကိုရှာဖို့ `ledger account list all` ကိုသုံးပါ။
+လိုအပ်ပါက NFT ကို လွှဲပြောင်းပါ။ လက်ရှိပိုင်ရှင်ကို `owned_by` မှ ဖတ်ရှုရန် `ledger nft get` ကို သုံးပြီး လက်ခံမည့် အကောင့် ID ကို ရှာရန် `account list --all` ကို သုံးပါ။
 
 ```bash
 cargo run --bin iroha -- --config "$IROHA_CONFIG" \
-  ledger account list all
+  account list --all
 
 export CURRENT_OWNER='<account-id-from-owned_by>'
 export NEW_OWNER='<destination-account-id>'
 
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft transfer --id "$NFT_ID" --from "$CURRENT_OWNER" --to "$NEW_OWNER"
 ```
 
-NFT နမူနာကို walkthrough လုပ်ပြီးနောက် ဖယ်ရှားပါ။ သင်က လွှဲပြောင်းခဲ့ရင် ပြန်လွှဲပြောင်းပေးပါ (သို့) လက်ရှိပိုင်ရှင်ရဲ့ အကောင့် ညွှန်ကြားချက်နဲ့ မှတ်ပုံတင်ခြင်းမပြုရန် အမိန့်ကိုပို့ပါ။
+လမ်းညွှန်အဆင့်များ ပြီးဆုံးလျှင် ဥပမာ NFT ကို ဖယ်ရှားပါ။ လွှဲပြောင်းထားခဲ့လျှင် ပြန်လွှဲပြောင်းပါ သို့မဟုတ် လက်ရှိပိုင်ရှင်၏ အကောင့်ပြင်ဆင်သတ်မှတ်မှုဖြင့် မှတ်ပုံတင်ပယ်ဖျက်သည့် command ကို တင်သွင်းပါ။
 
 ```bash
-cargo run --bin iroha -- --config "$IROHA_CONFIG" \
+cargo run --bin iroha -- --config "$IROHA_CONFIG" --fee-payer authority \
   ledger nft unregister --id "$NFT_ID"
 ```
 
-## မေးခွန်းများနှင့် ဖြစ်ရပ်များ {#queries-and-events}
+## Query များနှင့် ဖြစ်ရပ်များ {#queries-and-events}
 
 အသုံးပြုခြင်း [`FindNfts`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs နှင့် [`FindNftsByAccountId`](/my/reference/queries.md#assets-nfts-and-rwas) စာရင်းသွင်းရန် NFTs အကောင့်တစ်ခုရဲ့ ပိုင်ရှင်ပါ။
 
@@ -138,7 +137,7 @@ NFT မှတ်ပုံတင်ခြင်း၊ ဖျက်သိမ်း
 
 ## ခွင့်ပြုချက်များ {#permissions}
 
-Default permission surface မှာ NFT သီးသန့် tokens တွေ ပါဝင်ပါတယ်။
+ပုံမှန်ခွင့်ပြုချက်များတွင် NFT အတွက် သီးသန့် token များ ပါဝင်သည်။
 
 - `CanRegisterNft`
 - `CanUnregisterNft`
@@ -163,4 +162,4 @@ fungible balance များအတွက် numeric asset ကိုသုံး
 - [ပိုက်ဆံများ](/my/blockchain/assets.md)
 - [မီတာဒေတာ](/my/blockchain/metadata.md)
 - [ညွှန်ကြားချက်](/my/blockchain/instructions.md)
-- [မေးခွန်းများ](/my/blockchain/queries.md)
+- [Query များ](/my/blockchain/queries.md)

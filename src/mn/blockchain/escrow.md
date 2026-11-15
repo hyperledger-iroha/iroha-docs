@@ -1,24 +1,22 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Уугуул хөрөнгийн эскроу {#native-asset-escrow}
 
 Өндөрлөгийн арилжааны натив эскроу нь тоон хөрөнгийн хувьд блокчейн бүртгэлийн хадгалалтын механизмын удирддаг хэлбэр юм. Хөрөнгийг програмын эзэмшдэг данс руу илгээхийн оронд, мөн түүн дээр тулгуурлахын оронд тэр дансыг хамгаалах өргөдлийн код, баталгаажсан ISIs утгыг тодорхой протокол хадгалалтын данс руу шилжүүлэх ба баталгаажлалтын амьдралын мөчүүдийг дэлхийн төлөвт бүртгэх.
 
-Танай зах зээлийн санхүүгийн гүйлгээний шийдвэрлэлийг нутгийн эскроу ашиглах, Aitai загварын хэв шинжийн төлбөрийн зохицуулалт, үе шатны түгжээ, блокчэйн бүртгэлийн амьдралын мөчлөгийн төлөвт харагдах шаардлагатай хамгаалагдсан эскроу ажлын урсгалууд.
+Зах зээлийн тооцоо, Aitai маягийн сүлжээнээс гадуурх төлбөрийн зохицуулалт, үе шатны түгжээ болон блокчэйн бүртгэлд харагдах амьдралын мөчлөгийн төлөв шаарддаг, гэрчлэгчтэй холбогдсон нөхцөлт чөлөөлөлтөд протоколын эскроуг ашиглана уу.
 
 ## Өгүүлэмжүүд {#concepts}
 
 |Түвшин|Тайлбар|
 | --- | --- |
-| `EscrowId` |клиент сонгосон, криптографийн хэш ороосон таньж мэдэгдэх тэмдэгт хүсэж байна. Энэ нь ил тод ба нэрээ нууцалсан хадгаламжуудад давхцахгүй байх ёстой.|
+| `EscrowId` | Дуудагчийн сонгосон, хэшийг багтаасан таних тэмдэг. Энэ нь бүх эскроу бичлэгийн дунд давтагдашгүй байх ёстой. |
 | `AssetEscrowRecord` | Ил тод тоон хөрөнгийн хадгаламж эсвэл түгжээний бичлэг.|
-| `AnonymousAssetEscrowRecord` | Nullifier, амлалт болон нотолгооны хавсралтаар баталгаажсан хамгаалалттай эскроугийн бүртгэл. |
 |Хадгаламжийн данс|Гинжний ID, хадгалах ID, болон хөрөнгийн тодорхойлолтоос гаралтай тодорхойлогдсон протоколын данс.|
 |Баримт нотолгооны криптографийн хэшүүд|Нотлох баримтыг криптографийн хэш нь нэхэмжлэл, шийдвэр, зурвас, хадгалалтын техникийн тайлан, эсвэл бусад гадаадлалт нотлох баримтыг тодорхойлох боломжтой. Нотлох баримтын агуулга нь эскроу бүртгэлд хадгалагддаггүй.|
 
@@ -174,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python одоогоор ерөнхий түлхүүрийн хувьд өндөр түвшний туслах функцуудыг ил болгож байна: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, ба `expire_asset_lock`. Маркетплейс болон Python-аас авсан нэргүй хадгаламжийн хувьд, нэг протокол-стандарт `InstructionBox` JSON-ийг SDK-ын JSON гарцын хаалгаар ашиглах, эсвэл анхан шатны нөөц баригчдыг ил гаргадаг SDK-оор дамжуулан илгээх.
+Python одоогоор ерөнхий түгжээнд зориулсан өндөр түвшний туслах функцүүдийг санал болгодог: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock` болон `expire_asset_lock`. Python-оос зах зээлийн болон нөхцөлт эскроу ашиглахдаа SDK-ийн JSON шууд дамжуулах боломжоор каноник `InstructionBox` JSON-ийг ашиглах, эсвэл эскроугийн бүрэн дэмжлэгтэй үүсгэгчүүдийг санал болгодог SDK-аар дамжуулан илгээнэ үү.
 
 ## Маргаан {#disputes}
 
@@ -226,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## Нэргүй итгэмжлэгдсэн данс {#anonymous-escrow}
+## Нөхцөлт эскроу {#conditional-escrow}
 
-Нэргүй эскроу нь зах зээлийн ижил амьдралын мөчлөгийг ашигладаг ч санхүүжилт болон хаалтын хөрөнгийн шилжүүлэг нь хамгаалалттай байна. Нийтийн бүртгэлд худалдагч, худалдан авагч, төлөв, нотлох баримтын хэш, цагийн тэмдэг болон нотолгоотой холбогдсон шилжилтийн бүртгэл хадгалагдана. Хамгаалалттай тэмдэглэл доторх дүн ба хүлээн авагчийг криптографийн амлалт, nullifier болон нотолгооны хавсралтаар төлөөлүүлнэ.
+Нөхцөлт эскроу нь тоон хөрөнгийг ашиг хүртэгчид зориулан түгжиж, нөхцөл бүр дарааллаараа биелсний дараа л чөлөөлнө. Нөхцөл бүр гэрчлэгч данс, блокчэйн бүртгэлийн үнэлдэг предикат (`Equals` төрөлжсөн утгатай тэнцүү эсвэл `QuantityAtMost` хязгаараас хэтрэхгүй) болон 1-ээс эхэлсэн дарааллын дугаарыг заана. Сонголттой блокчэйн бүртгэлийн цагийн цонх бүх гэрчлэлийг хязгаарлана.
 
-| Ил тод ISI |Нэргүй ISI|
-| --- | --- |
-| `OpenAssetEscrow` | `OpenAnonymousAssetEscrow` |
-| `AcceptAssetEscrow` | `AcceptAnonymousAssetEscrow` |
-| `MarkEscrowPaymentSent` | `MarkAnonymousEscrowPaymentSent` |
-| `ReleaseAssetEscrow` | `ReleaseAnonymousAssetEscrow` |
-| `CancelAssetEscrow` | `CancelAnonymousAssetEscrow` |
-| `OpenEscrowDispute` | `OpenAnonymousEscrowDispute` |
-| `ResolveEscrowDispute` | `ResolveAnonymousEscrowDispute` |
-
-Төлбөрийн түрийвч эсвэл нотлох хэрэгслийн хэрэгсэл нь нотлох баримтын хавсралт болон олон нийтэд зориулсан оруулалтыг бүтээх ёстой. Нээх нь нэг зуучлалын криптографын баталгааны утгыг үүсгэдэг. Гаргах, цуцлах, мөн нэрээ нууцалсан маргаан шийдвэрлэхэд яг нэг криптографийн баталгааны үнийг зарцуулах ёстой бөгөөд үйлдлийг хэрэгжүүлэхэд шаардлагатай худалдан авагч, худалдагч, эсвэл хуваасан гаралтын криптографийн баталгааны утгуудыг үүсгэх ёстой.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-Доорх хамгаалагдсан гүйлгээний загварыг үзнэ үү: [Нэргүй гүйлгээ](/mn/blockchain/anonymous-transactions.md).
+| ISI | Дуудагч | Үр нөлөө |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | Нээгч | Дүнг өөрчлөгдөшгүй нөхцөлүүд болон үнэмлэхүй дуусах хугацаатайгаар протоколын хадгалалтад түгжинэ. |
+| `AttestEscrowCondition` | Нөхцөлийн гэрчлэгч | Дараагийн нөхцөлд `Bool`, `Text` эсвэл `Quantity` утга өгнө. Сүүлийн нөхцөл биелэхэд эскроу ашиг хүртэгчид чөлөөлөгдөнө. |
+| `ExpireConditionalEscrow` | Дурын данс | Эскроу чөлөөлөгдөөгүй бол дуусах хугацааны дараа нээгчид буцаан олгоно. |
 
 ## SDK Ашиглалт {#sdk-usage}
 
-Эскроу дэмжлэг SDKs дээр өөр өөрөөр илэрдэг. Rust нь нэг протокол стандарттай төрөлжсөн өгөгдлийн загвартай. Python одоогоор ерөнхий хөрөнгө түгжих туслах хэрэгслүүдийг ил болгож байна. JavaScript ба TypeScript нь Kotodama эскроу хост-функцийн дуудлагыг ашигладаг. Kotlin/JVM ба Swift нь зах зээл болон нэргүй эскроугийн зориулалттай төрөлжүүлсэн өгөгдөл үүсгэгчийг өгдөг.
+Эскроугийн дэмжлэг SDKs дээр өөр өөрөөр илэрдэг. Rust нь каноник төрөлжсөн өгөгдлийн загвартай. Python одоогоор ерөнхий хөрөнгийн түгжээний туслах функцүүдийг санал болгодог. JavaScript ба TypeScript нь Kotodama эскроугийн хост дуудлагуудыг ашигладаг. Kotlin/JVM ба Swift нь зах зээлийн эскроуд зориулсан төрөлжсөн payload үүсгэгчүүдийг өгдөг.
 
 | SDK |Энэ гадаргыг ашигла|Хүчин чадал|
 | --- | --- | --- |
-| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` |Зах зээлийн итгэмжлэл, ерөнхий түгжигчид, нэргүй итгэмжлэл, асуултууд, ба үйл явдлууд.|
-| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock`, ба үйлчлүүлэгч `*_and_wait` туслагчид |Ердийн хөрөнгө барьцаанууд. Худалдааны талбай болон нэргүй зуучлалын туслахууд одоогоор анхны зэрэгийн Python аргачлал биш байна.|
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | Зах зээлийн эскроу, ерөнхий түгжээ, нөхцөлт эскроу, асуулга болон үйл явдлууд. |
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`, `TransactionDraft.open_asset_lock` болон клиентийн `*_and_wait` туслах функцүүд | Ерөнхий хөрөнгийн түгжээ. Зах зээлийн болон нөхцөлт эскроугийн туслах функцүүд одоогоор Python-ийн бүрэн дэмжлэгтэй аргууд болоогүй байна. |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) | `compileKotodamaProgram` - `@iroha/iroha-js/kotodama-compiler` | Kotodama гэрээний дотор Escrow хост-функцийн дуудлагууд.|
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` ангиуд `org.hyperledger.iroha.sdk.core.model.instructions` дотор|Зах зээл болон нэрээ нууцлах хадгалах захиалгын тусгай зааврын загварууд.|
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` ба `IrohaSDK.build*Escrow*` туслахууд|Зах зээл ба нэргүй хадгаламжийн Norito JSON зааварчилгааны өгөгдлүүд.|
+| [Kotlin / JVM](#kotlin-and-jvm) | `org.hyperledger.iroha.sdk.core.model.instructions` доторх `InstructionTemplate` ангиуд | Зах зээлийн эскроугийн тусгай зааврын загварууд. |
+| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` болон `IrohaSDK.build*Escrow*` туслах функцүүд | Зах зээлийн эскроугийн Norito JSON зааврын payload-ууд. |
 
 Доорх жишээнүүд зааварчилгааны бүтэц дээр төвлөрнө. Дансны санхүүжилт, гарын үсэг удирдах, гүйлгээ хийх нь тус бүрийн SDK энгийн урсгалыг дагана.
 
 ### Rust SDK {#rust-sdk}
 
-Бүрэн нутгийн хамгаалалт эсвэл асуулт/үйл явдлын дэмжлэг хэрэгтэй бол Rust SDK хэрэглэнэ үү. Дээрх жишээнүүд нь зах зээлийн нээгдэлт, ерөнхий түгжээ буцаан таталт, маргаан шийдвэрлэх, мөн `iroha::data_model::isi::escrow`-той нэрээ нууцлах хадгалах бүтээцийг харуулж байна.
+Протоколын бүрэн хамрах хүрээ эсвэл асуулга/үйл явдлын дэмжлэг хэрэгтэй бол Rust SDK-г ашиглана уу. Дээрх жишээнүүд `iroha::data_model::isi::escrow` ашиглан зах зээлийн чөлөөлөлт, ерөнхий түгжээнээс татан авалт болон маргаан шийдвэрлэлтийг харуулж байна.
 
 ```rust
 use iroha::{
@@ -397,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-Маргааныг шийдвэрлэхэд `escrow_open_dispute(offer, evidence)` болон `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`-ийг ашиглана уу. Нэргүй хадгаламжийн сервер функц дуудах нь Norito хүсэлтийн өгөгдлийн байтуудыг хүлээн авдаг, жишээ нь `anonymous_escrow_open_offer(request)`.
+Маргааны хувьд `escrow_open_dispute(offer, evidence)` болон `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`-ийг ашиглана уу.
 
 ### Kotlin ба JVM {#kotlin-and-jvm}
 
@@ -431,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-Нэргүй загваруудыг `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, болон `ResolveAnonymousEscrowDisputeInstruction` болгон ашиглаж болно. Android Java-г хүсэж буй клиентүүд нь Android бүтээмжээс тохирох `NativeEscrowInstructions.*` барилгачинуудыг ашиглаж болно.
-
 ### Swift ба iOS {#swift-and-ios}
 
 Swift SDK нь Norito JSON payload-ууд болгон эскроу зааврыг бүрдүүлдэг. `NativeEscrowInstructionBuilders`-ийг шууд ашиглаарай, эсвэл таны аппликейшнд аль хэдийн `IrohaSDK` instance байгаа бол тэнцүү `IrohaSDK.build*Escrow*` туслахыг дуудаарай.
@@ -463,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-Нэргүй Swift builder-үүд nullifier-ын жагсаалт, гаралтын амлалтын жагсаалт, нотолгооны dictionary болон сонголттой `rootHint` утгыг хүлээн авна. Маргаан шийдвэрлэгчийн зөвшөөрлийн токеныг `NativeEscrowPermissions.canResolveEscrowDispute`-оор авна.
+Маргаан шийдвэрлэгчийн зөвшөөрлийн токеныг `NativeEscrowPermissions.canResolveEscrowDispute` хэлбэрээр авах боломжтой.
 
 ## Асуултууд болон Үйл явдал {#queries-and-events}
 
@@ -476,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 | `FindAssetEscrowsBySeller` |Худалдагч эсвэл түгжээ нээгчээс нээгдсэн бүртгэлүүдийг жагсаах.|
 | `FindAssetEscrowsByBuyer` |Худалдан авагч хүлээн зөвшөөрсөн зах зээлийн түр итгэмжлэлийг жагсаах эсвэл зорилтот газарт чиглэсэн түгжээг жагсаах.|
 | `FindAssetEscrowsByStatus` |Бичлэгүүдийг `AssetEscrowStatus`–аар жагсаана уу.|
-| `FindAnonymousAssetEscrowById` |Нэг нэргүй хадгаламжийг `EscrowId`-аас уншина уу.|
-| `FindAnonymousAssetEscrows*` |Бүх бүртгэл, худалдагч, худалдан авагч эсвэл статусын дагуу нэргүй эскроу жагсаах.|
 
-`EscrowEventFilter` нь ил тод уугуул хадгаламж болон түгжих эвэнтүүдэд хадгаламжийн ID, худалдагч, худалдан авагч, төлөв, болон эвэнт-нэм маскаар захиалга өгөх боломжтой. Эвэнт гэр бүлд `Opened` ордог, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, ба `Resolved`. Нэрээ нууцлах хадгаламжийн бүртгэлүүдийг нэрээ нууцлах хадгаламжийн лавлагаагар шалгаж болно.
+`EscrowEventFilter` нь ил тод протоколын эскроу болон түгжээний үйл явдлуудыг эскроугийн ID, худалдагч, худалдан авагч, төлөв болон үйл явдлын багцын маскаар шүүж бүртгүүлэх боломжтой. Үйл явдлын бүлэгт `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed` болон `Resolved` орно.
 
 ## Үйл ажиллагааны тэмдэглэл {#operational-notes}
 

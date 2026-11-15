@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # གྲུབ་འབྲས་དང་ ཐབས་བྱུས་ཚུ་ {#performance-and-metrics}
 
@@ -23,8 +23,8 @@ Iroha གྱི་གྲུབ་འབྲས་འདི་ ལཱ་གི་�
 སྤྱིར་བཏང་ མཐུད་མཚམས གནས་སྟངས་འདྲ་བཤུས དང་ Prometheus བསྡུ་ལེན ལས་འགོ་བཙུགས་ཞིནམ་ལས་ བཀོལ་སྤྱོད་པ-བདེན་དཔྱད་ཡོད གྲོས་མཐུན གནས་སྟངས གི་དོན་ལུ་ CLI ལག་ལེན་འཐབ་དགོ། བཀོལ་སྤྱོད་པ ལྡེ་མིག འདི་ དམིགས་གཏད མཐུད་མཚམས གིས་བཟོ་བཅུག་དགོཔ་ཨིན། དེ་ ལག་བསྟར་མཉེན་ཆས ལུ་རྐྱངམ་ཅིག་ འཇུགའབདཝ་ཨིན།
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 ཁྱོད་རའི་བཀྲམ་སྤེལ་གྱི་དོན་ལུ་ མི་མང་-བརྟག་དཔྱད་ཡོངས་འབྲེལ་བལྟ་བརྟོག་ཚུ་ ཐོན་སྐྱེད་ནུས་ཤུགས་ཨང་གྲངས་སྦེ་ལག་ལེན་མ་འཐབ།
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### དོ་འགྲན་འབད་མི་དང་ འཛུལ་ཞུགས་འབད་ནིའི་ཚད་གཞི་ཚུ་ {#candidate-and-ingress-bounds}
 
-མཐུད་མཚམས-ས་གནས Sumeragi མཐའ་མཚམས་ཚུ གིས་ བདེན་དཔྱད་པ གྱིས་ ལག་ལེན་དང་སླར་གསོ་འབད་ནིའི་ལཱ་ག་དེམ་ཅིག་ བཞག་ཚུགས་མི་འདི་ གཏན་འབེབས་འབདཝ་ཨིན།
+སྡེབ་ཚན་གྱི་ཚད་དང་ཚོང་འབྲེལ་གྱི་ཚད་ཚུ་ མིང་རྟགས་བཀོད་པའི་འགོ་ཐོག་གནས་སྟངས་དང་གཏན་འཁེལ་སྡེབ་ཐག་ཚད་གཞི་ལས་འོངམ་ཨིན། མཐུད་གནས་ཉེ་གནས་ཀྱི་ `[sumeragi]` སྒྲིག་སྟངས་ཚུ་གིས་ བཅའ་མར་གཏོགས་པའི་འགན་ཁུར་ མིང་རྟགས་བདག་སྲུང་ ཉེན་སྲུང་ཐོ་ཡིག་ལམ་ དང་ཡིག་ཐོག་བཀོད་པའི་ཉེ་གནས་དུས་ཚད་དང་མཉམ་འབྱུང་ཚབ་སྒྲིག་ཚུ་ཁྱབཔ་ཨིན།
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies`དང་ `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` དེ་ལས་ `sumeragi.queues.ready_bodies`
-
-མཐའ་མཚམས་ཆུང་དྲགས་ཚུ་གིས་ བང་རིམ་ཡང་ན་ པེ་ལོཌ་-སླར་གསོའི་གནོན་ཤུགས་བཟོཝ་ཨིན། མཐའ་མཚམས་ཚད་ལས་བརྒལ་མི་འདི་གིས་ དྲན་ཤེས་བཞག་སྟེ་ཡོད་མི་དང་ ལོག་སྤྱོད་འབད་མི་མཉམ་རོགས་ལུ་ ལཱ་གི་ཚད་གཞི་ཡར་སེང་འབདཝ་ཨིན། དུས་མཉམ་ལུ་ མཐའ་མཚམས་གཅིག་བསྒྱུར་བཅོས་མ་འབད་བའི་ཧེ་མ་ ལས་སྦྱོར་དྲན་ཚད་དང་ འཕྲིན་དོན་འཛིན་སྐྱོང་ དེ་ལས་ བརླག་སྟོར་ཤོར་མི་ གཟུགས་ཀྱི་མེ་ཊིགསི་ཚུ་དང་གཅིག་ཁར་ བརྟག་དཔྱད་ཀྱི་པར་ལེན་འདི་ ག་བསྡུར་འབད།
+དྲ་ལམ་ནང་འཛུལ་དང་ཚོང་འབྲེལ་གྲལ་རིམ་གྱི་ཚད་ཚུ་གིས་ ཉེ་གནས་ལུ་ཉར་པའི་ལས་ཀ་ཚད་འཛིན་འབདཝ་ཨིན། ལག་ལེན་ཚད་ཅིག་མ་བསྒྱུར་བའི་ཧེ་མ་ བརྟག་དཔྱད་གནས་སྟངས་འདྲ་བཤུས་འདི་ ལས་རིམ་དྲན་ཚད་ འཕྲིན་དོན་ལས་སྦྱོར་ དང་ནང་དོན་མ་ཐོབ་པའི་ཚད་འཇལ་ཚུ་དང་བསྡུར། དྲ་ལམ་གཅིག་གི་གཡོག་བཀོལ་སོ་སོ་བསྡུར་བའི་སྐབས་ མིང་རྟགས་བཀོད་པའི་སྡེབ་ཐག་ཚད་གཞི་ཚུ་གཏན་འཇགས་བཞག།
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -194,24 +187,24 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |ངོས་ལེན་འབད་ཐངས་ |`sum(rate(txs{type="accepted"}[5m]))` |གནས་སྟངས་བརྟན་ཏོག་ཏོ་ནང་ལུ་ དམིགས་གཏད་ TPS སླར་ལོག་འབད་དགོཔ་ཨིན། |
 | བཀག་ཆ་ཚུ་ | `sum(rate(txs{type="rejected"}[5m]))` | བརྟག་དཔྱད་འཆར་གཞི་གིས་ འགྲེལ་བཤད་རྐྱབ་ཚུགས་དགོཔ་ཨིན། |
-| འགོར་འགྱངས་ཁས་ལེན་འབད། | `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` | p95/p99 འདི་ འཕྲོ་བརླག་འཆར་དངུལ་དང་གཅིག་ཁར་ ག་བསྡུར་འབད། |
+| ཁས་ལེན་གྱི་འགོར་འགྱངས། | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` | p95/p99 འདི་ འགོར་འགྱངས་ཀྱི་འཆར་དངུལ་དང་གཅིག་ཁར་ ག་བསྡུར་འབད། |
 | བང་རིམ་གཏིང་ཚད། | `queue_size`, `sumeragi_tx_queue_depth` | མཐོ་ཤོས་འབབ་པའི་སྐབས་ལུ་ ཚད་འཛིན་འབད་དེ་སྡོད་དགོཔ་ཨིན་ |
 | བང་རིམ་ཚད་གཞི་ | `sumeragi_tx_queue_saturated` | ཡུན་བརྟན་ཀླད་ཀོར་མེན་པའི་གནས་གོང་ཚུ་ མངོན་གསལ་ཆེ་དྲགས་སྦེ་སྟོནམ་ཨིན། |
-| བསྒྱུར་བཅོས་ཚུ་བལྟ། | `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` | ཡར་འཕར་འགྱོ་མི་གནས་གོང་ཚུ་གིས་ དུས་ཚོད་དང་ ཊོ་པོ་ལོ་ཇི་ ནང་དོན་གནད་སྡུད་ ཡང་ན་ ཡོངས་འབྲེལ་གྱི་དཀའ་ངལ་ཚུ་སྟོནམ་ཨིན། |
-| བཀོག་བཞག་ཡོད་པའི་འཕྲིན་དོན། | `dropped_messages`, `sumeragi_consensus_message_handling_total` | མངོན་གསལ་གྱི་སྐབས་ལུ་ བརྡབ་འགྱོ་མི་འདི་གིས་ སྤྱིར་བཏང་ལུ་ འཕྲོ་མཐུད་ཀྱི་ མཐོ་ཚད་ཚུ་ འགྲེལ་བཤད་རྐྱབ་ཨིན། |
-| ནང་དོན་གནད་སྡུད དང་ DA སླར་གསོ། | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` | རྟག་བརྟན་གྱི་ཞུ་བ་དང་ ལོ་ཚད་ཡར་སེང་ ཡང་ན་ བསྐྱར་ལོག་ DA སྒོ་སྒྲིག་ཚུ་གིས་ གཟུགས་ཡང་ན་ ཆ་ཤས་ཐོབ་པའི་དཀའ་ངལ་སྟོནམ་ཨིན། |
-| ཁས་ལེན་འབད་ནིའི་ ཚད་གཞི་ | `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` | རྩིས་རྐྱབ་ཡོད་པའི་མིང་རྟགས་ཚུ་ དགོས་མཁོའི་ཚོགས་གྲངས་ལུ་མགྱོགས་པ་རང་ལྷོད་དགོ། |
+| བསྒྱུར་བཅོས་ཚུ་བལྟ། | `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` | ཡར་འཕར་འགྱོ་མི་གནས་གོང་ཚུ་གིས་ དུས་ཚོད་དང་ ཊོ་པོ་ལོ་ཇི་ ནང་དོན་གནད་སྡུད་ ཡང་ན་ ཡོངས་འབྲེལ་གྱི་དཀའ་ངལ་ཚུ་སྟོནམ་ཨིན། |
+| བཀོག་བཞག་ཡོད་པའི་འཕྲིན་དོན། | `sumeragi_dropped_total`, `p2p_queue_dropped_total` | མངོན་གསལ་གྱི་སྐབས་ལུ་ བརྡབ་འགྱོ་མི་འདི་གིས་ སྤྱིར་བཏང་ལུ་ འཕྲོ་མཐུད་ཀྱི་ མཐོ་ཚད་ཚུ་ འགྲེལ་བཤད་རྐྱབ་ཨིན། |
+| ནང་དོན་གནད་སྡུད་དང་ རྗེས་འདེད་ལེན་ནི། | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` | རྟག་བརྟན་གྱི་ ནང་དོན་ ཡང་ན་ མཉམ་འབྱུང་ལེན་ནི་ཚུ་གིས་ ནང་དོན་གནད་སྡུད་ཐོབ་ནི་ ཡང་ན་ རྗེས་འདེད་ཀྱི་དཀའ་ངལ་སྟོནམ་ཨིན། |
+| ཁས་ལེན་གྱི་ཡར་འཕེལ་ | `sumeragi_committed_height`, `sumeragi_applied_height` | བདེན་དཔང་འབད་ཡོད་པའི་མཐོ་ཚད་དང་ འཇུག་སྤྱོད་འབད་ཡོད་པའི་མཐོ་ཚད་ཚུ་ མཉམ་སྦེ་ ཡར་འཕེལ་འགྱོ་དགོ། |
 
 མེ་ཊིག་འདི་ `/v1/sumeragi/status`ནང་ལུ་རྐྱངམ་ཅིག་མཐོང་པ་ཅིན་ Prometheus བསྡུ་ལེན འདི་བཟུམ་སྦེ་ལག་ཆས་ཚུ་ནང་ JSON གི་གནས་སྟངས་འདྲ་བཤུས་དེ་བཟུང་དགོ།
 
 ## གཏན་འཁེལ་གྱི་ ལཱ་འབད་ཐངས་ {#estimation-workflow}
 
 1. གནས་སྟངས་འདི་ ངེས་པར་དུ་བཤད་ནི།
-- བདེན་དཔྱད་འབད་མི་གྱངས་ཁ་དང་ བལྟ་རྟོག་པ་གྱངས་ཁ།
-- མོས་མཐུན་ཐབས་ལམ།
+   - བདེན་དཔྱད་པའི་གྲངས་དང་ལྟ་རྟོག་པའི་གྲངས།
+   - མོས་མཐུན་ཐབས་ལམ།
    - དམིགས་གཏད་ TPS
-- p95 དང་ p99 ཁས་ལེན་-འགོར་འགྱངས་འཆར་དངུལ།
-- ཚོང་འབྲེལ་སླ་བསྲེ།
+   - p95 དང་ p99 གཏན་འཁེལ་འགོར་ཡུན་གྱི་ཆོག་ཚད་ཚུ།
+   - ཚོང་འབྲེལ་གྱི་འདྲེས་ཚུལ།
    - རེ་བ་ཡོད་པའི་ དྲ་རྒྱ RTT, དུས་འགྱུར དང་ རྒྱུན་ཞེང
 2. དངོས་གྲུབ་ཅན་གྱི་བཟོ་དབྱིབས་འདི་ཡིག་སྣོད་འབད་:
 
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - བདེན་དཔྱད་འབད་མི་དང་བལྟ་རྟོག་འབད་མི་གི་གྱངས་ཁ།
 - གྲོས་བསྟུན་གྱི་གནས་སྟངས་དང་ བཀྲམ་སྤེལ་འབད་ཡོད་པའི་ སྦྲག་སྒྲོམ་ དེ་ལས་ DA བཟོ་བཀོད་
 - ཏག་ཏག་ `3f + 1` ཚོགས་ཆུང་དང་ ཚོགས་གྲངས་ དེ་ལས་ བལྟ་རྟོག་པའི་ཐོ་གཞུང་།
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, ཡོངས་འབྲེལ་-ནང་འཛུལ་, དང་ ཚོང་འབྲེལ་-གྲལ་ཐིག་མཐའ་མཚམས་ཚུ།
+- མིང་རྟགས་བཀོད་པའི་སྡེབ་ཐག་ཚད་གཞི་ ཉེ་གནས་ Sumeragi ཚབ་སྒྲིག་ དྲ་ལམ་ནང་འཛུལ་དང་ཚོང་འབྲེལ་གྲལ་རིམ་གྱི་ཚད་ཚུ།
 - བརྡ་འཕྲིན་ཚད་འཇལ་གྱི་གསལ་སྡུད།
 - མཐུན་རྐྱེན་དང་གསོག་འཇོག་ དེ་ལས་ OS ཁ་གསལ།
 - དྲ་རྒྱ་ RTT, ཇི་ཊར་, གྱོང་གུན་, དང་བང་རིམ་ཚོད་དཔག
@@ -252,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - ངོས་ལེན་/མ་བཏུབ་ TPS
 - p50/p95/p99 ཁས་ལེན་འགོར་འགྱངས།
 - བང་རིམ་གཏིང་ཚད་དང་ཚིལ་ཚད།
-- བསྒྱུར་བཅོས་ཚུ་བལྟ། བཀོག་བཞག་ཡོད་པའི་འཕྲིན་དོན་ཚུ་ བརླག་སྟོར་ཤོར་མི་-སྡེབ་ཚན་ལེན་ཐངས་ཚུ་དང་ DA-གཱེཊི་གྱངས་ཁ་བརྐྱབ་མི་ཚུ་ཨིན།
+- མཐོང་སྣང་བསྒྱུར་བཅོས་ དུས་ཚོད་ཡོལ་བའི་ཚོགས་རྒྱན་ Sumeragi བཀོག་མི་ཚུ་ དེ་ལས་ ནང་དོན་དང་ མཉམ་འབྱུང་ལེན་ནི་ཚུ།
 - CPU, དྲན་ཐོ། ཌིས་ཀིསི་དང་ལྡནམ་སྦེ་ ལག་ལེན་འཐབ་མི་ཁ་ཐིག་ཚུ་
 
 འ་ནི་གསལ་སྟོན་ཚུ་མེད་པ་ཅིན་ TPS ཨང་གྲངས་འདི་ སྟབས་མ་བདེཝ་ཅིག་སྦེ་བཞག་དགོཔ་ཨིན།

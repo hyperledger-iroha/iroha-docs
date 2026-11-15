@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Configurando Iroha {#configuring-iroha}
 
 La configuración del par de la red local se establece en TOML archivos. Esto es diferente de la configuración en cadena modificada a través de [`SetParameter`](/es/blockchain/instructions.md#setparameter) instrucciones. El comportamiento de producción debe representarse en una configuración archivo o un parámetro en cadena; las variables de entorno no son puertas de función.

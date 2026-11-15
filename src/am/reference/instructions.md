@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha የመመሪያ ክዋኔዎች {#iroha-special-instructions}
 
 አሁን ያለው የውሂብ ሞዴል እነዚህን አብሮገነብ የማስተማሪያ ቤተሰቦች ያጋልጣል -
@@ -28,7 +27,6 @@ translation_engine: bing-translator-llm
 | [`CustomInstruction`](/am/blockchain/instructions.md#other-instructions) |አስፈፃሚ-ተኮር JSON ጭነት|
 |[ቤተኛ የንብረት escrow](/am/blockchain/escrow.md)|`OpenAssetEscrow`፣ `AcceptAssetEscrow`፣ `MarkEscrowPaymentSent`፣ `ReleaseAssetEscrow`፣ `CancelAssetEscrow`፣ `OpenEscrowDispute`፣ `ResolveEscrowDispute`|
 |[አጠቃላይ የንብረት መቆለፊያዎች](/am/blockchain/escrow.md#generic-asset-locks)|`OpenAssetLock`፣ `DrawdownAssetLock`፣ `CancelAssetLock`፣ `ExpireAssetLock`|
-|[ስም-አልባ የንብረት escrow](/am/blockchain/escrow.md#anonymous-escrow)|`OpenAnonymousAssetEscrow`፣ `AcceptAnonymousAssetEscrow`፣ `MarkAnonymousEscrowPaymentSent`፣ `ReleaseAnonymousAssetEscrow`፣ `CancelAnonymousAssetEscrow`፣ `OpenAnonymousEscrowDispute`፣ `ResolveAnonymousEscrowDispute`|
 |[የአቶሚክ የግል የፋይናንስ ግብይት ስምምነት](/am/blockchain/instructions.md#atomic-private-settlement)|`ActivatePrivateSettlementPoolV1`፣ `RotatePrivateSettlementPoolPolicyV1`፣ `FinalizeAtomicPrivateSettlementV1`፣ `AbortAtomicPrivateSettlementV1`|
 
 ተጨማሪ Iroha 3 ሞጁሎች ጎራ-ተኮር የመመሪያ ዓይነቶችን በመመሪያው መዝገብ በኩል ሊመዘግቡ ይችላሉ። ለኖድ ስልጣን ያለው መርሃግብር እና እሱን ለሚይዘው ትእዛዝ፣ [የውሂብ ሞዴል ንድፍ](./data-model-schema.md) ይመልከቱ።
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

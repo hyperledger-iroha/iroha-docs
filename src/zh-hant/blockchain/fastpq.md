@@ -1,1198 +1,199 @@
 ---
 translation_locale: zh-hant
 translation_source: /blockchain/fastpq.md
-translation_source_hash: d8dd61390f5df3dae09b70399e04e8f71716a912ef5dea9010feaf60573ed261
+translation_source_hash: 98c258ab99bcc7d7d51b69ddd26e39b19ef4eb14d53001825f3737144d68f0e5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # FastPQ {#fastpq}
 
-FastPQ 是 Iroha 對選定的執行效果的 STARK 證明路徑.它不取代正常的交易執行或共識.透過 ISI,IVM 和 Sumeragi 進行正常執行; FastPQ 消耗了確定性執行證明,並將支援的效果轉化為證明批次.
+FastPQ 是 Iroha 針對選定執行效果的 STARK 證明路徑。它不會取代一般的交易執行或共識。交易仍照常經由 ISI、IVM 與 Sumeragi 執行；FastPQ 隨後根據區塊執行所擷取的來源紀錄，證明受支援的效果。
 
-目前的主機整合有三個主要途徑:
+目前的主機整合有兩條主要路徑：
 
-- 在區塊執行期間記錄的透明數值資產轉移
-- Nexus 經過驗證的通道繼電器,其 AXT 證明包裝載有 FastPQ 繫結
-- SCCP 透明資訊證明輔助器,將 FastPQ 證明包裝在一個開放的驗證封裝中
+- 已最終確定區塊中的數值資產效果，由節點的證明器通道證明
+- SORA Nexus AXT 證明封裝，其 `fastpq_binding` 攜帶 FastPQ 綁定
 
-## 轉移證人的路徑 {#transfer-witness-path}
+## 轉移見證路徑 {#transfer-witness-path}
 
-當指令突變餘額時,透明的數值轉移會產生結構化轉移記錄. 轉錄記錄:
+當指令修改餘額時，透明的數值轉移會建立一份結構化的轉移轉錄。該轉錄會記錄：
 
 - 來源帳戶,目的地帳戶,資產定義和金額
 - 轉移前和後的傳送者和接收者的餘額
 - 作為批次雜湊所使用的交易入口點雜湊
-- 從提交帳戶中獲取的授權主體資訊
-- 一個多爾塔轉錄的Poseidon摘要
+- 由提交帳戶衍生的授權主體摘要
+- 用於單一增量轉錄的 Poseidon 摘要
+- 傳送者與接收者餘額的稀疏 Merkle 更新見證
 
-批次轉移使用多個海域的轉錄. 在這種情況下,一個海域的波西登摘要是缺失的.
+批次轉移使用一份包含多個增量的轉錄。在此情況下，不會有單一增量的 Poseidon 摘要。
 
-在區塊完成時, Iroha 將這些轉錄按輸入點雜湊組分.執行證人然後攜帶原始轉錄捆綁和為檢測器準備的 FastPQ 過渡批次.
+區塊執行會依發出轉錄的執行呼叫將轉錄分組，並與區塊的 FastPQ 來源紀錄一併保存。在 AXT 轉移陳述中，每個轉移增量都會成為兩個狀態轉換列：
 
-每個轉移三角形變成兩個過渡行:
+| 列 | 鍵 | 前值 | 後值 |
+| --------------- | --------------------------------------------------------------------- | ----------------------- | ---------------------- |
+| 傳送者借記 | 對應資產定義與來源帳戶的 `FastpqBalanceKeyV1` | 傳送者變更前餘額 | 傳送者變更後餘額 |
+| 接收者貸記 | 對應資產定義與目標帳戶的 `FastpqBalanceKeyV1` | 接收者變更前餘額 | 接收者變更後餘額 |
 
-|排列|關鍵形狀|預估值|後值|
-| --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-|傳送人借款|`asset/<asset-definition>/<source-account>`|之前的傳送人餘額|之後的傳送人餘額|
-|收件人信貸|`asset/<asset-definition>/<destination-account>`|之前的收件人餘額|接收者餘額之後|
+每個鍵都是 `FastpqBalanceKeyV1` 的標準 Norito 訊框，由 `transfer_balance_key` 依據具型別的資產定義與無網域帳戶建構而成。帳戶別名與顯示形式絕不會作為鍵的材料。
 
-數值將正常化為整數目擊單位.如果不能在選定的十分數尺度中表示為非負的 `u64`,則對 FastPQ 批次來說,一個值被拒絕
+## 執行效果 {#execution-effects}
+
+證明器通道會證明完整的執行效果陳述。每個陳述依執行順序涵蓋單一執行項目的所有數量效果：
+
+| 效果 | 更新的值 | 規則 |
+| -------- | ------------------------------ | ------------------------------------------------------------------- |
+| 轉移 | 來源餘額與目標餘額 | 金額在同一資產的兩個餘額之間移動 |
+| 鑄造 | 餘額與供給量 | 兩者皆增加相同的非零數量 |
+| 銷毀 | 餘額與供給量 | 兩者皆減少相同的數量 |
+| 除役 | 供給量與生命週期 | 供給量維持為零，資產的存在值由 1 變為 0 |
+
+供給量絕不會低於任一餘額。每個鍵由域分隔標籤 `iroha:fastpq:execution-quantity-key:v1`、一個 NUL 位元組，以及 `FastpqExecutionQuantityKeyV1` 餘額鍵、供給量鍵或生命週期鍵的 Norito 編碼組成。角色授予、角色撤銷及其他操作不會受到證明。
+
+執行效果陳述與 AXT 轉移陳述中的值，是以資產小數位數表示的精確非負整數單位（`FastpqQuantityUnits`），因此不受 `u64` 限制。陳述建構會拒絕小數位數不符、負差值，以及任何算術或排序上的不一致；它絕不會修補公開值。
 
 ## 公共輸入 {#public-inputs}
 
-每個 FastPQ 過渡批次都包含了將證明繫結到區塊和執行環境的公開輸入:
+每個 FastPQ 陳述都帶有公共輸入，將證明綁定至區塊與執行情境：
 
-|輸入|這意味著|
-| ------------- | --------------------------------------------------------------- |
-|`dsid`|資料空間識別符號編碼為小位元組.|
-|`slot`|區塊建立時間轉換為納秒.|
-|`old_root`|來自執行證人的父母狀態根源|
-|`new_root`|從執行證人中得到的後狀態根源|
-|`perm_root`|西頓對活躍角色許可的承諾|
-|`tx_set_hash`|按順序的交易和時間觸發入口點 hashs|
+|輸入|含義|
+| ------------- | ------------------------------------------------------------------------------------ |
+| `dsid` | 資料空間識別碼：其 `u64` 值以小端序排列，後接八個零位元組 |
+| `slot` | 以奈秒表示的區塊建立時間，精度為毫秒 |
+| `old_root` | 套用陳述前，所涉鍵之稀疏 Merkle 樹的根 |
+| `new_root` | 套用陳述後，所涉鍵之稀疏 Merkle 樹的根 |
+| `perm_root` | 對執行狀態之角色權限表的承諾 |
+| `tx_set_hash` | 對區塊內各筆交易依區塊順序排列之傳輸編碼的承諾 |
 
-主機使用 `fastpq-lane-balanced` 為這些批次的定律引數.
+`old_root` 與 `new_root` 僅涵蓋陳述所涉及的鍵。它們並非持久保存的世界狀態根。
 
-## 數學模型 {#mathematical-model}
+`perm_root` 是 Iroha 的 32 位元組 `Hash`，其輸入為域分隔標籤 `fastpq:v1:permission-table:blake2b-256`、以小端序 `u64` 表示的項目數，以及排序後的各項目。每個項目由角色 ID 的雜湊、該角色某項權限的雜湊，以及該權限以小端序 `u64` 表示的紀元組成。若表格為空，該值即為 32 個零位元組。這僅是角色與權限情境；它不會證明帳戶成員資格或授權。
 
-本節描述了當前 Rust 檢測器和驗證器所實施的演算法.下面的所有場操作都在金等級欄位上:
+`tx_set_hash` 是 Iroha 的 `Hash`，其輸入為域分隔標籤 `iroha:axt:ordered-transaction-wire-set:v1`、一個 NUL 位元組、交易筆數，以及依區塊順序排列之每筆交易的傳輸編碼長度與完整傳輸編碼位元組。筆數與長度皆為小端序 `u64` 值。交易不會經過排序或去除重複，簽章會保留在原像中。
 
-$$
-F = \mathbb{F}_p,\qquad p = 2^{64} - 2^{32} + 1
-$$
+Iroha 的 `Hash` 是將最後一個位元組的最低位元設為 1 的 Blake2b-256。陳述還帶有一個排序雜湊，以及其完整的標準列與來源事實；證明會綁定上述所有內容。
 
-FastPQ 使用Poseidon2而不是 `F`用於場地承諾. 子具有寬度 `t = 3`,速率 `r = 2`和容量 `1`.雜湊在最終變換之前吸收了速度-2塊中的場地元素並新增了一個單個場地元素 `1`:
+## 證明協定 {#proof-protocol}
 
-$$
-H_F(x_0,\ldots,x_{m-1}) =
-\operatorname{Poseidon2}_F(x_0,\ldots,x_{m-1},1)
-$$
+標準 FastPQ 產物是以 Goldilocks 有限體及其 4 次擴張體為基礎的遮罩 DEEP 證明。其確切關係、轉錄與查詢幾何結構定義於固定版本的 [FastPQ DEEP 協定契約](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_deep_protocol_contract.md)。
 
-位元組字串被包裝成7位元組的小單元端子,所以每個端子都在 `p`以下:
+呼叫端選擇一般陳述或 AXT 陳述以及資源限制，但不會選擇電路、驗證金鑰、查詢數量或轉錄內部細節。一般途徑為 `offline_compact::prove_quantity_ordinary_artifact`；AXT 途徑為 `offline_compact::prove_quantity_axt_artifact`，而 `prove_axt_bound_batch` 會將其包裝，以用於已綁定的批次。透明的 `Prover`、`Proof` 與重播 `verify` API 僅存在於測試與 `dev-tools` 建置中。
 
-$$
-\operatorname{pack}(b)_j =
-\sum_{i=0}^{6} b_{7j+i}2^{8i},\qquad 0 \leq \operatorname{pack}(b)_j < p
-$$
+## 證明檢查的內容 {#what-the-proof-checks}
 
-域分割槽的欄位雜湊表示為:
+在進行任何私有處理之前，生產者會先準備公開陳述。它會檢查帳戶、金額、數值、出現次數、穩定的鍵順序與鍵配置，並拒絕公開事實不一致的陳述。接著，密封關係會針對每個區段中的一次效果或轉移出現，證明兩次完整的 32 層稀疏 Merkle 更新。預設限制允許每個產物最多包含兩個區段。
 
-$$
-H_D(m) =
-H_F(
-|\operatorname{pack}(D)|,\operatorname{pack}(D),
-|\operatorname{pack}(m)|,\operatorname{pack}(m)
-)
-$$
+每條軌跡有 65,536 列。生產者對 301 個私有欄產生承諾，驗證器則獨立重建 41 個公開欄。全新的密碼學熵會遮罩軌跡欄、商多項式，以及一個獨立承諾的組合多項式。商的除法必須能夠整除。生產者在回傳產物之前，會先自行驗證該產物。
 
-對於從位元組域摘要開始的雜湊, FastPQ 將第八個小位元組在該領域內對映:
+公開陳述中的值不會被隱藏。某個操作出現在傳輸格式中，並不代表它會被接受：只有上述列出的效果具備證明關係，而 AXT 陳述僅接受具見證的轉移。
 
-$$
-\operatorname{seed}(D)=
-\operatorname{le64}(\operatorname{Hash}(D)[0..8])\bmod p
-$$
+## 證明器通道 {#prover-lane}
 
-在此 `Hash` 意思是 Iroha 的`iroha_crypto::Hash::new`,一個32位元組的Blake2bVar摘要,除非公式明確命名Poseidon2或 SHA-256.
+除非 Kura 以 `init_mode = "fast"` 啟動，否則 `iroha3d` 會在節點啟動期間、Torii 開始接受提交之前，啟動一個 FastPQ 證明器工作器。工作器會在背景初始化其後端，因此即使初始化失敗，啟動仍會繼續；此時該通道會維持停用。
 
-### 欄位演算法 {#field-arithmetic}
+工作器會輪詢節點的已最終確定狀態與 Kura 儲存空間。對於每個已最終確定的區塊，它會取得經過認證的來源（若來源未儲存，則重播原生執行），並以一般途徑逐一證明該區塊的完整陳述。重新啟動後，它會從固定的已簽署創世區塊重建經過認證的前綴。它會將每個產物存入 Kura 有上限的 FastPQ 儲存區。已儲存的產物僅是一份通告：在繼續之前，生產者會認證來源並再次驗證該產物。
 
-Rust 程式碼表示`[0,p)`中的正規化元素是加值和減值的規範 `u64`值:
-
-$$
-a +_F b = (a+b)\bmod p
-$$
-
-$$
-a -_F b = (a-b)\bmod p
-$$
-
-乘法首先計算了128位的產量:
-
-$$
-a\cdot b = \operatorname{lo} + 2^{64}\operatorname{hi}
-$$
-
-然後使用"黃金"的身份:
-
-$$
-2^{64}\equiv2^{32}-1\pmod p
-$$
-
-如果:
-
-$$
-\operatorname{hi}=\operatorname{hi}_{lo}+2^{32}\operatorname{hi}_{hi}
-$$
-
-然後減速器計算:
-
-$$
-\operatorname{lo}
-+2^{32}\operatorname{hi}_{lo}
--\operatorname{hi}_{lo}
--\operatorname{hi}_{hi}
-\pmod p
-$$
-
-實現的條件是新增或減去 `p`直到結果成為正義.簽署的整數,如餘額德爾塔等,由:
-
-$$
-\operatorname{field}(x)=x\bmod p,\qquad 0\leq\operatorname{field}(x)<p
-$$
-
-### 西頓2變數 {#poseidon2-permutation}
-
-波西頓2變數狀態是:
-
-$$
-\mathbf{x}=(x_0,x_1,x_2)\in F^3
-$$
-
-它的S-box是:
-
-$$
-S(x)=x^5
-$$
-
-FastPQ 採用四個全輪,五十七個部分輪,然後再使用四次全輪.一個全輪與圓定數 `c_r = (c_{r,0}, c_{r,1}, c_{r,2})`是:
-
-$$
-\mathbf{x}' =
-M\cdot
-\begin{bmatrix}
-S(x_0+c_{r,0})\\
-S(x_1+c_{r,1})\\
-S(x_2+c_{r,2})
-\end{bmatrix}
-$$
-
-一個部分輪是:
-
-$$
-\mathbf{x}' =
-M\cdot
-\begin{bmatrix}
-S(x_0+c_{r,0})\\
-x_1+c_{r,1}\\
-x_2+c_{r,2}
-\end{bmatrix}
-$$
-
-所有新增和乘法都在 `F`.規範的 MDS 矩陣為:
-
-$$
-M=
-\begin{bmatrix}
-\texttt{0x982513a23d22b592} & \texttt{0xa3115db8cf1d9c90} & \texttt{0x46ba684b9eee84b7}\\
-\texttt{0xbe3dce25491db768} & \texttt{0xfb0a6f731943519f} & \texttt{0xfce5bd953cde1896}\\
-\texttt{0xe624719c41eb1a09} & \texttt{0xd2221b0f1aa2ebc4} & \texttt{0x1ab5e60d03ad44bc}
-\end{bmatrix}
-$$
-
-欄位雜湊從零狀態開始.對於每一個完整的速度-2塊 `(u,v)`:
-
-$$
-(x_0,x_1,x_2)\leftarrow
-\operatorname{Poseidon2}(x_0+u,x_1+v,x_2)
-$$
-
-最後的塊在最後一次變換之前新增`1`填充元素.輸出為 `x_0`.
-
-### 公共輸入的約束力 {#public-input-binding}
-
-主機透過將其 `u64` 值寫入16位元組欄位的第八個小byte位元組來編碼一個資料空間 id:
-
-$$
-\operatorname{dsid\_bytes}(d)[0..8]=\operatorname{le64}(d),
-\qquad
-\operatorname{dsid\_bytes}(d)[8..16]=0
-$$
-
-區塊建立時間從毫秒轉換為奈米秒:
-
-$$
-\operatorname{slot}=\operatorname{saturating\_mul}
-(\operatorname{creation\_time\_ms},1{,}000{,}000)
-$$
-
-交易設定雜湊是對序列入口點雜湊的位元組域雜湊:
-
-$$
-\operatorname{tx\_set\_hash} =
-\operatorname{Hash}(
-\texttt{fastpq:v1:tx\_set}\|h_0\|\cdots\|h_{n-1}
-)
-$$
-
-在 `h_i`是分類的交易和時間觸發器入口點雜湊.在證明公開 IO 中,如果`perm_root`或 `tx_set_hash`全部為零,則檢測器填寫了倒退值:
-
-$$
-\operatorname{perm\_root} =
-\begin{cases}
-0^{32},& \text{if there are no permission hashes}\\
-\operatorname{Hash}(\texttt{fastpq:v1:perm\_root}\|p_0\|\cdots\|p_{n-1}),
-& \text{otherwise}
-\end{cases}
-$$
-
-$$
-\operatorname{tx\_set\_hash}_{fallback} =
-\operatorname{Hash}(\texttt{fastpq:v1:tx\_set}\|\operatorname{ordering\_hash})
-$$
-
-### 數字正常化 {#numeric-normalization}
-
-對於每個轉移三角形,目標十進位制尺度是對數量和兩個餘額快照的最大剪下尺度:
-
-$$
-s =
-\max(
-\operatorname{scale}(a),
-\operatorname{scale}(f_0),
-\operatorname{scale}(f_1),
-\operatorname{scale}(t_0),
-\operatorname{scale}(t_1)
-)
-$$
-
-一個 `Numeric` 價值與 mantissa `m` 和規模 `q` 只有在 `m >= 0` 和 `q <= s`. 它的 FastPQ 見證資料價值為:
-
-$$
-\operatorname{norm}_s(m,q)=m\cdot10^{s-q}
-$$
-
-正常化結果必須符合 `u64`.
-
-### 規範性命令 {#canonical-ordering}
-
-在軌跡建構之前,按過渡鍵,操作級別和原始插入索引進行分類:
-
-$$
-r(\operatorname{Transfer})=0,\quad
-r(\operatorname{Mint})=1,\quad
-r(\operatorname{Burn})=2,\quad
-r(\operatorname{RoleGrant})=3,\quad
-r(\operatorname{RoleRevoke})=4,\quad
-r(\operatorname{MetaSet})=5
-$$
-
-訂單承諾是對分類過渡域 `fastpq:v1:ordering` 和 Norito 編碼的Poseidon2欄位雜湊:
-
-$$
-\operatorname{ordering\_hash} =
-H_F(
-|P(D_o)|,P(D_o),|P(E(T^\star))|,P(E(T^\star))
-)
-$$
-
-在哪裡 `P` 是7位元組的包裝, `E` 是 Norito 編碼, `D_o` 是 `fastpq:v1:ordering`, 和 `T*` 是分類過渡列表.
-
-### 轉移方程 {#transfer-equations}
-
-對於轉移金額 `a`, 傳送者餘額 `f`, 和收件人餘額 `t`, FastPQ 在構建痕跡之前驗證了正常化的見證資料值:
-
-$$
-f_0 \geq a
-$$
-
-$$
-f_1 = f_0 - a
-$$
-
-$$
-t_1 = t_0 + a
-$$
-
-然後,過渡行編碼:
-
-$$
-\Delta_{\text{sender}} = f_1 - f_0 = -a
-$$
-
-$$
-\Delta_{\text{receiver}} = t_1 - t_0 = a
-$$
-
-在痕跡內,簽署的海域被減少到 `F`:
-
-$$
-\delta_i = (\operatorname{post}_i - \operatorname{pre}_i)\bmod p
-$$
-
-可選的單-德爾塔轉移摘要將編碼的轉移預圖提交:
-
-$$
-d_{\text{transfer}} =
-\operatorname{PoseidonHashBytes}(
-E(\text{from})\|E(\text{to})\|E(\text{asset})\|E(a)\|\text{batch\_hash}
-)
-$$
-
-對於多德爾塔傳輸轉錄,當前格式要求此頂級摘要不存在.
-
-接待機關對轉移記錄的摘要是:
-
-$$
-d_{\text{authority}} =
-\operatorname{Hash}(\texttt{iroha:fastpq:v1:authority|}\|E(\text{authority\_account}))
-$$
-
-### 追蹤行列 {#trace-rows}
-
-令排序後的轉換清單包含 `n` 個實際資料列。追蹤長度是下一個 2 的冪次：
-
-$$
-N = 2^{\lceil\log_2(\max(1,n))\rceil}
-$$
-
-列 `0..n-1`是活躍的;列 `n..N-1`是填充行.每個實行都有一個操作選擇器設定:
-
-$$
-s_{\text{active}} =
-s_{\text{transfer}}+
-s_{\text{mint}}+
-s_{\text{burn}}+
-s_{\text{role\_grant}}+
-s_{\text{role\_revoke}}+
-s_{\text{meta\_set}}
-$$
-
-所有選擇器列都是布林語:
-
-$$
-s(s-1)=0
-$$
-
-許可權查詢行是完全授予角色和撤銷角色的行:
-
-$$
-s_{\text{perm}} =
-s_{\text{role\_grant}} + s_{\text{role\_revoke}}
-$$
-
-對於數值運算行:
-
-$$
-\delta_i = \operatorname{value\_new}_{i,0} - \operatorname{value\_old}_{i,0}
-$$
-
-建構器還追蹤每資產的執行地帶:
-
-$$
-R_i(a)=R_{i-1}(a)+\delta_i
-\quad\text{for transfer, mint, and burn rows of asset }a
-$$
-
-只有鑄造和銷毀行更新供應計量器:
-
-$$
-S_i(a)=S_{i-1}(a)+
-\begin{cases}
-\delta_i,& \text{if row }i\text{ is mint or burn}\\
-0,& \text{otherwise}
-\end{cases}
-$$
-
-數字後設資料和資料空間跟蹤列是從行物質化之前獲得的場地雜湊:
-
-$$
-\operatorname{metadata\_hash} =
-\begin{cases}
-0,& \text{if metadata is empty}\\
-H_D(E(\text{metadata})),& \text{otherwise}
-\end{cases}
-$$
-
-$$
-\operatorname{dsid\_trace}=H_D(\operatorname{public\_input\_dsid})
-$$
-
-在相鄰的跟蹤行中,後設資料雜湊,資料空間雜湊和插槽是穩定的:
-
-$$
-\operatorname{metadata\_hash}_i=\operatorname{metadata\_hash}_{i+1}
-$$
-
-$$
-\operatorname{dsid}_i=\operatorname{dsid}_{i+1}
-$$
-
-$$
-\operatorname{slot}_i=\operatorname{slot}_{i+1}
-$$
-
-### 轉移Merkle列 {#transfer-merkle-columns}
-
-傳輸行帶有32級稀疏的Merkle路徑.如果缺少主機證明,檢測器從行鍵合成一個確定性路徑,預餘額,以及該行是否是傳送者或接收者的側面.
-
-對於合成路徑,口味鹽為傳送行 `fastpq:smt:from`和接收行 `fastpq:smt:to`:
-
-$$
-K =
-\operatorname{Hash}(\texttt{fastpq:smt:key|}\|\operatorname{salt}\|\operatorname{key})
-$$
-
-$$
-V =
-\operatorname{Hash}(\texttt{fastpq:smt:value|}\|\operatorname{salt}\|\operatorname{le64}(\operatorname{balance}))
-$$
-
-$$
-b_\ell = \operatorname{bit}_\ell(K)
-$$
-
-$$
-s_\ell =
-\operatorname{Hash}(
-\texttt{fastpq:smt:sibling|}\|
-\operatorname{le64}(\ell)\|K\|\operatorname{le64}(\operatorname{balance})\|\operatorname{salt}
-)
-$$
-
-合成葉子和內部節點是:
-
-$$
-L = \operatorname{Hash}(
-\texttt{fastpq:smt:leaf|}\|
-K\|V
-)
-$$
-
-$$
-N_{\ell+1} =
-\operatorname{Hash}(
-\texttt{fastpq:smt:node|}\|
-\operatorname{left}_\ell\|
-\operatorname{right}_\ell
-)
-$$
-
-追蹤記錄每一個級別的位 `b_l`,兄弟姐妹 `s_l`,輸入節點 `x_l`和輸出節點 `x_{l+1}`.
-
-$$
-(\operatorname{left}_\ell,\operatorname{right}_\ell)=
-\begin{cases}
-(s_\ell,x_\ell),& b_\ell=0\\
-(x_\ell,s_\ell),& b_\ell=1
-\end{cases}
-$$
-
-### 允許的 Hash {#permission-hashes}
-
-函式授予和撤銷行 雜湊權證:
-
-$$
-h_{\text{perm}} =
-H_F(P(\operatorname{role\_id}\|\operatorname{permission\_id}\|\operatorname{epoch}_{le}))
-$$
-
-主機許可表根按角色位元組,允許位元組和時代位元組分類輸入,然後構建一個Poseidon2 Merkle樹:
-
-$$
-M_0[j]=h_{\text{perm},j}
-$$
-
-$$
-M_{k+1}[j] =
-H_F(\operatorname{seed}(\texttt{fastpq:v1:poseidon\_node}),M_k[2j],M_k[2j+1])
-$$
-
-不同寬度的水平復制了最後元素.
-
-### 追蹤承諾 {#trace-commitment}
-
-對於每個軌跡列 `c`, FastPQ 首先將列值插入了軌跡域,並對係數向量進行雜湊:
-
-$$
-C_c =
-H_F(
-\operatorname{seed}(\texttt{fastpq:v1:trace:column:}c),
-\operatorname{coeffs}(c)
-)
-$$
-
-痕跡根是Poseidon2 Merkle根在列承諾:
-
-$$
-R_{\text{trace}} = \operatorname{MerkleRoot}(C_0,\ldots,C_{m-1})
-$$
-
-最後的跟蹤承諾是對域,引數集,跟蹤形狀,列摘要和跟蹤根的位元組雜湊:
-
-$$
-\operatorname{commitment} =
-\operatorname{Hash}(
-\operatorname{len}(D_c)\|D_c\|
-\operatorname{len}(\text{parameter})\|\text{parameter}\|
-n\|N\|m\|C_0\|\cdots\|C_{m-1}\|R_{\text{trace}}
-)
-$$
-
-在 `D_c`為 `fastpq:v1:trace_commitment`.
-
-### AIR 組成 {#air-composition}
-
-V1 AIR 組合值是一個線性排行本地殘留的組合. 轉錄樣本展示了兩個挑戰:
-
-$$
-\alpha_0,\alpha_1 \in F
-$$
-
-對於每個相鄰的行對 `(i,i+1)`,檢查器計算:
-
-$$
-A_i=\sum_j \alpha_{j\bmod2}\rho_{i,j}
-$$
-
-剩餘物 `rho`以程式碼順序是:
-
-$$
-\rho=s(s-1)
-\quad\text{for each selector column}
-$$
-
-$$
-\rho =
-s_{\text{active}} -
-(s_{\text{transfer}}+s_{\text{mint}}+s_{\text{burn}}+
-s_{\text{role\_grant}}+s_{\text{role\_revoke}}+s_{\text{meta\_set}})
-$$
-
-$$
-\rho =
-s_{\text{perm}}-(s_{\text{role\_grant}}+s_{\text{role\_revoke}})
-$$
-
-$$
-\rho =
-s_{\text{active},i+1}(1-s_{\text{active},i})
-$$
-
-對於有數列的行:
-
-$$
-\rho =
-(s_{\text{transfer}}+s_{\text{mint}}+s_{\text{burn}})
-\cdot
-((\operatorname{value\_new}_{0}-\operatorname{value\_old}_{0})-\delta)
-$$
-
-對於穩定批次文字列:
-
-$$
-\rho =
-\operatorname{metadata\_hash}_i-\operatorname{metadata\_hash}_{i+1}
-$$
-
-$$
-\rho =
-\operatorname{dsid}_i-\operatorname{dsid}_{i+1}
-$$
-
-$$
-\rho =
-\operatorname{slot}_i-\operatorname{slot}_{i+1}
-$$
-
-驗證者重新計算`A_i`對取樣列開口,並與 AIR 組合 Merkle 根所承諾的組合值進行檢查.
-
-### 搜尋產品 {#lookup-product}
-
-許可權搜尋蓄積器使用菲亞特-沙米爾挑戰 `gamma`. 在低程度的擴充套件評估中 `s_perm` 和 `perm_hash`, 執行產品是:
-
-$$
-z_0=1
-$$
-
-$$
-z_{i+1}=
-\begin{cases}
-z_i\cdot(w_i+\gamma),& s_{\text{perm},i}\ne0\\
-z_i,& s_{\text{perm},i}=0
-\end{cases}
-$$
-
-證明記錄:
-
-$$
-\operatorname{lookup\_grand\_product}=H_F(z_0,z_1,\ldots)
-$$
-
-### 較低程度的擴充套件 {#low-degree-extension}
-
-令 `omega_T` 為 trace-domain generator、`omega_E` 為 evaluation-domain generator，且 `g` 為已設定的 coset offset。對於值為 `v_i` 的 trace column，插值會產生係數 `a_j`，使得：
-
-$$
-f(\omega_T^i)=v_i
-$$
-
-低度擴充套件評估了科塞特上的相同多項式:
-
-$$
-\operatorname{LDE}_f(i)=f(g\cdot\omega_E^i)
-$$
-
-執行透過乘以前 FFT 之前的 coset抵消權力的係數來計算此次:
-
-$$
-a'_j = a_j g^j
-$$
-
-然後對 `a'`進行評估.
-
-其他 CPU FFT 是一個迭代式基數-2的Cooley-Tukey變化,在位逆輸入. `L`, 半長度 `H=L/2`, 和階段根:
-
-$$
-\omega_L=\omega^{N/L}
-$$
-
-每一隻蝶計算:
-
-$$
-u=x_j
-$$
-
-$$
-v=x_{j+H}\cdot\omega_L^j
-$$
-
-$$
-x_j'=u+v,\qquad x_{j+H}'=u-v
-$$
-
-逆方 FFT 與 `omega^{-1}`進行相同的轉換,並根據反方域大小進行擴充套件:
-
-$$
-\operatorname{IFFT}(x)=N^{-1}\cdot\operatorname{FFT}_{\omega^{-1}}(x)
-$$
-
-在使用前驗證目錄根:
-
-$$
-\omega^{2^k}=1
-$$
-
-$$
-\omega^{2^{k-1}}\ne1\qquad(k>0)
-$$
-
-對於從目錄根中獲得的較小域名,生成器是:
-
-$$
-\omega_{\ell}=\omega_{\max}^{2^{k_{\max}-\ell}}
-$$
-
-### 排列和葉子 {#row-and-leaf-hashes}
-
-在 LDE 之後,FastPQ 將所有 LDE 列中的每一行雜湊.對於 `m`列:
-
-$$
-r_i =
-H_F(i,m,x_{i,0},x_{i,1},\ldots,x_{i,m-1})
-$$
-
-如果排列雜湊仍然存在於追蹤域而不是評估域,則檢查器使用相同的 coset LDE 過程插入和擴充套件該單行雜湊列.
-
-### 梅克爾開口 {#merkle-openings}
-
-LDE 值將分為以下部分:
-
-$$
-B_{\text{lde}}=8\cdot\operatorname{fri\_arity}
-$$
-
-每個片葉是:
-
-$$
-L_j=H_D(j\|v_{jB}\|\cdots\|v_{jB+B-1})
-$$
-
-梅克爾的父母是:
-
-$$
-P_j =
-H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),L_{2j},L_{2j+1})
-$$
-
-奇數級別複製了最後一個節點.查詢路徑透過按每個級別的查詢葉索引等值進行左或右雜湊驗證.
-
-在索引 `i` 的葉子中,一個路徑 `(s_0,\ldots,s_{d-1})`透過重複驗證對根 `R`:
-
-$$
-y_0=L_i
-$$
-
-$$
-y_{k+1}=
-\begin{cases}
-H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),y_k,s_k),
-& \lfloor i/2^k\rfloor \equiv 0 \pmod 2\\
-H_F(\operatorname{seed}(\texttt{fastpq:v1:trace:node}),s_k,y_k),
-& \lfloor i/2^k\rfloor \equiv 1 \pmod 2
-\end{cases}
-$$
-
-檢查只有當:
-
-$$
-y_d=R
-$$
-
-AIR 痕跡排葉是:
-
-$$
-L^{\text{air}}_i =
-H_D(i\|m\|x_{i,0}\|\cdots\|x_{i,m-1})
-$$
-
-AIR 組合葉是:
-
-$$
-L^{\text{comp}}_i = H_D(i\|A_i)
-$$
-
-在 LDE 查詢開放時,還檢查在求值索引 `i` 上開啟的值是否存在於其驗證部分中:
-
-$$
-\operatorname{chunk\_index}=\left\lfloor\frac{i}{B_{\text{lde}}}\right\rfloor
-$$
-
-$$
-\operatorname{chunk\_offset}=i\bmod B_{\text{lde}}
-$$
-
-$$
-\operatorname{chunk}[\operatorname{chunk\_offset}]=v_i
-$$
-
-### FRI 摺疊 {#fri-folding}
-
-FRI 承諾進行 AIR 組合評估.對於每個輪 `l`,轉錄樣本採用一個挑戰 `beta_l`.透過重複最後一項值,層被填充到度的倍數.每個度大小組摺疊為:
-
-$$
-y_{l+1,j} =
-\sum_{k=0}^{a-1} y_{l,ja+k}\beta_l^k
-$$
-
-在 `a` 為 FRI 值時,驗證器對每一個取樣查詢鏈進行檢查,確認:
-
-$$
-y_{l+1,\lfloor i/a\rfloor}
-=
-\sum_{k=0}^{a-1} y_{l,\lfloor i/a\rfloor a+k}\beta_l^k
-$$
-
-並對每一個開啟的 FRI 組進行驗證,並與相應的 FRI 層根進行驗證.
-
-### 菲亞特-沙米爾轉錄 {#fiat-shamir-transcript}
-
-規範引數目錄標記轉錄雜湊為 SHA3-256.當前的檢查器和驗證器實現將挑戰位元組從 `iroha_crypto::Hash::new`中匯出,這是一個32位元組的Blake2bVar摘要,然後將第八個小位元組縮小到`F`:
-
-$$
-\chi(\text{tag}) =
-\operatorname{le64}(\operatorname{Hash}(\text{state}\|\operatorname{len}(\text{tag})\|\text{tag})[0..8])
-\bmod p
-$$
-
-每次 challenge 呼叫都會把完整 digest 附加到 transcript state。重播順序如下：
-
-1. 公開 IO,協議版本,引數版本和引數名稱
-2. LDE 根和痕跡根
-3. `gamma`
-4. AIR 構成挑戰 `alpha_0`, `alpha_1`
-5. AIR 痕跡根和 AIR 組成根
-6. 搜尋大產品
-7. FRI 層根和`beta_l`挑戰
-8. 取樣查詢索引
-
-查詢取樣將繼續繪製32位元組的挑戰摘錄,並將其讀取為小單元 `u64` 分片,直到獲得所需數量的獨特索引:
-
-$$
-q = \operatorname{le64}(\text{digest chunk})\bmod N_{\text{eval}}
-$$
-
-取樣組以分類順序返回.
-
-### 驗證器重播 {#verifier-replay}
-
-驗證者首先重新計算批次承諾:
-
-$$
-\operatorname{commitment}_{expected}
-=\operatorname{trace\_commitment}(\operatorname{params},\operatorname{batch})
-$$
-
-要求:
-
-$$
-\operatorname{commitment}_{expected}
-=\operatorname{proof.trace\_commitment}
-$$
-
-它還重建公眾 IO:
-
-$$
-\operatorname{PublicIO}=
-(\operatorname{dsid},\operatorname{slot},\operatorname{old\_root},
-\operatorname{new\_root},\operatorname{perm\_root},
-\operatorname{tx\_set\_hash},\operatorname{ordering\_hash},
-\operatorname{permission\_hashes})
-$$
-
-每個欄位都必須與證明的公開 IO 位元組對位元組相匹配.然後驗證器重建相同的轉錄並得出相同的:
-
-$$
-\gamma,\quad \alpha_0,\alpha_1,\quad
-\beta_0,\ldots,\beta_{\ell-1},\quad
-q_0,\ldots,q_{t-1}
-$$
-
-對於每次取樣查詢 `q`,檢查:
-
-$$
-\operatorname{MerkleVerify}(
-R_{\text{lde}},
-L_{\lfloor q/B_{\text{lde}}\rfloor},
-\lfloor q/B_{\text{lde}}\rfloor,
-\pi_{\text{lde}}
-)
-$$
-
-$$
-\operatorname{MerkleVerify}(
-R_{\text{air}},
-L^{\text{air}}_q,
-q,
-\pi_{\text{air,current}}
-)
-$$
-
-$$
-\operatorname{MerkleVerify}(
-R_{\text{air}},
-L^{\text{air}}_{q+1\bmod N_{\text{eval}}},
-q+1\bmod N_{\text{eval}},
-\pi_{\text{air,next}}
-)
-$$
-
-和:
-
-$$
-A_q =
-\operatorname{AIRComposition}(
-\operatorname{row}_q,\operatorname{row}_{q+1},\alpha_0,\alpha_1
-)
-$$
-
-其他 AIR 組合開放必須驗證 `R_air_composition`. 其他 FRI 連結從同一個開始 `A_q` 並且必須以認證的最終結尾 FRI 終端下面的葉子 FRI 根源.
-
-## 箴言所檢查的內容 {#what-the-prover-checks}
-
-在構建跟蹤之前, FastPQ 檢測器透過過渡鍵,操作級別和插入序來定製批次順序.傳輸行還需要轉錄後設資料.具有轉錄行但沒有轉錄的批次是無效的.
-
-轉移記錄時,檢查人員的檢查包括:
-
-- 傳送者餘額不得發生下溢
-- `sender_after` 必須等於 `sender_before - amount`
-- `receiver_after` 必須等於 `receiver_before + amount`
-- 轉錄必須涵蓋分批中的每一行轉移
-- 一個多爾塔波西登摘要,當存在時,必須與轉錄前圖相匹配
-- 條件是稀疏的Merkle證明必須被解碼為版本 1;缺失的路徑由確定性合成證明填充
-
-追蹤包含轉移,鑄造,銷毀,角色授予,角色撤銷,後設資料集和許可權搜尋行的選擇列. 數字操作行還載有簽名的分數,每個資產的分數以及供應計數.
-
-## 經驗者林 {#prover-lane}
-
-`iroha3d`在啟動時啟動 FastPQ 檢查路徑,如果可以初始化檢查後端.該路徑是一個帶有界限的佇列的背景任務.一個區塊生成執行證人之後,提交路徑會提交包含區塊雜湊,高度,檢視和證人的檢查路程.
-
-如果通道沒有執行或排隊滿,工作將被跳過,正常的區塊處理繼續.這意味著背景檢查通道不是一個交易錄取或共識門.它是一個已經執行的狀態上的證明生產路徑.
-
-通道構建一個具有:
-
-```text
-parameter = "fastpq-lane-balanced"
-execution_mode = cpu | gpu
-poseidon_mode = cpu | gpu
-```
-
-兩個設定均預設為 `cpu`。選擇 `gpu` 是明確的 fail-closed 請求：如果未編譯 GPU 支援，或所要求的 GPU 後端未透過預檢，證明器通道將保持停用。首個版本沒有 `auto` 值，也不會從要求的 GPU 模式退回 CPU。
+證明產生僅在節點本機進行。它不是交易准入或共識的關卡：執行、提交與最終性都不會等待證明。可重試的失敗會將該工作留待之後的嘗試，且每個行程只會執行一個生產者。
 
 ## 驗證 {#verification}
 
-FastPQ 證明驗證重建了規範批次承諾,並重復了公開轉錄.驗證器檢查了協議版本,引數設定版本,重播限制,追蹤承諾,公開輸入,取樣的Merkle開啟口,AIR 開啟口和 FRI 查詢鏈.
+驗證器依據從其自身經過認證之陳述所推導出的預期來檢查產物，絕不依據受檢產物本身。驗證過程會在限制範圍內對每個區段只解碼一次，在域外點只對 AIR 求值一次，並依據已承諾的根認證每個已開啟的列、商葉節點與 FRI 纖維以及完整的 FRI 末層，且最多執行 385 次摺疊檢查。它不會建構任何私有見證、軌跡或完整的低次擴展。
 
-預設重播限制包括:
+驗證成功即確立與呼叫端預期的一致性。它不會授予任何執行權限、來源最終性、重播准入或 AXT 支出授權。
 
-|限制|預設方式|
-| ------------------ | ------: |
-|過渡行|     256 |
-|批次有效載荷大小|256 KiB |
-|FRI 層|      16 |
-|查詢開放時間|     128 |
+來自 `offline_compact::VerificationLimits` 的預設限制（一般途徑也使用這些限制）：
 
-## Nexus 經過驗證的繼電器 {#nexus-verified-relays}
+|限制|預設值|
+| ------------------------------- | ------------: |
+| 每個產物的區段數 | 2 |
+| 產物傳輸編碼位元組數 | 1 MiB |
+| 子證明訊框 | 500,084 位元組 |
+| 所有區段合計的陳述位元組數 | 512 KiB |
+| 每個區段的查詢數 | 77 |
+| 所有區段合計的查詢數 | 154 |
 
-Nexus AXT 證明封裝可以嵌入一個 `AxtFastpqBinding`.當 `RegisterVerifiedLaneRelay`執行時, Iroha:
+節點通道還會以 `zk.fastpq.proof_sidecar_max_bytes` 與 Kura 的 FastPQ 物件上限，進一步限制產物傳輸編碼位元組數。在解碼之前，AXT 證明資料塊最多可容納 2 MiB，其內嵌的 FastPQ 酬載最多 1 MiB。
 
-1. 驗證通道繼電器封裝和 FastPQ 防材料
-2. 檢查資料空間和清單根
-3. 清除 AXT 證明封裝
-4. 需要一個 `fastpq_binding`
-5. 從該繫結中重建 FastPQ 批次
-6. 解碼嵌入式證明 FastPQ
-7. 呼叫 FastPQ 驗證器對重建的批次和證明
+## SORA Nexus AXT 證明封裝 {#sora-nexus-axt-proof-envelopes}
 
-如果驗證成功, Iroha 將儲存一個包含繼電器參考,原始封裝,證明有效載荷雜湊,驗證高度,清單根和 FastPQ 繫結的 `VerifiedLaneRelayRecord`.
+SORA Nexus AXT 證明封裝可內嵌 `AxtFastpqBinding`。AXT 封裝的區塊驗證、IVM 主機的 AXT 封裝檢查，以及 `RegisterVerifiedFeeSponsorVaultAllocation`，都要求封裝中具備 `fastpq_binding`，會將其與預期聲明比對，並對封裝及其內嵌證明呼叫 FastPQ 驗證器。缺少綁定或驗證失敗都會使該操作遭到拒絕。
 
-Lane relay envelope 還攜帶緊湊的 FastPQ 證明材料。該材料是根據 lane ID、dataspace ID、區塊高度、驗證高度、區塊頭雜湊、結算雜湊和 manifest root 計算的摘要。只有同時具有 QC 和有效 FastPQ 證明材料的 relay 才允許合併。
+驗證器只接受具見證的轉移聲明，即 `tx_predicate` 與 `value_conservation`。`authorization` 與 `compliance` 聲明類型只是不透明地承載效果，不具轉移關係，驗證會拒絕它們。區塊驗證也會拒絕攜帶遠端支出的封裝，而 IVM 主機則會拒絕獨立的 `AXT_VERIFY_DS_PROOF` 准入。在能夠認證已最終確定的來源根、交易集合與發行方授權之前，兩者都維持無法使用。
 
-### AXT 繫結數學 {#axt-binding-math}
+### AXT 綁定 {#axt-binding}
 
-對於 Nexus AXT 封,在驗證重播之前,`AxtFastpqBinding`被規範化.空引數預設值為 `fastpq-lane-balanced`;空驗證器 id 和版本預設值是 `fastpq`和 `v1`;索賠型別被剪下並降級.
+對於 SORA Nexus AXT 封裝，會在證明與驗證之前將 `AxtFastpqBinding` 轉成標準形式：
 
-AXT FastPQ 公共輸入是確定性位元組雜湊:
+- `parameter`、`source_dataspace`、`source_receipt_id` 與 `verified_effect_type` 會去除首尾空白，且不得為空
+- `source_tx_commitment`、`claim_digest`、`witness_commitment` 與 `policy_commitment` 會轉為小寫，且必須是 32 位元組的十六進位編碼
+- `verifier_id` 必須為 `fastpq`，`verifier_version` 必須為 `v1`
+- `claim_type` 會去除首尾空白並轉為小寫，且必須指定上述四種聲明類型之一
+- `target_dsids` 必須非空且嚴格遞增排列
+- `remote_spend_intent_commitments` 必須嚴格遞增排列，且不超過首個發布版本的上限
+
+驗證要求確切的標準形式；它不會代替呼叫端將綁定正規化。
+
+綁定會附加到區塊執行已擷取的批次上；它不會建立狀態轉換。該批次必須包含至少一個狀態轉換，並指明綁定的參數集 `fastpq-state-transition-stark-v1`。其 `entry_hash` 中繼資料必須等於 `source_tx_commitment`，其公共 `dsid` 必須編碼綁定的 `source_dsid`。轉移聲明必須帶有至少一個轉移轉錄，且每個轉錄的批次雜湊都必須等於 `source_tx_commitment`。
+
+接著，綁定程序會將與證明綁定的中繼資料寫入批次：標準綁定、其四個摘要、`source_receipt_id`、`target_dsids`、`verified_effect_type`、非空的 `corridor`、非零的資訊清單根、選用的 DA 承諾、選用的非零承諾金額，以及到期時槽（為零表示永不到期）。最後，它會針對綁定以及不含封印的批次加上封印：
 
 $$
-\operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
-$$
-
-$$
-\operatorname{slot}=\operatorname{le64}(\operatorname{source\_tx\_commitment}[0..8])
-$$
-
-$$
-\operatorname{old\_root} =
+\operatorname{seal} =
 \operatorname{Hash}(
-\texttt{fastpq-json:old\_root}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{policy\_commitment}\|
-\operatorname{effect\_type}
+\texttt{fastpq:axt:batch-seal:v1}\|
+E(\operatorname{binding})\|
+E(\operatorname{batch})
 )
 $$
 
+其中 $E$ 表示標準 Norito 編碼。在綁定之後變更批次、綁定或與證明綁定的值，會導致驗證失敗。驗證器還會將封裝的資料空間、資訊清單根、DA 承諾、承諾金額與到期時間，與證明綁定的值進行比對。
+
+經過驗證的封裝會回報其已證明的 `old_root`、`new_root` 與 `tx_set_hash`，以及一個陳述摘要。該摘要涵蓋以小端序 `u64` 表示的封裝資料空間、其資訊清單根、DA 承諾（若有）、綁定以及陳述：
+
 $$
-\operatorname{new\_root} =
+\operatorname{statement\_digest} =
 \operatorname{Hash}(
-\texttt{fastpq-json:new\_root}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}\|
-\operatorname{effect\_type}
+\texttt{fastpq:axt:statement:v1}\|
+\operatorname{le64}(\operatorname{dsid})\|
+\operatorname{manifest\_root}\|
+\operatorname{da\_commitment}\|
+E(\operatorname{binding})\|
+E(\operatorname{statement})
 )
 $$
 
-$$
-\operatorname{perm\_root} =
-\operatorname{Hash}(
-\texttt{fastpq-json:perm\_root}\|
-\operatorname{policy\_commitment}\|
-\operatorname{verifier\_id}\|
-\operatorname{verifier\_version}
-)
-$$
-
-$$
-\operatorname{tx\_set\_hash} =
-\operatorname{Hash}(
-\texttt{fastpq-json:tx\_set\_hash}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}\|
-\operatorname{witness\_commitment}
-)
-$$
-
-AXT 過渡鍵是:
-
-$$
-\operatorname{key}(\operatorname{prefix},x,y)=
-\operatorname{prefix}\|\texttt{/}\|x\|\texttt{/}\|y
-$$
-
-在 `authorization` 索賠中插入了授予資金的行:
-
-$$
-\operatorname{role\_id}=\operatorname{claim\_digest}
-$$
-
-$$
-\operatorname{permission\_id}=\operatorname{witness\_commitment}
-$$
-
-$$
-\operatorname{epoch}=
-\operatorname{le64}(\operatorname{policy\_commitment}[0..8])
-$$
-
-在 `compliance` 索賠中,插入兩個後設資料行:一個用於政策和另一個用於目標資料區.
-
-對於 `tx_predicate` 和 `value_conservation`,當結合物包含正源或目的量時,使用明確效果數值.否則程式碼將獲得有限的確定性數值:
-
-$$
-\operatorname{bounded}(d,\min,\operatorname{span})
-=
-\min + (\operatorname{le64}(d[0..8])\bmod\max(\operatorname{span},1))
-$$
-
-然後使用相同的轉移方程:
-
-$$
-\operatorname{sender\_after}=\operatorname{sender\_before}-a
-$$
-
-$$
-\operatorname{receiver\_after}=\operatorname{receiver\_before}+a
-$$
-
-合成傳送者和接收者帳戶ID由關鍵種子生成:
-
-$$
-\operatorname{seed}=
-\operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
-$$
-
-轉讓批次雜湊是:
-
-$$
-\operatorname{batch\_hash} =
-\operatorname{Hash}(
-\operatorname{label}\|
-\operatorname{corridor}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}
-)
-$$
-
-AXT 批次資訊清單摘要是對規範綁定的 Norito 編碼計算出的 SHA-256：
+AXT 批次資訊清單摘要是對標準綁定的 Norito 編碼計算出的 SHA-256：
 
 $$
 \operatorname{manifest\_digest} =
 \operatorname{SHA256}(E(\operatorname{canonical\_binding}))
 $$
 
-## SCCP 透明資訊證明 {#sccp-transparent-message-proofs}
+## 參數集 {#parameter-sets}
 
-SCCP 輔助crate還使用 FastPQ 用於透明的跨鏈資訊證明.該路徑與`iroha3d`背景檢查器分開.它直接從 SCCP 資訊證明捆綁和清單中構建 FastPQ 批次,然後將結果的證明包裝為開放驗證.
+首個發布版本恰好只有一個參數集：`fastpq-state-transition-stark-v1`。批次與 AXT 綁定都會指明此參數集，AXT 證明則會拒絕任何其他名稱。DEEP 協定契約固定了已發布產物的幾何結構：
 
-SCCP 批次使用`fastpq-lane-balanced`和三個後設資料過渡:
+| 項目 | 值 |
+| -------------------------- | ----------------------------------------------------- |
+| 有限體 | Goldilocks `p = 2^64 - 2^32 + 1`，擴張體 `u^4 - 7` |
+| 軌跡列數 | 65,536 |
+| 求值列數 | 8,388,608（擴展因子 128） |
+| FRI 摺疊元數 | `[16, 16, 8, 8, 4]` |
+| 查詢 | 77 個相異位置 |
+| 研磨 | 無 |
+| 承諾與轉錄 | SHA3-256 與 SHAKE256 |
 
-|鑰匙|行動|
-| ------------------------------- | --------- |
-|`sccp:transparent:v1:statement`|`MetaSet`|
-|`sccp:transparent:v1:context`|`MetaSet`|
-|`sccp:transparent:v1:payload`|`MetaSet`|
+目前尚無正式環境的資格認定。針對此構造的健全性、隱藏性與 Fiat-Shamir 獨立審查尚未完成，而固定版本的 [正式環境就緒紀錄](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_production_readiness.md) 並未提出任何以工作量正規化的安全性主張。
 
-它的公開輸入來源於透明的內部證明 SCCP:
+## 設定 {#configuration}
 
-|FastPQ 輸入 |SCCP 來源|
-| ------------- | ---------------------------------------------------------- |
-|`dsid`|陳述雜湊之 Blake2b 摘要的前 16 個位元組|
-|`slot`|端點高度|
-|`old_root`|有效載荷雜湊|
-|`new_root`|承諾的根|
-|`perm_root`|端點區塊雜湊|
-|`tx_set_hash`|陳述雜湊|
-
-SCCP 法規編碼器寫成數小數,並將變長位元組陣列編碼為:
-
-$$
-\operatorname{vec}(x)=\operatorname{le32}(|x|)\|x
-$$
-
-透明的公共輸入位元組字串是:
-
-$$
-P =
-\operatorname{version}\|
-\operatorname{message\_id}\|
-\operatorname{payload\_hash}\|
-\operatorname{le32}(\operatorname{target\_domain})\|
-\operatorname{commitment\_root}\|
-\operatorname{le64}(\operatorname{finality\_height})\|
-\operatorname{finality\_block\_hash}
-$$
-
-透明宣告位元組是版本的連環,連結家族,本地域和對方域,安全模型, ancor治理,帳戶程式碼,最終性模型,驗證器目標,驗證器後端家族,長度先決鏈/後端/顯現欄位,目的地繫結雜湊,帳戶程式設計金鑰,有效載荷型別,公開輸入位元組和有效載荷雜湊.說明雜湊是:
-
-$$
-\operatorname{statement\_hash} =
-\operatorname{Blake2bVar}_{32}(
-\texttt{sccp:transparent:statement:v1}\|\operatorname{statement}
-)
-$$
-
-這個證明路徑的 FastPQ 資料空間ID是另一個前置Blake2b欄位的第十六個位元組:
-
-$$
-\operatorname{dsid} =
-\operatorname{Blake2bVar}_{32}(
-\texttt{sccp:transparent:fastpq:dsid:v1}\|\operatorname{statement\_hash}
-)[0..16]
-$$
-
-SCCP FastPQ 批次是:
-
-$$
-(\texttt{sccp:transparent:v1:statement},\varnothing,\operatorname{statement},\operatorname{MetaSet})
-$$
-
-$$
-(\texttt{sccp:transparent:v1:context},\varnothing,E(\operatorname{inner\_proof}),\operatorname{MetaSet})
-$$
-
-$$
-(\texttt{sccp:transparent:v1:payload},\varnothing,\operatorname{canonical\_payload},\operatorname{MetaSet})
-$$
-
-然後按相同的 FastPQ 訂單規則進行排序.
-
-OpenVerify 驗證器的承諾是 SHA-256 對 SCCP 訊息後端名稱和規範的 FastPQ 驗證器描述符:
-
-$$
-\operatorname{vk\_hash} =
-\operatorname{SHA256}(
-\operatorname{message\_backend}\|\operatorname{verifier\_descriptor}
-)
-$$
-
-原料 FastPQ 證明是 Norito- 編碼成一個 `StarkFriOpenProofV1`, 然後封裝在一個 `OpenVerifyEnvelope` 有後端 `Stark`. SCCP 驗證重建相同的 FastPQ 檢查開放的驗證包後設資料,並呼叫了 FastPQ 在重建批次上的驗證器和證明.
-
-## 引數元件 {#parameter-sets}
-
-規範引數目錄揭示了兩個引數集合. 主機供應路由目前使用 `fastpq-lane-balanced`.
-
-|引數|目的|領域|子|FRI|
-| ---------------------- | -------------------------- | ------------------------------ | ------------------------------------------- | ------------------------------- |
-|`fastpq-lane-balanced`|平衡的證明器吞吐量|Goldilocks 二次擴充套件|Poseidon2 commitments、目錄 SHA3 標籤|arity 8、blowup 8、46 queries|
-|`fastpq-lane-latency`|延遲敏感的 lane|Goldilocks 二次擴充套件|Poseidon2 commitments、目錄 SHA3 標籤|arity 16、blowup 16、34 queries|
-
-這兩個目標是128位的安全性,並且使用了 `2^16` 的追蹤域大小.目前 Rust V1 轉錄重播程式碼採用`iroha_crypto::Hash::new`而不是直接呼叫 SHA3-256 來提取Fiat-Shamir挑戰位元組.
-
-Rust 測試器使用的確切目錄常數是:
-
-|持續|`fastpq-lane-balanced`|`fastpq-lane-latency`|
-| -------------------- | ---------------------: | --------------------: |
-|`target_security`|                    128 |                   128 |
-|`grinding_bits`|                     23 |                    21 |
-|`trace_log_size`|                     16 |                    16 |
-|`trace_root`|`0x002a247f81c6f850`|`0x6a9f4eb38fb9b892`|
-|`lde_log_size`|                     19 |                    20 |
-|`lde_root`|`0x60263388dbbf9b2a`|`0x9c9c3a571b6f89ac`|
-|`permutation_size`|                 65,536 |                65,536 |
-|`lookup_log_size`|                     19 |                    20 |
-|`omega_coset`|`0x6af325e825ad5c18`|`0x3a5fd4171e3c3a4d`|
-|`fri_arity`|                      8 |                    16 |
-|`fri_blowup`|                      8 |                    16 |
-|`fri_max_reductions`|                      8 |                     6 |
-|`fri_queries`|                     46 |                    34 |
-
-## 配置 {#configuration}
-
-FastPQ 配置嵌入`zk.fastpq`下方.
+FastPQ 設定以巢狀方式置於 `zk.fastpq` 之下。
 
 ```toml
 [zk.fastpq]
 execution_mode = "cpu"
 poseidon_mode = "cpu"
+proof_sidecar_queue_cap = 1024
+proof_sidecar_max_retries = 16
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -1206,10 +207,20 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
-metal_debug_fused = false
+
+[zk.fastpq.producer]
+poll_interval_ms = 1000
+step_timeout_ms = 30000
+max_native_steps = 16
+max_source_entries = 65536
+max_source_statements = 16384
 ```
 
-同樣的執行和遠端測量標籤可以在 `iroha3d` 中取消:
+兩種模式都只接受 `cpu` 或 `gpu`，預設值為 `cpu`。將任一模式設為 `gpu` 後，證明雜湊運算便必須使用裝置：在 macOS 上為 Metal，在其他平台上為 CUDA。如果未將 GPU 支援編譯進來，或裝置未通過預檢，證明器通道會維持停用；它絕不會退回 CPU。裝置負責大量執行 Merkle 葉節點與下層父節點的雜湊運算；轉錄、有序的上層樹與軌跡運算則留在 CPU 上。設定 `poseidon_mode = "gpu"` 時，若另一項預檢通過，節點還會在 GPU 上批次計算轉錄的 Poseidon 摘要；否則會在 CPU 上計算。
+
+`proof_sidecar_max_bytes` 會限制節點持久保存並驗證的已編碼產物大小，預設值為證明器的最大證明訊框。`producer` 表會約束每次證明嘗試：其輪詢間隔、時間預算、原生重播步數（1 到 64），以及在配置之前接受的來源項目與陳述。`metal_queue_fanout` 接受 1 到 4。
+
+模式與遙測標籤設定也可以透過 `iroha3d` 覆寫：
 
 ```shell
 iroha3d --fastpq-execution-mode gpu
@@ -1219,42 +230,38 @@ iroha3d --fastpq-chip-family m4
 iroha3d --fastpq-gpu-kind integrated
 ```
 
-環境變數也支援配置欄位. FastPQ 特定的變數包括:
+`iroha3d` 在讀取設定檔時會忽略環境變數，因此請在 TOML 中或使用上述選項設定這些值。
 
-- `FASTPQ_EXECUTION_MODE`
-- `FASTPQ_POSEIDON_MODE`
-- `FASTPQ_DEVICE_CLASS`
-- `FASTPQ_CHIP_FAMILY`
-- `FASTPQ_GPU_KIND`
-- `FASTPQ_METAL_QUEUE_FANOUT`
-- `FASTPQ_METAL_COLUMN_THRESHOLD`
-- `FASTPQ_METAL_MAX_IN_FLIGHT`
-- `FASTPQ_METAL_THREADGROUP`
-- `FASTPQ_METAL_TRACE`
-- `FASTPQ_DEBUG_METAL_ENUM`
-- `FASTPQ_DEBUG_FUSED`
+## 指標 {#metrics}
 
-## 計量 {#metrics}
+啟用遙測後，FastPQ 會匯出有關後端選擇、證明持久保存與 Metal 執行階段行為的指標：
 
-在啟用遠端測量時, FastPQ 將對後端選擇和金屬執行階段行為進行出口:
-
-|計量|這意味著|
-| --------------------------------- | --------------------------------------------------------------------------- |
-|`fastpq_execution_mode_total`|根據後端和裝置標籤的要求和解決執行模式 |
-|`fastpq_poseidon_pipeline_total`|索取和解決了Poseidon管道的路徑|
+|指標|含義|
+| ----------------------------------- | --------------------------------------------------------------------------- |
+|`fastpq_execution_mode_total`|依後端與裝置標籤統計的請求執行模式與解析後的執行模式 |
+|`fastpq_poseidon_pipeline_total`|請求的與解析後的 Poseidon 管線路徑|
+| `fastpq_gpu_disable_total` | 依加速器、原因與裝置標籤統計的 GPU 加速器停用事件 |
+| `fastpq_gpu_parity_failure_total` | 依加速器、原因與裝置標籤統計的取樣 GPU 一致性檢查失敗 |
+| `fastpq_proof_sidecar_queue_depth` | 佇列中的 FastPQ 證明輔助紀錄附件 |
+| `fastpq_proof_sidecar_events_total` | 依事件統計的證明輔助紀錄持久保存事件 |
 |`fastpq_metal_queue_depth`|Metal 佇列限制、最大並行數、派送數量和取樣視窗|
-|`fastpq_metal_queue_ratio`|金屬佇列繁忙和重疊比例 |
-|`fastpq_zero_fill_duration_ms`|為金屬執行提供零填充持續時間 |
-|`fastpq_zero_fill_bandwidth_gbps`|產生的零填充頻寬|
+|`fastpq_metal_queue_ratio`|Metal 佇列的忙碌比例與重疊比例 |
+|`fastpq_zero_fill_duration_ms`|Metal 執行的主機零填充持續時間 |
+|`fastpq_zero_fill_bandwidth_gbps`|推導出的零填充頻寬|
 
-在 [ 效能和指標](/zh-hant/guide/advanced/metrics.md)中列出的共識和佇列訊號中使用一般的績效分類.
+模式、GPU、Metal 佇列與零填充指標需要 `extended` 或 `full` 遙測設定檔，且在 Kura 以 `init_mode = "fast"` 啟動時不會匯出。Metal 佇列與零填充指標還需要 macOS 上的 `fastpq-gpu` 建置。
+
+進行一般效能問題的初步排查時，請將這些指標與[效能和指標](/zh-hant/guide/advanced/metrics.md)中列出的共識與佇列訊號搭配使用。
 
 ## 相關參考 {#related-reference}
 
-- [節點授權型別快照資料模型方案](/zh-hant/reference/data-model-schema.md)
+- [資料模型方案](/zh-hant/reference/data-model-schema.md)，提供以節點為準的型別快照
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
+- `FastpqPublicTransferStatementV1`
+- `FastpqBalanceKeyV1`
+- `FastpqExecutionQuantityKeyV1`
 - `TransferTranscript`
 - `AxtFastpqBinding`
-- `LaneFastpqProofMaterial`
+- `AxtProofEnvelope`
 - [`iroha3d` FastPQ 的選項](/zh-hant/reference/iroha3d-cli.md#fastpq-overrides)

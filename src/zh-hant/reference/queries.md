@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # 查詢 {#queries}
 
 Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型公開兩種主要查詢形式：
@@ -57,7 +56,7 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | 查詢 | 用途 |
 | --- | --- |
 | `FindAssets` | 列出資產餘額。 |
-| `FindAssetsDefinitions` | 列出資產定義。 |
+| `FindAssetDefinitions` | 列出資產定義。 |
 | `FindAssetsByAccountId` | 列出某帳戶持有的資產。 |
 | `FindAssetById` | 依 `AssetId` 尋找單一資產餘額。 |
 | `FindAssetDefinitionById` | 依 ID 尋找單一資產定義。 |
@@ -67,7 +66,7 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 
 ## 託管與證明記錄 {#escrow-and-proof-records}
 
-託管查詢會檢查[原生資產託管 ISIs](/zh-hant/blockchain/escrow.md)所建立的記錄，包括市集託管、通用資產鎖定及匿名託管記錄。
+託管查詢會檢查[原生資產託管 ISIs](/zh-hant/blockchain/escrow.md)所建立的記錄，包括市集託管、通用資產鎖定及條件式託管。
 
 | 查詢 | 用途 |
 | --- | --- |
@@ -76,29 +75,23 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | `FindAssetEscrowsBySeller` | 依賣方列出資產託管。 |
 | `FindAssetEscrowsByBuyer` | 依買方列出資產託管。 |
 | `FindAssetEscrowsByStatus` | 依狀態列出資產託管。 |
-| `FindAnonymousAssetEscrows` | 列出匿名資產託管記錄。 |
-| `FindAnonymousAssetEscrowById` | 依 ID 尋找單一匿名資產託管。 |
-| `FindAnonymousAssetEscrowsBySeller` | 依賣方列出匿名託管。 |
-| `FindAnonymousAssetEscrowsByBuyer` | 依買方列出匿名託管。 |
-| `FindAnonymousAssetEscrowsByStatus` | 依狀態列出匿名託管。 |
 | `FindProofRecordById` | 依 ID 尋找單一證明記錄。 |
 | `FindProofRecords` | 列出證明記錄。 |
 | `FindProofRecordsByBackend` | 列出某證明後端的證明記錄。 |
 | `FindProofRecordsByStatus` | 依狀態列出證明記錄。 |
 
-## Nexus、資料可用性與套件 {#nexus-data-availability-and-packages}
+## SORA Nexus、資料可用性與套件 {#nexus-data-availability-and-packages}
 
 | 查詢 | 用途 |
 | --- | --- |
-| `FindRepoAgreements` | 列出儲存在鏈上的儲存庫協議。 |
+| `FindRepoAgreements` | 列出儲存在鏈上的附買回與附賣回協議。 |
 | `FindTwitterBindingByHash` | 依雜湊解析 Twitter 繫結。 |
 | `FindDaPinIntentByTicket` | 依票證尋找資料可用性釘選意圖。 |
 | `FindDaPinIntentByManifest` | 依資訊清單參照尋找釘選意圖。 |
 | `FindDaPinIntentByAlias` | 依別名尋找釘選意圖。 |
 | `FindDaPinIntentByLaneEpochSequence` | 依通道、時期及序號尋找釘選意圖。 |
-| `FindLaneRelayEnvelopeByRef` | 尋找已驗證的通道轉送封套。 |
 | `FindSorafsProviderOwner` | 解析 SoraFS 提供者的擁有者。 |
-| `FindDataspaceNameOwnerById` | 解析資料空間名稱的擁有者。 |
+| `FindDataspaceNameOwnerById` | 解析資料空間別名目前有效的 SNS 擁有者。 |
 |`FindMusubiExactPackageV1`|閱讀一個精確的包裝記錄及其當前修訂.|
 |`FindMusubiExactReleaseV1`|閱讀一個準確的釋放快照.|
 |`FindMusubiProviderBundleAttestationV1`|閱讀一個供應商的檔案包證書.|
@@ -118,7 +111,7 @@ Iroha 查詢可讀取分類帳狀態而不加以變更。目前的資料模型�
 | `FindActiveTriggerIds` | 列出作用中的觸發器 IDs。 |
 | `FindTriggers` | 列出觸發器。 |
 | `FindTriggerById` | 依 ID 尋找單一觸發器。 |
-| `FindContractManifestByCodeHash` | 依程式碼雜湊尋找智慧合約資訊清單。 |
+| `FindContractManifestByArtifactId` | 依資料空間產物 ID 尋找智慧合約資訊清單。 |
 | `FindTransactions` | 列出已完成共識提交的交易。 |
 | `FindBlocks` | 列出區塊。 |
 | `FindBlockHeaders` | 列出區塊標頭。 |

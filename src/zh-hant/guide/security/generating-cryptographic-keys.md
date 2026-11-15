@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # 產生密碼金鑰 {#generating-cryptographic-keys}
 
 使用 `kagami keys` 產生 Iroha 3 使用者端、對等節點及驗證者的金鑰材料。
@@ -18,7 +17,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-上層目錄必須已存在。目標目錄必須是新目錄或已由目前使用者擁有，許可權模式為 `0700`，不含符號連結且為空。`kagami` 會以 `0600` 模式寫入 `public.key` 和 `private.key`，而且不會印出金鑰材料。使用 `--pop` 時，它也會寫入 `pop.hex`。
+父目錄必須已存在，目標目錄則不得存在：Kagami 連既有的空目錄也會拒絕。它會檢查檔案系統的僅限擁有者存取規則，以 `0700` 模式建立目標，並拒絕符號連結。`kagami` 以 `0600` 模式寫入 `public.key` 和 `private.key`，不會印出金鑰材料。指定 `--pop` 時，也會寫入 `pop.hex`。
 
 如果 Kagami 無法在某個平臺上強制執行這些僅限擁有者存取的檔案系統規則，`--out-dir` 會採安全關閉方式拒絕操作。私密金鑰檔案是未加密的匯出副本，並非硬體簽署器或不可匯出的生產簽署器。請將其匯入核准的託管邊界，並依部署程式刪除該匯出副本。
 
@@ -57,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` 僅可與 `bls_normal` 一起使用；它會在託管目錄中加入 `pop.hex`。已簽署的創世設定要求每個投票驗證者都有相符的 PoP。在對等節點設定中，非空的 `trusted_peers_pop` 對映會選出驗證者子集；未列入該非空對映的受信任對等節點是觀察者。如果對映為空，所有使用 BLS-normal 的受信任對等節點都會進入啟動候選集合，而投票者的 PoPs 仍由已簽署的創世設定提供。
+`--pop` 僅可與 `bls_normal` 一起使用；它會在託管目錄中加入 `pop.hex`。已簽署的創世設定要求每個投票驗證者都有相符的 PoP。在對等節點設定中，請在 `trusted_peers_pop` 中列出每個驗證者的 PoP：沒有有效 PoP 的受信任對等節點會被排除在共識名單之外，而空對映不會產生任何驗證者，因此對映中缺少創世驗證者的節點會拒絕啟動。若要執行僅同步的節點，請使用 `[sumeragi] role = "observer"`。
 
 ## 託管輸出 {#custody-output}
 

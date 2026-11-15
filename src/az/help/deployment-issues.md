@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Yerləşdirmə Problemlərinin Həlli {#troubleshooting-deployment-issues}
 
 Bu bölmə Iroha 3 yerləşdirmələri üçün problem həll etmə məsləhətləri təklif edir. Əgər yaşadığınız problem burada təsvir edilməyibsə, bizə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə müraciət edin.
@@ -15,7 +14,7 @@ Bu bölmə Iroha 3 yerləşdirmələri üçün problem həll etmə məsləhətl�
 Yerli və test yerləşdirmələri üçün, əl ilə yazılmış şəbəkə həmkarı faylları əvəzinə Kagami tərəfindən yaradılan artefaktları üstün tutun:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Yaradılan kataloq şəbəkə həmkarı konfiqurasiyalarını, blockchain başlanğıc materiallarını, başlanğıc skriptlərini və Iroha 3 quruluş xətti üçün README-i ehtiva edir.
@@ -39,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker və Yarat {#docker-and-compose}
 
-Cari Kagami localnet çıxışından Compose yaradın ki, əmr sətiri arqumentləri və konfiqurasiya faylları çıxarılmış kod ilə uyğun olsun:
+Docker-də eyni reviziyadan yığılmış icra faylları ilə dörd təsdiqləyici qovşaq qurub işə salmaq üçün [Iroha 3-i işə sal](/az/get-started/launch-iroha.md) təlimatına əməl edin.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Təsdiqləyici qovşaqların jurnallarına baxmaq üçün dəstin qovluğunda `python3 poc.py logs` əmrini işlədin.
 
 Əgər bir compose yerləşdirilməsi başlayır və sonra dayanırsa, daemon qeydlərini yoxlayın:
 
@@ -54,7 +49,7 @@ docker compose -f ./docker-compose.yml up
 - reklamı verilmiş P2P ünvanlar yalnız konteyner şəbəkəsi daxilində işləyir
 - blokçeyn başlanğıcını yenidən yaratdıqdan sonra yerli həcm təkrar istifadəsi
 
-Yeni bir blockchain genesisini sınaqdan keçirərkən, yığın yenidən başlamazdan əvvəl köhnə Kura həcmləri silin. Köhnə blok saxlamağı yeni blockchain genesis ilə saxlamaq təkrar oynatma uğursuz olacaq.
+Yeni genezis bloku üçün qovşağın yaddaşı boş olmalıdır. Eyni şəbəkəni yenidən işə salmaq üçün əvvəl `python3 poc.py down`, sonra `python3 poc.py up` əmrlərini işlədin. `state/` qovluğunu şəbəkənin dörd Docker yaddaş bölməsi ilə birlikdə saxlayın.
 
 ## Kubernetes {#kubernetes}
 
@@ -67,9 +62,9 @@ Kubernetes üçün hər bir doğrulayıcıya vəziyyətli infrastruktur kimi yan
 
 Əgər pod təkrar-təkrar yenidən başlasa, poddakı yaradılmış konfiqurasiyanı gözlənilənlə müqayisə edin [`peer.template.toml`](/az/reference/peer-config/index.md#template) və şəbəkə iştirakçısının köhnə məlumatları təkrar oynadığını yoxlayın Kura məlumat.
 
-## Sora profili {#sora-profile}
+## SORA Nexus profili {#sora-profile}
 
-Şəxsi və ya yerli Iroha 3 yerləşdirmələrində Nexus, SoraFS və ya çox zolaqlı axınlardan istifadə edildikdə, standart daemon Sora profili aktivləşdirilmiş şəkildə başlamalıdır:
+SORA Nexus, SoraFS və ya bir neçə zolaqdan istifadə edən özəl və ya lokal Iroha 3 yerləşdirməsində standart fon xidmətini bu profil aktiv olmaqla başladın.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

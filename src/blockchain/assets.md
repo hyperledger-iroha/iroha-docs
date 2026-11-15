@@ -18,7 +18,9 @@ An `AssetDefinition` contains:
 - `logo`: optional `SoraFS` URI
 - `metadata`: arbitrary key-value metadata
 - `balance_scope_policy`: whether balances are global or
-  dataspace-restricted
+  data space-restricted
+- `owning_domain`: the owning domain of a domain-owned definition; absent for
+  definitions registered directly in a data space
 - `owned_by`: the account that registered or owns the definition
 - `total_quantity`: total issued quantity
 - `confidential_policy`: policy for shielded asset operations
@@ -34,10 +36,10 @@ An `Asset` contains:
 
 - `id`: an `AssetId`, which combines the asset definition, holder account,
   and optional balance scope
-- `value`: a `Numeric` balance
+- `value`: a `Quantity` balance
 
 The holder account is canonical and domainless. The asset definition may be
-projected under a dataspace-qualified domain, for example
+projected under a data space-qualified domain, for example
 `payments.universal`.
 
 ## Mintability
@@ -60,10 +62,10 @@ policy unless the asset supply is already established.
 The `balance_scope_policy` controls how balances are bucketed:
 
 - `Global`: one balance bucket per account and asset definition
-- `DataspaceRestricted`: balances are partitioned by dataspace context
+- `DataspaceRestricted`: balances are partitioned by data space context
 
-Dataspace-restricted balances are useful when the same asset definition is
-used across multiple Nexus dataspaces but balances must remain isolated.
+Data space-restricted balances are useful when the same asset definition is
+used across multiple SORA Nexus data spaces but balances must remain isolated.
 
 ## Try It on Taira
 
@@ -96,23 +98,23 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
 
 All three examples are reads. To mint, burn, or transfer assets on Taira, use a
 faucet-funded account and the guarded flow in
-[Connect to SORA Nexus Dataspaces](/get-started/sora-nexus-dataspaces.md).
+[Build on SORA Nexus with Taira and Minamoto](/get-started/sora-nexus-dataspaces.md).
 
-For a fee-paying Taira asset example, save the faucet helper from
-[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-as `taira_faucet_claim.py`, then claim the faucet asset first and use it as the
-transaction gas asset:
+For a fee-paying Taira asset example, first fund the signer with the
+prepared faucet flow in
+[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira).
+Then pass `--fee-payer authority` on `ledger asset mint`,
+`ledger asset burn`, and `ledger asset transfer` commands; the CLI quotes
+the exact fee, in Taira's fee asset, before signing:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Then include `--metadata ./taira.tx-metadata.json` on `ledger asset mint`,
-`ledger asset burn`, and `ledger asset transfer` commands.
 
 ## Instructions
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ምስጠራ ቁልፎችን ማከማቸት {#storing-cryptographic-keys}
 
 የግል ቁልፍ ለፈቃዱ የተፈቀደውን እያንዳንዱን ድርጊት መፍቀድ ይችላል። የግል ቁልፍን በጭራሽ አያጋሩ። የዘር ቁሳቁሶችን፣ የመልሶ ማግኛ ሚስጥሮችን፣ ተሸካሚ ቶከኖችን እና ወደ ውጭ የተላኩ ቁልፍ ፋይሎችን በተመሳሳይ የእንክብካቤ ደረጃ ይጠብቁ።
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-የወላጅ ማውጫው መኖር አለበት። ዒላማው አዲስ ወይም ቀድሞውኑ አሁን ባለው ተጠቃሚ፣ ሁነታ `0700`፣ ከምሳሌያዊ ማገናኛዎች የጸዳ እና ባዶ መሆን አለበት። Kagami ይጽፋል `public.key` እና `private.key` በሞድ `0600`; `--pop` እንዲሁም `pop.hex` ይጽፋል። ትዕዛዙ Kagami የባለቤት-ብቻ የፋይል ስርዓት ህጎችን ማስፈጸም በማይችልባቸው መድረኮች ላይ አይሳካም።
+ወላጅ ማውጫው መኖር አለበት። ዒላማው ባዶ ማውጫ ሆኖም እንኳ መኖር የለበትም። Kagami በ`0700` ሁነታ ይፈጥረዋል፣ ለባለቤቱ ብቻ መዳረሻ የሚሰጡ የፋይል ስርዓት ፍተሻዎችን ያስገድዳል፣ ተምሳሌታዊ አገናኞችን ይከለክላል፣ `public.key` እና `private.key`ንም በ`0600` ሁነታ ይጽፋል፤ `--pop` ደግሞ `pop.hex`ን ይጽፋል። Kagami ለባለቤቱ ብቻ የመዳረሻ ደንቦችን ማስፈጸም በማይችልባቸው መድረኮች ትዕዛዙ ይከሽፋል።
 
 የግል-ቁልፍ ፋይል ያልተመሰጠረ ወደ ውጭ መላክ ነው። ከምንጩ ቁጥጥር፣ ከተጋሩ ማህደሮች፣ ምዝግብ ማስታወሻዎች፣ ቲኬቶች፣ ከተወያዩ እና አርቲፋክቶችን ይገንቡ። የምርት ቁልፍን ወደ ተፈቀደው የጥበቃ ወሰን ያስገቡ፣ ከዚያ ወደ ውጭ መላክ እንደ ማሰማራቱ አሰራር ያስወግዱት። በምርት ውስጥ የልማት ቁልፍን እንደገና አይጠቀሙ.
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE はランダムアクセスマシンラコニック関数評価を意味します。Iroha では、公開ポリシーがオンチェーンにあるが、評価者のロジック、秘密、または生の入力がワールドステートに書き込まれるべきでないプログラムの汎用隠し関数レイヤーです。これは、プライベート電話やメールの照会など、SORA Nexus 識別子フローで使用されるものであり、ノードプロファイルがアプリ向けルートを有効にすると、一般的な Torii プログラム実行ヘルパーとしても公開される可能性があります。
@@ -764,6 +763,5 @@ Torii の進行中の RAM-LFE ソフトウェアランタイムは、`torii.ram_
 
 ## 関連するトピック {#related-topics}
 
-- [プライベートデータスペースのスポンサー料金](/ja/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
 - [Torii API エンドポイント](/ja/reference/torii-endpoints.md#app-and-sora-route-families)
 - [匿名取引](/ja/blockchain/anonymous-transactions.md)

@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust хэрэгжилт гол ажлын орчинд байрладаг бөгөөд Iroha 3 кодын сан дээр ажиллах хамгийн шууд арга хэвээр байна.
@@ -31,7 +30,7 @@ cargo build --workspace
 Багцалсан анхны тохиргоотой лавлах үйлчлүүлэгчийг ажиллуулна уу:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Оролдоно уу Taira Зөвхөн унших {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Та `taira.client.toml`-г үүсгэсэнээс хойш, ижил бинар файл Taira-д гарын үсэгтэй канаар команд ажиллуулж чадна. Эдгээрийг энгийн нэгж тестээс тусгаар байлгаарай, учир нь тэд тестнетээр санхүүжүүлсэн данс болон амьд тестнетийн боломж шаарддаг.
+`taira.client.toml`-г үүсгэсний дараа нэг бинар файл `iroha taira account` ашиглан данс бүртгэж санхүүжүүлэх, мөн Taira руу ердийн гарын үсэгтэй блокчэйн бүртгэлийн командуудыг илгээх боломжтой. Эдгээр нь туршилтын хөрөнгө олгох үйлчилгээгээр санхүүжүүлсэн данс болон ажиллаж буй туршилтын сүлжээ шаарддаг тул ердийн нэгжийн тестүүдээс тусад нь байлгана уу.
 
 ## Rust Клиентын програм хангамжийн багцыг ашиглах {#using-the-rust-client-crate}
 
@@ -71,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Блокчейн бүртгэлийн зуучлалын ажиллаж буй урсгалын хувьд, [Уугуул хөрөнгийн хадгаламж](/mn/blockchain/escrow.md#rust-sdk)-ыг үзнэ үү. Одоогоор Rust өгөгдлийн загвар нь зах зээлийн зуучлал, ерөнхий хөрөнгийн түгжээг, нэргүй зуучлал, лавлагаа, болон үүрэг арга хэмжээний хамгийн бүрэн төрөлтэй хамрах хүрээтэй байдаг.
+Блокчэйн бүртгэлийн удирддаг эскроугийн ажлын урсгалын хувьд [Уугуул хөрөнгийн эскроу](/mn/blockchain/escrow.md#rust-sdk)-г үзнэ үү. Rust өгөгдлийн загвар одоогоор зах зээлийн эскроу, ерөнхий хөрөнгийн түгжээ, нөхцөлт эскроу, асуулга болон үйл явдлын хамгийн бүрэн төрөлжсөн хамралттай.
 
 Та орон нутгийн CLI тусламжийн цаг үеийн өгөгдлийн харагдацыг дараах байдлаар дахин үүсгэж болно:
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # አፈጻጸም እና መለኪያዎች {#performance-and-metrics}
 
 Iroha አፈጻጸም በስራ ጫና፣ በአረጋጋጭ ቶፖሎጂ፣ በአውታረ መረብ ሁኔታዎች እና በስምምነት ቅንጅቶች ላይ የተመሰረተ ነው።. ስለዚህ አንድ ነጠላ TPS ቁጥር ጠቃሚ የሚሆነው ከቋሚ ውቅር ጋር ካለው የቤንችማርክ ሩጫ ጋር ሲገናኝ ብቻ ነው።.
@@ -24,8 +23,8 @@ Iroha አፈጻጸም በስራ ጫና፣ በአረጋጋጭ ቶፖሎጂ፣ በ
 በይፋዊ ኖድ ነጥብ-በ-ጊዜ የውሂብ እይታ እና ፕሮሜቲየስ መቧጨር ይጀምሩ፣ ከዚያ CLI ለኦፕሬተር የተረጋገጠ የጋራ ስምምነት ሁኔታ ይጠቀሙ። የኦፕሬተር ቁልፉ በታለመው ኖድ መፍቀድ አለበት እና የሚጫነው በሶፍትዌር ማስፈጸሚያ አካባቢ ላይ ብቻ ነው -
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 ለራስዎ ማሰማራት የህዝብ-ቴስትኔት ምልከታዎችን እንደ የማምረት አቅም ቁጥሮች አይጠቀሙ።
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### እጩ እና የመግቢያ ድንበሮች {#candidate-and-ingress-bounds}
 
-የኖድ አካባቢያዊ Sumeragi ድንበሮች አንድ አረጋጋጭ ምን ያህል እጩ እና የመልሶ ማግኛ ስራ እንደሚይዝ ይወስናሉ -
+የብሎክ መጠንና የግብይት ገደቦች ከተፈረመ genesis እና commit ከተደረጉ የሰንሰለት መለኪያዎች ይመጣሉ። አካባቢያዊ የኖድ `[sumeragi]` ቅንብሮች የተሳትፎ ሚና፣ የፊርማ ቁሳቁስ ጥበቃ፣ የደህንነት መዝገብ መንገዶች እና በሰነድ የተገለጹ አካባቢያዊ የጊዜ ገደብና ማመሳሰል ለውጦችን ይይዛሉ።
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` እና `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`፣ `sumeragi.queues.chunks` እና `sumeragi.queues.ready_bodies`
-
-በጣም ትንሽ ድንበሮች ወረፋ ወይም ጭነት-መልሶ ማግኛ ግፊት ይፈጥራሉ; ከመጠን በላይ የሆኑ ድንበሮች የተያዘ ማህደረ ትውስታን እና ለተሳዳቢ አውታረመረብ ያለውን የስራ መጠን ይጨምራሉ አቻ. በአንድ ጊዜ አንድ ማሰሪያ ከመቀየርዎ በፊት የምርመራውን ነጥብ-በጊዜ ውሂብ እይታ ከሂደት ማህደረ ትውስታ፣ የመልእክት አያያዝ እና የጎደለው የውሂብ አካል መለኪያዎች ጋር ያወዳድሩ -
+የአውታረ መረብ መግቢያና የግብይት ወረፋ ገደቦች በኖዱ የሚቀመጥ ሥራን ይቆጣጠራሉ። የሥራ ገደብ ከመቀየርዎ በፊት የምርመራ ቅጽበታዊ ቅጂውን ከፕሮሰስ ማህደረ ትውስታ፣ ከመልዕክት አያያዝ እና ከጎደለ የብሎክ አካል መለኪያዎች ጋር ያወዳድሩ። የተመሳሳይ አውታረ መረብ ሙከራዎችን ሲያወዳድሩ የተፈረሙ የሰንሰለት መለኪያዎችን አይቀይሩ:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |ተቀባይነት ያለው የመተላለፊያ ይዘት|`sum(rate(txs{type="accepted"}[5m]))`|በተረጋጋ ሁኔታ ዒላማውን TPS ማሟላት ወይም ማለፍ አለበት|
 |አለመቀበል|`sum(rate(txs{type="rejected"}[5m]))`|በፈተና እቅድ ሊገለጽ የሚችል መሆን አለበት|
-|የፕሮቶኮል ማጠናቀቂያ መዘግየት|`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))`|p95/p99 ን ከመዘግየት በጀት ጋር ያወዳድሩ|
+|የፕሮቶኮል ማጠናቀቂያ መዘግየት|`histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`፣ `last_commit_time_ms`|p95/p99 ን ከመዘግየት በጀት ጋር ያወዳድሩ|
 |የወረፋ ጥልቀት|`queue_size`፣ `sumeragi_tx_queue_depth`|በከፍተኛ ጭነት ጊዜ ታስቦ መቆየት አለበት|
 |ወረፋ ሙሌት|`sumeragi_tx_queue_saturated`|ዘላቂ ዜሮ ያልሆኑ እሴቶች ማለት ከመጠን በላይ መጫን ማለት ነው|
-|ለውጦችን ይመልከቱ|`view_changes`፣ `sumeragi_view_change_suggest_total`፣ `sumeragi_view_change_install_total`|እየጨመረ የሚሄደው እሴቶች ጊዜን፣ ቶፖሎጂን፣ ጭነት ወይም የአውታረ መረብ ችግርን ያመለክታሉ|
-|የተጣሉ መልዕክቶች|`dropped_messages`፣ `sumeragi_consensus_message_handling_total`|በጭነት ጊዜ ጠብታዎች ብዙውን ጊዜ የመዘግየት ነጠብጣቦችን ያብራራሉ|
-|ጭነት እና DA መልሶ ማግኛ|`sumeragi_missing_block_requests`፣ `sumeragi_missing_block_oldest_ms`፣ `sumeragi_missing_block_fetch_total`፣ `sumeragi_da_gate_block_total`፣ `sumeragi_da_gate_satisfied_total`|የማያቋርጥ ጥያቄዎች፣ እድሜ መጨመር ወይም ተደጋጋሚ DA በሮች በውሂብ አካል ወይም ቁራጭ ማግኛ ላይ ችግሮችን ያመለክታሉ|
-|የጋራ መግባባት ማጠናቀቂያ ምልአተ ጉባኤ|`sumeragi_commit_signatures_counted`፣ `sumeragi_commit_signatures_required`|የተቆጠሩ ፊርማዎች ወደሚፈለገው ምልአተ ጉባኤ በፍጥነት መድረስ አለባቸው|
+|ለውጦችን ይመልከቱ|`view_changes`፣ `sumeragi_view_changes_total`፣ `sumeragi_timeout_votes_total`|እየጨመረ የሚሄደው እሴቶች ጊዜን፣ ቶፖሎጂን፣ ጭነት ወይም የአውታረ መረብ ችግርን ያመለክታሉ|
+|የተጣሉ መልዕክቶች|`sumeragi_dropped_total`፣ `p2p_queue_dropped_total`|በጭነት ጊዜ ጠብታዎች ብዙውን ጊዜ የመዘግየት ነጠብጣቦችን ያብራራሉ|
+|የጭነት እና የመከታተያ ማምጣቶች|`sumeragi_fetch_requests_total{kind="body"}`፣ `sumeragi_fetch_requests_total{kind="sync"}`|የማያቋርጡ የአካል ወይም የማመሳሰል ማምጣቶች በጭነት ማግኛ ወይም በመከታተያ ማመሳሰል ላይ ችግርን ያመለክታሉ|
+|የማጠናቀቂያ ሂደት|`sumeragi_committed_height`፣ `sumeragi_applied_height`|የተረጋገጡ እና የተተገበሩ ከፍታዎች አብረው መራመድ አለባቸው|
 
 መለኪያ በ`/v1/sumeragi/status` ውስጥ ብቻ ሲኖር፣ የ JSON ነጥብ-በ-ጊዜ የውሂብ እይታን እንደ ፕሮሜቲየስ መቧጨር በተመሳሳይ የሩጫ አርቲፋክቶች ይያዙ።
 
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - አረጋጋጭ እና ታዛቢ ይቆጥራል
 - የጋራ ስምምነት ሁነታ፣ የተፈረመ የብሎክ ምት እና DA አቀማመጥ
 - ትክክለኛ `3f + 1` ኮሚቴ፣ ምልአተ ጉባኤ እና የታዛቢዎች ዝርዝር
-- `sumeragi.block`፣ `sumeragi.queues`፣ `sumeragi.limits`፣ የአውታረ መረብ መግቢያ እና የግብይት-ወረፋ ወሰን
+- የተፈረሙ የሰንሰለት መለኪያዎች፣ አካባቢያዊ የSumeragi ለውጦች፣ የአውታረ መረብ መግቢያ እና የግብይት ወረፋ ገደቦች
 - የቴሌሜትሪ መገለጫ
 - ሃርድዌር፣ ማከማቻ እና OS ዝርዝሮች
 - አውታረ መረብ RTT፣ መንቀጥቀጥ፣ ኪሳራ እና የመተላለፊያ ይዘት ግምቶች
@@ -253,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - ተቀባይነት አግኝቷል/ውድቅ ተደርጓል TPS
 - P50 / P95 / P99 ፕሮቶኮል ማጠናቀቂያ መዘግየት
 - የወረፋ ጥልቀት እና ሙሌት
-- ለውጦችን፣ የተጣሉ መልዕክቶችን፣ የጎደሉ-ብሎክ ማምጣቶችን እና DA-በር ቆጣሪዎችን ይመልከቱ
+- የእይታ ለውጦች፣ የጊዜ ማብቂያ ድምጾች፣ የSumeragi ጠብታዎች እና የአካል እና የማመሳሰል ማምጣቶች
 - CPU፣ ማህደረ ትውስታ፣ ዲስክ እና የአውታረ መረብ አጠቃቀም በአንድ አረጋጋጭ
 
 እነዚህ ዝርዝሮች ከሌሉ TPS ቁጥር እንደ ተጨባጭ መታየት አለበት።
@@ -261,6 +253,6 @@ iroha --config ./localnet/client.toml \
 ## ተዛማጅ ገጾች {#related-pages}
 
 - [ከኢዛናሚ ጋር ትርምስ ሙከራ](./chaos-testing.md)
-- [Torii API የመጨረሻ ነጥቦች](../../reference/torii-endpoints.md)
+- [Torii የመጨረሻ ነጥቦች](../../reference/torii-endpoints.md)
 - [Iroha 3 በ CLI በኩል ያሂዱ](../../get-started/operate-iroha-via-cli.md)
 - [የአውታረ መረብ አቻ ውቅር ማጣቀሻ](../../reference/peer-config/params.md)

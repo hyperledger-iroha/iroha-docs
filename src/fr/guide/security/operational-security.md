@@ -5,7 +5,6 @@ translation_source_hash: 042673aca63962b4b3f91e59c29bc5030ada7d63f08299189995130
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Sécurité opérationnelle {#operational-security}
 
 La sécurité opérationnelle protège les personnes, les hôtes, les identifiants et les procédures autour d'un déploiement Iroha. Le registre de la blockchain enregistre les changements d'état acceptés. Les opérateurs doivent sécuriser séparément leurs postes de travail, leurs clés de signature et leur processus de réponse aux incidents.

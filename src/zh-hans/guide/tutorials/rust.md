@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust 的实现存在于主要工作空间中,并且仍然是与 Iroha 3 代码库合作的最直接方式.
@@ -31,7 +30,7 @@ cargo build --workspace
 运行已注入的默认客户端配置:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## 试看 Taira 只阅读 {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-在创建 `taira.client.toml`后,同一个二进制器可以对 Taira 执行已签名的 canary 命令. 保持这些单元测试与普通的测试分开,因为它们需要采用水龙头资助的帐户和现场测试网可用性.
+创建 `taira.client.toml` 后，同一个二进制文件可以通过 `iroha taira account` 完成账户的接入和注资，并向 Taira 提交普通的已签名账本命令。请将这些命令与普通单元测试分开，因为它们需要一个通过水龙头注资的账户，并依赖在线测试网的可用性。
 
 ## 使用 Rust 客户端盒 {#using-the-rust-client-crate}
 
@@ -71,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-对于账本管理的托管工作流程,请参见 [原生资产托管](/zh-hans/blockchain/escrow.md#rust-sdk).目前, Rust 数据模型对市场托管,通用资产锁定,匿名托管,查询和事件提供了最完整的类型覆盖范围.
+有关由账本管理的托管工作流程，请参阅[原生资产托管](/zh-hans/blockchain/escrow.md#rust-sdk)。目前，Rust 数据模型对市场托管、通用资产锁、条件托管、查询和事件提供了最完整的类型化覆盖。
 
 您可以使用以下方式再生本地 CLI 帮助快照:
 

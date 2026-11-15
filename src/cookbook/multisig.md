@@ -12,10 +12,11 @@ verify execution from the multisig account's state.
   `SIGNER_C`.
 - Funded Taira configurations for signers A and C. The proposer and every
   approver pays for their own transaction.
-- `taira.tx-metadata.json` built from the current faucet response, never
-  from a copied fee asset ID.
-- A Rust client project pinned to the same Iroha source revision as Taira for
-  the registration step. The later proposal and approval steps use the CLI.
+- CLI writes use `--fee-payer authority`; the CLI quotes the exact fee, in
+  Taira's fee asset, before signing.
+- A Rust client project that depends on `iroha` and `iroha_model_base`,
+  pinned to the same Iroha source revision as Taira, for the registration
+  step. The later proposal and approval steps use the CLI.
 - The current executor's multisig feature enabled. Registration is
   available to ordinary accounts in the default Iroha 3 runtime, although
   Taira policy and fee admission still apply; use localnet if the public
@@ -24,7 +25,6 @@ verify execution from the multisig account's state.
 ```bash
 SIGNER_A_CONFIG=./taira.signer-a.toml
 SIGNER_C_CONFIG=./taira.signer-c.toml
-FEE_METADATA=./taira.tx-metadata.json
 test -n "$SIGNER_A"
 test -n "$SIGNER_B"
 test -n "$SIGNER_C"
@@ -35,9 +35,10 @@ test -n "$SIGNER_C"
 ### 1. Register a weighted policy
 
 Signer C has weight 2; A and B have weight 1 each. A quorum of 3 therefore
-requires C plus either A or B. Derive the canonical account from that exact
-policy before registration, then pass the same value to
-`MultisigRegister::with_account`:
+requires C plus either A or B. Here `registrar` is an
+`iroha::blocking::Client`, whose `submit` waits for Applied finality.
+Derive the canonical account from that exact policy before registration,
+then pass the same value to `MultisigRegister::with_account`:
 
 ```rust
 use std::{collections::BTreeMap, num::{NonZeroU16, NonZeroU64}};
@@ -48,9 +49,11 @@ use iroha::{
         transaction::FeePaymentIntent,
     },
     executor_data_model::isi::multisig::{
-        MultisigApprove, MultisigPropose, MultisigRegister, MultisigSpec,
+        MultisigApprove, MultisigProposalId, MultisigProposalNonce,
+        MultisigPropose, MultisigRegister, MultisigSpec,
     },
 };
+use iroha_model_base::domain::DomainId;
 
 let spec = MultisigSpec::new(
     BTreeMap::from([
@@ -81,7 +84,7 @@ let register = MultisigRegister::with_account(
     spec,
 );
 
-registrar.submit_blocking::<InstructionBox>(
+registrar.submit::<InstructionBox>(
     register.into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
@@ -98,17 +101,18 @@ test -n "$MULTISIG_ACCOUNT"
 At the pinned commit, the CLI registration command prints its temporary seed
 before the runtime rekeys it. Do not reuse that seed as the controller. There
 is no controller private key: multisig authority comes only from approved
-proposals.
+proposals. To register from the CLI instead, pass the policy-derived value
+to `ledger multisig register --account`.
 
 ### 2. Build one instruction without submitting it
 
-The global `-o` switch serializes an instruction array to standard output.
-It does not submit a transaction and therefore spends no fee.
+The global `--emit-instructions` switch prints the instruction array to
+standard output instead of submitting it, so it spends no fee.
 
 ```bash
 printf '"approved"\n' |
-  iroha --config "$SIGNER_A_CONFIG" -o \
-    ledger account meta set \
+  iroha --config "$SIGNER_A_CONFIG" --emit-instructions \
+    account meta set \
     --id "$MULTISIG_ACCOUNT" \
     --key cookbook_quorum \
   > multisig-instructions.json
@@ -118,26 +122,34 @@ jq . multisig-instructions.json
 
 ### 3. Propose as signer A
 
-The proposer automatically contributes its own weight. Capture the exact
-instruction hash printed by the CLI; approvals bind to that hash.
+The proposer automatically contributes its own weight. Generate a fresh
+proposal nonce and keep it for any retry. Capture the proposal ID and
+instruction hash printed by the CLI; approvals bind to both.
 
 ```bash
+PROPOSAL_NONCE="$(openssl rand -hex 32)"
 PROPOSE_OUTPUT="$({
   iroha --config "$SIGNER_A_CONFIG" \
     --output-format text \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
     ledger multisig propose \
+    --proposal-nonce "$PROPOSAL_NONCE" \
     --account "$MULTISIG_ACCOUNT" \
     < multisig-instructions.json
 })"
 printf '%s\n' "$PROPOSE_OUTPUT"
 
+PROPOSAL_ID="$({
+  printf '%s\n' "$PROPOSE_OUTPUT" |
+    sed -n 's/^proposal_id: //p' |
+    head -n 1
+})"
 INSTRUCTIONS_HASH="$({
   printf '%s\n' "$PROPOSE_OUTPUT" |
     sed -n 's/^instructions_hash: //p' |
     head -n 1
 })"
+test -n "$PROPOSAL_ID"
 test -n "$INSTRUCTIONS_HASH"
 ```
 
@@ -156,14 +168,16 @@ instruction as the multisig account.
 ```bash
 iroha --config "$SIGNER_C_CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
   ledger multisig approve \
   --account "$MULTISIG_ACCOUNT" \
+  --proposal-id "$PROPOSAL_ID" \
   --instructions-hash "$INSTRUCTIONS_HASH"
 ```
 
 The Rust client can continue with the same policy-derived account and the two
-lifecycle instructions used above:
+lifecycle instructions used above. Each signer client is an
+`iroha::blocking::Client`; the proposal ID is derived from the client's
+network, the multisig account, and a fresh nonce:
 
 ```rust
 let instructions = vec![SetKeyValue::account(
@@ -172,12 +186,26 @@ let instructions = vec![SetKeyValue::account(
     Json::from("approved"),
 ).into()];
 let instructions_hash = HashOf::new(&instructions);
-signer_a_client.submit_blocking::<InstructionBox>(
-    MultisigPropose::new(multisig_account.clone(), instructions, None).into(),
+// A fresh nonzero nonce, for example from `openssl rand -hex 32`.
+let proposal_nonce: MultisigProposalNonce = "<FRESH_64_HEX_NONCE>".parse()?;
+let proposal_id = MultisigProposalId::derive(
+    signer_a_client.client().network_id(),
+    &multisig_account,
+    &proposal_nonce,
+);
+signer_a_client.submit::<InstructionBox>(
+    MultisigPropose::new(
+        multisig_account.clone(),
+        proposal_nonce,
+        instructions,
+        None,
+    )
+    .into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
-signer_c_client.submit_blocking::<InstructionBox>(
-    MultisigApprove::new(multisig_account, instructions_hash).into(),
+signer_c_client.submit::<InstructionBox>(
+    MultisigApprove::new(multisig_account, proposal_id, instructions_hash)
+        .into(),
     FeePaymentIntent::authority(Vec::new(), None),
 )?;
 ```
@@ -187,7 +215,7 @@ signer_c_client.submit_blocking::<InstructionBox>(
 Read the post-state and confirm the proposal is no longer pending:
 
 ```bash
-iroha --config "$SIGNER_A_CONFIG" ledger account meta get \
+iroha --config "$SIGNER_A_CONFIG" account meta get \
   --id "$MULTISIG_ACCOUNT" \
   --key cookbook_quorum
 
@@ -200,22 +228,23 @@ iroha --config "$SIGNER_A_CONFIG" ledger multisig inspect \
   jq .
 ```
 
-The metadata value must be `"approved"`, the captured instruction hash must
-no longer appear as pending, and the inspected controller must show weights
-`1, 1, 2` with quorum `3`.
+The metadata value must be `"approved"`, the captured proposal ID and
+instruction hash must no longer appear as pending, and the inspected
+controller must show `threshold` `3`, `total_weight` `4`, and member weights
+1, 1, and 2; members are listed in public-key order.
 
 ## Troubleshooting
 
-- `signatory is not part of multisig` means the proposing or approving
-  client does not correspond to one of the I105 IDs registered in the
-  policy.
+- `not qualified to propose multisig` or `not qualified to approve multisig`
+  means the proposing or approving client does not correspond to one of the
+  I105 IDs registered in the policy.
 - A final approval can be rejected when the multisig account lacks
   permission to execute the proposed instructions. Grant authority to the
   multisig account, not merely to its individual signers, then let a
   remaining signer retry.
 - A missing pending proposal can mean quorum was already reached, the TTL
-  expired, or the wrong instruction hash/account selector was used. Query
-  the post-state before proposing again.
+  expired, or the wrong proposal ID, instruction hash, or account selector
+  was used. Query the post-state before proposing again with a new nonce.
 - Duplicate approvals do not add weight. Each registered signatory
   contributes its configured weight at most once.
 - Directly signing a normal transaction as the controller is forbidden.
@@ -226,8 +255,8 @@ no longer appear as pending, and the inspected controller must show weights
 
 ## Source and related docs
 
-- [Multisig integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/multisig.rs)
-- [Multisig data model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_executor_data_model/src/isi.rs)
-- [CLI multisig implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
+- [Multisig integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/multisig.rs)
+- [Multisig data model at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_executor_data_model/src/isi.rs)
+- [CLI multisig implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
 - [Transactions](/blockchain/transactions.md)
 - [Permissions and roles](./permissions-and-roles.md)

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust の実装はメインワークスペースに存在し、Iroha 3 コードベースを扱う最も直接的な方法のままです。
@@ -31,7 +30,7 @@ cargo build --workspace
 チェックインされたデフォルトクライアント設定でリファレンスクライアントを実行します:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## 試す Taira 読み取り専用 {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` を作成した後、同じバイナリは署名付きカナリアコマンドを Taira に対して実行できます。これらは普通のユニットテストとは別にしておいてください。なぜなら、テストネット資金があるアカウントと実際のテストネットの利用可能性が必要だからです。
+`taira.client.toml` を作成した後、同じバイナリで `iroha taira account` を使ってアカウントをオンボーディングして資金を入れ、Taira に対して通常の署名付き台帳コマンドを送信できます。これらは普通のユニットテストとは別にしておいてください。なぜなら、フォーセットから資金供給を受けたアカウントと実際のテストネットの利用可能性が必要だからです。
 
 ## Rust クライアントソフトウェアパッケージを使用する {#using-the-rust-client-crate}
 
@@ -71,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-ブロックチェーン台帳エスクローのワークフローによって管理されるものについては、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md#rust-sdk) を参照してください。Rust データモデルは、現在、マーケットプレイスエスクロー、汎用資産ロック、匿名エスクロー、クエリ、およびイベントに対して最も完全な型付きカバレッジを提供しています。
+台帳で管理されるエスクローのワークフローについては、[ネイティブ資産エスクロー](/ja/blockchain/escrow.md#rust-sdk) を参照してください。Rust データモデルは、現在、マーケットプレイスエスクロー、汎用資産ロック、条件付きエスクロー、クエリ、およびイベントに対して最も完全な型付きカバレッジを提供しています。
 
 次の方法でローカルの CLI ヘルプデータのスナップショットを再生成できます:
 

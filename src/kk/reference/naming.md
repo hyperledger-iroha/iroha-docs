@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Атау қою дәстүрлері {#naming-conventions}
 
 Есептік жазбаларды, домендерді немесе активтерді атаған кезде, сіз Iroha пайдаланып келген келесі дәстүрлерді ескеруіңіз керек:
@@ -16,10 +15,9 @@ translation_engine: bing-translator-llm
    - `#` актив анықтамасының айырымдары мен актив балансы литералдары үшін сақталған
    - `::` келісімшарт ауыспалы атауларына арналған
    - `.` домен және деректер кеңістігін құжаттау үшін сақталған
-   - `$` триггерге арналған мәтіндік формаларға арналған
-   - `%` валидаторға арналған мәтіндік формалар үшін бос орын қалдырылған
+   - `$` `name$domain.dataspace` сияқты NFT идентификаторларына арналған
 
-2. Есімнің мазмұны (оның ішінде UTF-8 символдары) бойынша ең көп рұқсат етілген таңбалар саны екі фактормен шектеледі: `[0, u32::MAX]` және қазіргі таңда бөлінген стек кеңістігі.
+2. Атау бос болмауы, Unicode NFC пішінінде болуы, ұзындығы ең көбі 255 UTF-8 байт болуы және бос орын, басқару және екі бағытты басқару таңбаларынсыз болуы керек.
 
 ## Осы жұмыс ағынын Taira бойынша іске қосыңыз {#try-it-on-taira}
 

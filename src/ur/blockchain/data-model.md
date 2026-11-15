@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # ڈیٹا ماڈل {#data-model}
 
 Iroha `World` میں لیجر کی حالت کو ذخیرہ کرتا ہے۔ اس کا پہلا ریلیز ڈیٹا ماڈل مندرجہ ذیل کینونیکل شناختوں اور اداروں کا استعمال کرتا ہے:
@@ -122,9 +121,9 @@ account_rabbit --> asset_rose : may receive balance
 |اثاثہ جات کی تعریف |`AssetDefinitionId` Base58 ایڈریس |`name#domain.dataspace` یا `name#dataspace` |`AssetDefinitionAlias` ایک اثاثہ کی تعریف سے منسلک |
 |معاہدہ |canonical Bech32m `ContractAddress` |`name::domain.dataspace` یا `name::dataspace` |`ContractAlias` ایک تعینات معاہدہ ایڈریس سے منسلک |
 |ڈومین کا نام |`DomainId` فارم میں `domain.dataspace` |`domain.dataspace` |SNS `domain` ناموں کی جگہ ریکارڈ |
-|ڈیٹا بیس کا نام |فعال Nexus کیٹلاگ میں سے عددی `DataSpaceId` |`universal`، `paynet`، یا `zk` جیسے ڈیٹا اسپیس عرفات |SNS `dataspace` ناموں کی جگہ کا ریکارڈ پلس فعال ڈیٹا اسپیس کیٹلاگ |
+| ڈیٹا اسپیس کا نام | فعال SORA Nexus کیٹلاگ سے عددی `DataSpaceId` | `universal` یا `paynet` جیسا ڈیٹا اسپیس کا عرف | SNS کے `dataspace` ناموں کی جگہ کا ریکارڈ اور فعال ڈیٹا اسپیس کیٹلاگ |
 
-اکاؤنٹ عرفی نام صارف کے سامنے اکاؤنٹس کے نام ہیں۔ وہ اکاؤنٹ ریکیائنگ سے زندہ رہتے ہیں کیونکہ عرفی نام عالمی حالت انڈیکس اور اکاؤنٹ ریکی ریکارڈز کے ذریعہ فعال اکاؤنٹ ID پر اشارہ کرتا ہے۔ اکاؤنٹ کے بنیادی لیبل کے لئے `SetPrimaryAccountAlias` کا استعمال کریں، `SetAccountAliasBinding` اضافی غیر بنیادی ناموں کے لئے، اور `FindAccountByAlias` یا `FindAliasesByAccountId` پڑھنے کے لئے۔ اکاؤنٹ کے ناموں کو عام طور پر ایک فعال SNS اکاؤنٹ کے نام لیز کی ضرورت ہوتی ہے جو `AcquireAccountAliasLease` سے حاصل کیا جاتا ہے اور `RenewAccountAliasLease` کے ساتھ تجدید کیا جاتا ہے۔
+اکاؤنٹ عرفی نام صارف کے سامنے آنے والے اکاؤنٹ نام ہیں۔ یہ اکاؤنٹ کی کلید بدلنے کے بعد بھی برقرار رہتے ہیں کیونکہ عرفی نام ورلڈ اسٹیٹ کے اشاریوں اور اکاؤنٹ کی کلید بدلنے کے ریکارڈز کے ذریعے فعال اکاؤنٹ ID کی طرف اشارہ کرتا ہے۔ اکاؤنٹ عرفی نام کی لیز حاصل کرنے اور عرفی نام باندھنے کے لیے `EnsureAlias` استعمال کریں، عام طور پر `app alias setup` کے منصوبہ بندی اور اطلاق کے عمل کے ذریعے؛ بنیادی لیبل بدلنے کے لیے `CompareAndSetPrimaryAccountAlias`؛ کسی عرفی نام کو دوسرے اکاؤنٹ پر منتقل کرنے کے لیے `RebindAccountAlias`؛ اور پڑھنے کے لیے `FindAccountByAlias` یا `FindAliasesByAccountId`۔ لیزوں کی تجدید `RenewAliasLease` سے کریں، یا `ConfigureAliasAutoRenew` سے خودکار تجدید ترتیب دیں۔
 
 اثاثہ عرفات نام کے اثاثوں کی تعریفیں ہیں، انفرادی اکاؤنٹ بیلنس نہیں. اثاثے اور معاہدے کے عرفات ایک پڑھنے کے قابل نام سے موجودہ کینونیکل ہدف پر براہ راست پابندیاں ہیں۔ اثاثہ ناموں کو `SetAssetDefinitionAlias` کے ساتھ مقرر کیا جاتا ہے؛ مستعار نام کا سیگمنٹ اثاثے کی تعریف ڈسپلے نام یا متوقع تعریف نام سے ملنا چاہئے۔ معاہدے کے مستعار `SetContractAlias` کے ساتھ مقرر کیے جاتے ہیں؛ مستعار ڈیٹا اسپیس کو معاہدہ ایڈریس میں کوڈ کردہ ڈیٹا اسپیس سے ملنا ضروری ہے۔ دونوں پابندیاں `lease_expiry_ms` لے سکتے ہیں؛ ختم ہونے کے بعد وہ فضل ونڈو گزرنے پر حل کرنا بند کردیں اور عالمی حالت انڈیکس سے مٹا دیں.
 

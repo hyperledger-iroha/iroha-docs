@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 许可证代码 {#permission-tokens}
 
 本页面列出了当前曝光的默认权限符号类型 Iroha 对于角色和权限的概念指南,请见 [许可证](/zh-hans/blockchain/permissions.md).
@@ -17,7 +16,6 @@ translation_engine: nllb-200-ct2
 |许可证符号|类别|行动|
 | --- | --- | --- |
 |`CanManagePeers`|对等节点|登记,撤销或以其他方式管理对等节点.|
-|`CanManageLaneRelayEmergency`|对等节点|管理紧急通道连接控制.|
 |`CanRegisterDomain`|域名|登记一个域名.|
 |`CanUnregisterDomain`|域名|取消注册域名.|
 |`CanModifyDomainMetadata`|域名|修改域名的元数据.|
@@ -29,7 +27,7 @@ translation_engine: nllb-200-ct2
 |`CanMintAssetWithDefinition`|资产|铸造特定定义的资产. |
 |`CanBurnAssetWithDefinition`|资产|为了一个特定的定义,销毁资产.|
 |`CanTransferAssetWithDefinition`|资产|转移资产以特定的定义.|
-|`CanMintAsset`|资产|一个特定的资产余额. |
+|`CanMintAssetToAccount`|资产|一个特定的资产余额. |
 |`CanBurnAsset`|资产|销毁一个特定的资产余额.|
 |`CanTransferAsset`|资产|转移特定的资产余额.|
 |`CanRegisterNft`|NFT|登记一个 NFT.|
@@ -44,8 +42,9 @@ translation_engine: nllb-200-ct2
 |`CanModifyTrigger`|触发器|修改触发器配置.|
 |`CanModifyTriggerMetadata`|触发器|修改触发器元数据.|
 |`CanUpgradeExecutor`|执行者|升级运行时执行器.|
-|`CanRegisterSmartContractCode`|智能合同|登记智能合同代码.|
-|`CanUseFeeSponsor`|Nexus|征收 Nexus 费用到指定赞助商账户. |
+|`CanManageSmartContractCode`|智能合约|删除未被引用的代码工件，并委托合约入口点。已注册账户无需此权限即可创建经过验证的工件。|
+| `CanManageFeeSponsorProgram` | SORA Nexus | 管理由指定赞助账户拥有的计划。 |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | 管理一个指定赞助计划的受益人。 |
 
 ## 拥有权 {#ownership}
 

@@ -1,27 +1,26 @@
 ---
 translation_locale: kk
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Желіні енгізу кілттері {#keys-for-network-deployment}
 
-Әрбір желіде клиенттер, желі әріптестері, блокчейннің бастау жазбасын қол қою және NPoS немесе Nexus профильдері үшін BLS валидатор сәйкестендірулері сияқты әртүрлі кілт материалдары қажет.
+Әр желіге клиенттер, генезиске қол қою және иелік дәлелдері бар BLS-normal валидатор сәйкестіктері үшін бөлек кілт материалы қажет.
 
 ## Пернетақтаны қашан қолданады {#where-keys-are-used}
 
 - Клиенттің қолтаңба кілттері `[account]` астында `client.toml` ішінде сақталады.
 - Желі әріптесі идентификатор кілттері әрбір желі әріптесінде `config.toml` ретінде `public_key` және `private_key` сақталады.
 - желілік тең құрылымдарды анықтау әр желілік тең құрылымның `trusted_peers` ішіндегі ашық кілтін пайдаланады.
-- BLS тексерушінің Possession-дәлелдері NPoS профильдері үшін `trusted_peers_pop` сақталады.
+- BLS валидаторының иелік дәлелдері консенсус режиміне қарамастан әр валидатор үшін `trusted_peers_pop` ішінде сақталады.
 - Генезиске қол қою кезінде желі түйінінің конфигурациясындағы `[genesis].public_key` және манифестке қол қоятын сәйкес жеке кілт пайдаланылады.
 
 Жергілікті немесе тестілік орналастырулар үшін Kagami барлық осы файлдарды бірге жасауы керек:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Бар желі немесе профиль үшін нұсқаулық ағынын пайдаланыңыз:

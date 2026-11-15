@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Glossaire <!-- omit in toc --> {#glossary}
 
 Ici, vous pouvez trouver des définitions de toutes les entités liées à Iroha.
@@ -42,7 +41,7 @@ Pendant le Moyen Âge, les registres de la blockchain étaient ouverts à la con
 
 ## pair réseau {#peer}
 
-Un pair réseau dans Iroha signifie une instance de processus Iroha à laquelle d'autres processus Iroha et applications clientes peuvent se connecter. Une seule machine peut héberger plusieurs pairs réseau Iroha. Les pairs du réseau sont égaux en ce qui concerne leurs ressources et leurs capacités, avec une exception importante : un seul des pairs du réseau exécute le bloc de genèse de la blockchain lors de l'étape de démarrage du réseau Iroha.
+Un pair est un processus de nœud Iroha qui accepte les connexions d’autres pairs et d’applications clientes. Une machine peut héberger plusieurs pairs, chacun ayant sa propre configuration et son propre stockage. Chaque pair qui démarre le consensus à partir d’un état vide authentifie et applique la genèse signée du réseau ; les pairs restaurés à partir d’instantanés authentifiés reprennent à partir de cet état.
 
 D'autres blockchains peuvent se référer au même concept en tant que nœud ou validateur.
 
@@ -80,7 +79,7 @@ Le [bloc genesis de la blockchain](/fr/guide/configure/genesis.md) définit ces 
 
 ## Tolérance aux fautes byzantines (BFT) {#byzantine-fault-tolerance-bft}
 
-Propriété qui permet de fonctionner correctement dans un réseau comportant une certaine proportion d’acteurs malveillants. Iroha tolère jusqu’à 33 % d’acteurs malveillants dans son réseau pair-à-pair.
+Propriété qui permet de fonctionner correctement dans un réseau comportant une certaine proportion d’acteurs malveillants. Un comité Sumeragi compte exactement `3f + 1` validateurs et tolère jusqu’à `f` validateurs byzantins, soit moins d’un tiers du comité.
 
 ## Iroha Composants {#iroha-components}
 
@@ -92,7 +91,7 @@ Le module Iroha responsable du consensus.
 
 ### Torii (Porte) {#torii-gate}
 
-Module avec la logique de gestion des requêtes entrantes pour le [pair réseau](#peer). Il est utilisé pour recevoir, accepter et acheminer les instructions entrantes, ainsi que les requêtes HTTP, ainsi que les mises à jour de configuration en temps réel.
+Module contenant la logique de traitement des requêtes entrantes du [pair](#peer). Il reçoit, accepte et achemine les instructions entrantes et les requêtes HTTP, et permet à l’opérateur d’inspecter la configuration.
 
 ### Kura (Entrepôt) {#kura-warehouse}
 
@@ -108,7 +107,7 @@ Une structure de données utilisée pour valider et vérifier l'état à chaque 
 
 ### Contrats intelligents {#smart-contracts}
 
-Les contrats intelligents sont des programmes basés sur la blockchain qui s'exécutent lorsque qu'un ensemble spécifique de conditions est rempli. Dans Iroha, les contrats intelligents sont mis en œuvre en utilisant [opérations d'instruction du noyau Iroha](#core-iroha-special-instructions).
+Les contrats intelligents sont des programmes basés sur la blockchain qui s'exécutent lorsqu'un ensemble spécifique de conditions est rempli. Dans Iroha 3, les contrats intelligents sont écrits en Kotodama et compilés en bytecode IVM (`.to`) ; un contrat modifie l'état en émettant des [instructions spéciales d'Iroha](#core-iroha-special-instructions) par des appels hôtes.
 
 ### Déclencheurs {#triggers}
 
@@ -116,11 +115,11 @@ Un type d'événement qui permet d'invoquer une instruction spéciale Iroha lors
 
 ### Gestion des versions {#versioning}
 
-Chaque requête porte la version d’API à laquelle elle appartient. Différentes versions binaires des logiciels clients et pairs d’Iroha peuvent ainsi interopérer, ce qui permet de mettre à niveau le logiciel au sein du réseau Iroha.
+La première version d’Iroha 3 prend en charge une seule version canonique du format de transmission des blocs. Le point d’accès `/v1/api/version` renvoie `SignedBlock::WIRE_VERSION` après l’application de la genèse et une réponse d’indisponibilité avant celle-ci. Il indique le format de transmission pris en charge ; il ne négocie pas la compatibilité entre des dispositions de protocole différentes et n’autorise pas une mise à niveau du réseau.
 
 ### Hijiri (système de réputation des pairs du réseau) {#hijiri-peer-reputation-system}
 
-Le système de réputation de Iroha. Il permet de donner la priorité à la communication avec [pairs du réseau](#peer) ayant un bon historique, et de réduire les dommages pouvant être causés par des [pairs du réseau](#peer) malveillants.
+Le système de réputation des pairs et des comptes d'Iroha. Ses paramètres détenus par le consensus contiennent la politique de frais Hijiri et les enregistrements de risque des comptes, et des registres d'observateurs gouvernés émettent des attestations de compte qui ajustent le score de risque d'un compte.
 
 ## Modules fonctionnels d’Iroha {#iroha-modules}
 
@@ -132,7 +131,7 @@ Une bibliothèque de contrats intelligents fournie avec Iroha. Ceux-ci peuvent �
 
 #### Opérations d'instruction de l'utilitaire Iroha {#utility-iroha-special-instructions}
 
-Cet ensemble de [isi](#iroha-special-instructions-isi) contient des instructions logiques comme `If`, liées à l'E/S comme `Notify` et des compositions comme `Sequence`. Ils sont principalement utilisés comme [instructions personnalisées](#custom-iroha-special-instruction).
+Cet ensemble de [isi](#iroha-special-instructions-isi) contient des instructions qui ne modifient pas une entité propre à un domaine, telles que `Log`, `ExecuteTrigger`, `SetParameter` et `Upgrade`. Iroha 3 n'a pas d'instructions `If`, `Notify` ou `Sequence`.
 
 ### Opérations d'instruction de base Iroha {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ Représentation en mémoire de l'état actuel de la blockchain. Le WSV contient 
 
 ## Leader {#leader}
 
-Dans un réseau Iroha, un pair du réseau est sélectionné au hasard et reçoit le privilège spécial de former le bloc suivant. Ce privilège peut être révoqué dans les réseaux qui atteignent [Tolérance aux fautes byzantines](#byzantine-fault-tolerance-bft) via [changer de vue](#view-change).
+Pour chaque hauteur et chaque vue, Sumeragi détermine le proposant de façon déterministe à partir du comité, de la graine authentifiée de sélection du leader et de l’historique validé des leaders ignorés. Un [changement de vue](#view-change) passe au prochain membre admissible du comité selon les mêmes règles de [tolérance aux fautes byzantines](#byzantine-fault-tolerance-bft).

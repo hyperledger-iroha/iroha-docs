@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Устранение проблем с установкой {#troubleshooting-installation-issues}
 
 Этот раздел предлагает советы по устранению неполадок при установке Iroha 3. Если описанная здесь проблема не соответствует вашей, свяжитесь с нами через [Телеграм](https://t.me/hyperledgeriroha).

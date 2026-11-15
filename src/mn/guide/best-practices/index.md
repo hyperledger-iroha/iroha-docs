@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Шилдэг туршлага {#best-practices}
 
 Энэ хэсэг нь Iroha програмууд ба сүлжээнүүдэд үйлдвэрлэлд чиглэсэн заавар зөвлөмжийг цуглуулдаг. Энэ нь хэрэгжүүлэх боломжтой онцлог шинж чанараар нь бус, таны гаргах шаардлагатай шийдвэрээрээ зохион байгуулсан.

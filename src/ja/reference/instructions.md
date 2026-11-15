@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 命令操作 {#iroha-special-instructions}
 
 現在のデータモデルは、これらの組み込み指示ファミリーを公開しています：
@@ -28,7 +27,6 @@ translation_engine: bing-translator-llm
 | [`CustomInstruction`](/ja/blockchain/instructions.md#other-instructions) |実行者固有の JSON ペイロード|
 | [ネイティブ資産エスクロー](/ja/blockchain/escrow.md) | `OpenAssetEscrow`、`AcceptAssetEscrow`、`MarkEscrowPaymentSent`、`ReleaseAssetEscrow`、`CancelAssetEscrow`、`OpenEscrowDispute`、`ResolveEscrowDispute` |
 | [汎用資産ロック](/ja/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [匿名資産エスクロー](/ja/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`、`AcceptAnonymousAssetEscrow`、`MarkAnonymousEscrowPaymentSent`、`ReleaseAnonymousAssetEscrow`、`CancelAnonymousAssetEscrow`、`OpenAnonymousEscrowDispute`、`ResolveAnonymousEscrowDispute` |
 | [アトミックなプライベート金融取引決済](/ja/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 追加の Iroha 3 モジュールは、インストラクションレジストリを通じてドメイン固有のインストラクションタイプを登録できます。ノード認証スキーマとそれをキャプチャするコマンドについては、[データモデルスキーマ](./data-model-schema.md)を参照してください。
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

@@ -15,8 +15,7 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha account permission grant`↴](#iroha-account-permission-grant)
 * [`iroha account permission revoke`↴](#iroha-account-permission-revoke)
 * [`iroha account list`↴](#iroha-account-list)
-* [`iroha account list all`↴](#iroha-account-list-all)
-* [`iroha account list filter`↴](#iroha-account-list-filter)
+* [`iroha account history`↴](#iroha-account-history)
 * [`iroha account get`↴](#iroha-account-get)
 * [`iroha account register`↴](#iroha-account-register)
 * [`iroha account unregister`↴](#iroha-account-unregister)
@@ -24,18 +23,34 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha account meta get`↴](#iroha-account-meta-get)
 * [`iroha account meta set`↴](#iroha-account-meta-set)
 * [`iroha account meta remove`↴](#iroha-account-meta-remove)
+* [`iroha explorer`↴](#iroha-explorer)
+* [`iroha explorer accounts`↴](#iroha-explorer-accounts)
+* [`iroha explorer domains`↴](#iroha-explorer-domains)
+* [`iroha explorer asset-definitions`↴](#iroha-explorer-asset-definitions)
+* [`iroha explorer assets`↴](#iroha-explorer-assets)
+* [`iroha explorer nfts`↴](#iroha-explorer-nfts)
+* [`iroha explorer rwas`↴](#iroha-explorer-rwas)
+* [`iroha explorer blocks`↴](#iroha-explorer-blocks)
+* [`iroha explorer transactions`↴](#iroha-explorer-transactions)
+* [`iroha explorer transaction-proof`↴](#iroha-explorer-transaction-proof)
+* [`iroha explorer transactions-latest`↴](#iroha-explorer-transactions-latest)
+* [`iroha explorer instructions`↴](#iroha-explorer-instructions)
+* [`iroha explorer instructions-latest`↴](#iroha-explorer-instructions-latest)
 * [`iroha tx`↴](#iroha-tx)
+* [`iroha tx prepare`↴](#iroha-tx-prepare)
+* [`iroha tx submit`↴](#iroha-tx-submit)
+* [`iroha tx resume`↴](#iroha-tx-resume)
 * [`iroha tx status`↴](#iroha-tx-status)
 * [`iroha tx get`↴](#iroha-tx-get)
+* [`iroha tx list`↴](#iroha-tx-list)
 * [`iroha tx ping`↴](#iroha-tx-ping)
+* [`iroha tx load`↴](#iroha-tx-load)
 * [`iroha tx ivm`↴](#iroha-tx-ivm)
 * [`iroha tx stdin`↴](#iroha-tx-stdin)
 * [`iroha tx signed-size`↴](#iroha-tx-signed-size)
 * [`iroha ledger`↴](#iroha-ledger)
 * [`iroha ledger domain`↴](#iroha-ledger-domain)
 * [`iroha ledger domain list`↴](#iroha-ledger-domain-list)
-* [`iroha ledger domain list all`↴](#iroha-ledger-domain-list-all)
-* [`iroha ledger domain list filter`↴](#iroha-ledger-domain-list-filter)
 * [`iroha ledger domain get`↴](#iroha-ledger-domain-get)
 * [`iroha ledger domain unregister`↴](#iroha-ledger-domain-unregister)
 * [`iroha ledger domain transfer`↴](#iroha-ledger-domain-transfer)
@@ -43,30 +58,9 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ledger domain meta get`↴](#iroha-ledger-domain-meta-get)
 * [`iroha ledger domain meta set`↴](#iroha-ledger-domain-meta-set)
 * [`iroha ledger domain meta remove`↴](#iroha-ledger-domain-meta-remove)
-* [`iroha ledger account`↴](#iroha-ledger-account)
-* [`iroha ledger account role`↴](#iroha-ledger-account-role)
-* [`iroha ledger account role list`↴](#iroha-ledger-account-role-list)
-* [`iroha ledger account role grant`↴](#iroha-ledger-account-role-grant)
-* [`iroha ledger account role revoke`↴](#iroha-ledger-account-role-revoke)
-* [`iroha ledger account permission`↴](#iroha-ledger-account-permission)
-* [`iroha ledger account permission list`↴](#iroha-ledger-account-permission-list)
-* [`iroha ledger account permission grant`↴](#iroha-ledger-account-permission-grant)
-* [`iroha ledger account permission revoke`↴](#iroha-ledger-account-permission-revoke)
-* [`iroha ledger account list`↴](#iroha-ledger-account-list)
-* [`iroha ledger account list all`↴](#iroha-ledger-account-list-all)
-* [`iroha ledger account list filter`↴](#iroha-ledger-account-list-filter)
-* [`iroha ledger account get`↴](#iroha-ledger-account-get)
-* [`iroha ledger account register`↴](#iroha-ledger-account-register)
-* [`iroha ledger account unregister`↴](#iroha-ledger-account-unregister)
-* [`iroha ledger account meta`↴](#iroha-ledger-account-meta)
-* [`iroha ledger account meta get`↴](#iroha-ledger-account-meta-get)
-* [`iroha ledger account meta set`↴](#iroha-ledger-account-meta-set)
-* [`iroha ledger account meta remove`↴](#iroha-ledger-account-meta-remove)
 * [`iroha ledger asset`↴](#iroha-ledger-asset)
 * [`iroha ledger asset definition`↴](#iroha-ledger-asset-definition)
 * [`iroha ledger asset definition list`↴](#iroha-ledger-asset-definition-list)
-* [`iroha ledger asset definition list all`↴](#iroha-ledger-asset-definition-list-all)
-* [`iroha ledger asset definition list filter`↴](#iroha-ledger-asset-definition-list-filter)
 * [`iroha ledger asset definition get`↴](#iroha-ledger-asset-definition-get)
 * [`iroha ledger asset definition register`↴](#iroha-ledger-asset-definition-register)
 * [`iroha ledger asset definition unregister`↴](#iroha-ledger-asset-definition-unregister)
@@ -77,16 +71,13 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ledger asset definition meta remove`↴](#iroha-ledger-asset-definition-meta-remove)
 * [`iroha ledger asset get`↴](#iroha-ledger-asset-get)
 * [`iroha ledger asset list`↴](#iroha-ledger-asset-list)
-* [`iroha ledger asset list all`↴](#iroha-ledger-asset-list-all)
-* [`iroha ledger asset list filter`↴](#iroha-ledger-asset-list-filter)
+* [`iroha ledger asset holders`↴](#iroha-ledger-asset-holders)
 * [`iroha ledger asset mint`↴](#iroha-ledger-asset-mint)
 * [`iroha ledger asset burn`↴](#iroha-ledger-asset-burn)
 * [`iroha ledger asset transfer`↴](#iroha-ledger-asset-transfer)
 * [`iroha ledger nft`↴](#iroha-ledger-nft)
 * [`iroha ledger nft get`↴](#iroha-ledger-nft-get)
 * [`iroha ledger nft list`↴](#iroha-ledger-nft-list)
-* [`iroha ledger nft list all`↴](#iroha-ledger-nft-list-all)
-* [`iroha ledger nft list filter`↴](#iroha-ledger-nft-list-filter)
 * [`iroha ledger nft register`↴](#iroha-ledger-nft-register)
 * [`iroha ledger nft unregister`↴](#iroha-ledger-nft-unregister)
 * [`iroha ledger nft transfer`↴](#iroha-ledger-nft-transfer)
@@ -97,8 +88,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ledger rwa`↴](#iroha-ledger-rwa)
 * [`iroha ledger rwa get`↴](#iroha-ledger-rwa-get)
 * [`iroha ledger rwa list`↴](#iroha-ledger-rwa-list)
-* [`iroha ledger rwa list all`↴](#iroha-ledger-rwa-list-all)
-* [`iroha ledger rwa list filter`↴](#iroha-ledger-rwa-list-filter)
 * [`iroha ledger rwa register`↴](#iroha-ledger-rwa-register)
 * [`iroha ledger rwa transfer`↴](#iroha-ledger-rwa-transfer)
 * [`iroha ledger rwa merge`↴](#iroha-ledger-rwa-merge)
@@ -131,35 +120,9 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ledger parameter list`↴](#iroha-ledger-parameter-list)
 * [`iroha ledger parameter list all`↴](#iroha-ledger-parameter-list-all)
 * [`iroha ledger parameter set`↴](#iroha-ledger-parameter-set)
-* [`iroha ledger trigger`↴](#iroha-ledger-trigger)
-* [`iroha ledger trigger list`↴](#iroha-ledger-trigger-list)
-* [`iroha ledger trigger list all`↴](#iroha-ledger-trigger-list-all)
-* [`iroha ledger trigger get`↴](#iroha-ledger-trigger-get)
-* [`iroha ledger trigger register`↴](#iroha-ledger-trigger-register)
-* [`iroha ledger trigger unregister`↴](#iroha-ledger-trigger-unregister)
-* [`iroha ledger trigger mint`↴](#iroha-ledger-trigger-mint)
-* [`iroha ledger trigger burn`↴](#iroha-ledger-trigger-burn)
-* [`iroha ledger trigger enable`↴](#iroha-ledger-trigger-enable)
-* [`iroha ledger trigger disable`↴](#iroha-ledger-trigger-disable)
-* [`iroha ledger trigger execute`↴](#iroha-ledger-trigger-execute)
-* [`iroha ledger trigger inspect`↴](#iroha-ledger-trigger-inspect)
-* [`iroha ledger trigger completed`↴](#iroha-ledger-trigger-completed)
-* [`iroha ledger trigger completed list`↴](#iroha-ledger-trigger-completed-list)
-* [`iroha ledger trigger completed watch`↴](#iroha-ledger-trigger-completed-watch)
-* [`iroha ledger trigger meta`↴](#iroha-ledger-trigger-meta)
-* [`iroha ledger trigger meta get`↴](#iroha-ledger-trigger-meta-get)
-* [`iroha ledger trigger meta set`↴](#iroha-ledger-trigger-meta-set)
-* [`iroha ledger trigger meta remove`↴](#iroha-ledger-trigger-meta-remove)
 * [`iroha ledger query`↴](#iroha-ledger-query)
 * [`iroha ledger query stdin`↴](#iroha-ledger-query-stdin)
 * [`iroha ledger query stdin-raw`↴](#iroha-ledger-query-stdin-raw)
-* [`iroha ledger transaction`↴](#iroha-ledger-transaction)
-* [`iroha ledger transaction status`↴](#iroha-ledger-transaction-status)
-* [`iroha ledger transaction get`↴](#iroha-ledger-transaction-get)
-* [`iroha ledger transaction ping`↴](#iroha-ledger-transaction-ping)
-* [`iroha ledger transaction ivm`↴](#iroha-ledger-transaction-ivm)
-* [`iroha ledger transaction stdin`↴](#iroha-ledger-transaction-stdin)
-* [`iroha ledger transaction signed-size`↴](#iroha-ledger-transaction-signed-size)
 * [`iroha ledger multisig`↴](#iroha-ledger-multisig)
 * [`iroha ledger multisig list`↴](#iroha-ledger-multisig-list)
 * [`iroha ledger multisig list all`↴](#iroha-ledger-multisig-list-all)
@@ -207,16 +170,21 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ops runtime upgrade`↴](#iroha-ops-runtime-upgrade)
 * [`iroha ops runtime upgrade list`↴](#iroha-ops-runtime-upgrade-list)
 * [`iroha ops runtime upgrade propose`↴](#iroha-ops-runtime-upgrade-propose)
-* [`iroha ops runtime upgrade activate`↴](#iroha-ops-runtime-upgrade-activate)
 * [`iroha ops runtime upgrade cancel`↴](#iroha-ops-runtime-upgrade-cancel)
+* [`iroha ops runtime upgrade endorse`↴](#iroha-ops-runtime-upgrade-endorse)
+* [`iroha ops runtime upgrade attest`↴](#iroha-ops-runtime-upgrade-attest)
+* [`iroha ops runtime contain`↴](#iroha-ops-runtime-contain)
+* [`iroha ops runtime contain list`↴](#iroha-ops-runtime-contain-list)
+* [`iroha ops runtime contain endorse`↴](#iroha-ops-runtime-contain-endorse)
+* [`iroha ops runtime contain submit`↴](#iroha-ops-runtime-contain-submit)
+* [`iroha ops runtime release`↴](#iroha-ops-runtime-release)
 * [`iroha ops runtime status`↴](#iroha-ops-runtime-status)
 * [`iroha ops runtime capabilities`↴](#iroha-ops-runtime-capabilities)
 * [`iroha ops sumeragi`↴](#iroha-ops-sumeragi)
 * [`iroha ops sumeragi status`↴](#iroha-ops-sumeragi-status)
+* [`iroha ops sumeragi lanes`↴](#iroha-ops-sumeragi-lanes)
 * [`iroha ops sumeragi diagnostics`↴](#iroha-ops-sumeragi-diagnostics)
-* [`iroha ops sumeragi leader`↴](#iroha-ops-sumeragi-leader)
 * [`iroha ops sumeragi params`↴](#iroha-ops-sumeragi-params)
-* [`iroha ops sumeragi qc`↴](#iroha-ops-sumeragi-qc)
 * [`iroha ops sumeragi evidence`↴](#iroha-ops-sumeragi-evidence)
 * [`iroha ops sumeragi evidence list`↴](#iroha-ops-sumeragi-evidence-list)
 * [`iroha ops sumeragi evidence count`↴](#iroha-ops-sumeragi-evidence-count)
@@ -226,15 +194,9 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha ops connect queue`↴](#iroha-ops-connect-queue)
 * [`iroha ops connect queue inspect`↴](#iroha-ops-connect-queue-inspect)
 * [`iroha ops bridge`↴](#iroha-ops-bridge)
+* [`iroha ops bridge genesis-readiness`↴](#iroha-ops-bridge-genesis-readiness)
+* [`iroha ops bridge verify-retained-network`↴](#iroha-ops-bridge-verify-retained-network)
 * [`iroha ops bridge emit-receipt`↴](#iroha-ops-bridge-emit-receipt)
-* [`iroha ops bridge sccp`↴](#iroha-ops-bridge-sccp)
-* [`iroha ops bridge sccp capabilities`↴](#iroha-ops-bridge-sccp-capabilities)
-* [`iroha ops bridge sccp registry`↴](#iroha-ops-bridge-sccp-registry)
-* [`iroha ops bridge sccp recent`↴](#iroha-ops-bridge-sccp-recent)
-* [`iroha ops bridge sccp bundle`↴](#iroha-ops-bridge-sccp-bundle)
-* [`iroha ops bridge sccp proof-request`↴](#iroha-ops-bridge-sccp-proof-request)
-* [`iroha ops bridge sccp submit-destination-proof`↴](#iroha-ops-bridge-sccp-submit-destination-proof)
-* [`iroha ops bridge sccp submit-native-message`↴](#iroha-ops-bridge-sccp-submit-native-message)
 * [`iroha app`↴](#iroha-app)
 * [`iroha app gov`↴](#iroha-app-gov)
 * [`iroha app gov deploy`↴](#iroha-app-gov-deploy)
@@ -260,11 +222,19 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app gov parliament draft-attempt`↴](#iroha-app-gov-parliament-draft-attempt)
 * [`iroha app gov parliament draft-transition`↴](#iroha-app-gov-parliament-draft-transition)
 * [`iroha app gov parliament get-attempt`↴](#iroha-app-gov-parliament-get-attempt)
-* [`iroha app gov parliament finalize-opened-ballot`↴](#iroha-app-gov-parliament-finalize-opened-ballot)
+* [`iroha app gov parliament respond-invitation`↴](#iroha-app-gov-parliament-respond-invitation)
+* [`iroha app gov parliament endorse`↴](#iroha-app-gov-parliament-endorse)
+* [`iroha app gov parliament record-absence`↴](#iroha-app-gov-parliament-record-absence)
+* [`iroha app execution`↴](#iroha-app-execution)
+* [`iroha app execution profiles`↴](#iroha-app-execution-profiles)
+* [`iroha app execution export-kernels`↴](#iroha-app-execution-export-kernels)
+* [`iroha app execution export-parity`↴](#iroha-app-execution-export-parity)
+* [`iroha app execution prove`↴](#iroha-app-execution-prove)
+* [`iroha app execution verify`↴](#iroha-app-execution-verify)
+* [`iroha app execution verify-settlement`↴](#iroha-app-execution-verify-settlement)
 * [`iroha app zk`↴](#iroha-app-zk)
 * [`iroha app zk roots`↴](#iroha-app-zk-roots)
 * [`iroha app zk verify-batch`↴](#iroha-app-zk-verify-batch)
-* [`iroha app zk schema-hash`↴](#iroha-app-zk-schema-hash)
 * [`iroha app zk attachments`↴](#iroha-app-zk-attachments)
 * [`iroha app zk attachments upload`↴](#iroha-app-zk-attachments-upload)
 * [`iroha app zk attachments list`↴](#iroha-app-zk-attachments-list)
@@ -282,12 +252,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app zk proofs get`↴](#iroha-app-zk-proofs-get)
 * [`iroha app zk proofs retention`↴](#iroha-app-zk-proofs-retention)
 * [`iroha app zk proofs prune`↴](#iroha-app-zk-proofs-prune)
-* [`iroha app zk ivm`↴](#iroha-app-zk-ivm)
-* [`iroha app zk ivm derive`↴](#iroha-app-zk-ivm-derive)
-* [`iroha app zk ivm prove`↴](#iroha-app-zk-ivm-prove)
-* [`iroha app zk ivm get`↴](#iroha-app-zk-ivm-get)
-* [`iroha app zk ivm delete`↴](#iroha-app-zk-ivm-delete)
-* [`iroha app zk ivm derive-pk`↴](#iroha-app-zk-ivm-derive-pk)
 * [`iroha app zk vote`↴](#iroha-app-zk-vote)
 * [`iroha app zk vote tally`↴](#iroha-app-zk-vote-tally)
 * [`iroha app zk envelope`↴](#iroha-app-zk-envelope)
@@ -312,7 +276,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app da prove`↴](#iroha-app-da-prove)
 * [`iroha app da prove-availability`↴](#iroha-app-da-prove-availability)
 * [`iroha app da proof-policies`↴](#iroha-app-da-proof-policies)
-* [`iroha app da proof-policy-snapshot`↴](#iroha-app-da-proof-policy-snapshot)
 * [`iroha app da commitments-list`↴](#iroha-app-da-commitments-list)
 * [`iroha app da commitments-prove`↴](#iroha-app-da-commitments-prove)
 * [`iroha app da commitments-verify`↴](#iroha-app-da-commitments-verify)
@@ -329,6 +292,8 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app nexus public-lane`↴](#iroha-app-nexus-public-lane)
 * [`iroha app nexus public-lane validators`↴](#iroha-app-nexus-public-lane-validators)
 * [`iroha app nexus public-lane stake`↴](#iroha-app-nexus-public-lane-stake)
+* [`iroha app nexus public-lane committee-status`↴](#iroha-app-nexus-public-lane-committee-status)
+* [`iroha app nexus public-lane committee-submit`↴](#iroha-app-nexus-public-lane-committee-submit)
 * [`iroha app nexus private-settlement`↴](#iroha-app-nexus-private-settlement)
 * [`iroha app nexus private-settlement availability-share`↴](#iroha-app-nexus-private-settlement-availability-share)
 * [`iroha app nexus private-settlement prepare-vote`↴](#iroha-app-nexus-private-settlement-prepare-vote)
@@ -340,20 +305,27 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app nexus private-settlement committee-proof`↴](#iroha-app-nexus-private-settlement-committee-proof)
 * [`iroha app nexus private-settlement audit-capsule`↴](#iroha-app-nexus-private-settlement-audit-capsule)
 * [`iroha app nexus private-settlement audit-approval`↴](#iroha-app-nexus-private-settlement-audit-approval)
+* [`iroha app nexus private-settlement audit-online`↴](#iroha-app-nexus-private-settlement-audit-online)
 * [`iroha app nexus private-settlement bundle-submit`↴](#iroha-app-nexus-private-settlement-bundle-submit)
 * [`iroha app nexus private-settlement bundle-status`↴](#iroha-app-nexus-private-settlement-bundle-status)
 * [`iroha app nexus private-settlement bundle-receipt`↴](#iroha-app-nexus-private-settlement-bundle-receipt)
 * [`iroha app staking`↴](#iroha-app-staking)
+* [`iroha app staking prepare`↴](#iroha-app-staking-prepare)
 * [`iroha app staking register`↴](#iroha-app-staking-register)
+* [`iroha app staking register-candidate`↴](#iroha-app-staking-register-candidate)
 * [`iroha app staking rebind`↴](#iroha-app-staking-rebind)
 * [`iroha app staking activate`↴](#iroha-app-staking-activate)
 * [`iroha app staking exit`↴](#iroha-app-staking-exit)
+* [`iroha app staking bond`↴](#iroha-app-staking-bond)
+* [`iroha app staking schedule-unbond`↴](#iroha-app-staking-schedule-unbond)
+* [`iroha app staking finalize-unbond`↴](#iroha-app-staking-finalize-unbond)
+* [`iroha app staking claim-rewards`↴](#iroha-app-staking-claim-rewards)
 * [`iroha app subscriptions`↴](#iroha-app-subscriptions)
 * [`iroha app subscriptions plan`↴](#iroha-app-subscriptions-plan)
-* [`iroha app subscriptions plan create`↴](#iroha-app-subscriptions-plan-create)
+* [`iroha app subscriptions plan prepare`↴](#iroha-app-subscriptions-plan-prepare)
 * [`iroha app subscriptions plan list`↴](#iroha-app-subscriptions-plan-list)
 * [`iroha app subscriptions subscription`↴](#iroha-app-subscriptions-subscription)
-* [`iroha app subscriptions subscription create`↴](#iroha-app-subscriptions-subscription-create)
+* [`iroha app subscriptions subscription prepare`↴](#iroha-app-subscriptions-subscription-prepare)
 * [`iroha app subscriptions subscription list`↴](#iroha-app-subscriptions-subscription-list)
 * [`iroha app subscriptions subscription get`↴](#iroha-app-subscriptions-subscription-get)
 * [`iroha app subscriptions subscription pause`↴](#iroha-app-subscriptions-subscription-pause)
@@ -401,6 +373,8 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app kaigi end`↴](#iroha-app-kaigi-end)
 * [`iroha app kaigi record-usage`↴](#iroha-app-kaigi-record-usage)
 * [`iroha app kaigi report-relay-health`↴](#iroha-app-kaigi-report-relay-health)
+* [`iroha app kaigi show`↴](#iroha-app-kaigi-show)
+* [`iroha app kaigi standing`↴](#iroha-app-kaigi-standing)
 * [`iroha app sorafs`↴](#iroha-app-sorafs)
 * [`iroha app sorafs pin`↴](#iroha-app-sorafs-pin)
 * [`iroha app sorafs pin list`↴](#iroha-app-sorafs-pin-list)
@@ -441,13 +415,35 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app sorafs incentives service daemon`↴](#iroha-app-sorafs-incentives-service-daemon)
 * [`iroha app sorafs handshake`↴](#iroha-app-sorafs-handshake)
 * [`iroha app sorafs handshake show`↴](#iroha-app-sorafs-handshake-show)
-* [`iroha app sorafs handshake update`↴](#iroha-app-sorafs-handshake-update)
 * [`iroha app sorafs handshake token`↴](#iroha-app-sorafs-handshake-token)
 * [`iroha app sorafs handshake token issue`↴](#iroha-app-sorafs-handshake-token-issue)
 * [`iroha app sorafs handshake token id`↴](#iroha-app-sorafs-handshake-token-id)
 * [`iroha app sorafs handshake token fingerprint`↴](#iroha-app-sorafs-handshake-token-fingerprint)
 * [`iroha app sorafs toolkit`↴](#iroha-app-sorafs-toolkit)
+* [`iroha app sorafs toolkit compile`↴](#iroha-app-sorafs-toolkit-compile)
 * [`iroha app sorafs toolkit pack`↴](#iroha-app-sorafs-toolkit-pack)
+* [`iroha app sorafs toolkit instruction`↴](#iroha-app-sorafs-toolkit-instruction)
+* [`iroha app sorafs toolkit instruction capacity-declaration`↴](#iroha-app-sorafs-toolkit-instruction-capacity-declaration)
+* [`iroha app sorafs toolkit instruction replication-order`↴](#iroha-app-sorafs-toolkit-instruction-replication-order)
+* [`iroha app sorafs toolkit instruction complete-order`↴](#iroha-app-sorafs-toolkit-instruction-complete-order)
+* [`iroha app sorafs toolkit instruction expire-order`↴](#iroha-app-sorafs-toolkit-instruction-expire-order)
+* [`iroha app sorafs toolkit validate`↴](#iroha-app-sorafs-toolkit-validate)
+* [`iroha app sorafs toolkit validate advert`↴](#iroha-app-sorafs-toolkit-validate-advert)
+* [`iroha app sorafs toolkit validate admission`↴](#iroha-app-sorafs-toolkit-validate-admission)
+* [`iroha app sorafs toolkit validate order`↴](#iroha-app-sorafs-toolkit-validate-order)
+* [`iroha app sorafs toolkit validate orderbook`↴](#iroha-app-sorafs-toolkit-validate-orderbook)
+* [`iroha app sorafs toolkit validate pdp`↴](#iroha-app-sorafs-toolkit-validate-pdp)
+* [`iroha app sorafs toolkit validate pop`↴](#iroha-app-sorafs-toolkit-validate-pop)
+* [`iroha app sorafs toolkit validate hedging`↴](#iroha-app-sorafs-toolkit-validate-hedging)
+* [`iroha app sorafs toolkit validate por`↴](#iroha-app-sorafs-toolkit-validate-por)
+* [`iroha app sorafs toolkit validate potr`↴](#iroha-app-sorafs-toolkit-validate-potr)
+* [`iroha app sorafs toolkit validate repair`↴](#iroha-app-sorafs-toolkit-validate-repair)
+* [`iroha app sorafs toolkit validate bundle`↴](#iroha-app-sorafs-toolkit-validate-bundle)
+* [`iroha app sorafs toolkit validate governance`↴](#iroha-app-sorafs-toolkit-validate-governance)
+* [`iroha app sorafs toolkit sign`↴](#iroha-app-sorafs-toolkit-sign)
+* [`iroha app sorafs toolkit release-manifest`↴](#iroha-app-sorafs-toolkit-release-manifest)
+* [`iroha app sorafs toolkit release-manifest-receipt`↴](#iroha-app-sorafs-toolkit-release-manifest-receipt)
+* [`iroha app sorafs toolkit final-promotion-receipt`↴](#iroha-app-sorafs-toolkit-final-promotion-receipt)
 * [`iroha app sorafs guard-directory`↴](#iroha-app-sorafs-guard-directory)
 * [`iroha app sorafs guard-directory fetch`↴](#iroha-app-sorafs-guard-directory-fetch)
 * [`iroha app sorafs guard-directory verify`↴](#iroha-app-sorafs-guard-directory-verify)
@@ -592,9 +588,8 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app repo`↴](#iroha-app-repo)
 * [`iroha app repo initiate`↴](#iroha-app-repo-initiate)
 * [`iroha app repo unwind`↴](#iroha-app-repo-unwind)
-* [`iroha app repo query`↴](#iroha-app-repo-query)
-* [`iroha app repo query list`↴](#iroha-app-repo-query-list)
-* [`iroha app repo query get`↴](#iroha-app-repo-query-get)
+* [`iroha app repo list`↴](#iroha-app-repo-list)
+* [`iroha app repo get`↴](#iroha-app-repo-get)
 * [`iroha app repo margin`↴](#iroha-app-repo-margin)
 * [`iroha app repo margin-call`↴](#iroha-app-repo-margin-call)
 * [`iroha app settlement`↴](#iroha-app-settlement)
@@ -607,17 +602,6 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha app settlement get-fx-corridor-policy`↴](#iroha-app-settlement-get-fx-corridor-policy)
 * [`iroha app settlement list-fx-corridor-policies`↴](#iroha-app-settlement-list-fx-corridor-policies)
 * [`iroha contract`↴](#iroha-contract)
-* [`iroha contract app`↴](#iroha-contract-app)
-* [`iroha contract app build`↴](#iroha-contract-app-build)
-* [`iroha contract dev`↴](#iroha-contract-dev)
-* [`iroha contract dev check`↴](#iroha-contract-dev-check)
-* [`iroha contract dev build`↴](#iroha-contract-dev-build)
-* [`iroha contract dev test`↴](#iroha-contract-dev-test)
-* [`iroha contract dev doctor`↴](#iroha-contract-dev-doctor)
-* [`iroha contract dev schema`↴](#iroha-contract-dev-schema)
-* [`iroha contract dev call`↴](#iroha-contract-dev-call)
-* [`iroha contract dev view`↴](#iroha-contract-dev-view)
-* [`iroha contract dev smoke`↴](#iroha-contract-dev-smoke)
 * [`iroha contract code`↴](#iroha-contract-code)
 * [`iroha contract code get`↴](#iroha-contract-code-get)
 * [`iroha contract alias`↴](#iroha-contract-alias)
@@ -633,6 +617,8 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha contract manifest get`↴](#iroha-contract-manifest-get)
 * [`iroha contract manifest build`↴](#iroha-contract-manifest-build)
 * [`iroha contract simulate`↴](#iroha-contract-simulate)
+* [`iroha contract activity`↴](#iroha-contract-activity)
+* [`iroha contract events`↴](#iroha-contract-events)
 * [`iroha tools`↴](#iroha-tools)
 * [`iroha tools address`↴](#iroha-tools-address)
 * [`iroha tools address convert`↴](#iroha-tools-address-convert)
@@ -656,39 +642,66 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha tools ivm manifest-gen`↴](#iroha-tools-ivm-manifest-gen)
 * [`iroha tools markdown-help`↴](#iroha-tools-markdown-help)
 * [`iroha tools version`↴](#iroha-tools-version)
+* [`iroha dataspace`↴](#iroha-dataspace)
+* [`iroha dataspace export-profile`↴](#iroha-dataspace-export-profile)
+* [`iroha dataspace verify-authority`↴](#iroha-dataspace-verify-authority)
+* [`iroha dataspace plan`↴](#iroha-dataspace-plan)
+* [`iroha dataspace apply`↴](#iroha-dataspace-apply)
+* [`iroha dataspace status`↴](#iroha-dataspace-status)
 * [`iroha taira`↴](#iroha-taira)
+* [`iroha taira account`↴](#iroha-taira-account)
+* [`iroha taira account onboard`↴](#iroha-taira-account-onboard)
+* [`iroha taira account onboard prepare`↴](#iroha-taira-account-onboard-prepare)
+* [`iroha taira account onboard submit`↴](#iroha-taira-account-onboard-submit)
+* [`iroha taira account onboard resume`↴](#iroha-taira-account-onboard-resume)
+* [`iroha taira account faucet`↴](#iroha-taira-account-faucet)
+* [`iroha taira account faucet prepare`↴](#iroha-taira-account-faucet-prepare)
+* [`iroha taira account faucet submit`↴](#iroha-taira-account-faucet-submit)
+* [`iroha taira account faucet resume`↴](#iroha-taira-account-faucet-resume)
 * [`iroha taira doctor`↴](#iroha-taira-doctor)
+* [`iroha taira seat-parliament`↴](#iroha-taira-seat-parliament)
 * [`iroha taira public-reset`↴](#iroha-taira-public-reset)
+* [`iroha taira public-reset initialize-native-edge-custody`↴](#iroha-taira-public-reset-initialize-native-edge-custody)
+* [`iroha taira public-reset capture-native-python`↴](#iroha-taira-public-reset-capture-native-python)
+* [`iroha taira public-reset authorize-native-edge-owner`↴](#iroha-taira-public-reset-authorize-native-edge-owner)
+* [`iroha taira public-reset prepare-native-edge-owner`↴](#iroha-taira-public-reset-prepare-native-edge-owner)
+* [`iroha taira public-reset adopt-native-edge-owner`↴](#iroha-taira-public-reset-adopt-native-edge-owner)
+* [`iroha taira public-reset prepare-native-edge`↴](#iroha-taira-public-reset-prepare-native-edge)
+* [`iroha taira public-reset dispatcher-transition`↴](#iroha-taira-public-reset-dispatcher-transition)
+* [`iroha taira public-reset capture-dispatcher-current-runtime`↴](#iroha-taira-public-reset-capture-dispatcher-current-runtime)
+* [`iroha taira public-reset prepare-dispatcher-transition`↴](#iroha-taira-public-reset-prepare-dispatcher-transition)
+* [`iroha taira public-reset prepare-topology-intent`↴](#iroha-taira-public-reset-prepare-topology-intent)
+* [`iroha taira public-reset source-manifest`↴](#iroha-taira-public-reset-source-manifest)
+* [`iroha taira public-reset config-rebase`↴](#iroha-taira-public-reset-config-rebase)
+* [`iroha taira public-reset torii-rate-config-amend`↴](#iroha-taira-public-reset-torii-rate-config-amend)
+* [`iroha taira public-reset materialize-validator-config`↴](#iroha-taira-public-reset-materialize-validator-config)
+* [`iroha taira public-reset client-config-rebase`↴](#iroha-taira-public-reset-client-config-rebase)
+* [`iroha taira public-reset operator-keygen`↴](#iroha-taira-public-reset-operator-keygen)
+* [`iroha taira public-reset prepare-public-inputs`↴](#iroha-taira-public-reset-prepare-public-inputs)
+* [`iroha taira public-reset prepare-runtime-clients`↴](#iroha-taira-public-reset-prepare-runtime-clients)
+* [`iroha taira public-reset stage-canary`↴](#iroha-taira-public-reset-stage-canary)
+* [`iroha taira public-reset prepare-beacon-inputs`↴](#iroha-taira-public-reset-prepare-beacon-inputs)
+* [`iroha taira public-reset prepare-validator-units`↴](#iroha-taira-public-reset-prepare-validator-units)
+* [`iroha taira public-reset export-deployment-profile`↴](#iroha-taira-public-reset-export-deployment-profile)
+* [`iroha taira public-reset assemble`↴](#iroha-taira-public-reset-assemble)
+* [`iroha taira public-reset authorize`↴](#iroha-taira-public-reset-authorize)
 * [`iroha taira public-reset preflight`↴](#iroha-taira-public-reset-preflight)
 * [`iroha taira public-reset apply`↴](#iroha-taira-public-reset-apply)
+* [`iroha taira public-reset abandon`↴](#iroha-taira-public-reset-abandon)
+* [`iroha taira stopped-owner-maintenance`↴](#iroha-taira-stopped-owner-maintenance)
+* [`iroha taira retire-validator-config`↴](#iroha-taira-retire-validator-config)
 * [`iroha taira write-canary`↴](#iroha-taira-write-canary)
 * [`iroha taira inrou-workspace`↴](#iroha-taira-inrou-workspace)
 * [`iroha taira inrou-stage`↴](#iroha-taira-inrou-stage)
 * [`iroha taira inrou-canary`↴](#iroha-taira-inrou-canary)
 * [`iroha taira inrou-check`↴](#iroha-taira-inrou-check)
 * [`iroha offline`↴](#iroha-offline)
-* [`iroha offline kagemusha`↴](#iroha-offline-kagemusha)
-* [`iroha offline kagemusha lifecycle-v4`↴](#iroha-offline-kagemusha-lifecycle-v4)
-* [`iroha offline kagemusha lifecycle-v4 prepare`↴](#iroha-offline-kagemusha-lifecycle-v4-prepare)
-* [`iroha offline kagemusha lifecycle-v4 sign-fee-quote`↴](#iroha-offline-kagemusha-lifecycle-v4-sign-fee-quote)
-* [`iroha offline kagemusha lifecycle-v4 finalize-fee-quote`↴](#iroha-offline-kagemusha-lifecycle-v4-finalize-fee-quote)
-* [`iroha offline kagemusha lifecycle-v4 sign-transaction`↴](#iroha-offline-kagemusha-lifecycle-v4-sign-transaction)
-* [`iroha offline kagemusha lifecycle-v4 assemble-transaction`↴](#iroha-offline-kagemusha-lifecycle-v4-assemble-transaction)
-* [`iroha offline kagemusha lifecycle-v4 submit-transaction`↴](#iroha-offline-kagemusha-lifecycle-v4-submit-transaction)
-* [`iroha offline kagemusha rollout-v4`↴](#iroha-offline-kagemusha-rollout-v4)
-* [`iroha offline kagemusha rollout-v4 create-expectations`↴](#iroha-offline-kagemusha-rollout-v4-create-expectations)
-* [`iroha offline kagemusha rollout-v4 submit`↴](#iroha-offline-kagemusha-rollout-v4-submit)
-* [`iroha offline kagemusha rollout-v4 finalize-receipt`↴](#iroha-offline-kagemusha-rollout-v4-finalize-receipt)
-* [`iroha offline kagemusha rollout-v4 create-canary-authorization`↴](#iroha-offline-kagemusha-rollout-v4-create-canary-authorization)
-* [`iroha offline kagemusha rollout-v4 submit-canary-authorization`↴](#iroha-offline-kagemusha-rollout-v4-submit-canary-authorization)
-* [`iroha offline kagemusha rollout-v4 submit-canary`↴](#iroha-offline-kagemusha-rollout-v4-submit-canary)
-* [`iroha offline kagemusha rollout-v4 finalize-canary-evidence`↴](#iroha-offline-kagemusha-rollout-v4-finalize-canary-evidence)
-* [`iroha offline kagemusha rollout-v4 finalize-validator-liveness`↴](#iroha-offline-kagemusha-rollout-v4-finalize-validator-liveness)
+* [`iroha offline registration-package`↴](#iroha-offline-registration-package)
 * [`iroha offline petal`↴](#iroha-offline-petal)
 * [`iroha offline petal encode`↴](#iroha-offline-petal-encode)
-* [`iroha offline petal eval-capture`↴](#iroha-offline-petal-eval-capture)
-* [`iroha offline petal simulate-realtime`↴](#iroha-offline-petal-simulate-realtime)
-* [`iroha offline petal score-styles`↴](#iroha-offline-petal-score-styles)
+* [`iroha offline petal decode`↴](#iroha-offline-petal-decode)
+* [`iroha offline petal inspect`↴](#iroha-offline-petal-inspect)
+* [`iroha offline petal simulate`↴](#iroha-offline-petal-simulate)
 * [`iroha soracloud`↴](#iroha-soracloud)
 * [`iroha soracloud app`↴](#iroha-soracloud-app)
 * [`iroha soracloud app init`↴](#iroha-soracloud-app-init)
@@ -752,6 +765,58 @@ This document contains the help content for the `iroha` command-line program.
 * [`iroha soracloud agent mailbox-status`↴](#iroha-soracloud-agent-mailbox-status)
 * [`iroha soracloud agent artifact-allow`↴](#iroha-soracloud-agent-artifact-allow)
 * [`iroha soracloud agent autonomy-status`↴](#iroha-soracloud-agent-autonomy-status)
+* [`iroha sccp`↴](#iroha-sccp)
+* [`iroha sccp info`↴](#iroha-sccp-info)
+* [`iroha sccp routes`↴](#iroha-sccp-routes)
+* [`iroha sccp reconcile`↴](#iroha-sccp-reconcile)
+* [`iroha sccp reconcile status`↴](#iroha-sccp-reconcile-status)
+* [`iroha sccp reconcile prove-mint`↴](#iroha-sccp-reconcile-prove-mint)
+* [`iroha sccp fast-pause`↴](#iroha-sccp-fast-pause)
+* [`iroha sccp fast-pause panel`↴](#iroha-sccp-fast-pause-panel)
+* [`iroha sccp fast-pause accept`↴](#iroha-sccp-fast-pause-accept)
+* [`iroha sccp fast-pause endorse`↴](#iroha-sccp-fast-pause-endorse)
+* [`iroha sccp fast-pause status`↴](#iroha-sccp-fast-pause-status)
+* [`iroha sccp evidence`↴](#iroha-sccp-evidence)
+* [`iroha sccp evidence build`↴](#iroha-sccp-evidence-build)
+* [`iroha sccp evidence submit`↴](#iroha-sccp-evidence-submit)
+* [`iroha sccp evidence status`↴](#iroha-sccp-evidence-status)
+* [`iroha sccp evidence anchor`↴](#iroha-sccp-evidence-anchor)
+* [`iroha sccp monitor`↴](#iroha-sccp-monitor)
+* [`iroha sccp send`↴](#iroha-sccp-send)
+* [`iroha sccp burn`↴](#iroha-sccp-burn)
+* [`iroha sccp settle`↴](#iroha-sccp-settle)
+* [`iroha sccp void`↴](#iroha-sccp-void)
+* [`iroha sccp refund`↴](#iroha-sccp-refund)
+* [`iroha sccp ton-retry`↴](#iroha-sccp-ton-retry)
+* [`iroha sccp status`↴](#iroha-sccp-status)
+* [`iroha sccp recent`↴](#iroha-sccp-recent)
+* [`iroha sccp proof`↴](#iroha-sccp-proof)
+* [`iroha sccp committee`↴](#iroha-sccp-committee)
+* [`iroha sccp finality`↴](#iroha-sccp-finality)
+* [`iroha sccp rotations`↴](#iroha-sccp-rotations)
+* [`iroha sccp control`↴](#iroha-sccp-control)
+* [`iroha sccp control apply`↴](#iroha-sccp-control-apply)
+* [`iroha sccp control status`↴](#iroha-sccp-control-status)
+* [`iroha sccp deployment`↴](#iroha-sccp-deployment)
+* [`iroha sccp deployment verify`↴](#iroha-sccp-deployment-verify)
+* [`iroha sccp finalize`↴](#iroha-sccp-finalize)
+* [`iroha sccp committee-sync`↴](#iroha-sccp-committee-sync)
+* [`iroha sccp governance`↴](#iroha-sccp-governance)
+* [`iroha sccp governance propose`↴](#iroha-sccp-governance-propose)
+* [`iroha sccp governance show`↴](#iroha-sccp-governance-show)
+* [`iroha sccp governance readiness`↴](#iroha-sccp-governance-readiness)
+* [`iroha sccp governance revisions`↴](#iroha-sccp-governance-revisions)
+* [`iroha sccp governance drive`↴](#iroha-sccp-governance-drive)
+* [`iroha sccp deploy`↴](#iroha-sccp-deploy)
+* [`iroha sccp claim`↴](#iroha-sccp-claim)
+* [`iroha sccp light-client`↴](#iroha-sccp-light-client)
+* [`iroha sccp light-client status`↴](#iroha-sccp-light-client-status)
+* [`iroha sccp light-client advance`↴](#iroha-sccp-light-client-advance)
+* [`iroha sccp light-client backfill`↴](#iroha-sccp-light-client-backfill)
+* [`iroha sccp light-client bootstrap`↴](#iroha-sccp-light-client-bootstrap)
+* [`iroha sccp light-client bootstrap build`↴](#iroha-sccp-light-client-bootstrap-build)
+* [`iroha sccp light-client bootstrap verify`↴](#iroha-sccp-light-client-bootstrap-verify)
+* [`iroha sccp lc-profile`↴](#iroha-sccp-lc-profile)
 
 ## `iroha`
 
@@ -762,49 +827,59 @@ Iroha Client CLI provides a simple way to interact with the Iroha Web API
 ###### **Subcommands:**
 
 * `account` — Canonical account reads and account mutations
+* `explorer` — Explorer feeds with shared filters, projection and cursor paging
 * `tx` — Typed transaction status and transaction helpers
 * `ledger` — Ledger data and transaction helpers
 * `trigger` — Read, write, and execute triggers
 * `ops` — Node and operator helpers
 * `app` — App API helpers and product tooling
-* `contract` — Contract app bundles, deploys, calls, and alias tooling
+* `contract` — Contract code, aliases, calls, views and local debugging; deploy with `kagami contract deploy` or `musubi deploy`
 * `tools` — Developer utilities and diagnostics
+* `dataspace` — Plan, apply, and inspect a dataspace definition
 * `taira` — SORA Taira public testnet diagnostics and canaries
 * `offline` — Offline encoders, reports, and diagnostics
 * `soracloud` — Soracloud app platform helpers
+* `sccp` — SORA Cross-Chain Protocol reads, transfers and proofs
 
 ###### **Options:**
 
 * `-c`, `--config <PATH>` — Path to the configuration file.
 
-   By default, `iroha` reads `client.toml`; runtime commands require it to be present and readable. `taira doctor` and the runtime-authorized `taira public-reset` surface never read client configuration or ledger signing material.
+   By default, `iroha` reads `client.toml` from the current directory; relative paths are resolved against the current directory. Runtime commands require a readable configuration, while offline helpers (`tools address|crypto|ivm|version`) run without one. `taira doctor` and the runtime-authorized `taira public-reset` surface never read client configuration or ledger signing material. `dataspace` builds its runtime client directly from its definition and explicitly selected public trust profile.
+* `--config-fd <FD>` — Read an owner-private regular inherited configuration descriptor without environment overrides
+* `--config-source-path <ABSOLUTE_PATH>` — Absolute original configuration path used only as provenance and the relative-path base; never reopened
 * `--operator-private-key-file <ABSOLUTE_PATH>` — Absolute path to an owner-only operator private-key file for operator reads.
 
-   This runtime-only credential is never inferred from the account key, environment, or client TOML. The selected node must allowlist its public key for the configured exact NetworkId.
+   This runtime-only credential is never inferred from the account key, environment, or client TOML. The selected node must allowlist its public key for the configured exact `NetworkId`.
+* `--operator-private-key-fd <FD>` — Borrow an inherited, read-only owner-private operator key descriptor without reopening it.
+
+   The descriptor must be a singly linked regular file with exact mode 0600. Reading it preserves the caller's file offset. No account, TOML, or environment key is inferred.
 * `-v`, `--verbose` — Print configuration details to stderr
 * `-m`, `--metadata <PATH>` — Path to a JSON file for attaching transaction metadata (optional)
-* `-i`, `--input` — Reads instructions from stdin and appends new ones.
+* `--stdin-instructions` — Read a JSON array of instructions from stdin and run them before this command's own instructions, in one transaction.
 
    Example usage:
 
-   `echo "[]" | iroha -io asset definition register --id "66owaQmAQMuHxPzxUN3bqZ6FJfDa" --name "USD" --scale 0`
-* `-o`, `--output` — Outputs instructions to stdout without submitting them.
+   `iroha --emit-instructions tx ping --msg first | iroha --fee-payer authority --stdin-instructions tx ping --msg second`
+* `--emit-instructions` — Print this command's instructions to stdout as a JSON array instead of submitting them.
 
    Example usage:
 
-   `iroha -o asset definition register --id "66owaQmAQMuHxPzxUN3bqZ6FJfDa" --name "USD" --scale 0 | iroha transaction stdin`
-* `--output-format <OUTPUT_FORMAT>` — Output format for command responses
+   `iroha --emit-instructions ledger asset definition register --domain issuer.universal --id "66owaQmAQMuHxPzxUN3bqZ6FJfDa" --name "USD" --scale 0 | iroha --fee-payer authority tx stdin`
+* `-o`, `--output-format <FORMAT>` — Output format for command responses.
 
-  Default value: `json`
+   Defaults to `text` when stdout is a terminal and to `json` otherwise (always `json` with `--machine`), so scripts that capture stdout keep receiving JSON. `jsonl` prints compact JSON, one value per line: arrays print one element per line and event streams one event per line.
 
   Possible values:
   - `json`:
-    Emit JSON only
+    One pretty-printed JSON document per response
   - `text`:
-    Emit human-readable text when available
+    Human-readable text when the command has a text rendering (JSON otherwise)
+  - `jsonl`:
+    Newline-delimited compact JSON: arrays print one element per line, streams one value per line
 
 * `--language <LANG>` — Language code for messages, overrides system language
-* `--machine` — Enable deterministic machine mode (no startup chatter; strict loading for commands that require client config)
+* `--machine` — Enable deterministic machine mode: JSON output by default and strict loading for commands that require client config
 * `--fee-payer <FEE_PAYER>` — Required fee source for every submitted transaction
 
   Possible values:
@@ -828,7 +903,8 @@ Canonical account reads and account mutations
 
 * `role` — Read and write account roles
 * `permission` — Read and write account permissions
-* `list` — List accounts
+* `list` — List accounts (`/v1/accounts`) with filter, sort, projection and paging
+* `history` — List account asset movements with filters, projection and cursor paging
 * `get` — Retrieve details of a specific account
 * `register` — Register an account
 * `unregister` — Unregister an account
@@ -916,11 +992,19 @@ List account permissions
 ###### **Options:**
 
 * `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -952,63 +1036,50 @@ Revoke an account permission using JSON input from stdin
 
 ## `iroha account list`
 
-List accounts
+List accounts (`/v1/accounts`) with filter, sort, projection and paging
 
-**Usage:** `iroha account list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha account list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha account list all [OPTIONS]`
+**Usage:** `iroha account list [OPTIONS]`
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
-## `iroha account list filter`
+## `iroha account history`
 
-Filter by a given predicate
+List account asset movements with filters, projection and cursor paging
 
-**Usage:** `iroha account list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
+**Usage:** `iroha account history [OPTIONS]`
 
 ###### **Options:**
 
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--id <ID>` — Account to inspect; defaults to the configured account
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -1102,6 +1173,305 @@ Delete an entry from the key-value store
 
 
 
+## `iroha explorer`
+
+Explorer feeds with shared filters, projection and cursor paging
+
+**Usage:** `iroha explorer <COMMAND>`
+
+###### **Subcommands:**
+
+* `accounts` — Read the bounded Accounts Explorer feed
+* `domains` — Read the bounded Domains Explorer feed
+* `asset-definitions` — Read the bounded `AssetDefinitions` Explorer feed
+* `assets` — Read the bounded Assets Explorer feed
+* `nfts` — Read the bounded Nfts Explorer feed
+* `rwas` — Read the bounded Rwas Explorer feed
+* `blocks` — Read the bounded Blocks Explorer feed
+* `transactions` — Read the bounded Transactions Explorer feed
+* `transaction-proof` — Read node-supplied selective evidence; does not independently verify finality
+* `transactions-latest` — Read the bounded `TransactionsLatest` Explorer feed
+* `instructions` — Read the bounded Instructions Explorer feed
+* `instructions-latest` — Read the bounded `InstructionsLatest` Explorer feed
+
+
+
+## `iroha explorer accounts`
+
+Read the bounded Accounts Explorer feed
+
+**Usage:** `iroha explorer accounts [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer domains`
+
+Read the bounded Domains Explorer feed
+
+**Usage:** `iroha explorer domains [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer asset-definitions`
+
+Read the bounded `AssetDefinitions` Explorer feed
+
+**Usage:** `iroha explorer asset-definitions [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer assets`
+
+Read the bounded Assets Explorer feed
+
+**Usage:** `iroha explorer assets [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer nfts`
+
+Read the bounded Nfts Explorer feed
+
+**Usage:** `iroha explorer nfts [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer rwas`
+
+Read the bounded Rwas Explorer feed
+
+**Usage:** `iroha explorer rwas [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer blocks`
+
+Read the bounded Blocks Explorer feed
+
+**Usage:** `iroha explorer blocks [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer transactions`
+
+Read the bounded Transactions Explorer feed
+
+**Usage:** `iroha explorer transactions [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer transaction-proof`
+
+Read node-supplied selective evidence; does not independently verify finality
+
+**Usage:** `iroha explorer transaction-proof --hash <HASH>`
+
+###### **Options:**
+
+* `-H`, `--hash <HASH>` — Canonical transaction entrypoint hash literal (`hash:UPPERCASE_HEX#CHECKSUM`)
+
+
+
+## `iroha explorer transactions-latest`
+
+Read the bounded `TransactionsLatest` Explorer feed
+
+**Usage:** `iroha explorer transactions-latest [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer instructions`
+
+Read the bounded Instructions Explorer feed
+
+**Usage:** `iroha explorer instructions [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha explorer instructions-latest`
+
+Read the bounded `InstructionsLatest` Explorer feed
+
+**Usage:** `iroha explorer instructions-latest [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
 ## `iroha tx`
 
 Typed transaction status and transaction helpers
@@ -1110,12 +1480,53 @@ Typed transaction status and transaction helpers
 
 ###### **Subcommands:**
 
+* `prepare` — Quote and sign stdin instructions into a new private journal without submitting
+* `submit` — Dispatch the retained transaction once, or recover an earlier attempt read-only
+* `resume` — Read-only recovery of the exact retained transaction and committed envelope
 * `status` — Read the typed pipeline status of a submitted transaction
 * `get` — Retrieve details of a specific transaction
+* `list` — List the transactions of one account (`/v1/accounts/{account}/transactions`)
 * `ping` — Send an empty transaction that logs a message
+* `load` — Collect an exact fixed-schedule transaction trace for multilane qualification
 * `ivm` — Send a transaction using IVM bytecode
 * `stdin` — Send a transaction using JSON input from stdin
 * `signed-size` — Build and sign stdin instructions locally, then print their exact framed size without submitting
+
+
+
+## `iroha tx prepare`
+
+Quote and sign stdin instructions into a new private journal without submitting
+
+**Usage:** `iroha tx prepare --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Owner-private operation directory. Preparation refuses any existing directory
+
+
+
+## `iroha tx submit`
+
+Dispatch the retained transaction once, or recover an earlier attempt read-only
+
+**Usage:** `iroha tx submit --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Owner-private operation directory. Preparation refuses any existing directory
+
+
+
+## `iroha tx resume`
+
+Read-only recovery of the exact retained transaction and committed envelope
+
+**Usage:** `iroha tx resume --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Owner-private operation directory. Preparation refuses any existing directory
 
 
 
@@ -1127,7 +1538,7 @@ Read the typed pipeline status of a submitted transaction
 
 ###### **Options:**
 
-* `-H`, `--hash <HASH>` — Hash of the signed transaction to inspect
+* `-H`, `--hash <HASH>` — Raw 64-character hexadecimal hash from a transaction submission receipt
 * `--scope <SCOPE>` — Explicit status routing scope for a one-shot read. `--wait` always uses exact global status and succeeds only on state-resolved Applied
 
   Possible values:
@@ -1159,6 +1570,31 @@ Retrieve details of a specific transaction
 
 
 
+## `iroha tx list`
+
+List the transactions of one account (`/v1/accounts/{account}/transactions`)
+
+**Usage:** `iroha tx list [OPTIONS]`
+
+###### **Options:**
+
+* `--account <ACCOUNT>` — Account whose transactions to list (canonical I105); defaults to the configured account
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
 ## `iroha tx ping`
 
 Send an empty transaction that logs a message
@@ -1182,6 +1618,65 @@ Send an empty transaction that logs a message
   Default value: `1024`
 * `--no-wait` — Submit without waiting for confirmation
 * `--no-index` — Do not suffix message with "-<index>" when count > 1
+
+
+
+## `iroha tx load`
+
+Collect an exact fixed-schedule transaction trace for multilane qualification
+
+**Usage:** `iroha tx load [OPTIONS] --resource-program <PATH> --resource-worker <PATH> --resource-config <PATH> --resource-budget-sha256 <RESOURCE_BUDGET_SHA256> --resource-capture-dir <PATH> --resource-interval-ms <RESOURCE_INTERVAL_MS> --resource-timeout-ms <RESOURCE_TIMEOUT_MS> --resource-max-start-lag-ms <RESOURCE_MAX_START_LAG_MS> --invocation-id <INVOCATION_ID> --pair-index <PAIR_INDEX> --variant <VARIANT> --seed <SEED> --offered-load-tps <OFFERED_LOAD_TPS> --warmup-seconds <WARMUP_SECONDS> --measurement-seconds <MEASUREMENT_SECONDS> --drain-seconds <DRAIN_SECONDS> --max-submission-lag-ms <MAX_SUBMISSION_LAG_MS> --local-observer-config <PATH> --trace-out <PATH> --diagnostic-out <PATH>`
+
+###### **Options:**
+
+* `--resource-program <PATH>` — Absolute admitted Python interpreter; invoked directly with `-B -S`
+* `--resource-worker <PATH>` — Absolute fixed `resource_probe_worker.py` in its admitted five-file source namespace
+* `--resource-config <PATH>` — Existing owner-only runtime probe configuration; never copied to evidence
+* `--resource-budget-sha256 <RESOURCE_BUDGET_SHA256>` — Independently supplied SHA-256 of the canonical complete public run budget
+* `--resource-capture-dir <PATH>` — Absent directory for new owner-only, immutable probe captures
+* `--resource-interval-ms <RESOURCE_INTERVAL_MS>` — Exact sampling period, dividing both measurement and drain durations
+* `--resource-timeout-ms <RESOURCE_TIMEOUT_MS>` — Whole request/response deadline, at most half one sampling period
+* `--resource-max-start-lag-ms <RESOURCE_MAX_START_LAG_MS>` — Maximum start lag, at most one quarter of one sampling period
+* `--invocation-id <INVOCATION_ID>` — Fresh nonzero lowercase SHA-256-shaped identity for this exact native invocation
+* `--pair-index <PAIR_INDEX>` — Pair index in the fixed five-pair experiment
+* `--variant <VARIANT>` — Declared execution-lane variant; this command does not activate lanes
+
+  Possible values: `one_lane`, `four_lane`
+
+* `--seed <SEED>` — Exact lowercase SHA-256 pair seed supplied by the scaling runner
+* `--offered-load-tps <OFFERED_LOAD_TPS>` — Fixed decimal offers per second, independent of responses
+* `--warmup-seconds <WARMUP_SECONDS>` — Fixed decimal warmup duration, excluded from measurement
+* `--measurement-seconds <MEASUREMENT_SECONDS>` — Fixed decimal measurement duration
+* `--drain-seconds <DRAIN_SECONDS>` — Fixed warmup and postmeasurement drain duration, at most 300 seconds
+* `--max-submission-lag-ms <MAX_SUBMISSION_LAG_MS>` — Maximum actual submission lag, at most one quarter of an arrival period
+* `--account-config <PATH>` — Existing funded canonical accounts in fixed order; use a multiple of four, at most 64. Each nonzero cohort must contain complete pool rounds, with at most 1024 total writes per account
+* `--local-observer-config <PATH>` — Required client configuration for the exact peer whose stopped Kura is inspected. Every request must be `StateApplied` on this peer before the original drain deadline
+* `--trace-out <PATH>` — New strict trace path, published only after successful collection
+* `--diagnostic-out <PATH>` — New bounded diagnostic JSON-lines journal, retained on failure
+* `--preparation-lookahead <PREPARATION_LOOKAHEAD>` — Maximum prepared or preparing requests ahead of the next scheduled offer
+
+  Default value: `256`
+* `--preparation-concurrency <PREPARATION_CONCURRENCY>` — Maximum concurrent quote/sign preparations
+
+  Default value: `8`
+* `--preparation-ahead-ms <PREPARATION_AHEAD_MS>` — Maximum time before an offer at which preparation can start
+
+  Default value: `1000`
+* `--max-submissions <MAX_SUBMISSIONS>` — Maximum concurrent submission requests; saturation invalidates the trial
+
+  Default value: `256`
+* `--max-in-flight <MAX_IN_FLIGHT>` — Maximum offered requests awaiting acknowledgment, global Applied, or local Applied
+
+  Default value: `4096`
+* `--max-status-requests <MAX_STATUS_REQUESTS>` — Maximum concurrent canonical global and peer-local status reads combined
+
+  Default value: `64`
+* `--poll-interval-ms <POLL_INTERVAL_MS>` — Fixed delay between completed nonterminal observations of one hash
+
+  Default value: `50`
+* `--journal-capacity <JOURNAL_CAPACITY>` — Maximum queued diagnostic events; saturation invalidates the trial
+
+  Default value: `4096`
 
 
 
@@ -1223,19 +1718,16 @@ Ledger data and transaction helpers
 ###### **Subcommands:**
 
 * `domain` — Read and write domains
-* `account` — Read and write accounts
 * `asset` — Read and write assets
 * `nft` — Read and write NFTs
 * `rwa` — Read and write RWA lots
 * `peer` — Read and write peers
 * `role` — Read and write roles
 * `parameter` — Read and write system parameters
-* `trigger` — Read and write triggers
 * `query` — Read various data
-* `transaction` — Read transactions and write various data
 * `multisig` — Read and write multi-signature accounts and transactions
 * `events` — Subscribe to events: state changes, transaction/block/trigger progress
-* `blocks` — Subscribe to blocks
+* `blocks` — Subscribe to full signed blocks (requires `CanReadAllLedgerData`)
 
 
 
@@ -1247,7 +1739,7 @@ Read and write domains
 
 ###### **Subcommands:**
 
-* `list` — List domains
+* `list` — List domains (`/v1/domains`) with filter, sort, projection and paging
 * `get` — Retrieve details of a specific domain
 * `unregister` — Unregister a domain
 * `transfer` — Transfer ownership of a domain
@@ -1257,63 +1749,25 @@ Read and write domains
 
 ## `iroha ledger domain list`
 
-List domains
+List domains (`/v1/domains`) with filter, sort, projection and paging
 
-**Usage:** `iroha ledger domain list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha ledger domain list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha ledger domain list all [OPTIONS]`
+**Usage:** `iroha ledger domain list [OPTIONS]`
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
-
-
-
-## `iroha ledger domain list filter`
-
-Filter by a given predicate
-
-**Usage:** `iroha ledger domain list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
-
-###### **Options:**
-
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -1408,290 +1862,6 @@ Delete an entry from the key-value store
 
 
 
-## `iroha ledger account`
-
-Read and write accounts
-
-**Usage:** `iroha ledger account <COMMAND>`
-
-###### **Subcommands:**
-
-* `role` — Read and write account roles
-* `permission` — Read and write account permissions
-* `list` — List accounts
-* `get` — Retrieve details of a specific account
-* `register` — Register an account
-* `unregister` — Unregister an account
-* `meta` — Read and write metadata
-
-
-
-## `iroha ledger account role`
-
-Read and write account roles
-
-**Usage:** `iroha ledger account role <COMMAND>`
-
-###### **Subcommands:**
-
-* `list` — List account role IDs
-* `grant` — Grant a role to an account
-* `revoke` — Revoke a role from an account
-
-
-
-## `iroha ledger account role list`
-
-List account role IDs
-
-**Usage:** `iroha ledger account role list [OPTIONS] --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-
-
-
-## `iroha ledger account role grant`
-
-Grant a role to an account
-
-**Usage:** `iroha ledger account role grant --id <ID> --role <ROLE>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `-r`, `--role <ROLE>` — Role name
-
-
-
-## `iroha ledger account role revoke`
-
-Revoke a role from an account
-
-**Usage:** `iroha ledger account role revoke --id <ID> --role <ROLE>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `-r`, `--role <ROLE>` — Role name
-
-
-
-## `iroha ledger account permission`
-
-Read and write account permissions
-
-**Usage:** `iroha ledger account permission <COMMAND>`
-
-###### **Subcommands:**
-
-* `list` — List account permissions
-* `grant` — Grant an account permission using JSON input from stdin
-* `revoke` — Revoke an account permission using JSON input from stdin
-
-
-
-## `iroha ledger account permission list`
-
-List account permissions
-
-**Usage:** `iroha ledger account permission list [OPTIONS] --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-
-
-
-## `iroha ledger account permission grant`
-
-Grant an account permission using JSON input from stdin
-
-**Usage:** `iroha ledger account permission grant [OPTIONS] --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `--no-wait` — Submit without waiting for confirmation
-
-
-
-## `iroha ledger account permission revoke`
-
-Revoke an account permission using JSON input from stdin
-
-**Usage:** `iroha ledger account permission revoke [OPTIONS] --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-* `--no-wait` — Submit without waiting for confirmation
-
-
-
-## `iroha ledger account list`
-
-List accounts
-
-**Usage:** `iroha ledger account list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha ledger account list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha ledger account list all [OPTIONS]`
-
-###### **Options:**
-
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
-
-
-
-## `iroha ledger account list filter`
-
-Filter by a given predicate
-
-**Usage:** `iroha ledger account list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
-
-###### **Options:**
-
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
-
-
-
-## `iroha ledger account get`
-
-Retrieve details of a specific account
-
-**Usage:** `iroha ledger account get --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-
-
-
-## `iroha ledger account register`
-
-Register an account
-
-**Usage:** `iroha ledger account register [OPTIONS] --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Canonical global account identifier for registration (canonical I105 literal)
-* `--no-wait` — Submit without waiting for confirmation
-
-
-
-## `iroha ledger account unregister`
-
-Unregister an account
-
-**Usage:** `iroha ledger account unregister --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Account identifier (canonical I105 literal)
-
-
-
-## `iroha ledger account meta`
-
-Read and write metadata
-
-**Usage:** `iroha ledger account meta <COMMAND>`
-
-###### **Subcommands:**
-
-* `get` — Retrieve a value from the key-value store
-* `set` — Create or update an entry in the key-value store using JSON input from stdin
-* `remove` — Delete an entry from the key-value store
-
-
-
-## `iroha ledger account meta get`
-
-Retrieve a value from the key-value store
-
-**Usage:** `iroha ledger account meta get --id <ID> --key <KEY>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>`
-* `-k`, `--key <KEY>`
-
-
-
-## `iroha ledger account meta set`
-
-Create or update an entry in the key-value store using JSON input from stdin
-
-**Usage:** `iroha ledger account meta set --id <ID> --key <KEY>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>`
-* `-k`, `--key <KEY>`
-
-
-
-## `iroha ledger account meta remove`
-
-Delete an entry from the key-value store
-
-**Usage:** `iroha ledger account meta remove --id <ID> --key <KEY>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>`
-* `-k`, `--key <KEY>`
-
-
-
 ## `iroha ledger asset`
 
 Read and write assets
@@ -1702,7 +1872,8 @@ Read and write assets
 
 * `definition` — Read and write asset definitions
 * `get` — Retrieve details of a specific asset
-* `list` — List assets
+* `list` — List the balances held by one account (`/v1/accounts/{account}/assets`)
+* `holders` — List the accounts holding one asset definition (`/v1/assets/{definition}/holders`)
 * `mint` — Increase the quantity of an asset
 * `burn` — Decrease the quantity of an asset
 * `transfer` — Transfer an asset between accounts
@@ -1717,7 +1888,7 @@ Read and write asset definitions
 
 ###### **Subcommands:**
 
-* `list` — List asset definitions
+* `list` — List asset definitions (`/v1/assets/definitions`) with filter, sort, projection and paging
 * `get` — Retrieve details of a specific asset definition
 * `register` — Register an asset definition
 * `unregister` — Unregister an asset definition
@@ -1728,63 +1899,25 @@ Read and write asset definitions
 
 ## `iroha ledger asset definition list`
 
-List asset definitions
+List asset definitions (`/v1/assets/definitions`) with filter, sort, projection and paging
 
-**Usage:** `iroha ledger asset definition list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha ledger asset definition list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha ledger asset definition list all [OPTIONS]`
+**Usage:** `iroha ledger asset definition list [OPTIONS]`
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
-
-
-
-## `iroha ledger asset definition list filter`
-
-Filter by a given predicate
-
-**Usage:** `iroha ledger asset definition list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
-
-###### **Options:**
-
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -1808,6 +1941,19 @@ Register an asset definition
 **Usage:** `iroha ledger asset definition register [OPTIONS] --id <ID> --name <NAME>`
 
 ###### **Options:**
+
+* `--domain <DOMAIN>` — Immutable owning domain, independent from any alias
+* `--dataspace <DATASPACE>` — Exact nonzero dataspace ID for direct namespace ownership
+* `--global-home` — Construct an unowned global definition for genesis registration
+* `--balance-policy <BALANCE_POLICY>` — Transparent balance partition policy, independent from the immutable home
+
+  Default value: `global`
+
+  Possible values:
+  - `global`:
+    Use a single transparent balance bucket across dataspaces
+  - `dataspace-restricted`:
+    Keep transparent balances in explicit dataspace buckets
 
 * `-i`, `--id <ID>` — Asset definition identifier (unprefixed Base58 address)
 * `--name <NAME>` — Human-readable asset name
@@ -1919,63 +2065,52 @@ Retrieve details of a specific asset
 
 ## `iroha ledger asset list`
 
-List assets
+List the balances held by one account (`/v1/accounts/{account}/assets`)
 
-**Usage:** `iroha ledger asset list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha ledger asset list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha ledger asset list all [OPTIONS]`
+**Usage:** `iroha ledger asset list [OPTIONS]`
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--account <ACCOUNT>` — Account whose balances to list (canonical I105); defaults to the configured account
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
-## `iroha ledger asset list filter`
+## `iroha ledger asset holders`
 
-Filter by a given predicate
+List the accounts holding one asset definition (`/v1/assets/{definition}/holders`)
 
-**Usage:** `iroha ledger asset list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
+**Usage:** `iroha ledger asset holders [OPTIONS]`
 
 ###### **Options:**
 
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--definition <DEFINITION>` — Asset definition whose holders to list (unprefixed Base58 address)
+* `--definition-alias <DEFINITION_ALIAS>` — Asset definition alias (`<name>#<domain>.<dataspace>` or `<name>#<dataspace>`)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -2041,7 +2176,7 @@ Read and write NFTs
 ###### **Subcommands:**
 
 * `get` — Retrieve details of a specific NFT
-* `list` — List NFTs
+* `list` — List NFTs (`/v1/nfts`) with filter, sort, projection and paging
 * `register` — Register NFT with content provided from stdin in JSON format
 * `unregister` — Unregister NFT
 * `transfer` — Transfer ownership of NFT
@@ -2063,63 +2198,25 @@ Retrieve details of a specific NFT
 
 ## `iroha ledger nft list`
 
-List NFTs
+List NFTs (`/v1/nfts`) with filter, sort, projection and paging
 
-**Usage:** `iroha ledger nft list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha ledger nft list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha ledger nft list all [OPTIONS]`
+**Usage:** `iroha ledger nft list [OPTIONS]`
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
-
-
-
-## `iroha ledger nft list filter`
-
-Filter by a given predicate
-
-**Usage:** `iroha ledger nft list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
-
-###### **Options:**
-
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -2223,7 +2320,7 @@ Read and write RWA lots
 ###### **Subcommands:**
 
 * `get` — Retrieve details of a specific RWA lot
-* `list` — List RWA lots
+* `list` — List RWA lots (`/v1/rwas`) with filter, sort, projection and paging
 * `register` — Register an RWA lot using `NewRwa` JSON from stdin
 * `transfer` — Transfer quantity from an existing lot
 * `merge` — Merge parent lots using `MergeRwas` JSON from stdin
@@ -2252,63 +2349,25 @@ Retrieve details of a specific RWA lot
 
 ## `iroha ledger rwa list`
 
-List RWA lots
+List RWA lots (`/v1/rwas`) with filter, sort, projection and paging
 
-**Usage:** `iroha ledger rwa list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List all IDs, or full entries when `--verbose` is specified
-* `filter` — Filter by a given predicate
-
-
-
-## `iroha ledger rwa list all`
-
-List all IDs, or full entries when `--verbose` is specified
-
-**Usage:** `iroha ledger rwa list all [OPTIONS]`
+**Usage:** `iroha ledger rwa list [OPTIONS]`
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Possible values: `asc`, `desc`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
-
-
-
-## `iroha ledger rwa list filter`
-
-Filter by a given predicate
-
-**Usage:** `iroha ledger rwa list filter [OPTIONS] <PREDICATE>`
-
-###### **Arguments:**
-
-* `<PREDICATE>` — Filtering condition specified as a JSON string
-
-###### **Options:**
-
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -2519,18 +2578,12 @@ List all registered peers
 
 ###### **Options:**
 
-* `-v`, `--verbose` — Display detailed entry information instead of just IDs (when supported)
-* `--sort-by-metadata-key <SORT_BY_METADATA_KEY>` — Sort by metadata key
-* `--order <ORDER>` — Sort order (asc or desc)
-
-  Possible values: `asc`, `desc`
-
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
+* `-v`, `--verbose` — Print full peer entries instead of their public keys
+* `--limit <LIMIT>` — Maximum number of peers to return (server-side limit, at least 1)
 * `--offset <OFFSET>` — Offset into the result set (server-side offset)
 
   Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-* `--select <SELECT>` — Experimental selector (JSON). Currently ignored; reserved for future server-side projection
+* `--fetch-size <FETCH_SIZE>` — Batch fetch size for the iterable query (at least 1)
 
 
 
@@ -2721,350 +2774,6 @@ Set a system parameter using JSON input from stdin
 
 
 
-## `iroha ledger trigger`
-
-Read and write triggers
-
-**Usage:** `iroha ledger trigger <COMMAND>`
-
-###### **Subcommands:**
-
-* `list` — List trigger IDs
-* `get` — Retrieve details of a specific trigger
-* `register` — Register a trigger
-* `unregister` — Unregister a trigger
-* `mint` — Increase the number of trigger executions
-* `burn` — Decrease the number of trigger executions
-* `enable` — Enable a trigger by setting metadata key `__enabled=true`
-* `disable` — Disable a trigger by setting metadata key `__enabled=false`
-* `execute` — Execute a by-call trigger with optional JSON arguments
-* `inspect` — Inspect trigger declaration and optional live completion evidence
-* `completed` — Collect or watch trigger completion events
-* `meta` — Read and write metadata
-
-
-
-## `iroha ledger trigger list`
-
-List trigger IDs
-
-**Usage:** `iroha ledger trigger list <COMMAND>`
-
-###### **Subcommands:**
-
-* `all` — List registered trigger IDs
-
-
-
-## `iroha ledger trigger list all`
-
-List registered trigger IDs
-
-**Usage:** `iroha ledger trigger list all [OPTIONS]`
-
-###### **Options:**
-
-* `--active` — Only list active trigger IDs
-* `--limit <LIMIT>` — Maximum number of items to return (server-side limit)
-* `--offset <OFFSET>` — Offset into the result set (server-side offset)
-
-  Default value: `0`
-* `--fetch-size <FETCH_SIZE>` — Batch fetch size for iterable queries
-
-
-
-## `iroha ledger trigger get`
-
-Retrieve details of a specific trigger
-
-**Usage:** `iroha ledger trigger get --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Trigger name
-
-
-
-## `iroha ledger trigger register`
-
-Register a trigger
-
-**Usage:** `iroha ledger trigger register [OPTIONS] --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Trigger name
-* `-p`, `--path <PATH>` — Path to the compiled IVM bytecode to execute
-* `--instructions-stdin` — Read JSON array of instructions from stdin instead of bytecode path Example: echo "[ {\"Log\": {\"level\": \"INFO\", \"message\": \"hi\"}} ]" | iroha trigger register -i `my_trig` --instructions-stdin
-* `--instructions <PATH>` — Read JSON array of instructions from a file instead of bytecode path
-* `-r`, `--repeats <REPEATS>` — Number of permitted executions (default: indefinitely)
-* `--authority <AUTHORITY>` — Account executing the trigger (canonical I105 literal)
-* `--filter <FILTER>` — Filter type for the trigger
-
-  Default value: `execute`
-
-  Possible values: `execute`, `time`, `data`
-
-* `--time-start-ms <TIME_START_MS>` — Start time in milliseconds since UNIX epoch for time filter
-* `--time-period-ms <TIME_PERIOD_MS>` — Period in milliseconds for time filter (optional)
-* `--data-filter <JSON>` — JSON for a `DataEventFilter` to use as filter
-* `--data-domain <DATA_DOMAIN>` — Data filter preset: events within a domain
-* `--data-account <DATA_ACCOUNT>` — Data filter preset: events for an account (canonical I105 literal)
-* `--data-asset <DATA_ASSET>` — Data filter preset: events for a specific asset definition; use with `--data-asset-account` for a concrete ownership bucket
-* `--data-asset-account <DATA_ASSET_ACCOUNT>` — Data filter preset: account owning the selected asset bucket (canonical I105 literal)
-* `--data-asset-scope <DATA_ASSET_SCOPE>` — Data filter preset: balance scope for the selected asset bucket (`global` or `dataspace:<id>`)
-* `--data-asset-definition <DATA_ASSET_DEFINITION>` — Data filter preset: events for an asset definition
-* `--data-role <DATA_ROLE>` — Data filter preset: events for a role
-* `--data-trigger <DATA_TRIGGER>` — Data filter preset: events for a trigger
-* `--data-verifying-key <BACKEND:NAME>` — Data filter preset: events for a verifying key (format: `<backend>:<name>`)
-* `--data-proof <BACKEND:HEX>` — Data filter preset: events for a proof (format: `<backend>:<64-hex-proof-hash>`)
-* `--data-proof-only <PRESET>` — Restrict proof events to a preset when using `--data-proof`. Presets: `verified`, `rejected`, `all` (default)
-
-  Possible values:
-  - `all`:
-    All proof events (default)
-  - `verified`:
-    Only Verified events
-  - `rejected`:
-    Only Rejected events
-
-* `--data-vk-only <PRESET>` — Restrict verifying key events to a preset when using `--data-verifying-key`. Presets: `registered`, `updated`, `all` (default)
-
-  Possible values:
-  - `all`:
-    All verifying key events (default)
-  - `registered`:
-    Only Registered events
-  - `updated`:
-    Only Updated events
-
-* `--time-start <DURATION>` — Human-readable offset for time start (e.g., "5m", "1h"), added to current time
-* `--time-start-rfc3339 <RFC3339>` — RFC3339 timestamp for time filter start (e.g., 2025-01-01T00:00:00Z)
-
-
-
-## `iroha ledger trigger unregister`
-
-Unregister a trigger
-
-**Usage:** `iroha ledger trigger unregister --id <ID>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Trigger name
-
-
-
-## `iroha ledger trigger mint`
-
-Increase the number of trigger executions
-
-**Usage:** `iroha ledger trigger mint --id <ID> --repetitions <REPETITIONS>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Trigger name
-* `-r`, `--repetitions <REPETITIONS>` — Amount of change (integer)
-
-
-
-## `iroha ledger trigger burn`
-
-Decrease the number of trigger executions
-
-**Usage:** `iroha ledger trigger burn --id <ID> --repetitions <REPETITIONS>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>` — Trigger name
-* `-r`, `--repetitions <REPETITIONS>` — Amount of change (integer)
-
-
-
-## `iroha ledger trigger enable`
-
-Enable a trigger by setting metadata key `__enabled=true`
-
-**Usage:** `iroha ledger trigger enable <ID>`
-
-###### **Arguments:**
-
-* `<ID>` — Trigger name
-
-
-
-## `iroha ledger trigger disable`
-
-Disable a trigger by setting metadata key `__enabled=false`
-
-**Usage:** `iroha ledger trigger disable <ID>`
-
-###### **Arguments:**
-
-* `<ID>` — Trigger name
-
-
-
-## `iroha ledger trigger execute`
-
-Execute a by-call trigger with optional JSON arguments
-
-**Usage:** `iroha ledger trigger execute [OPTIONS] <ID>`
-
-###### **Arguments:**
-
-* `<ID>` — Trigger name
-
-###### **Options:**
-
-* `--args-json <ARGS_JSON>` — JSON object passed as trigger execution arguments
-
-  Default value: `{}`
-* `--trace` — Include runtime completion and pipeline diagnostics from Torii after finality
-* `--wait` — Poll exact global status until state-resolved Applied finality
-* `--submit-only` — Submit the transaction without waiting for finality
-* `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
-
-  Default value: `30000`
-* `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
-
-  Default value: `500`
-
-
-
-## `iroha ledger trigger inspect`
-
-Inspect trigger declaration and optional live completion evidence
-
-**Usage:** `iroha ledger trigger inspect [OPTIONS] <ID>`
-
-###### **Arguments:**
-
-* `<ID>` — Trigger name
-
-###### **Options:**
-
-* `--completion-timeout-ms <COMPLETION_TIMEOUT_MS>` — Also collect recent live completion evidence for this duration
-
-  Default value: `0`
-* `--completion-limit <COMPLETION_LIMIT>` — Maximum live completion events to include when completion collection is enabled
-
-  Default value: `5`
-
-
-
-## `iroha ledger trigger completed`
-
-Collect or watch trigger completion events
-
-**Usage:** `iroha ledger trigger completed <COMMAND>`
-
-###### **Subcommands:**
-
-* `list` — List matching trigger completions from committed block history
-* `watch` — Stream matching trigger completion events until interrupted, timed out, or limited
-
-
-
-## `iroha ledger trigger completed list`
-
-List matching trigger completions from committed block history
-
-**Usage:** `iroha ledger trigger completed list [OPTIONS]`
-
-###### **Options:**
-
-* `--id <ID>` — Optional trigger ID filter
-* `--outcome <OUTCOME>` — Optional completion outcome filter
-
-  Default value: `all`
-
-  Possible values: `all`, `success`, `failure`
-
-* `--limit <LIMIT>` — Maximum completion records to return
-
-  Default value: `10`
-* `--from-height <FROM_HEIGHT>` — First block height to scan. Defaults to the recent bounded window
-* `--to-height <TO_HEIGHT>` — Last block height to scan. Defaults to the current committed height
-* `--scan-limit-blocks <SCAN_LIMIT_BLOCKS>` — Hard cap on blocks scanned, including when --from-height is supplied
-
-  Default value: `1000`
-
-
-
-## `iroha ledger trigger completed watch`
-
-Stream matching trigger completion events until interrupted, timed out, or limited
-
-**Usage:** `iroha ledger trigger completed watch [OPTIONS]`
-
-###### **Options:**
-
-* `--id <ID>` — Optional trigger ID filter
-* `--outcome <OUTCOME>` — Optional completion outcome filter
-
-  Default value: `all`
-
-  Possible values: `all`, `success`, `failure`
-
-* `--limit <LIMIT>` — Optional maximum events to emit before returning
-* `--timeout-ms <TIMEOUT_MS>` — Optional maximum live-stream watch time
-
-
-
-## `iroha ledger trigger meta`
-
-Read and write metadata
-
-**Usage:** `iroha ledger trigger meta <COMMAND>`
-
-###### **Subcommands:**
-
-* `get` — Retrieve a value from the key-value store
-* `set` — Create or update an entry in the key-value store using JSON input from stdin
-* `remove` — Delete an entry from the key-value store
-
-
-
-## `iroha ledger trigger meta get`
-
-Retrieve a value from the key-value store
-
-**Usage:** `iroha ledger trigger meta get --id <ID> --key <KEY>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>`
-* `-k`, `--key <KEY>`
-
-
-
-## `iroha ledger trigger meta set`
-
-Create or update an entry in the key-value store using JSON input from stdin
-
-**Usage:** `iroha ledger trigger meta set --id <ID> --key <KEY>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>`
-* `-k`, `--key <KEY>`
-
-
-
-## `iroha ledger trigger meta remove`
-
-Delete an entry from the key-value store
-
-**Usage:** `iroha ledger trigger meta remove --id <ID> --key <KEY>`
-
-###### **Options:**
-
-* `-i`, `--id <ID>`
-* `-k`, `--key <KEY>`
-
-
-
 ## `iroha ledger query`
 
 Read various data
@@ -3091,118 +2800,6 @@ Query using JSON input from stdin
 Query using raw `SignedQuery` (base64 or hex) from stdin
 
 **Usage:** `iroha ledger query stdin-raw`
-
-
-
-## `iroha ledger transaction`
-
-Read transactions and write various data
-
-**Usage:** `iroha ledger transaction <COMMAND>`
-
-###### **Subcommands:**
-
-* `status` — Read the typed pipeline status of a submitted transaction
-* `get` — Retrieve details of a specific transaction
-* `ping` — Send an empty transaction that logs a message
-* `ivm` — Send a transaction using IVM bytecode
-* `stdin` — Send a transaction using JSON input from stdin
-* `signed-size` — Build and sign stdin instructions locally, then print their exact framed size without submitting
-
-
-
-## `iroha ledger transaction status`
-
-Read the typed pipeline status of a submitted transaction
-
-**Usage:** `iroha ledger transaction status [OPTIONS] --hash <HASH>`
-
-###### **Options:**
-
-* `-H`, `--hash <HASH>` — Hash of the signed transaction to inspect
-* `--scope <SCOPE>` — Explicit status routing scope for a one-shot read. `--wait` always uses exact global status and succeeds only on state-resolved Applied
-
-  Possible values:
-  - `local`:
-    Query only the configured Torii peer
-  - `global`:
-    Permit Torii's global/fanout status lookup
-
-* `--wait` — Poll exact global status until state-resolved Applied finality
-* `--submit-only` — Submit the transaction without waiting for finality
-* `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
-
-  Default value: `30000`
-* `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
-
-  Default value: `500`
-
-
-
-## `iroha ledger transaction get`
-
-Retrieve details of a specific transaction
-
-**Usage:** `iroha ledger transaction get --hash <HASH>`
-
-###### **Options:**
-
-* `-H`, `--hash <HASH>` — Hash of the transaction to retrieve
-
-
-
-## `iroha ledger transaction ping`
-
-Send an empty transaction that logs a message
-
-**Usage:** `iroha ledger transaction ping [OPTIONS] --msg <MSG>`
-
-###### **Options:**
-
-* `-l`, `--log-level <LOG_LEVEL>` — Log levels: TRACE, DEBUG, INFO, WARN, ERROR (in increasing order of visibility)
-
-  Default value: `DEBUG`
-* `-m`, `--msg <MSG>` — Log message
-* `--count <COUNT>` — Number of ping transactions to send
-
-  Default value: `1`
-* `--parallel <PARALLEL>` — Number of parallel workers to use when sending multiple pings
-
-  Default value: `1`
-* `--parallel-cap <PARALLEL_CAP>` — Maximum number of parallel workers (0 disables the cap)
-
-  Default value: `1024`
-* `--no-wait` — Submit without waiting for confirmation
-* `--no-index` — Do not suffix message with "-<index>" when count > 1
-
-
-
-## `iroha ledger transaction ivm`
-
-Send a transaction using IVM bytecode
-
-**Usage:** `iroha ledger transaction ivm [OPTIONS]`
-
-###### **Options:**
-
-* `-p`, `--path <PATH>` — Path to the IVM bytecode file. If omitted, reads from stdin
-* `--gas-limit <U64>` — Signature-bound transaction gas limit for this IVM submit
-
-
-
-## `iroha ledger transaction stdin`
-
-Send a transaction using JSON input from stdin
-
-**Usage:** `iroha ledger transaction stdin`
-
-
-
-## `iroha ledger transaction signed-size`
-
-Build and sign stdin instructions locally, then print their exact framed size without submitting
-
-**Usage:** `iroha ledger transaction signed-size`
 
 
 
@@ -3274,10 +2871,11 @@ Register a multisig account
 
 Propose a multisig transaction using JSON input from stdin
 
-**Usage:** `iroha ledger multisig propose [OPTIONS] --account <ACCOUNT>`
+**Usage:** `iroha ledger multisig propose [OPTIONS] --proposal-nonce <PROPOSAL_NONCE> --account <ACCOUNT>`
 
 ###### **Options:**
 
+* `--proposal-nonce <PROPOSAL_NONCE>` — Nonzero 32-byte nonce, lowercase hex; retain the same value for every retry
 * `-a`, `--account <ACCOUNT>` — Multisig authority managing the proposed transaction
 * `-t`, `--transaction-ttl <TRANSACTION_TTL>` — Overrides the default time-to-live for this transaction. Example: "1y 6M 2w 3d 12h 30m 30s" Must not exceed the multisig policy TTL; the CLI will preview the effective expiry and reject overrides above the policy cap
 
@@ -3287,10 +2885,11 @@ Propose a multisig transaction using JSON input from stdin
 
 Approve a multisig transaction
 
-**Usage:** `iroha ledger multisig approve --account <ACCOUNT> --instructions-hash <INSTRUCTIONS_HASH>`
+**Usage:** `iroha ledger multisig approve --proposal-id <PROPOSAL_ID> --account <ACCOUNT> --instructions-hash <INSTRUCTIONS_HASH>`
 
 ###### **Options:**
 
+* `--proposal-id <PROPOSAL_ID>` — Exact proposal occurrence to approve or cancel
 * `-a`, `--account <ACCOUNT>` — Multisig authority of the transaction
 * `-i`, `--instructions-hash <INSTRUCTIONS_HASH>` — Hash of the instructions to approve
 
@@ -3300,10 +2899,12 @@ Approve a multisig transaction
 
 Propose cancellation of an existing multisig transaction
 
-**Usage:** `iroha ledger multisig cancel [OPTIONS] --account <ACCOUNT> --instructions-hash <INSTRUCTIONS_HASH>`
+**Usage:** `iroha ledger multisig cancel [OPTIONS] --proposal-id <PROPOSAL_ID> --proposal-nonce <PROPOSAL_NONCE> --account <ACCOUNT> --instructions-hash <INSTRUCTIONS_HASH>`
 
 ###### **Options:**
 
+* `--proposal-id <PROPOSAL_ID>` — Exact proposal occurrence to approve or cancel
+* `--proposal-nonce <PROPOSAL_NONCE>` — Nonzero 32-byte nonce, lowercase hex; retain the same value for every retry
 * `-a`, `--account <ACCOUNT>` — Multisig authority of the transaction
 * `-i`, `--instructions-hash <INSTRUCTIONS_HASH>` — Hash of the target proposal instructions to cancel
 * `-t`, `--transaction-ttl <TRANSACTION_TTL>` — Overrides the default time-to-live for the cancel proposal itself
@@ -3340,7 +2941,9 @@ Subscribe to events: state changes, transaction/block/trigger progress
 
 ###### **Options:**
 
-* `-t`, `--timeout <TIMEOUT>` — Duration to listen for events. Example: "1y 6M 2w 3d 12h 30m 30s"
+* `-t`, `--timeout <TIMEOUT>` — Stop listening once this much time has passed since the subscription started.
+
+   This is a deadline for the whole subscription, not an idle timeout: a busy stream still stops on time. Without it the command listens until interrupted or the stream closes. Example: "30s", "1h 30m"
 
 
 
@@ -3360,7 +2963,7 @@ Notify governance lifecycle events
 
 ###### **Options:**
 
-* `--proposal-id <ID_HEX>` — Filter by proposal id (hex)
+* `--proposal-id <ID_HEX>` — Filter by an exact 32-byte proposal id (hex; optional `0x` prefix)
 * `--referendum-id <RID>` — Filter by referendum id
 
 
@@ -3399,7 +3002,7 @@ Notify when a trigger execution is completed
 
 ## `iroha ledger blocks`
 
-Subscribe to blocks
+Subscribe to full signed blocks (requires `CanReadAllLedgerData`)
 
 **Usage:** `iroha ledger blocks [OPTIONS] <HEIGHT>`
 
@@ -3409,7 +3012,9 @@ Subscribe to blocks
 
 ###### **Options:**
 
-* `-t`, `--timeout <TIMEOUT>` — Duration to listen for events. Example: "1y 6M 2w 3d 12h 30m 30s"
+* `-t`, `--timeout <TIMEOUT>` — Stop streaming once this much time has passed since the subscription started.
+
+   This is a deadline for the whole subscription, not an idle timeout: a busy stream still stops on time. Without it the command streams until interrupted or the stream closes. Example: "30s", "1h 30m"
 
 
 
@@ -3487,7 +3092,9 @@ Register a trigger
 
 * `-i`, `--id <ID>` — Trigger name
 * `-p`, `--path <PATH>` — Path to the compiled IVM bytecode to execute
-* `--instructions-stdin` — Read JSON array of instructions from stdin instead of bytecode path Example: echo "[ {\"Log\": {\"level\": \"INFO\", \"message\": \"hi\"}} ]" | iroha trigger register -i `my_trig` --instructions-stdin
+* `--instructions-stdin` — Read JSON array of instructions from stdin instead of bytecode path.
+
+   The array is the output of `--emit-instructions`, for example: `iroha --emit-instructions tx ping --msg hi | iroha --fee-payer authority trigger register --id my_trig --instructions-stdin`
 * `--instructions <PATH>` — Read JSON array of instructions from a file instead of bytecode path
 * `-r`, `--repeats <REPEATS>` — Number of permitted executions (default: indefinitely)
 * `--authority <AUTHORITY>` — Account executing the trigger (canonical I105 literal)
@@ -3816,7 +3423,9 @@ Runtime ABI/upgrades
 ###### **Subcommands:**
 
 * `abi` — Runtime ABI helpers
-* `upgrade` — Runtime upgrade management
+* `upgrade` — Governed runtime change sets
+* `contain` — Emergency containment by the runtime emergency panel
+* `release` — Show this node's release and whether it executes the committed selection and the successor of each scheduled change set
 * `status` — Show runtime metrics/status summary
 * `capabilities` — Fetch node capability advert (ABI + crypto manifest)
 
@@ -3862,22 +3471,23 @@ Fetch the node's canonical ABI hash for the active policy
 
 ## `iroha ops runtime upgrade`
 
-Runtime upgrade management
+Governed runtime change sets
 
 **Usage:** `iroha ops runtime upgrade <COMMAND>`
 
 ###### **Subcommands:**
 
-* `list` — List proposed/activated runtime upgrades
-* `propose` — Build a `ProposeRuntimeUpgrade` instruction skeleton via Torii
-* `activate` — Build an `ActivateRuntimeUpgrade` instruction skeleton via Torii
-* `cancel` — Build a `CancelRuntimeUpgrade` instruction skeleton via Torii
+* `list` — Show the committed selection, the attesting committee and every recorded change set
+* `propose` — Submit the Parliament proposal that schedules a change set, with the trusted release signers' endorsements the committed provenance policy requires
+* `cancel` — Submit the Parliament proposal that withdraws a scheduled change set
+* `endorse` — Endorse a change set's provenance as a trusted release signer
+* `attest` — Have the node sign its support for a scheduled change set with its validator key, then submit the attestation
 
 
 
 ## `iroha ops runtime upgrade list`
 
-List proposed/activated runtime upgrades
+Show the committed selection, the attesting committee and every recorded change set
 
 **Usage:** `iroha ops runtime upgrade list`
 
@@ -3885,37 +3495,108 @@ List proposed/activated runtime upgrades
 
 ## `iroha ops runtime upgrade propose`
 
-Build a `ProposeRuntimeUpgrade` instruction skeleton via Torii
+Submit the Parliament proposal that schedules a change set, with the trusted release signers' endorsements the committed provenance policy requires
 
-**Usage:** `iroha ops runtime upgrade propose --file <PATH>`
-
-###### **Options:**
-
-* `--file <PATH>` — Path to a JSON file with `RuntimeUpgradeManifest` fields
-
-
-
-## `iroha ops runtime upgrade activate`
-
-Build an `ActivateRuntimeUpgrade` instruction skeleton via Torii
-
-**Usage:** `iroha ops runtime upgrade activate --id <HEX>`
+**Usage:** `iroha ops runtime upgrade propose [OPTIONS] --file <PATH>`
 
 ###### **Options:**
 
-* `--id <HEX>` — Upgrade id (hex)
+* `--file <PATH>` — Path to a JSON file with the `ChangeSetV1` to schedule
+* `--endorsement <PATH>` — Path to a JSON file with one `ChangeSetEndorsementV1`; repeat for each trusted release signer. A root without a committed provenance policy takes none
 
 
 
 ## `iroha ops runtime upgrade cancel`
 
-Build a `CancelRuntimeUpgrade` instruction skeleton via Torii
+Submit the Parliament proposal that withdraws a scheduled change set
 
 **Usage:** `iroha ops runtime upgrade cancel --id <HEX>`
 
 ###### **Options:**
 
-* `--id <HEX>` — Upgrade id (hex)
+* `--id <HEX>` — Change-set id (hex)
+
+
+
+## `iroha ops runtime upgrade endorse`
+
+Endorse a change set's provenance as a trusted release signer
+
+**Usage:** `iroha ops runtime upgrade endorse --file <PATH> --signer-key-file <PATH>`
+
+###### **Options:**
+
+* `--file <PATH>` — Path to a JSON file with the `ChangeSetV1` to endorse
+* `--signer-key-file <PATH>` — File holding the release signer's private key (multihash hex); it is read at run time and never printed
+
+
+
+## `iroha ops runtime upgrade attest`
+
+Have the node sign its support for a scheduled change set with its validator key, then submit the attestation
+
+**Usage:** `iroha ops runtime upgrade attest --id <HEX>`
+
+###### **Options:**
+
+* `--id <HEX>` — Change-set id (hex)
+
+
+
+## `iroha ops runtime contain`
+
+Emergency containment by the runtime emergency panel
+
+**Usage:** `iroha ops runtime contain <COMMAND>`
+
+###### **Subcommands:**
+
+* `list` — List every recorded containment
+* `endorse` — Endorse a containment as a member of the runtime emergency panel
+* `submit` — Submit a containment with its panel endorsements
+
+
+
+## `iroha ops runtime contain list`
+
+List every recorded containment
+
+**Usage:** `iroha ops runtime contain list`
+
+
+
+## `iroha ops runtime contain endorse`
+
+Endorse a containment as a member of the runtime emergency panel
+
+**Usage:** `iroha ops runtime contain endorse [OPTIONS] --file <PATH> --member-key-file <PATH>`
+
+###### **Options:**
+
+* `--file <PATH>` — Path to a JSON file with the `ContainmentV1` to endorse
+* `--member-key-file <PATH>` — File holding the panel member's private key (multihash hex); it is read at run time and never printed
+* `--at-ms <MS>` — Endorsement time in Unix milliseconds; it must not be after the authorizing block's committed time, and the endorsement counts for 30 minutes [default: now]
+
+
+
+## `iroha ops runtime contain submit`
+
+Submit a containment with its panel endorsements
+
+**Usage:** `iroha ops runtime contain submit --file <PATH> --endorsement <PATH>`
+
+###### **Options:**
+
+* `--file <PATH>` — Path to a JSON file with the `ContainmentV1`
+* `--endorsement <PATH>` — Path to a JSON file with one `EndorsementV1`; repeat for each panel member
+
+
+
+## `iroha ops runtime release`
+
+Show this node's release and whether it executes the committed selection and the successor of each scheduled change set
+
+**Usage:** `iroha ops runtime release`
 
 
 
@@ -3943,20 +3624,31 @@ Sumeragi helpers (status)
 
 ###### **Subcommands:**
 
-* `status` — Show consensus status snapshot (leader, `HighestQC`, `LockedQC`)
+* `status` — Show the consensus status snapshot (round, leader, proxy tail, lock view, heights)
+* `lanes` — Show committed consensus lanes and this node's typed instance status
 * `diagnostics` — Show non-authoritative pipeline, queue, election, and lane diagnostics
-* `leader` — Show leader index (and PRF context when available)
 * `params` — Show on-chain Sumeragi parameters snapshot
-* `qc` — Show HighestQC/LockedQC snapshot
 * `evidence` — Evidence audit helpers (list/count)
 
 
 
 ## `iroha ops sumeragi status`
 
-Show consensus status snapshot (leader, `HighestQC`, `LockedQC`)
+Show the consensus status snapshot (round, leader, proxy tail, lock view, heights)
 
 **Usage:** `iroha ops sumeragi status`
+
+
+
+## `iroha ops sumeragi lanes`
+
+Show committed consensus lanes and this node's typed instance status
+
+**Usage:** `iroha ops sumeragi lanes [OPTIONS]`
+
+###### **Options:**
+
+* `--torii-url <URL>` — Override the configured gateway with an explicitly approved physical-peer Torii URL
 
 
 
@@ -3968,27 +3660,11 @@ Show non-authoritative pipeline, queue, election, and lane diagnostics
 
 
 
-## `iroha ops sumeragi leader`
-
-Show leader index (and PRF context when available)
-
-**Usage:** `iroha ops sumeragi leader`
-
-
-
 ## `iroha ops sumeragi params`
 
 Show on-chain Sumeragi parameters snapshot
 
 **Usage:** `iroha ops sumeragi params`
-
-
-
-## `iroha ops sumeragi qc`
-
-Show HighestQC/LockedQC snapshot
-
-**Usage:** `iroha ops sumeragi qc`
 
 
 
@@ -4000,24 +3676,27 @@ Evidence audit helpers (list/count)
 
 ###### **Subcommands:**
 
-* `list` — List persisted evidence entries
+* `list` — List committed evidence audit entries
 * `count` — Show evidence count
 
 
 
 ## `iroha ops sumeragi evidence list`
 
-List persisted evidence entries
+List committed evidence audit entries
 
 **Usage:** `iroha ops sumeragi evidence list [OPTIONS]`
 
 ###### **Options:**
 
-* `--limit <LIMIT>` — Maximum number of entries to return
-* `--offset <OFFSET>` — Offset into the evidence list
+* `--limit <LIMIT>` — Maximum number of entries to return (1 through 1000)
+* `--offset <OFFSET>` — Offset into the evidence list (0 through 10000)
 * `--kind <KIND>` — Filter by evidence kind
 
-  Possible values: `SumeragiV2Equivocation`
+  Possible values:
+  - `NativeSumeragiEvidence`
+  - `SccpForgeryEvidence`:
+    Recorded SCCP forgery DATA; this command performs no admission verification
 
 
 
@@ -4100,7 +3779,7 @@ Inspect on-disk queue diagnostics for a Connect session
 
 * `--sid <SID>` — Connect session identifier (base64url, no padding). Required unless `--snapshot` is provided
 * `--snapshot <SNAPSHOT>` — Path to an explicit snapshot JSON file (defaults to `<root>/<sid>/state.json`)
-* `--root <ROOT>` — Root directory containing Connect queue state (defaults to `connect.queue.root` or `~/.iroha/connect`)
+* `--root <ROOT>` — Root directory containing Connect queue state (defaults to `connect.queue_root` or `~/.iroha/connect`)
 * `--metrics` — Include metrics summary derived from `metrics.ndjson`
 * `--format <FORMAT>` — Output format for text mode (`table` or `json`).
 
@@ -4121,8 +3800,40 @@ Bridge tools (feature: bridge)
 
 ###### **Subcommands:**
 
+* `genesis-readiness` — Probe the original node and genesis once with authenticated readiness evidence
+* `verify-retained-network` — Verify archived four-peer public identity against an independently pinned genesis/prefix
 * `emit-receipt` — Emit a bridge receipt as a typed event
-* `sccp` — Inspect the exact transfer-only SCCP registry and proof inputs
+
+
+
+## `iroha ops bridge genesis-readiness`
+
+Probe the original node and genesis once with authenticated readiness evidence
+
+**Usage:** `iroha ops bridge genesis-readiness --challenge <CHALLENGE> --node-public-key <NODE_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --request-timeout-ms <REQUEST_TIMEOUT_MS>`
+
+###### **Options:**
+
+* `--challenge <CHALLENGE>` — Fresh unpredictable 32-byte challenge as exactly 64 lowercase hexadecimal characters
+* `--node-public-key <NODE_PUBLIC_KEY>` — BLS public key independently retained for this original validator process
+* `--genesis-hash <GENESIS_HASH>` — Canonical genesis hash retained from original generated inputs
+* `--signed-genesis <SIGNED_GENESIS>` — Independently retained canonical signed genesis file
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original genesis manifest, checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--request-timeout-ms <REQUEST_TIMEOUT_MS>` — Total HTTP budget for compatibility and attestation, within the launcher's deadline
+
+
+
+## `iroha ops bridge verify-retained-network`
+
+Verify archived four-peer public identity against an independently pinned genesis/prefix
+
+**Usage:** `iroha ops bridge verify-retained-network --request <REQUEST> --request-sha256 <REQUEST_SHA256>`
+
+###### **Options:**
+
+* `--request <REQUEST>` — Owner-controlled public request; no private configuration bytes belong in it
+* `--request-sha256 <REQUEST_SHA256>` — SHA-256 independently approved outside the request transport
 
 
 
@@ -4145,113 +3856,6 @@ Emit a bridge receipt as a typed event
 
 
 
-## `iroha ops bridge sccp`
-
-Inspect the exact transfer-only SCCP registry and proof inputs
-
-**Usage:** `iroha ops bridge sccp <COMMAND>`
-
-###### **Subcommands:**
-
-* `capabilities` — Fetch the closed first-release SCCP HTTP surface
-* `registry` — Fetch the authoritative typed SCCP route registry
-* `recent` — Discover newest-first finalized SORA-origin messages
-* `bundle` — Fetch one finalized canonical SCCP message bundle
-* `proof-request` — Fetch the exact state-derived Groth16 prover request for one message
-* `submit-destination-proof` — Prepare or directly submit one closed destination-proof artifact
-* `submit-native-message` — Prepare or directly submit one protocol-native inbound proof
-
-
-
-## `iroha ops bridge sccp capabilities`
-
-Fetch the closed first-release SCCP HTTP surface
-
-**Usage:** `iroha ops bridge sccp capabilities`
-
-
-
-## `iroha ops bridge sccp registry`
-
-Fetch the authoritative typed SCCP route registry
-
-**Usage:** `iroha ops bridge sccp registry`
-
-
-
-## `iroha ops bridge sccp recent`
-
-Discover newest-first finalized SORA-origin messages
-
-**Usage:** `iroha ops bridge sccp recent [OPTIONS]`
-
-###### **Options:**
-
-* `--from <FROM>` — Inclusive block height through which to scan backwards
-* `--after-index <AFTER_INDEX>` — Last commitment index already consumed at `--from` (inclusive range `0..=511`)
-* `--limit <LIMIT>` — Maximum number of messages to return (inclusive range `1..=50`)
-
-
-
-## `iroha ops bridge sccp bundle`
-
-Fetch one finalized canonical SCCP message bundle
-
-**Usage:** `iroha ops bridge sccp bundle --message-id <HEX>`
-
-###### **Options:**
-
-* `--message-id <HEX>` — Nonzero SCCP message id (hex, 32 bytes)
-
-
-
-## `iroha ops bridge sccp proof-request`
-
-Fetch the exact state-derived Groth16 prover request for one message
-
-**Usage:** `iroha ops bridge sccp proof-request --message-id <HEX>`
-
-###### **Options:**
-
-* `--message-id <HEX>` — Nonzero SCCP message id (hex, 32 bytes)
-
-
-
-## `iroha ops bridge sccp submit-destination-proof`
-
-Prepare or directly submit one closed destination-proof artifact
-
-**Usage:** `iroha ops bridge sccp submit-destination-proof [OPTIONS] --artifact <PATH>`
-
-###### **Options:**
-
-* `--artifact <PATH>` — File containing one canonical Norito closed SCCP destination-proof envelope
-* `--transaction-payload-b64-file <PATH>` — File containing the exact canonical padded-base64 transaction payload returned by prepare
-* `--signature-b64-file <PATH>` — File containing one canonical padded-base64 detached signature over the prepared payload hash
-* `--creation-time-ms <CREATION_TIME_MS>` — Positive transaction creation timestamp in Unix milliseconds.
-
-   Direct submission must repeat the value returned by preparation.
-
-
-
-## `iroha ops bridge sccp submit-native-message`
-
-Prepare or directly submit one protocol-native inbound proof
-
-**Usage:** `iroha ops bridge sccp submit-native-message [OPTIONS] --proof <PATH> --replay-witness <PATH>`
-
-###### **Options:**
-
-* `--proof <PATH>` — File containing one canonical Norito protocol-native SCCP inbound proof
-* `--replay-witness <PATH>` — File containing one canonical Norito sparse replay non-membership witness
-* `--transaction-payload-b64-file <PATH>` — File containing the exact canonical padded-base64 transaction payload returned by prepare
-* `--signature-b64-file <PATH>` — File containing one canonical padded-base64 detached signature over the prepared payload hash
-* `--creation-time-ms <CREATION_TIME_MS>` — Positive transaction creation timestamp in Unix milliseconds.
-
-   Direct submission must repeat the value returned by preparation.
-
-
-
 ## `iroha app`
 
 App API helpers and product tooling
@@ -4261,6 +3865,7 @@ App API helpers and product tooling
 ###### **Subcommands:**
 
 * `gov` — Governance helpers (app API convenience)
+* `execution` — Local native execution profiles, proving and verification
 * `zk` — Zero-knowledge helpers (roots, etc.)
 * `confidential` — Confidential asset tooling helpers
 * `taikai` — Taikai publisher tooling (CAR bundler, envelopes)
@@ -4268,7 +3873,7 @@ App API helpers and product tooling
 * `da` — Data availability helpers (ingest tooling)
 * `streaming` — Streaming helpers (HPKE fingerprints, suite listings)
 * `nexus` — Nexus helpers (lanes, governance)
-* `staking` — Public-lane staking helpers (register/activate/exit)
+* `staking` — Public-lane validator admission, staking, withdrawals, and rewards
 * `subscriptions` — Subscription plan and billing helpers
 * `endorsement` — Domain endorsement helpers (committees, policies, submissions)
 * `jurisdiction` — Jurisdiction Data Guardian helpers (attestations and SDN registries)
@@ -4276,7 +3881,7 @@ App API helpers and product tooling
 * `social` — Social incentive helpers (viral follow rewards and escrows)
 * `space-directory` — Space Directory helpers (UAID capability manifests)
 * `kaigi` — Kaigi session helpers
-* `sorafs` — SoraFS helpers (pin registry, aliases, replication orders, storage)
+* `sorafs` — `SoraFS` helpers (pin registry, aliases, replication orders, storage)
 * `soracles` — Soracles helpers (evidence bundling)
 * `sns` — Sora Name Service helpers (registrar + policy tooling)
 * `alias` — Alias resolution and declarative setup helpers
@@ -4297,7 +3902,7 @@ Governance helpers (app API convenience)
 * `vote` — Submit a standalone referendum ballot; auto-detects its mode unless overridden
 * `proposal` — Proposal helpers
 * `locks` — Lock helpers
-* `unlock` — Get the latest explicitly persisted council roster. Unlock helpers (expired lock stats)
+* `unlock` — Unlock helpers (expired lock stats)
 * `referendum` — Referendum helpers
 * `tally` — Tally helpers
 * `protected` — Protected namespace helpers
@@ -4446,7 +4051,7 @@ Get locks for a referendum id
 
 ## `iroha app gov unlock`
 
-Get the latest explicitly persisted council roster. Unlock helpers (expired lock stats)
+Unlock helpers (expired lock stats)
 
 **Usage:** `iroha app gov unlock <COMMAND>`
 
@@ -4569,7 +4174,9 @@ Attempt-based private SORA Parliament helpers
 * `draft-attempt` — Draft one canonical attempt creation instruction
 * `draft-transition` — Draft one exact lifecycle transition instruction
 * `get-attempt` — Read one exact committed attempt projection
-* `finalize-opened-ballot` — Verify signer-peer shares and submit `FinalizeOpenedBallot` normally
+* `respond-invitation` — Accept or decline one Parliament invitation addressed to this account
+* `endorse` — Endorse one public-finding result root as a seated member
+* `record-absence` — Record this member's own absence from one attempt
 
 
 
@@ -4613,18 +4220,151 @@ Read one exact committed attempt projection
 
 
 
-## `iroha app gov parliament finalize-opened-ballot`
+## `iroha app gov parliament respond-invitation`
 
-Verify signer-peer shares and submit `FinalizeOpenedBallot` normally
+Accept or decline one Parliament invitation addressed to this account
 
-**Usage:** `iroha app gov parliament finalize-opened-ballot --ballot-attempt-id <BALLOT_ATTEMPT_ID> --peer <TORII_URL>`
+**Usage:** `iroha app gov parliament respond-invitation --governance-attempt-id <GOVERNANCE_ATTEMPT_ID> --election-attempt-id <ELECTION_ATTEMPT_ID> --body <BODY> --decision <DECISION>`
 
 ###### **Options:**
 
-* `--ballot-attempt-id <BALLOT_ATTEMPT_ID>` — Canonical lowercase identifier of the ballot attempt in `Opening`
-* `--peer <TORII_URL>` — Root URL of one signer peer exposing release-context and partial-release routes.
+* `--governance-attempt-id <GOVERNANCE_ATTEMPT_ID>` — Canonical lowercase identifier of the Parliament attempt
+* `--election-attempt-id <ELECTION_ATTEMPT_ID>` — Body election whose invitation is answered
+* `--body <BODY>` — Body label, for example `rules-committee` or `policy-jury`
+* `--decision <DECISION>` — Accept or decline the seat
 
-   Supply every configured signer peer. The coordinator sorts and bounds the URLs, verifies every public proof locally, de-duplicates equal seats, and combines the lowest canonical threshold of valid participant indices.
+  Possible values:
+  - `accept`:
+    Accept the offered seat
+  - `decline`:
+    Decline the offered seat
+
+
+
+
+## `iroha app gov parliament endorse`
+
+Endorse one public-finding result root as a seated member
+
+**Usage:** `iroha app gov parliament endorse --governance-attempt-id <GOVERNANCE_ATTEMPT_ID> --body-instance-id <BODY_INSTANCE_ID> --result-root <RESULT_ROOT>`
+
+###### **Options:**
+
+* `--governance-attempt-id <GOVERNANCE_ATTEMPT_ID>` — Canonical lowercase identifier of the Parliament attempt
+* `--body-instance-id <BODY_INSTANCE_ID>` — Sealed body instance contributing the finding
+* `--result-root <RESULT_ROOT>` — Root of the complete evidence, deliberation and dissent record (64 lowercase hex)
+
+
+
+## `iroha app gov parliament record-absence`
+
+Record this member's own absence from one attempt
+
+**Usage:** `iroha app gov parliament record-absence --governance-attempt-id <GOVERNANCE_ATTEMPT_ID> --body-instance-id <BODY_INSTANCE_ID> --election-attempt-id <ELECTION_ATTEMPT_ID>`
+
+###### **Options:**
+
+* `--governance-attempt-id <GOVERNANCE_ATTEMPT_ID>` — Canonical lowercase identifier of the Parliament attempt
+* `--body-instance-id <BODY_INSTANCE_ID>` — Sealed body instance the member sits on
+* `--election-attempt-id <ELECTION_ATTEMPT_ID>` — Body election that seated the member
+
+
+
+## `iroha app execution`
+
+Local native execution profiles, proving and verification
+
+**Usage:** `iroha app execution <COMMAND>`
+
+###### **Subcommands:**
+
+* `profiles` — List compiled profiles and their explicit qualification state
+* `export-kernels` — Export browser integer kernels from the compiled native `RaceV1` relation
+* `export-parity` — Export native reference transcripts, snapshots and outcomes for all 21 browser grids
+* `prove` — Prove a canonical request using its exact immutable compiled profile
+* `verify` — Verify a generic execution envelope locally and print its authenticated outcome
+* `verify-settlement` — Verify finalized game settlement against an independently pinned network context
+
+
+
+## `iroha app execution profiles`
+
+List compiled profiles and their explicit qualification state
+
+**Usage:** `iroha app execution profiles`
+
+
+
+## `iroha app execution export-kernels`
+
+Export browser integer kernels from the compiled native `RaceV1` relation
+
+**Usage:** `iroha app execution export-kernels --output-file <PATH>`
+
+###### **Options:**
+
+* `--output-file <PATH>` — JSON destination bundled by the browser frontend
+
+
+
+## `iroha app execution export-parity`
+
+Export native reference transcripts, snapshots and outcomes for all 21 browser grids
+
+**Usage:** `iroha app execution export-parity --output-file <PATH>`
+
+###### **Options:**
+
+* `--output-file <PATH>` — JSON destination bundled by the browser frontend
+
+
+
+## `iroha app execution prove`
+
+Prove a canonical request using its exact immutable compiled profile
+
+**Usage:** `iroha app execution prove --request <PATH> --output-file <PATH>`
+
+###### **Options:**
+
+* `--request <PATH>` — Canonical Norito `RaceProverRequestV1` input path
+* `--output-file <PATH>` — Destination for the canonical generic `ExecutionProofEnvelopeV1`
+
+
+
+## `iroha app execution verify`
+
+Verify a generic execution envelope locally and print its authenticated outcome
+
+**Usage:** `iroha app execution verify --proof <PATH>`
+
+###### **Options:**
+
+* `--proof <PATH>` — Canonical Norito `ExecutionProofEnvelopeV1` path
+
+
+
+## `iroha app execution verify-settlement`
+
+Verify finalized game settlement against an independently pinned network context
+
+**Usage:** `iroha app execution verify-settlement [OPTIONS] --bundle <PATH> --network-id <NETWORK_ID> --trusted-checkpoint <PATH> --expected-entry-hash <EXPECTED_ENTRY_HASH> --session-id <SESSION_ID> --profile-id <PROFILE_ID> --outcome-hash <OUTCOME_HASH>`
+
+###### **Options:**
+
+* `--bundle <PATH>` — First-release settlement bundle or index of adjacent, bounded JSON carrier files
+* `--network-id <NETWORK_ID>` — Independently pinned exact genesis-derived network identity
+* `--trusted-checkpoint <PATH>` — Independently authenticated canonical checkpoint, never selected by the bundle
+* `--expected-entry-hash <EXPECTED_ENTRY_HASH>` — Canonical entrypoint hash retained when the wallet signed the settlement
+* `--session-id <SESSION_ID>` — Independently selected game session
+* `--profile-id <PROFILE_ID>` — Release-pinned compiled execution profile
+* `--outcome-hash <OUTCOME_HASH>` — Expected domain-separated generic outcome commitment
+* `--max-finality-heights <MAX_FINALITY_HEIGHTS>` — Explicit total finality work budget; increasing it does not change the original trust pin
+
+  Default value: `65536`
+* `--max-finality-archive-bytes <MAX_FINALITY_ARCHIVE_BYTES>` — Total decoded carrier byte budget across all batches (including the final block/proofs)
+
+  Default value: `4294967296`
 
 
 
@@ -4638,14 +4378,12 @@ Zero-knowledge helpers (roots, etc.)
 
 * `roots` — Get recent shielded roots for an asset (JSON). Posts to /v1/zk/roots
 * `verify-batch` — Verify a batch of ZK `OpenVerify` envelopes (Norito vector) via /v1/zk/verify-batch
-* `schema-hash` — Compute the Blake2b-32 hash required for `public_inputs_schema_hash` and print it
 * `attachments` — Manage ZK attachments in the app API
 * `register-asset` — Register a ZK-capable asset (Hybrid mode) with policy and VK ids
 * `vk` — Verifying-key registry lifecycle (register/update/get)
 * `proofs` — Inspect proof registry (list/count/get)
-* `ivm` — IVM prove helpers (non-consensus, app API)
 * `vote` — ZK Vote helpers (tally)
-* `envelope` — Encode a confidential encrypted payload (memo) into Norito bytes/base64
+* `envelope` — Validate and encode a typed confidential encrypted memo
 
 
 
@@ -4674,19 +4412,6 @@ Verify a batch of ZK `OpenVerify` envelopes (Norito vector) via /v1/zk/verify-ba
 
 * `--norito <PATH>` — Path to a Norito-encoded Vec<OpenVerifyEnvelope> (mutually exclusive with --json)
 * `--json <PATH>` — Path to a JSON array of base64-encoded Norito `OpenVerifyEnvelope` items (mutually exclusive with --norito)
-
-
-
-## `iroha app zk schema-hash`
-
-Compute the Blake2b-32 hash required for `public_inputs_schema_hash` and print it
-
-**Usage:** `iroha app zk schema-hash [OPTIONS]`
-
-###### **Options:**
-
-* `--norito <PATH>` — Path to a Norito-encoded `OpenVerifyEnvelope`
-* `--public-inputs-hex <HEX>` — Hex-encoded public inputs (when not using --norito)
 
 
 
@@ -4784,7 +4509,6 @@ Register a ZK-capable asset (Hybrid mode) with policy and VK ids
 
 * `--asset <ASSET_ID>` — Canonical unprefixed Base58 `AssetDefinitionId`
 * `--vk-unshield <BACKEND:NAME>` — Verifying key id for unshield proofs (format: `<backend>:<name>`)
-* `--vk-shield <BACKEND:NAME>` — Canonical Kagemusha top-up shield verifying key id (format: `<backend>:<name>`)
 
 
 
@@ -4834,7 +4558,7 @@ Get a verifying key record by backend and name
 
 ###### **Options:**
 
-* `--backend <BACKEND>` — Backend identifier (e.g., "halo2/ipa")
+* `--backend <BACKEND>` — Backend identifier (e.g., "pipa-r/pasta")
 * `--name <NAME>` — Verifying key name
 
 
@@ -4863,7 +4587,7 @@ List proof records maintained by Torii
 
 ###### **Options:**
 
-* `--backend <BACKEND>` — Filter by backend identifier (e.g., `halo2/ipa`)
+* `--backend <BACKEND>` — Filter by backend identifier (e.g., `pipa-r/pasta`)
 * `--status <STATUS>` — Filter by verification status (`Submitted`, `Verified`, `Rejected`)
 * `--has-tag <TAG>` — Require a ZK1 TLV tag (4 ASCII characters, e.g., `PROF`)
 * `--verified-from-height <HEIGHT>` — Minimum verification height (inclusive)
@@ -4883,7 +4607,7 @@ Count proof records matching the filters
 
 ###### **Options:**
 
-* `--backend <BACKEND>` — Filter by backend identifier (e.g., `halo2/ipa`)
+* `--backend <BACKEND>` — Filter by backend identifier (e.g., `pipa-r/pasta`)
 * `--status <STATUS>` — Filter by verification status (`Submitted`, `Verified`, `Rejected`)
 * `--has-tag <TAG>` — Require a ZK1 TLV tag (4 ASCII characters, e.g., `PROF`)
 * `--verified-from-height <HEIGHT>` — Minimum verification height (inclusive)
@@ -4902,7 +4626,7 @@ Fetch a proof record by backend and proof hash (hex)
 
 ###### **Options:**
 
-* `--backend <BACKEND>` — Backend identifier (e.g., `halo2/ipa`)
+* `--backend <BACKEND>` — Backend identifier (e.g., `pipa-r/pasta`)
 * `--hash <HASH>` — Proof hash (hex, with or without `0x` prefix)
 
 
@@ -4923,94 +4647,7 @@ Submit a pruning transaction to enforce proof retention immediately
 
 ###### **Options:**
 
-* `--backend <BACKEND>` — Restrict pruning to a single backend (e.g., `halo2/ipa`). Omit to prune all backends
-
-
-
-## `iroha app zk ivm`
-
-IVM prove helpers (non-consensus, app API)
-
-**Usage:** `iroha app zk ivm <COMMAND>`
-
-###### **Subcommands:**
-
-* `derive` — Derive an `IvmProved` payload via `/v1/zk/ivm/derive`
-* `prove` — Submit a prove job for an `IvmProved` payload via `/v1/zk/ivm/prove`
-* `get` — Get a prove job status via `/v1/zk/ivm/prove/{job_id}`
-* `delete` — Delete a prove job via `/v1/zk/ivm/prove/{job_id}`
-* `derive-pk` — Derive a circuit/vk-bound proving key archive (.pk) from verifying key bytes (.vk) for the Halo2 IPA IVM bind circuit
-
-
-
-## `iroha app zk ivm derive`
-
-Derive an `IvmProved` payload via `/v1/zk/ivm/derive`
-
-**Usage:** `iroha app zk ivm derive --json <PATH>`
-
-###### **Options:**
-
-* `--json <PATH>` — Path to a JSON request DTO `{ vk_ref, authority, metadata, bytecode }`
-
-
-
-## `iroha app zk ivm prove`
-
-Submit a prove job for an `IvmProved` payload via `/v1/zk/ivm/prove`
-
-**Usage:** `iroha app zk ivm prove [OPTIONS] --json <PATH>`
-
-###### **Options:**
-
-* `--json <PATH>` — Path to a JSON request DTO `{ vk_ref, authority, metadata, bytecode, proved? }`
-* `--wait` — Poll the job until it reaches `done` or `error`
-* `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval (milliseconds) when using --wait
-
-  Default value: `250`
-* `--timeout-secs <TIMEOUT_SECS>` — Optional timeout (seconds) when using --wait (0 = no timeout)
-
-  Default value: `0`
-
-
-
-## `iroha app zk ivm get`
-
-Get a prove job status via `/v1/zk/ivm/prove/{job_id}`
-
-**Usage:** `iroha app zk ivm get --job-id <JOB_ID>`
-
-###### **Options:**
-
-* `--job-id <JOB_ID>` — Prove job id returned by `iroha zk ivm prove`
-
-
-
-## `iroha app zk ivm delete`
-
-Delete a prove job via `/v1/zk/ivm/prove/{job_id}`
-
-**Usage:** `iroha app zk ivm delete --job-id <JOB_ID>`
-
-###### **Options:**
-
-* `--job-id <JOB_ID>` — Prove job id returned by `iroha zk ivm prove`
-
-
-
-## `iroha app zk ivm derive-pk`
-
-Derive a circuit/vk-bound proving key archive (.pk) from verifying key bytes (.vk) for the Halo2 IPA IVM bind circuit
-
-**Usage:** `iroha app zk ivm derive-pk [OPTIONS] --vk <PATH> --out <PATH>`
-
-###### **Options:**
-
-* `--backend <BACKEND>` — Backend label for the verifying key bytes (must match Torii `vk_ref.backend`), e.g. `halo2/ipa`
-
-  Default value: `halo2/ipa`
-* `--vk <PATH>` — Path to verifying key bytes (`.vk`) in Halo2 "processed" format
-* `--out <PATH>` — Output path for circuit/vk-bound Norito proving key archive (`.pk`)
+* `--backend <BACKEND>` — Restrict pruning to a single backend (e.g., `pipa-r/pasta`). Omit to prune all backends
 
 
 
@@ -5040,7 +4677,7 @@ Get election tally (JSON)
 
 ## `iroha app zk envelope`
 
-Encode a confidential encrypted payload (memo) into Norito bytes/base64
+Validate and encode a typed confidential encrypted memo
 
 **Usage:** `iroha app zk envelope [OPTIONS] --envelope-json <PATH>`
 
@@ -5048,15 +4685,10 @@ Encode a confidential encrypted payload (memo) into Norito bytes/base64
 
 * `--envelope-json <PATH>` — Path to one typed `ConfidentialMemoEnvelopeV1` JSON object
 * `--output <PATH>` — Optional output path for Norito bytes
-* `--print-base64` — Print base64 of the encoded envelope (default when no output file is provided)
+* `--format <ENCODING>` — Emit exactly one stdout encoding; defaults to base64 when no output file is given
 
-  Default value: `false`
-* `--print-hex` — Print hexadecimal representation of the encoded envelope
+  Possible values: `base64`, `hex`, `json`
 
-  Default value: `false`
-* `--print-json` — Print JSON representation of the envelope
-
-  Default value: `false`
 
 
 
@@ -5169,8 +4801,8 @@ Emit a CEK rotation receipt for a Taikai stream
 
 * `--event-id <NAME>` — Identifier of the Taikai event
 * `--stream-id <NAME>` — Stream identifier within the event
-* `--kms-profile <KMS_PROFILE>` — Named KMS profile (e.g., `nitro:prod`)
-* `--new-wrap-key-label <NEW_WRAP_KEY_LABEL>` — Label of the new wrap key minted by the KMS
+* `--kms-profile <KMS_PROFILE>` — Named custody-provider profile (legacy flag name; for example `software:prod`)
+* `--new-wrap-key-label <NEW_WRAP_KEY_LABEL>` — Label of the new wrap key supplied by the selected provider
 * `--previous-wrap-key-label <PREVIOUS_WRAP_KEY_LABEL>` — Optional label for the previously active wrap key
 * `--effective-segment <SEQ>` — Segment sequence where the new CEK becomes active
 * `--hkdf-salt <HEX>` — Optional HKDF salt (hex). Generated randomly when omitted
@@ -5414,7 +5046,6 @@ Data availability helpers (ingest tooling)
 * `prove` — Generate Proof-of-Retrievability witnesses for a manifest/payload pair
 * `prove-availability` — Download + verify availability for a storage ticket using a Torii manifest
 * `proof-policies` — Fetch the current DA proof-policy bundle from Torii
-* `proof-policy-snapshot` — Fetch the DA proof-policy snapshot from Torii
 * `commitments-list` — List DA commitments with optional filters
 * `commitments-prove` — Build a DA commitment proof with optional filters
 * `commitments-verify` — Verify a DA commitment proof from a JSON file
@@ -5497,12 +5128,12 @@ Fetch blobs via the multi-source orchestrator (thin wrapper over `sorafs fetch`)
 
 ###### **Options:**
 
-* `--manifest <PATH>` — Path to the Norito-encoded manifest (`.to`) describing the payload layout
+* `--manifest <PATH>` — Path to the Norito-encoded manifest (`.norito`) describing the payload layout
 * `--plan <PATH>` — Path to a canonical payload-bound `sorafs.chunk_fetch_plan.v1` JSON envelope
 * `--manifest-id <HEX>` — Hex-encoded manifest hash used as the manifest identifier on gateways
 * `--gateway-provider <SPEC>` — Gateway provider descriptor (`name=... , provider-id=... , base-url=... , stream-token=...`)
 * `--storage-ticket <HEX>` — Storage ticket identifier to fetch manifest + chunk plan automatically from Torii
-* `--manifest-endpoint <URL>` — Optional override for the Torii manifest endpoint used with `--storage-ticket`
+* `--torii-url <URL>` — Optional Torii base URL used with `--storage-ticket` (must end with `/`)
 * `--manifest-cache-dir <PATH>` — Directory for storing manifest/chunk-plan artefacts fetched via `--storage-ticket`
 * `--client-id <STRING>` — Optional client identifier forwarded to the gateway for auditing
 * `--manifest-envelope <PATH>` — Optional path to a Norito-encoded manifest envelope to satisfy gateway policy checks
@@ -5542,7 +5173,7 @@ Download manifest + chunk plan artifacts for an existing DA storage ticket
 ###### **Options:**
 
 * `--storage-ticket <HEX>` — Storage ticket identifier (hex string) issued by Torii
-* `--endpoint <URL>` — Optional override for the Torii manifest endpoint (defaults to `$TORII/v1/da/manifests/`)
+* `--torii-url <URL>` — Optional Torii base URL for manifest reads (must end with `/`)
 * `--output-dir <PATH>` — Directory for storing the fetched manifest + chunk plan artefacts
 
 
@@ -5578,7 +5209,7 @@ Download + verify availability for a storage ticket using a Torii manifest
 
 * `--storage-ticket <HEX>` — Storage ticket issued by Torii (hex string)
 * `--gateway-provider <SPEC>` — Gateway provider descriptor reused by `sorafs fetch` (name=... , provider-id=... , base-url=... , stream-token=...)
-* `--manifest-endpoint <URL>` — Optional override for Torii manifest endpoint
+* `--torii-url <URL>` — Optional Torii base URL for manifest reads (must end with `/`)
 * `--manifest-cache-dir <PATH>` — Directory where manifests and plans downloaded from Torii are cached (defaults to `artifacts/da/fetch_<ts>`)
 * `--json-out <PATH>` — JSON output path for the combined proof summary (defaults to stdout)
 * `--scoreboard-out <PATH>` — Path to persist the orchestrator scoreboard (defaults to temp dir if omitted)
@@ -5599,14 +5230,6 @@ Download + verify availability for a storage ticket using a Torii manifest
 Fetch the current DA proof-policy bundle from Torii
 
 **Usage:** `iroha app da proof-policies`
-
-
-
-## `iroha app da proof-policy-snapshot`
-
-Fetch the DA proof-policy snapshot from Torii
-
-**Usage:** `iroha app da proof-policy-snapshot`
 
 
 
@@ -5820,6 +5443,8 @@ Inspect public-lane validator lifecycle and stake state
 
 * `validators` — List validators for a public lane with lifecycle hints
 * `stake` — List bonded stake and pending unbonds for a public lane
+* `committee-status` — Observe the current finality source and one target's frozen preparation and custody progress
+* `committee-submit` — Submit one reviewed credential preparation or seat admission
 
 
 
@@ -5858,6 +5483,30 @@ List bonded stake and pending unbonds for a public lane
 
 
 
+## `iroha app nexus public-lane committee-status`
+
+Observe the current finality source and one target's frozen preparation and custody progress
+
+**Usage:** `iroha app nexus public-lane committee-status --target-epoch <TARGET_EPOCH>`
+
+###### **Options:**
+
+* `--target-epoch <TARGET_EPOCH>` — Target scheduling epoch; the server cannot select a different epoch
+
+
+
+## `iroha app nexus public-lane committee-submit`
+
+Submit one reviewed credential preparation or seat admission
+
+**Usage:** `iroha app nexus public-lane committee-submit --file <PATH>`
+
+###### **Options:**
+
+* `--file <PATH>` — Canonical Norito JSON `ValidatorCommitteeOperationV1` reviewed before submission
+
+
+
 ## `iroha app nexus private-settlement`
 
 Coordinate and inspect atomic private cross-dataspace settlement
@@ -5876,6 +5525,7 @@ Coordinate and inspect atomic private cross-dataspace settlement
 * `committee-proof` — Fetch the restricted proof view as an exact committee identity
 * `audit-capsule` — Fetch the encrypted capsule as an exact governed auditor identity
 * `audit-approval` — Submit one purpose-separated auditor approval
+* `audit-online` — Fetch, decrypt, decide, sign, and quorum-submit one auditor approval
 * `bundle-submit` — Submit the exact sponsor-signed global finalization carrier
 * `bundle-status` — Read the public bundle lifecycle
 * `bundle-receipt` — Read the public terminal receipt or pending marker
@@ -5994,11 +5644,12 @@ Fetch the restricted proof view as an exact committee identity
 
 Fetch the encrypted capsule as an exact governed auditor identity
 
-**Usage:** `iroha app nexus private-settlement audit-capsule --payload-digest <PAYLOAD_DIGEST>`
+**Usage:** `iroha app nexus private-settlement audit-capsule --payload-digest <PAYLOAD_DIGEST> --audit-policy <PATH>`
 
 ###### **Options:**
 
 * `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+* `--audit-policy <PATH>` — Absolute owner-only current governed auditor-policy file
 
 
 
@@ -6012,6 +5663,33 @@ Submit one purpose-separated auditor approval
 
 * `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
 * `--request <PATH>` — Bounded Norito JSON `PrivateSettlementAuditApprovalRequestV1` file
+
+
+
+## `iroha app nexus private-settlement audit-online`
+
+Fetch, decrypt, decide, sign, and quorum-submit one auditor approval
+
+**Usage:** `iroha app nexus private-settlement audit-online [OPTIONS] --committee-endpoint <COMMITTEE_ENDPOINTS> --committee-authority <PATH> --payload-digest <PAYLOAD_DIGEST> --pool-governance <PATH> --audit-policy <PATH> --auditor-decryption-key-file <PATH> --business-policy <PATH> --decision <DECISION>`
+
+###### **Options:**
+
+* `--committee-endpoint <COMMITTEE_ENDPOINTS>` — Participant committee Torii root; repeat exactly four times
+* `--committee-authority <PATH>` — Separately governed ordered four-validator committee authority record
+* `--payload-digest <PAYLOAD_DIGEST>` — Exact leg payload digest
+* `--pool-governance <PATH>` — Absolute owner-only restricted Norito JSON pool-governance file
+* `--audit-policy <PATH>` — Absolute owner-only current governed auditor-policy file
+* `--auditor-decryption-key-file <PATH>` — Absolute owner-only Norito JSON hybrid decryption-key file
+* `--auditor-retired-decryption-key-file <PATH>` — Retired owner-only hybrid decryption-key file retained for audit; repeat as needed
+* `--business-policy <PATH>` — Absolute owner-only strict Norito JSON business-policy file
+* `--decision <DECISION>` — Explicit local decision in addition to the strict business policy
+
+  Possible values:
+  - `approve`:
+    Approve only after all cryptographic and governance checks pass
+  - `reject`:
+    Decrypt and validate, but reject without creating or submitting an approval
+
 
 
 
@@ -6053,16 +5731,34 @@ Read the public terminal receipt or pending marker
 
 ## `iroha app staking`
 
-Public-lane staking helpers (register/activate/exit)
+Public-lane validator admission, staking, withdrawals, and rewards
 
 **Usage:** `iroha app staking <COMMAND>`
 
 ###### **Subcommands:**
 
+* `prepare` — Observe an exact monetary plan, reported finalized tip and custody reserves before signing
 * `register` — Register a stake-elected validator on a public lane
+* `register-candidate` — Admit a consented validator on a stake-elected lane; fresh global admission requires an epoch key transition
 * `rebind` — Rebind an existing validator to a replacement consensus peer
-* `activate` — Activate a pending validator once its activation epoch is reached
+* `activate` — Activate a pending validator once its scheduled activation height is reached
 * `exit` — Schedule or finalize a validator exit
+* `bond` — Bond additional self stake or delegate stake to a registered validator
+* `schedule-unbond` — Schedule a stake withdrawal after the configured unbonding delay
+* `finalize-unbond` — Withdraw a scheduled unbond once its time and liability bounds have passed
+* `claim-rewards` — Process and pay rewards using an exact bounded claim plan
+
+
+
+## `iroha app staking prepare`
+
+Observe an exact monetary plan, reported finalized tip and custody reserves before signing
+
+**Usage:** `iroha app staking prepare --request <PATH>`
+
+###### **Options:**
+
+* `--request <PATH>` — `PublicLanePreparationRequestV1` with explicit operation, amount and expiry offset
 
 
 
@@ -6070,7 +5766,7 @@ Public-lane staking helpers (register/activate/exit)
 
 Register a stake-elected validator on a public lane
 
-**Usage:** `iroha app staking register [OPTIONS] --lane-id <LANE_ID> --validator <ACCOUNT_ID> --peer-id <PEER_ID> --initial-stake <QUANTITY>`
+**Usage:** `iroha app staking register [OPTIONS] --lane-id <LANE_ID> --validator <ACCOUNT_ID> --peer-id <PEER_ID> --initial-stake <QUANTITY> --monetary-plan <PATH>`
 
 ###### **Options:**
 
@@ -6080,6 +5776,28 @@ Register a stake-elected validator on a public lane
 * `--stake-account <ACCOUNT_ID>` — Optional staking account (defaults to validator)
 * `--initial-stake <QUANTITY>` — Exact initial self-bond quantity
 * `--metadata <PATH>` — Optional metadata JSON (Norito JSON object)
+* `--monetary-plan <PATH>` — Norito JSON `PublicLaneMonetaryPlanV1` with exact signed custody and transfer bindings
+
+
+
+## `iroha app staking register-candidate`
+
+Admit a consented validator on a stake-elected lane; fresh global admission requires an epoch key transition
+
+**Usage:** `iroha app staking register-candidate [OPTIONS] --lane-id <LANE_ID> --validator <ACCOUNT_ID> --peer-id <PEER_ID> --initial-stake <QUANTITY> --monetary-plan <PATH> --network-id <NETWORK_ID> --activation-height <HEIGHT> --peer-private-key-file <PATH>`
+
+###### **Options:**
+
+* `--lane-id <LANE_ID>` — Lane id to register against
+* `--validator <ACCOUNT_ID>` — Validator account identifier (canonical I105 account literal)
+* `--peer-id <PEER_ID>` — Peer identity that will participate in consensus for this validator
+* `--stake-account <ACCOUNT_ID>` — Optional staking account (defaults to validator)
+* `--initial-stake <QUANTITY>` — Exact initial self-bond quantity
+* `--metadata <PATH>` — Optional metadata JSON (Norito JSON object)
+* `--monetary-plan <PATH>` — Norito JSON `PublicLaneMonetaryPlanV1` with exact signed custody and transfer bindings
+* `--network-id <NETWORK_ID>` — Canonical network id derived from the target network's genesis header
+* `--activation-height <HEIGHT>` — Exact future election boundary authorized by this candidate peer
+* `--peer-private-key-file <PATH>` — Absolute path to an owner-only mode-0600 BLS-normal peer private-key file
 
 
 
@@ -6087,19 +5805,23 @@ Register a stake-elected validator on a public lane
 
 Rebind an existing validator to a replacement consensus peer
 
-**Usage:** `iroha app staking rebind --lane-id <LANE_ID> --validator <ACCOUNT_ID> --peer-id <PEER_ID>`
+**Usage:** `iroha app staking rebind --lane-id <LANE_ID> --validator <ACCOUNT_ID> --peer-id <PEER_ID> --network-id <NETWORK_ID> --peer-private-key-file <PATH> --activation-height <HEIGHT> --previous-peer-id <PEER_ID>`
 
 ###### **Options:**
 
 * `--lane-id <LANE_ID>` — Lane id containing the validator
 * `--validator <ACCOUNT_ID>` — Validator account identifier (canonical I105 account literal)
 * `--peer-id <PEER_ID>` — Replacement peer identity that will participate in consensus for this validator
+* `--network-id <NETWORK_ID>` — Genesis-derived network id for replacement-peer consent
+* `--peer-private-key-file <PATH>` — Absolute owner-only mode-0600 replacement peer key file
+* `--activation-height <HEIGHT>` — Stored pending validator activation height bound to the replacement consent
+* `--previous-peer-id <PEER_ID>` — Stored current peer binding being replaced
 
 
 
 ## `iroha app staking activate`
 
-Activate a pending validator once its activation epoch is reached
+Activate a pending validator once its scheduled activation height is reached
 
 **Usage:** `iroha app staking activate --lane-id <LANE_ID> --validator <ACCOUNT_ID>`
 
@@ -6124,6 +5846,70 @@ Schedule or finalize a validator exit
 
 
 
+## `iroha app staking bond`
+
+Bond additional self stake or delegate stake to a registered validator
+
+**Usage:** `iroha app staking bond [OPTIONS] --lane-id <LANE_ID> --validator <ACCOUNT_ID> --amount <QUANTITY> --monetary-plan <PATH>`
+
+###### **Options:**
+
+* `--lane-id <LANE_ID>` — Lane id containing the validator
+* `--validator <ACCOUNT_ID>` — Target validator account identifier (canonical I105 account literal)
+* `--staker <ACCOUNT_ID>` — Account supplying stake (defaults to the configured transaction authority)
+* `--amount <QUANTITY>` — Exact positive stake quantity to lock
+* `--metadata <PATH>` — Optional stake-share metadata JSON (Norito JSON object)
+* `--monetary-plan <PATH>` — Norito JSON `PublicLaneMonetaryPlanV1` with exact signed custody and transfer bindings
+
+
+
+## `iroha app staking schedule-unbond`
+
+Schedule a stake withdrawal after the configured unbonding delay
+
+**Usage:** `iroha app staking schedule-unbond [OPTIONS] --lane-id <LANE_ID> --validator <ACCOUNT_ID> --request-id <HASH> --amount <QUANTITY> --release-at-ms <MILLIS>`
+
+###### **Options:**
+
+* `--lane-id <LANE_ID>` — Lane id containing the validator
+* `--validator <ACCOUNT_ID>` — Validator whose stake position is being withdrawn
+* `--staker <ACCOUNT_ID>` — Stake owner (defaults to the configured transaction authority)
+* `--request-id <HASH>` — Unique withdrawal hash; retain it for finalize-unbond
+* `--amount <QUANTITY>` — Exact positive stake quantity to unlock
+* `--release-at-ms <MILLIS>` — Unix timestamp in milliseconds respecting the configured unbonding delay
+
+
+
+## `iroha app staking finalize-unbond`
+
+Withdraw a scheduled unbond once its time and liability bounds have passed
+
+**Usage:** `iroha app staking finalize-unbond [OPTIONS] --lane-id <LANE_ID> --validator <ACCOUNT_ID> --request-id <HASH> --monetary-plan <PATH>`
+
+###### **Options:**
+
+* `--lane-id <LANE_ID>` — Lane id containing the validator
+* `--validator <ACCOUNT_ID>` — Validator whose stake position is being withdrawn
+* `--staker <ACCOUNT_ID>` — Stake owner receiving the withdrawal (defaults to the configured authority)
+* `--request-id <HASH>` — Exact withdrawal hash previously supplied to schedule-unbond
+* `--monetary-plan <PATH>` — Norito JSON `PublicLaneMonetaryPlanV1` with exact signed custody and transfer bindings
+
+
+
+## `iroha app staking claim-rewards`
+
+Process and pay rewards using an exact bounded claim plan
+
+**Usage:** `iroha app staking claim-rewards [OPTIONS] --lane-id <LANE_ID> --claim-plan <PATH>`
+
+###### **Options:**
+
+* `--lane-id <LANE_ID>` — Lane id whose rewards are being claimed
+* `--account <ACCOUNT_ID>` — Reward recipient (defaults to the configured transaction authority)
+* `--claim-plan <PATH>` — Norito JSON `PublicLaneRewardClaimPlanV1` binding the exact automatic XOR entitlement
+
+
+
 ## `iroha app subscriptions`
 
 Subscription plan and billing helpers
@@ -6132,89 +5918,95 @@ Subscription plan and billing helpers
 
 ###### **Subcommands:**
 
-* `plan` — Manage subscription plans (asset definition metadata)
-* `subscription` — Manage subscriptions and billing actions
+* `plan` — Prepare or inspect subscription plans
+* `subscription` — Query subscriptions and prepare unsigned billing drafts
 
 
 
 ## `iroha app subscriptions plan`
 
-Manage subscription plans (asset definition metadata)
+Prepare or inspect subscription plans
 
 **Usage:** `iroha app subscriptions plan <COMMAND>`
 
 ###### **Subcommands:**
 
-* `create` — Register a subscription plan on an asset definition
-* `list` — List subscription plans, optionally filtered by provider
+* `prepare` — Prepare an unsigned plan registration under the configured account
+* `list` — List subscription plans
 
 
 
-## `iroha app subscriptions plan create`
+## `iroha app subscriptions plan prepare`
 
-Register a subscription plan on an asset definition
+Prepare an unsigned plan registration under the configured account
 
-**Usage:** `iroha app subscriptions plan create [OPTIONS] --authority <ACCOUNT_ID> --plan-id <ASSET_DEF_ID>`
+**Usage:** `iroha app subscriptions plan prepare [OPTIONS] --plan-id <ASSET_DEF_ID>`
 
 ###### **Options:**
 
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--plan-id <ASSET_DEF_ID>` — Asset definition id where the plan metadata is stored
-* `--plan-json <PATH>` — Path to JSON plan payload (reads stdin when omitted)
+* `--plan-id <ASSET_DEF_ID>` — Plan asset definition to register
+* `--plan-json <PATH>` — JSON plan file; reads stdin when omitted
 
 
 
 ## `iroha app subscriptions plan list`
 
-List subscription plans, optionally filtered by provider
+List subscription plans
 
 **Usage:** `iroha app subscriptions plan list [OPTIONS]`
 
 ###### **Options:**
 
-* `--provider <ACCOUNT_ID>` — Filter by plan provider (account id)
-* `--limit <LIMIT>` — Limit number of results
-* `--offset <OFFSET>` — Offset for pagination (default 0)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Default value: `0`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
 ## `iroha app subscriptions subscription`
 
-Manage subscriptions and billing actions
+Query subscriptions and prepare unsigned billing drafts
 
 **Usage:** `iroha app subscriptions subscription <COMMAND>`
 
 ###### **Subcommands:**
 
-* `create` — Create a subscription and billing trigger
-* `list` — List subscriptions with optional filters
-* `get` — Fetch a subscription by id
-* `pause` — Pause billing for a subscription
-* `resume` — Resume billing for a subscription
-* `cancel` — Cancel a subscription and remove its billing trigger
-* `keep` — Undo a scheduled period-end cancellation
-* `charge-now` — Execute billing immediately
-* `usage` — Record usage for a subscription usage plan
+* `prepare` — Prepare subscription creation under the configured account
+* `list` — List matching subscriptions
+* `get` — Read one subscription
+* `pause` — Prepare pausing billing
+* `resume` — Prepare resuming billing
+* `cancel` — Prepare cancellation using an explicit mode
+* `keep` — Prepare keeping a subscription scheduled for cancellation
+* `charge-now` — Prepare an immediate charge
+* `usage` — Prepare a usage increment
 
 
 
-## `iroha app subscriptions subscription create`
+## `iroha app subscriptions subscription prepare`
 
-Create a subscription and billing trigger
+Prepare subscription creation under the configured account
 
-**Usage:** `iroha app subscriptions subscription create [OPTIONS] --authority <ACCOUNT_ID> --subscription-id <NFT_ID> --plan-id <ASSET_DEF_ID>`
+**Usage:** `iroha app subscriptions subscription prepare [OPTIONS] --subscription-id <SUBSCRIPTION_ID> --plan-id <PLAN_ID>`
 
 ###### **Options:**
 
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--subscription-id <NFT_ID>` — Subscription NFT id to register
-* `--plan-id <ASSET_DEF_ID>` — Subscription plan asset definition id
-* `--billing-trigger-id <BILLING_TRIGGER_ID>` — Optional billing trigger id to use
-* `--usage-trigger-id <USAGE_TRIGGER_ID>` — Optional usage trigger id to use (usage plans only)
-* `--first-charge-ms <FIRST_CHARGE_MS>` — Optional first charge timestamp in UTC milliseconds
-* `--grant-usage-to-provider <GRANT_USAGE_TO_PROVIDER>` — Grant usage reporting permission to the plan provider
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT to register
+* `--plan-id <PLAN_ID>` — Selected plan asset definition
+* `--billing-trigger-id <BILLING_TRIGGER_ID>` — Explicit billing trigger; deterministic default when omitted
+* `--usage-trigger-id <USAGE_TRIGGER_ID>` — Explicit usage trigger for usage pricing
+* `--first-charge-ms <FIRST_CHARGE_MS>` — First charge timestamp in UTC milliseconds
+* `--grant-usage-to-provider <GRANT_USAGE_TO_PROVIDER>` — Grant the provider usage permission; true by default for usage pricing
 
   Possible values: `true`, `false`
 
@@ -6223,122 +6015,122 @@ Create a subscription and billing trigger
 
 ## `iroha app subscriptions subscription list`
 
-List subscriptions with optional filters
+List matching subscriptions
 
 **Usage:** `iroha app subscriptions subscription list [OPTIONS]`
 
 ###### **Options:**
 
-* `--owned-by <ACCOUNT_ID>` — Filter by subscriber account
-* `--provider <ACCOUNT_ID>` — Filter by plan provider account
-* `--status <STATUS>` — Filter by status (active, paused, `past_due`, canceled, suspended)
-* `--limit <LIMIT>` — Limit number of results
-* `--offset <OFFSET>` — Offset for pagination (default 0)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Default value: `0`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
 ## `iroha app subscriptions subscription get`
 
-Fetch a subscription by id
+Read one subscription
 
-**Usage:** `iroha app subscriptions subscription get --subscription-id <NFT_ID>`
+**Usage:** `iroha app subscriptions subscription get --subscription-id <SUBSCRIPTION_ID>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
 
 
 
 ## `iroha app subscriptions subscription pause`
 
-Pause billing for a subscription
+Prepare pausing billing
 
-**Usage:** `iroha app subscriptions subscription pause [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
+**Usage:** `iroha app subscriptions subscription pause --subscription-id <SUBSCRIPTION_ID>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
-* `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
 
 
 
 ## `iroha app subscriptions subscription resume`
 
-Resume billing for a subscription
+Prepare resuming billing
 
-**Usage:** `iroha app subscriptions subscription resume [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
+**Usage:** `iroha app subscriptions subscription resume [OPTIONS] --subscription-id <SUBSCRIPTION_ID>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
-* `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
+* `--charge-at-ms <CHARGE_AT_MS>` — Explicit charge timestamp in UTC milliseconds
 
 
 
 ## `iroha app subscriptions subscription cancel`
 
-Cancel a subscription and remove its billing trigger
+Prepare cancellation using an explicit mode
 
-**Usage:** `iroha app subscriptions subscription cancel [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
+**Usage:** `iroha app subscriptions subscription cancel --subscription-id <SUBSCRIPTION_ID> --mode <MODE>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
-* `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
+* `--mode <MODE>` — Explicit cancellation mode
+
+  Possible values:
+  - `immediate`:
+    Cancel immediately
+  - `period-end`:
+    Cancel at the end of the current billing period
+
 
 
 
 ## `iroha app subscriptions subscription keep`
 
-Undo a scheduled period-end cancellation
+Prepare keeping a subscription scheduled for cancellation
 
-**Usage:** `iroha app subscriptions subscription keep [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
+**Usage:** `iroha app subscriptions subscription keep --subscription-id <SUBSCRIPTION_ID>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
-* `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
 
 
 
 ## `iroha app subscriptions subscription charge-now`
 
-Execute billing immediately
+Prepare an immediate charge
 
-**Usage:** `iroha app subscriptions subscription charge-now [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID>`
+**Usage:** `iroha app subscriptions subscription charge-now [OPTIONS] --subscription-id <SUBSCRIPTION_ID>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--charge-at-ms <CHARGE_AT_MS>` — Optional charge time override in UTC milliseconds
-* `--cancel-at-period-end` — Cancel at the end of the current billing period (cancel only)
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
+* `--charge-at-ms <CHARGE_AT_MS>` — Explicit charge timestamp in UTC milliseconds
 
 
 
 ## `iroha app subscriptions subscription usage`
 
-Record usage for a subscription usage plan
+Prepare a usage increment
 
-**Usage:** `iroha app subscriptions subscription usage [OPTIONS] --subscription-id <NFT_ID> --authority <ACCOUNT_ID> --unit-key <UNIT_KEY> --delta <DELTA>`
+**Usage:** `iroha app subscriptions subscription usage [OPTIONS] --subscription-id <SUBSCRIPTION_ID> --unit-key <UNIT_KEY> --delta <DELTA>`
 
 ###### **Options:**
 
-* `--subscription-id <NFT_ID>` — Subscription NFT id
-* `--authority <ACCOUNT_ID>` — Authority account identifier (canonical I105 account literal)
-* `--unit-key <UNIT_KEY>` — Usage counter key to update
+* `--subscription-id <SUBSCRIPTION_ID>` — Subscription NFT identifier
+* `--unit-key <UNIT_KEY>` — Usage counter to increment
 * `--delta <DELTA>` — Non-negative usage increment
-* `--usage-trigger-id <USAGE_TRIGGER_ID>` — Optional usage trigger id override
+* `--usage-trigger-id <USAGE_TRIGGER_ID>` — Explicit usage trigger; deterministic default when omitted
 
 
 
@@ -6725,16 +6517,19 @@ Fetch manifests for a UAID via Torii
 ###### **Options:**
 
 * `--uaid <UAID>` — UAID literal whose manifests should be fetched
-* `--dataspace <ID>` — Optional dataspace id filter
-* `--status <STATUS>` — Manifest lifecycle status filter (active, inactive, all)
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
 
-  Default value: `all`
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
 
-  Possible values: `active`, `inactive`, `all`
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
 
-* `--limit <N>` — Maximum number of manifests to return
-* `--offset <N>` — Offset for pagination
-* `--json-out <PATH>` — Optional path where the JSON response will be stored
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -6821,7 +6616,7 @@ Kaigi session helpers
 ###### **Subcommands:**
 
 * `create` — Create a new Kaigi session
-* `quickstart` — Bootstrap a Kaigi session for demos and shareable testing metadata
+* `quickstart` — Bootstrap a transparent Kaigi session and shareable testing metadata
 * `register-relay` — Register or update a Kaigi relay descriptor
 * `unregister-relay` — Retire a Kaigi relay descriptor and its retained health feedback
 * `set-relay-manifest` — Replace or clear the relay manifest for an existing Kaigi session
@@ -6830,6 +6625,8 @@ Kaigi session helpers
 * `end` — End an active Kaigi session
 * `record-usage` — Record usage statistics for a Kaigi session
 * `report-relay-health` — Report the health status of a relay used by a Kaigi session
+* `show` — Show the public view of a Kaigi session
+* `standing` — Show the configured account's own standing in a Kaigi session
 
 
 
@@ -6866,10 +6663,9 @@ Create a new Kaigi session
 
 * `--relay-manifest <PATH>` — Path to a JSON file describing the relay manifest (optional)
 * `--metadata-json <PATH>` — Path to a JSON file providing additional metadata (object with string keys)
-* `--commitment-hex <HEX>` — Commitment hash (hex) for privacy mode creation
-* `--commitment-alias <COMMITMENT_ALIAS>` — Reserved on-chain alias tag; must be omitted to avoid ledger disclosure
-* `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing proof replay (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Reserved on-chain timing field; must be omitted or zero
+* `--secret-file <PATH>` — Owner-only file holding the host's private call secret; created if missing. The CLI proves the private create locally. Keep the file: ending the call needs it
+* `--commitment-hex <HEX>` — Canonical Pasta commitment (little-endian hex) from an external prover
+* `--nullifier-hex <HEX>` — Canonical Pasta nullifier (little-endian hex) preventing proof replay (privacy mode)
 * `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
 * `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
 
@@ -6877,23 +6673,17 @@ Create a new Kaigi session
 
 ## `iroha app kaigi quickstart`
 
-Bootstrap a Kaigi session for demos and shareable testing metadata
+Bootstrap a transparent Kaigi session and shareable testing metadata
 
 **Usage:** `iroha app kaigi quickstart [OPTIONS]`
 
 ###### **Options:**
 
-* `--domain <DOMAIN-ID>` — Domain identifier hosting the call
+* `--domain <DOMAIN-ID>` — Domain identifier hosting the call. The default is the one whose metadata a generated developer localnet lets its client write
 
-  Default value: `wonderland.universal`
+  Default value: `universal.universal`
 * `--call-name <NAME>` — Call name within the domain (defaults to a timestamp-based identifier)
 * `--host <ACCOUNT-ID>` — Host account identifier responsible for the call (canonical I105 account literal)
-* `--privacy-mode <PRIVACY_MODE>` — Privacy mode for the session (defaults to `transparent`)
-
-  Default value: `transparent`
-
-  Possible values: `transparent`, `zk-roster-v1`
-
 * `--room-policy <ROOM_POLICY>` — Room access policy controlling viewer authentication
 
   Default value: `authenticated`
@@ -6903,6 +6693,7 @@ Bootstrap a Kaigi session for demos and shareable testing metadata
 * `--relay-manifest <PATH>` — Path to a JSON file describing the relay manifest (optional)
 * `--metadata-json <PATH>` — Path to a JSON file providing additional metadata (object with string keys)
 * `--summary-out <PATH>` — File path where the JSON summary should be written (defaults to stdout only)
+* `--secret-file <PATH>` — Make the call private, holding the host's secret in this owner-only file. The file is created if missing, and ending the call needs it
 
 
 
@@ -6910,12 +6701,20 @@ Bootstrap a Kaigi session for demos and shareable testing metadata
 
 Register or update a Kaigi relay descriptor
 
-**Usage:** `iroha app kaigi register-relay --relay <ACCOUNT-ID> --hpke-public-key-b64 <BASE64> --bandwidth-class <U8>`
+**Usage:** `iroha app kaigi register-relay --relay <ACCOUNT-ID> --hpke-suite <HPKE_SUITE> --hpke-public-key-b64 <BASE64> --bandwidth-class <U8>`
 
 ###### **Options:**
 
 * `--relay <ACCOUNT-ID>` — Relay account identifier advertising relay capabilities (canonical I105 account literal). The account must have a live domain-qualified primary alias, which selects the governance domain where the descriptor is stored
-* `--hpke-public-key-b64 <BASE64>` — HPKE public key bytes advertised by the relay (base64-encoded raw bytes)
+* `--hpke-suite <HPKE_SUITE>` — HPKE suite of the relay's public key
+
+  Possible values:
+  - `ml-kem-768-auth-psk`:
+    ML-KEM-768 with a 1,184-byte public key
+  - `ml-kem-1024-auth-psk`:
+    ML-KEM-1024 with a 1,568-byte public key
+
+* `--hpke-public-key-b64 <BASE64>` — Raw HPKE public key of the relay (base64); the CLI adds the suite tag
 * `--bandwidth-class <U8>` — Relative bandwidth class advertised by the relay
 
 
@@ -6958,10 +6757,10 @@ Join a Kaigi session
 * `--domain <DOMAIN-ID>` — Domain identifier hosting the call
 * `--call-name <NAME>` — Call name within the domain
 * `--participant <ACCOUNT-ID>` — Participant account joining the call (canonical I105 account literal)
-* `--commitment-hex <HEX>` — Commitment hash (hex) for privacy mode joins
-* `--commitment-alias <COMMITMENT_ALIAS>` — Reserved on-chain alias tag; must be omitted to avoid ledger disclosure
-* `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing duplicate joins (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Reserved on-chain timing field; must be omitted or zero
+* `--host <ACCOUNT-ID>` — Original host account of a private call, as shared by the host. Needed only for a first join: the ledger reveals it afterwards
+* `--secret-file <PATH>` — Owner-only file holding this account's private call secret; created if missing. The CLI proves the private join locally. Keep the file: leaving the call needs it
+* `--commitment-hex <HEX>` — Canonical Pasta commitment (little-endian hex) from an external prover
+* `--nullifier-hex <HEX>` — Canonical Pasta nullifier (little-endian hex) preventing duplicate joins (privacy mode)
 * `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
 * `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
 
@@ -6978,11 +6777,11 @@ Leave a Kaigi session
 * `--domain <DOMAIN-ID>` — Domain identifier hosting the call
 * `--call-name <NAME>` — Call name within the domain
 * `--participant <ACCOUNT-ID>` — Participant account leaving the call (canonical I105 account literal)
-* `--commitment-hex <HEX>` — Reserved privacy-leave commitment; must be omitted because privacy-mode leave is off-chain
-* `--nullifier-hex <HEX>` — Reserved privacy-leave nullifier; must be omitted because privacy-mode leave is off-chain
-* `--nullifier-issued-at-ms <U64>` — Reserved privacy-leave timing field; must be omitted
-* `--roster-root-hex <HEX>` — Reserved privacy-leave roster root; must be omitted
-* `--proof-hex <HEX>` — Reserved privacy-leave proof; must be omitted
+* `--secret-file <PATH>` — Owner-only file holding the secret this account joined the private call with. The CLI reads the current call state and proves the leave locally
+* `--commitment-hex <HEX>` — Canonical Pasta commitment (little-endian hex) from an external prover
+* `--nullifier-hex <HEX>` — Canonical Pasta nullifier (little-endian hex) from an external prover
+* `--roster-root-hex <HEX>` — Current roster root bound by an external prover's proof
+* `--proof-hex <HEX>` — Final authorization proof from an external prover (hex encoding of raw bytes)
 
 
 
@@ -6997,10 +6796,9 @@ End an active Kaigi session
 * `--domain <DOMAIN-ID>` — Domain identifier hosting the call
 * `--call-name <NAME>` — Call name within the domain
 * `--ended-at-ms <U64>` — Optional end timestamp between call creation and the current block time
-* `--commitment-hex <HEX>` — Commitment hash (hex) for privacy mode end requests
-* `--commitment-alias <COMMITMENT_ALIAS>` — Reserved on-chain alias tag; must be omitted to avoid ledger disclosure
-* `--nullifier-hex <HEX>` — Nullifier hash (hex) preventing proof replay (privacy mode)
-* `--nullifier-issued-at-ms <U64>` — Reserved on-chain timing field; must be omitted or zero
+* `--secret-file <PATH>` — Owner-only file holding the secret the host created the private call with. The CLI reads the current call state and proves the end locally
+* `--commitment-hex <HEX>` — Canonical Pasta commitment (little-endian hex) from an external prover
+* `--nullifier-hex <HEX>` — Canonical Pasta nullifier (little-endian hex) preventing proof replay (privacy mode)
 * `--roster-root-hex <HEX>` — Roster Merkle root bound into the proof transcript (privacy mode)
 * `--proof-hex <HEX>` — Proof bytes attesting ownership (hex encoding of raw bytes)
 
@@ -7020,8 +6818,9 @@ Record usage statistics for a Kaigi session
 * `--billed-gas <U64>` — Gas billed for this segment
 
   Default value: `0`
-* `--usage-commitment-hex <HEX>` — Optional usage commitment hash (privacy mode)
-* `--proof-hex <HEX>` — Optional proof bytes attesting the usage delta (privacy mode)
+* `--secret-file <PATH>` — Owner-only file holding the secret the host created the private call with. The CLI reads the current call state and proves the segment locally
+* `--usage-commitment-hex <HEX>` — Canonical Pasta usage commitment from an external prover
+* `--proof-hex <HEX>` — Proof bytes attesting the usage delta from an external prover
 
 
 
@@ -7045,9 +6844,35 @@ Report the health status of a relay used by a Kaigi session
 
 
 
+## `iroha app kaigi show`
+
+Show the public view of a Kaigi session
+
+**Usage:** `iroha app kaigi show --domain <DOMAIN-ID> --call-name <NAME>`
+
+###### **Options:**
+
+* `--domain <DOMAIN-ID>` — Domain identifier hosting the call
+* `--call-name <NAME>` — Call name within the domain
+
+
+
+## `iroha app kaigi standing`
+
+Show the configured account's own standing in a Kaigi session
+
+**Usage:** `iroha app kaigi standing --domain <DOMAIN-ID> --call-name <NAME>`
+
+###### **Options:**
+
+* `--domain <DOMAIN-ID>` — Domain identifier hosting the call
+* `--call-name <NAME>` — Call name within the domain
+
+
+
 ## `iroha app sorafs`
 
-SoraFS helpers (pin registry, aliases, replication orders, storage)
+`SoraFS` helpers (pin registry, aliases, replication orders, storage)
 
 **Usage:** `iroha app sorafs <COMMAND>`
 
@@ -7059,7 +6884,7 @@ SoraFS helpers (pin registry, aliases, replication orders, storage)
 * `storage` — Storage token helpers
 * `gateway` — Gateway policy and configuration helpers
 * `incentives` — Offline helpers for relay payouts, disputes, and dashboards
-* `handshake` — Observe or modify the Torii `SoraNet` handshake configuration
+* `handshake` — Observe the Torii `SoraNet` handshake configuration or manage admission tokens
 * `toolkit` — Local tooling for packaging manifests and payloads
 * `guard-directory` — Guard directory helpers (fetch/verify snapshots)
 * `reserve` — Reserve + rent policy helpers
@@ -7435,12 +7260,11 @@ Compute a relay reward instruction from metrics and bond state
 
 Open a dispute against an existing reward instruction
 
-**Usage:** `iroha app sorafs incentives open-dispute [OPTIONS] --instruction <PATH> --treasury-account <ACCOUNT_ID> --submitted-by <ACCOUNT_ID> --requested-amount <QUANTITY> --reason <TEXT>`
+**Usage:** `iroha app sorafs incentives open-dispute [OPTIONS] --instruction <PATH> --submitted-by <ACCOUNT_ID> --requested-amount <QUANTITY> --reason <TEXT>`
 
 ###### **Options:**
 
 * `--instruction <PATH>` — Norito-encoded reward instruction (`RelayRewardInstructionV1`)
-* `--treasury-account <ACCOUNT_ID>` — Treasury account initiating the dispute
 * `--submitted-by <ACCOUNT_ID>` — Account ID submitting the dispute
 * `--requested-amount <QUANTITY>` — Requested adjustment quantity
 * `--reason <TEXT>` — Reason provided by the operator
@@ -7740,14 +7564,13 @@ Run the treasury daemon against a metrics spool
 
 ## `iroha app sorafs handshake`
 
-Observe or modify the Torii `SoraNet` handshake configuration
+Observe the Torii `SoraNet` handshake configuration or manage admission tokens
 
 **Usage:** `iroha app sorafs handshake <COMMAND>`
 
 ###### **Subcommands:**
 
 * `show` — Display the current `SoraNet` handshake summary as reported by Torii
-* `update` — Update one or more `SoraNet` handshake parameters via `/v1/config`
 * `token` — Admission token helpers (issuance, fingerprinting, revocation digests)
 
 
@@ -7757,33 +7580,6 @@ Observe or modify the Torii `SoraNet` handshake configuration
 Display the current `SoraNet` handshake summary as reported by Torii
 
 **Usage:** `iroha app sorafs handshake show`
-
-
-
-## `iroha app sorafs handshake update`
-
-Update one or more `SoraNet` handshake parameters via `/v1/config`
-
-**Usage:** `iroha app sorafs handshake update [OPTIONS]`
-
-###### **Options:**
-
-* `--descriptor-commit <HEX>` — Override the descriptor commitment advertised during handshake (hex)
-* `--client-capabilities <HEX>` — Override the client capability TLV vector (hex)
-* `--relay-capabilities <HEX>` — Override the relay capability TLV vector (hex)
-* `--kem-id <KEM_ID>` — Override the negotiated ML-KEM identifier
-* `--sig-id <SIG_ID>` — Override the negotiated signature suite identifier
-* `--resume-hash <HEX>` — Override the resume hash advertised to peers (64 hex chars)
-* `--clear-resume-hash` — Clear the configured resume hash
-* `--pow-difficulty <POW_DIFFICULTY>` — Override the proof-of-work difficulty
-* `--pow-max-future-skew <POW_MAX_FUTURE_SKEW>` — Override the maximum clock skew accepted on `PoW` tickets (seconds)
-* `--pow-min-ttl <POW_MIN_TTL>` — Override the minimum `PoW` ticket TTL (seconds)
-* `--pow-ttl <POW_TTL>` — Override the `PoW` ticket TTL (seconds)
-* `--pow-puzzle-memory <POW_PUZZLE_MEMORY>` — Override the puzzle memory cost (KiB)
-* `--pow-puzzle-time <POW_PUZZLE_TIME>` — Override the puzzle time cost (iterations)
-* `--pow-puzzle-lanes <POW_PUZZLE_LANES>` — Override the puzzle parallelism (lanes)
-* `--require-sm-handshake-match` — Require peers to match SM helper availability
-* `--require-sm-openssl-preview-match` — Require peers to match the OpenSSL preview flag
 
 
 
@@ -7873,13 +7669,35 @@ Local tooling for packaging manifests and payloads
 
 ###### **Subcommands:**
 
-* `pack` — Package a payload into a CAR + manifest bundle using the canonical tooling
+* `compile` — Compile a Kotodama source into an IVM artifact for publication
+* `pack` — Package a payload into a CAR and manifest bundle
+* `instruction` — Prepare one offline instruction as transaction-stdin JSON
+* `validate` — Validate local adverts, orders, proofs, governance and fixture bundles
+* `sign` — Sign an advert, order, orderbook payload or governance node
+* `release-manifest` — Verify a release signature, or explicitly sign a development release
+* `release-manifest-receipt` — Verify release evidence against independently pinned policy and trust inputs
+* `final-promotion-receipt` — Verify final-promotion signing evidence against independent custody and state trust
+
+
+
+## `iroha app sorafs toolkit compile`
+
+Compile a Kotodama source into an IVM artifact for publication
+
+**Usage:** `iroha app sorafs toolkit compile [OPTIONS] --source <PATH> --bytecode-out <PATH>`
+
+###### **Options:**
+
+* `--source <PATH>` — Kotodama source path, or `-` to read source from stdin
+* `--source-root <DIRECTORY>` — Boundary for relative includes and imports; defaults to the source file's directory
+* `--bytecode-out <PATH>` — Output path for the IVM `.to` artifact
+* `--json-out <PATH>` — Also write the artifact summary as JSON to this path
 
 
 
 ## `iroha app sorafs toolkit pack`
 
-Package a payload into a CAR + manifest bundle using the canonical tooling
+Package a payload into a CAR and manifest bundle
 
 **Usage:** `iroha app sorafs toolkit pack [OPTIONS] <INPUT>`
 
@@ -7896,6 +7714,396 @@ Package a payload into a CAR + manifest bundle using the canonical tooling
 * `--hybrid-envelope-json-out <PATH>` — Path to write the hybrid payload envelope (JSON)
 * `--hybrid-recipient-x25519 <HEX>` — Hex-encoded X25519 public key used for hybrid envelope encryption
 * `--hybrid-recipient-kyber <HEX>` — Hex-encoded Kyber public key used for hybrid envelope encryption
+
+
+
+## `iroha app sorafs toolkit instruction`
+
+Prepare one offline instruction as transaction-stdin JSON
+
+**Usage:** `iroha app sorafs toolkit instruction <COMMAND>`
+
+###### **Subcommands:**
+
+* `capacity-declaration` — Convert a canonical capacity-declaration summary into an instruction
+* `replication-order` — Convert a canonical replication-order summary into an instruction
+* `complete-order` — Bind a completion to its authority, assignment and finalized anchor
+* `expire-order` — Expire a pending replication order at an explicit epoch
+
+
+
+## `iroha app sorafs toolkit instruction capacity-declaration`
+
+Convert a canonical capacity-declaration summary into an instruction
+
+**Usage:** `iroha app sorafs toolkit instruction capacity-declaration --summary <PATH>`
+
+###### **Options:**
+
+* `--summary <PATH>` — JSON object containing only the canonical `declaration_b64` payload
+
+
+
+## `iroha app sorafs toolkit instruction replication-order`
+
+Convert a canonical replication-order summary into an instruction
+
+**Usage:** `iroha app sorafs toolkit instruction replication-order [OPTIONS] --summary <PATH>`
+
+###### **Options:**
+
+* `--summary <PATH>` — JSON summary containing `replication_order_b64`
+* `--musubi-archive-id-hex <HEX>` — Nonzero archive ID in exactly 64 lowercase hex characters
+
+
+
+## `iroha app sorafs toolkit instruction complete-order`
+
+Bind a completion to its authority, assignment and finalized anchor
+
+**Usage:** `iroha app sorafs toolkit instruction complete-order [OPTIONS] --order-id-hex <HEX> --provider-id-hex <HEX> --completion-epoch <COMPLETION_EPOCH> --expected-owner <ACCOUNT_ID> --expected-completion-signer <ACCOUNT_ID> --assignment-revision <ASSIGNMENT_REVISION> --signer-policy-id-hex <HEX> --signer-policy-revision <SIGNER_POLICY_REVISION> --signer-policy-digest-hex <HEX> --finalized-height <FINALIZED_HEIGHT> --finalized-block-hash-hex <HEX>`
+
+###### **Options:**
+
+* `--order-id-hex <HEX>` — Nonzero order ID in exactly 64 lowercase hex characters
+* `--provider-id-hex <HEX>` — Nonzero provider ID in exactly 64 lowercase hex characters
+* `--completion-epoch <COMPLETION_EPOCH>` — Completion epoch as a positive canonical unsigned decimal integer
+* `--expected-owner <ACCOUNT_ID>` — Exact canonical I105 account ID of the expected owner
+* `--expected-completion-signer <ACCOUNT_ID>` — Exact canonical I105 account selected by the governed completion authority
+* `--assignment-revision <ASSIGNMENT_REVISION>` — Positive canonical assignment revision
+* `--signer-policy-id-hex <HEX>` — Nonzero signer policy ID in exactly 64 lowercase hex characters
+* `--signer-policy-revision <SIGNER_POLICY_REVISION>` — Positive canonical signer policy revision
+* `--signer-policy-predecessor-digest-hex <HEX>` — Nonzero predecessor digest; required after revision 1 and forbidden at 1
+* `--signer-policy-digest-hex <HEX>` — Nonzero signer policy digest in exactly 64 lowercase hex characters
+* `--finalized-height <FINALIZED_HEIGHT>` — Positive canonical finalized block height
+* `--finalized-block-hash-hex <HEX>` — Nonzero finalized block hash in exactly 64 lowercase hex characters
+
+
+
+## `iroha app sorafs toolkit instruction expire-order`
+
+Expire a pending replication order at an explicit epoch
+
+**Usage:** `iroha app sorafs toolkit instruction expire-order --order-id-hex <HEX> --expiration-epoch <EXPIRATION_EPOCH>`
+
+###### **Options:**
+
+* `--order-id-hex <HEX>` — Nonzero order ID in exactly 64 lowercase hex characters
+* `--expiration-epoch <EXPIRATION_EPOCH>` — Expiration epoch as a positive canonical unsigned decimal integer
+
+
+
+## `iroha app sorafs toolkit validate`
+
+Validate local adverts, orders, proofs, governance and fixture bundles
+
+**Usage:** `iroha app sorafs toolkit validate <COMMAND>`
+
+###### **Subcommands:**
+
+* `advert` — Validate advert artifacts
+* `admission` — Validate admission artifacts
+* `order` — Validate order artifacts
+* `orderbook` — Validate orderbook artifacts
+* `pdp` — Validate pdp artifacts
+* `pop` — Validate pop artifacts
+* `hedging` — Validate hedging artifacts
+* `por` — Validate por artifacts
+* `potr` — Validate potr artifacts
+* `repair` — Validate repair artifacts
+* `bundle` — Validate bundle artifacts
+* `governance` — Validate governance artifacts
+
+
+
+## `iroha app sorafs toolkit validate advert`
+
+Validate advert artifacts
+
+**Usage:** `iroha app sorafs toolkit validate advert [OPTIONS]`
+
+###### **Options:**
+
+* `--input <INPUT>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--now <NOW>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate admission`
+
+Validate admission artifacts
+
+**Usage:** `iroha app sorafs toolkit validate admission [OPTIONS]`
+
+###### **Options:**
+
+* `--input <INPUT>`
+* `--renewal <RENEWAL>`
+* `--revocation <REVOCATION>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate order`
+
+Validate order artifacts
+
+**Usage:** `iroha app sorafs toolkit validate order [OPTIONS]`
+
+###### **Options:**
+
+* `--order <ORDER>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+* `--signed-order <SIGNED_ORDER>`
+
+
+
+## `iroha app sorafs toolkit validate orderbook`
+
+Validate orderbook artifacts
+
+**Usage:** `iroha app sorafs toolkit validate orderbook [OPTIONS]`
+
+###### **Options:**
+
+* `--input <INPUT>`
+* `--kind <KIND>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate pdp`
+
+Validate pdp artifacts
+
+**Usage:** `iroha app sorafs toolkit validate pdp [OPTIONS]`
+
+###### **Options:**
+
+* `--commitment <COMMITMENT>`
+* `--challenge <CHALLENGE>`
+* `--proof <PROOF>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate pop`
+
+Validate pop artifacts
+
+**Usage:** `iroha app sorafs toolkit validate pop [OPTIONS]`
+
+###### **Options:**
+
+* `--input <INPUT>`
+* `--kind <KIND>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate hedging`
+
+Validate hedging artifacts
+
+**Usage:** `iroha app sorafs toolkit validate hedging [OPTIONS]`
+
+###### **Options:**
+
+* `--input <INPUT>`
+* `--kind <KIND>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate por`
+
+Validate por artifacts
+
+**Usage:** `iroha app sorafs toolkit validate por [OPTIONS]`
+
+###### **Options:**
+
+* `--challenge <CHALLENGE>`
+* `--proof <PROOF>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate potr`
+
+Validate potr artifacts
+
+**Usage:** `iroha app sorafs toolkit validate potr [OPTIONS]`
+
+###### **Options:**
+
+* `--receipt <RECEIPT>`
+* `--profile <PROFILE>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate repair`
+
+Validate repair artifacts
+
+**Usage:** `iroha app sorafs toolkit validate repair [OPTIONS]`
+
+###### **Options:**
+
+* `--input <INPUT>`
+* `--kind <KIND>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate bundle`
+
+Validate bundle artifacts
+
+**Usage:** `iroha app sorafs toolkit validate bundle [OPTIONS]`
+
+###### **Options:**
+
+* `--bundle <BUNDLE>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--now <NOW>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit validate governance`
+
+Validate governance artifacts
+
+**Usage:** `iroha app sorafs toolkit validate governance [OPTIONS]`
+
+###### **Options:**
+
+* `--node <NODE>`
+* `--head <HEAD>`
+* `--block <BLOCKS>`
+* `--cid <CID>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit sign`
+
+Sign an advert, order, orderbook payload or governance node
+
+**Usage:** `iroha app sorafs toolkit sign [OPTIONS]`
+
+###### **Options:**
+
+* `--kind <KIND>`
+* `--payload-kind <PAYLOAD_KIND>`
+* `--input <INPUT>`
+* `--out <OUT>`
+* `--key-hex <KEY_HEX>`
+* `--key <KEY>`
+* `--format <FORMAT>`
+* `--telemetry-out <TELEMETRY_OUT>`
+* `--now <NOW>`
+* `--generated-at <GENERATED_AT>`
+
+
+
+## `iroha app sorafs toolkit release-manifest`
+
+Verify a release signature, or explicitly sign a development release
+
+**Usage:** `iroha app sorafs toolkit release-manifest [OPTIONS]`
+
+###### **Options:**
+
+* `--manifest <MANIFEST>`
+* `--public-key <PUBLIC_KEY>`
+* `--public-key-fingerprint <PUBLIC_KEY_FINGERPRINT>`
+* `--signature <SIGNATURE>`
+* `--signing-seed <SIGNING_SEED>`
+* `--signature-out <SIGNATURE_OUT>`
+* `--development-local-signing`
+
+
+
+## `iroha app sorafs toolkit release-manifest-receipt`
+
+Verify release evidence against independently pinned policy and trust inputs
+
+**Usage:** `iroha app sorafs toolkit release-manifest-receipt [OPTIONS] --manifest <MANIFEST> --signature <SIGNATURE> --public-key <PUBLIC_KEY> --public-key-fingerprint <PUBLIC_KEY_FINGERPRINT> --signer-policy <SIGNER_POLICY> --signer-policy-sha256 <SIGNER_POLICY_SHA256> --custody-trust <CUSTODY_TRUST> --custody-trust-sha256 <CUSTODY_TRUST_SHA256> --completed-operation-state <COMPLETED_OPERATION_STATE> --operation-receipt <OPERATION_RECEIPT> --now-unix-ms <NOW_UNIX_MS>`
+
+###### **Options:**
+
+* `--manifest <MANIFEST>`
+* `--signature <SIGNATURE>`
+* `--public-key <PUBLIC_KEY>`
+* `--public-key-fingerprint <PUBLIC_KEY_FINGERPRINT>`
+* `--signer-policy <SIGNER_POLICY>`
+* `--signer-policy-sha256 <SIGNER_POLICY_SHA256>`
+* `--custody-trust <CUSTODY_TRUST>`
+* `--custody-trust-sha256 <CUSTODY_TRUST_SHA256>`
+* `--completed-operation-state <COMPLETED_OPERATION_STATE>`
+* `--operation-receipt <OPERATION_RECEIPT>`
+* `--now-unix-ms <NOW_UNIX_MS>`
+* `--format <FORMAT>`
+
+  Default value: `json`
+
+  Possible values: `json`
+
+
+
+
+## `iroha app sorafs toolkit final-promotion-receipt`
+
+Verify final-promotion signing evidence against independent custody and state trust
+
+**Usage:** `iroha app sorafs toolkit final-promotion-receipt [OPTIONS] --statement <STATEMENT> --signature <SIGNATURE> --public-key <PUBLIC_KEY> --public-key-fingerprint <PUBLIC_KEY_FINGERPRINT> --signer-policy <SIGNER_POLICY> --signer-policy-sha256 <SIGNER_POLICY_SHA256> --custody-trust <CUSTODY_TRUST> --custody-trust-sha256 <CUSTODY_TRUST_SHA256> --completed-operation-state <COMPLETED_OPERATION_STATE> --operation-receipt <OPERATION_RECEIPT> --now-unix-ms <NOW_UNIX_MS>`
+
+###### **Options:**
+
+* `--statement <STATEMENT>` — Exact domain-prefixed canonical statement file
+* `--signature <SIGNATURE>` — Detached raw 64-byte Ed25519 signature file
+* `--public-key <PUBLIC_KEY>` — Raw 32-byte Ed25519 public-key file
+* `--public-key-fingerprint <PUBLIC_KEY_FINGERPRINT>` — Independently trusted lowercase SHA-256 of the raw public key
+* `--signer-policy <SIGNER_POLICY>` — Canonical independently reviewed signer-policy file
+* `--signer-policy-sha256 <SIGNER_POLICY_SHA256>` — Independently trusted lowercase SHA-256 of the signer policy
+* `--custody-trust <CUSTODY_TRUST>` — Canonical independently reviewed custody and observer trust file
+* `--custody-trust-sha256 <CUSTODY_TRUST_SHA256>` — Independently trusted lowercase SHA-256 of custody trust
+* `--completed-operation-state <COMPLETED_OPERATION_STATE>` — Canonical signed current-state observation file
+* `--operation-receipt <OPERATION_RECEIPT>` — Canonical complete final-promotion operation receipt file
+* `--now-unix-ms <NOW_UNIX_MS>` — Explicit trusted current Unix time in canonical positive milliseconds
+* `--format <FORMAT>`
+
+  Default value: `json`
+
+  Possible values: `json`
+
 
 
 
@@ -9277,7 +9485,7 @@ Inspect retained manifests and retention deadlines
 
 ###### **Options:**
 
-* `--data-dir <PATH>` — Root directory for SoraFS storage data (defaults to the node config default)
+* `--data-dir <PATH>` — Root directory for `SoraFS` storage data (defaults to the node config default)
 * `--now <RFC3339|@UNIX>` — Override the reference timestamp (RFC3339 or `@unix_seconds`)
 * `--grace-secs <SECONDS>` — Override the retention grace window in seconds
 
@@ -9291,7 +9499,7 @@ Report which manifests would be evicted by GC (dry-run only)
 
 ###### **Options:**
 
-* `--data-dir <PATH>` — Root directory for SoraFS storage data (defaults to the node config default)
+* `--data-dir <PATH>` — Root directory for `SoraFS` storage data (defaults to the node config default)
 * `--now <RFC3339|@UNIX>` — Override the reference timestamp (RFC3339 or `@unix_seconds`)
 * `--grace-secs <SECONDS>` — Override the retention grace window in seconds
 
@@ -9305,12 +9513,12 @@ Orchestrate multi-provider chunk fetches via gateways
 
 ###### **Options:**
 
-* `--manifest <PATH>` — Path to the Norito-encoded manifest (`.to`) describing the payload layout
+* `--manifest <PATH>` — Path to the Norito-encoded manifest (`.norito`) describing the payload layout
 * `--plan <PATH>` — Path to a canonical payload-bound `sorafs.chunk_fetch_plan.v1` JSON envelope
 * `--manifest-id <HEX>` — Hex-encoded manifest hash used as the manifest identifier on gateways
 * `--gateway-provider <SPEC>` — Gateway provider descriptor (`name=... , provider-id=... , base-url=... , stream-token=...`)
 * `--storage-ticket <HEX>` — Storage ticket identifier to fetch manifest + chunk plan automatically from Torii
-* `--manifest-endpoint <URL>` — Optional override for the Torii manifest endpoint used with `--storage-ticket`
+* `--torii-url <URL>` — Optional Torii base URL used with `--storage-ticket` (must end with `/`)
 * `--manifest-cache-dir <PATH>` — Directory for storing manifest/chunk-plan artefacts fetched via `--storage-ticket`
 * `--client-id <STRING>` — Optional client identifier forwarded to the gateway for auditing
 * `--manifest-envelope <PATH>` — Optional path to a Norito-encoded manifest envelope to satisfy gateway policy checks
@@ -9373,7 +9581,7 @@ Build and submit oracle transactions
 * `propose-change` — Propose an oracle feed change
 * `vote-change-stage` — Vote in the active stage of an oracle feed change
 * `rollback-change` — Roll back the active stage of an oracle feed change
-* `attest-defi` — Submit a native DeFi oracle attestation
+* `attest-defi` — Submit a native `DeFi` oracle attestation
 * `record-twitter-binding` — Record a Twitter binding attestation
 * `revoke-twitter-binding` — Revoke a Twitter binding
 
@@ -9515,7 +9723,7 @@ Roll back the active stage of an oracle feed change
 
 ## `iroha app soracles tx attest-defi`
 
-Submit a native DeFi oracle attestation
+Submit a native `DeFi` oracle attestation
 
 **Usage:** `iroha app soracles tx attest-defi --attestation-json <PATH>`
 
@@ -9570,7 +9778,7 @@ Run oracle queries
 * `changes` — List oracle changes
 * `change` — Fetch one oracle change
 * `twitter-bindings` — List Twitter bindings by UAID from a Norito JSON UAID file
-* `defi-attestation` — Fetch latest DeFi oracle attestation by domain and subject id
+* `defi-attestation` — Fetch latest `DeFi` oracle attestation by domain and subject id
 
 
 
@@ -9677,13 +9885,13 @@ List Twitter bindings by UAID from a Norito JSON UAID file
 
 ## `iroha app soracles query defi-attestation`
 
-Fetch latest DeFi oracle attestation by domain and subject id
+Fetch latest `DeFi` oracle attestation by domain and subject id
 
 **Usage:** `iroha app soracles query defi-attestation --domain <DOMAIN> --subject-id <SUBJECT_ID>`
 
 ###### **Options:**
 
-* `--domain <DOMAIN>` — DeFi oracle domain (`1=perps_market`, `2=options_series`, `3=options_shout`, `4=cover_policy`)
+* `--domain <DOMAIN>` — `DeFi` oracle domain (`1=perps_market`, `2=options_series`, `3=options_shout`, `4=cover_policy`)
 * `--subject-id <SUBJECT_ID>` — Domain subject id (`market_id`, `series_id`, `position_id`, or `policy_id`)
 
 
@@ -10001,8 +10209,9 @@ Repo settlement helpers
 ###### **Subcommands:**
 
 * `initiate` — Initiate or roll a repo agreement between two counterparties
-* `unwind` — Unwind an active repo agreement (reverse repo leg)
-* `query` — Inspect repo agreements stored on-chain
+* `unwind` — Settle an active repo agreement (reverse repo leg): at or after maturity by any participant, or earlier by the initiator when early repayment was agreed
+* `list` — List repo agreements (`/v1/repo/agreements`) with filter, sort, projection and paging
+* `get` — Fetch a single repo agreement by identifier
 * `margin` — Compute the next margin checkpoint for an agreement
 * `margin-call` — Record a margin call for an active repo agreement
 
@@ -10028,47 +10237,51 @@ Initiate or roll a repo agreement between two counterparties
 * `--maturity-timestamp-ms <MATURITY_TIMESTAMP_MS>` — Unix timestamp (milliseconds) when the repo matures
 * `--haircut-bps <HAIRCUT_BPS>` — Haircut applied to the collateral leg, in basis points
 * `--margin-frequency-secs <MARGIN_FREQUENCY_SECS>` — Cadence between margin checks, in seconds (0 disables margining)
+* `--allow-early-repayment` — Allow the initiator (cash borrower) to repay before maturity, paying interest accrued to the committed block time. Bound into both consents
 
 
 
 ## `iroha app repo unwind`
 
-Unwind an active repo agreement (reverse repo leg)
+Settle an active repo agreement (reverse repo leg): at or after maturity by any participant, or earlier by the initiator when early repayment was agreed
 
 **Usage:** `iroha app repo unwind --agreement-id <AGREEMENT_ID>`
 
 ###### **Options:**
 
-* `--agreement-id <AGREEMENT_ID>` — Stable identifier to settle at maturity as any recorded participant
+* `--agreement-id <AGREEMENT_ID>` — Stable identifier to settle; any participant at or after maturity, or the initiator earlier when the agreement allows early repayment
 
 
 
-## `iroha app repo query`
+## `iroha app repo list`
 
-Inspect repo agreements stored on-chain
+List repo agreements (`/v1/repo/agreements`) with filter, sort, projection and paging
 
-**Usage:** `iroha app repo query <COMMAND>`
+**Usage:** `iroha app repo list [OPTIONS]`
 
-###### **Subcommands:**
+###### **Options:**
 
-* `list` — List all repo agreements recorded on-chain
-* `get` — Fetch a single repo agreement by identifier
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
-## `iroha app repo query list`
-
-List all repo agreements recorded on-chain
-
-**Usage:** `iroha app repo query list`
-
-
-
-## `iroha app repo query get`
+## `iroha app repo get`
 
 Fetch a single repo agreement by identifier
 
-**Usage:** `iroha app repo query get --id <ID>`
+**Usage:** `iroha app repo get --id <ID>`
 
 ###### **Options:**
 
@@ -10128,7 +10341,7 @@ Create a delivery-versus-payment instruction
 
 ###### **Options:**
 
-* `--settlement-id <SETTLEMENT_ID>` — Stable identifier shared across the settlement lifecycle
+* `--settlement-id <SETTLEMENT_ID>` — Payer-scoped settlement identity: `REFERENCE$CANONICAL_ACCOUNT`
 * `--delivery-asset <DELIVERY_ASSET>` — Asset definition delivered in exchange
 * `--delivery-quantity <DELIVERY_QUANTITY>` — Quantity delivered (integer or decimal)
 * `--delivery-from <DELIVERY_FROM>` — Account delivering the asset
@@ -10145,11 +10358,11 @@ Create a delivery-versus-payment instruction
 
   Possible values: `delivery-then-payment`, `payment-then-delivery`
 
-* `--atomicity <ATOMICITY>` — Atomicity policy for partial failures (currently only all-or-nothing)
+* `--atomicity <ATOMICITY>` — All-or-nothing settlement policy
 
   Default value: `all-or-nothing`
 
-  Possible values: `all-or-nothing`, `commit-first-leg`, `commit-second-leg`
+  Possible values: `all-or-nothing`
 
 * `--place-of-settlement-mic <PLACE_OF_SETTLEMENT_MIC>` — Optional MIC to emit under PlcOfSttlm/MktId
 * `--partial-indicator <PARTIAL_INDICATOR>` — Settlement partial indicator for SttlmParams/PrtlSttlmInd (NPAR/PART/PARQ/PARC)
@@ -10174,7 +10387,7 @@ Create a payment-versus-payment instruction
 
 ###### **Options:**
 
-* `--settlement-id <SETTLEMENT_ID>` — Stable identifier shared across the settlement lifecycle
+* `--settlement-id <SETTLEMENT_ID>` — Payer-scoped settlement identity: `REFERENCE$CANONICAL_ACCOUNT`
 * `--primary-asset <PRIMARY_ASSET>` — Primary currency leg asset definition
 * `--primary-quantity <PRIMARY_QUANTITY>` — Quantity of the primary currency (integer or decimal)
 * `--primary-from <PRIMARY_FROM>` — Account delivering the primary currency
@@ -10189,11 +10402,11 @@ Create a payment-versus-payment instruction
 
   Possible values: `delivery-then-payment`, `payment-then-delivery`
 
-* `--atomicity <ATOMICITY>` — Atomicity policy for partial failures (currently only all-or-nothing)
+* `--atomicity <ATOMICITY>` — All-or-nothing settlement policy
 
   Default value: `all-or-nothing`
 
-  Possible values: `all-or-nothing`, `commit-first-leg`, `commit-second-leg`
+  Possible values: `all-or-nothing`
 
 * `--place-of-settlement-mic <PLACE_OF_SETTLEMENT_MIC>` — Optional MIC to emit under PlcOfSttlm/MktId
 * `--partial-indicator <PARTIAL_INDICATOR>` — Settlement partial indicator for SttlmParams/PrtlSttlmInd (NPAR/PART/PARQ/PARC)
@@ -10279,7 +10492,7 @@ Execute one policy-backed native FX corridor settlement
 * `--expected-policy-revision <EXPECTED_POLICY_REVISION>` — Exact active policy revision expected by the signer
 * `--source-asset <SOURCE_ASSET>` — Expected source asset from the referenced policy
 * `--destination-asset <DESTINATION_ASSET>` — Expected destination asset from the referenced policy
-* `--settlement-id <SETTLEMENT_ID>` — Globally unique settlement/replay identifier
+* `--settlement-id <SETTLEMENT_ID>` — Payer-scoped settlement identity: `REFERENCE$CANONICAL_ACCOUNT`
 * `--recipient <RECIPIENT>` — Destination-currency recipient account or alias
 * `--source-amount <SOURCE_AMOUNT>` — Positive source-currency quantity
 * `--expected-destination-amount <EXPECTED_DESTINATION_AMOUNT>` — Exact destination amount expected from the selected oracle event
@@ -10313,14 +10526,12 @@ Read the complete governed native FX corridor policy registry
 
 ## `iroha contract`
 
-Contract app bundles, deploys, calls, and alias tooling
+Contract code, aliases, calls, views and local debugging; deploy with `kagami contract deploy` or `musubi deploy`
 
 **Usage:** `iroha contract <COMMAND>`
 
 ###### **Subcommands:**
 
-* `app` — Contract app bundle helpers
-* `dev` — First-release contract developer workflow
 * `code` — Contract code helpers
 * `alias` — Contract alias helpers
 * `derive-address` — Derive a canonical contract address locally from exact network identity, authority, nonce, and dataspace
@@ -10330,240 +10541,8 @@ Contract app bundles, deploys, calls, and alias tooling
 * `debug-call` — Execute a public contract entrypoint locally against compiled bytecode and optional fixtures
 * `manifest` — Contract manifest helpers
 * `simulate` — Run an offline simulation of IVM bytecode to see the queued ISIs and header metadata
-
-
-
-## `iroha contract app`
-
-Contract app bundle helpers
-
-**Usage:** `iroha contract app <COMMAND>`
-
-###### **Subcommands:**
-
-* `build` — Build an `iroha.contracts.toml` manifest into a compiled deployable bundle
-
-
-
-## `iroha contract app build`
-
-Build an `iroha.contracts.toml` manifest into a compiled deployable bundle
-
-**Usage:** `iroha contract app build [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the contract app manifest (`iroha.contracts.toml`)
-
-  Default value: `iroha.contracts.toml`
-* `--out <OUT>` — Optional output path for the compiled bundle JSON
-
-
-
-## `iroha contract dev`
-
-First-release contract developer workflow
-
-**Usage:** `iroha contract dev <COMMAND>`
-
-###### **Subcommands:**
-
-* `check` — Lint, build interfaces, and run Kotodama tests from a contract manifest
-* `build` — Build all contract artifacts and generated interface files
-* `test` — Run Kotodama test suites declared or discovered for the manifest
-* `doctor` — Validate local developer prerequisites for a contract manifest
-* `schema` — Generate Markdown schema docs and sample payloads from interfaces
-* `call` — Call a named manifest contract with typed payload validation
-* `view` — View a named manifest contract with typed payload validation
-* `smoke` — Run smoke assertions declared by the manifest
-
-
-
-## `iroha contract dev check`
-
-Lint, build interfaces, and run Kotodama tests from a contract manifest
-
-**Usage:** `iroha contract dev check [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--locked` — Fail if generated interface files differ from checked-in files
-
-
-
-## `iroha contract dev build`
-
-Build all contract artifacts and generated interface files
-
-**Usage:** `iroha contract dev build [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--locked` — Fail if generated interface files differ from checked-in files
-
-
-
-## `iroha contract dev test`
-
-Run Kotodama test suites declared or discovered for the manifest
-
-**Usage:** `iroha contract dev test [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--path-filter <PATH_FILTER>` — Only run test source paths containing this text
-* `--filter <FILTER>` — Only run test function names containing this text
-* `--exact` — Match the complete test function name supplied by `--filter`
-* `--format <FORMAT>` — Emit text or JSON from the native test runner when supported
-
-  Default value: `text`
-* `--coverage` — Run coverage mode instead of normal test mode
-* `--profile-mode` — Run profile mode instead of normal test mode
-
-
-
-## `iroha contract dev doctor`
-
-Validate local developer prerequisites for a contract manifest
-
-**Usage:** `iroha contract dev doctor [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-
-
-
-## `iroha contract dev schema`
-
-Generate Markdown schema docs and sample payloads from interfaces
-
-**Usage:** `iroha contract dev schema [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--out <OUT>` — Output Markdown path. Omit to print Markdown to stdout
-
-
-
-## `iroha contract dev call`
-
-Call a named manifest contract with typed payload validation
-
-**Usage:** `iroha contract dev call [OPTIONS] --contract <CONTRACT> --draft-intent-file <PATH> --entrypoint <ENTRYPOINT>`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--contract <CONTRACT>` — Manifest contract name, for example `dlmm.dlmm_pool`
-* `--authority <AUTHORITY>` — Authority account identifier. Defaults to the configured client authority
-* `--private-key <HEX>` — Hex-encoded private key override used to sign and submit the call directly
-* `--draft-only` — Request the exact unsigned transaction payload instead of direct submission
-* `--draft-intent-file <PATH>` — Secret-free JSON file containing the exact invocation and final metadata authorized for the unsigned draft
-* `--entrypoint <ENTRYPOINT>` — Contract entrypoint selector
-* `--gas-limit <GAS_LIMIT>` — Signature-bound gas limit. Defaults to the manifest profile value
-* `--payload-json <JSON>` — Inline Norito JSON payload object or value
-* `--payload-file <PATH>` — File containing a Norito JSON payload object or value
-* `--wait` — Poll exact global status until state-resolved Applied finality
-* `--submit-only` — Submit the transaction without waiting for finality
-* `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
-
-  Default value: `30000`
-* `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
-
-  Default value: `500`
-
-
-
-## `iroha contract dev view`
-
-View a named manifest contract with typed payload validation
-
-**Usage:** `iroha contract dev view [OPTIONS] --contract <CONTRACT> --entrypoint <ENTRYPOINT>`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--contract <CONTRACT>` — Manifest contract name, for example `n3x.n3x_hub`
-* `--authority <AUTHORITY>` — Authority account identifier used as the read context. Defaults to the configured client authority
-* `--entrypoint <ENTRYPOINT>` — Contract view entrypoint selector
-* `--gas-limit <GAS_LIMIT>` — Gas limit applied to the view execution. Defaults to the manifest profile value
-* `--payload-json <JSON>` — Inline Norito JSON payload object or value
-* `--payload-file <PATH>` — File containing a Norito JSON payload object or value
-
-
-
-## `iroha contract dev smoke`
-
-Run smoke assertions declared by the manifest
-
-**Usage:** `iroha contract dev smoke [OPTIONS]`
-
-###### **Options:**
-
-* `--manifest <MANIFEST>` — Path to the Iroha-first contract manifest
-
-  Default value: `iroha.contracts.toml`
-* `--profile <PROFILE>` — Named profile inside the manifest
-
-  Default value: `local`
-* `--zk` — Compile and validate with the explicit Kotodama ZK policy
-* `--authority <AUTHORITY>` — Authority account identifier used for smoke views/calls. Defaults to the profile client config
-* `--private-key <HEX>` — Hex-encoded private key override used for smoke call scenarios
-* `--wait` — Poll exact global status until state-resolved Applied finality
-* `--submit-only` — Submit the transaction without waiting for finality
-* `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
-
-  Default value: `30000`
-* `--poll-interval-ms <POLL_INTERVAL_MS>` — Poll interval used while waiting
-
-  Default value: `500`
+* `activity` — List committed contract activity with shared filter, projection and cursor controls
+* `events` — List committed contract events with shared filter, projection and cursor controls
 
 
 
@@ -10583,10 +10562,11 @@ Contract code helpers
 
 Fetch on-chain contract code bytes by code hash and write to a file
 
-**Usage:** `iroha contract code get --code-hash <HEX64> --out <PATH>`
+**Usage:** `iroha contract code get --dataspace-id <DATASPACE_ID> --code-hash <HEX64> --out <PATH>`
 
 ###### **Options:**
 
+* `--dataspace-id <DATASPACE_ID>` — Exact artifact dataspace identifier (zero selects the universal dataspace)
 * `--code-hash <HEX64>` — Hex-encoded 32-byte code hash (0x optional)
 * `--out <PATH>` — Output path to write the `.to` bytes
 
@@ -10684,8 +10664,8 @@ Submit a contract call through Torii (POST /v1/contracts/call)
   Default value: `1500000`
 * `--contract-address <CONTRACT_ADDRESS>` — Canonical contract address
 * `--contract-alias <CONTRACT_ALIAS>` — On-chain contract alias (`name::domain.dataspace` or `name::dataspace`)
-* `--payload-json <JSON>` — Inline Norito JSON payload object or value
-* `--payload-file <PATH>` — File containing a Norito JSON payload object or value
+* `--args <JSON>` — Inline Norito JSON entrypoint arguments
+* `--args-file <PATH>` — File containing Norito JSON entrypoint arguments
 * `--wait` — Poll exact global status until state-resolved Applied finality
 * `--submit-only` — Submit the transaction without waiting for finality
 * `--timeout-ms <TIMEOUT_MS>` — Maximum time to wait before failing
@@ -10712,8 +10692,8 @@ Execute a read-only contract view through Torii (POST /v1/contracts/view)
   Default value: `1500000`
 * `--contract-address <CONTRACT_ADDRESS>` — Canonical contract address
 * `--contract-alias <CONTRACT_ALIAS>` — On-chain contract alias (`name::domain.dataspace` or `name::dataspace`)
-* `--payload-json <JSON>` — Inline Norito JSON payload object or value
-* `--payload-file <PATH>` — File containing a Norito JSON payload object or value
+* `--args <JSON>` — Inline Norito JSON entrypoint arguments
+* `--args-file <PATH>` — File containing Norito JSON entrypoint arguments
 
 
 
@@ -10738,8 +10718,8 @@ Execute a read-only contract view locally against compiled bytecode and optional
 * `--accounts-file <PATH>` — File containing a JSON array of canonical account ids available to iterator helpers
 * `--durable-state-json <JSON>` — Optional JSON object mapping durable state keys to encoded values (`0x...` hex or base64)
 * `--durable-state-file <PATH>` — File containing a JSON object mapping durable state keys to encoded values (`0x...` hex or base64)
-* `--payload-json <JSON>` — Inline Norito JSON payload object or value
-* `--payload-file <PATH>` — File containing a Norito JSON payload object or value
+* `--args <JSON>` — Inline Norito JSON entrypoint arguments
+* `--args-file <PATH>` — File containing Norito JSON entrypoint arguments
 
 
 
@@ -10754,7 +10734,7 @@ Execute a public contract entrypoint locally against compiled bytecode and optio
 * `--authority <AUTHORITY>` — Authority account identifier used as the local call context. Defaults to the configured client authority
 * `--code-file <CODE_FILE>` — Path to compiled `.to` file (mutually exclusive with --code-b64)
 * `--code-b64 <CODE_B64>` — Base64-encoded code (mutually exclusive with --code-file)
-* `--entrypoint <ENTRYPOINT>` — Contract entrypoint selector
+* `--entrypoint <ENTRYPOINT>` — Local kotoage, hajimari, or kaizen entrypoint selector
 * `--gas-limit <GAS_LIMIT>` — Gas limit applied to the local call execution
 
   Default value: `1500000`
@@ -10764,8 +10744,8 @@ Execute a public contract entrypoint locally against compiled bytecode and optio
 * `--accounts-file <PATH>` — File containing a JSON array of canonical account ids available to iterator helpers
 * `--durable-state-json <JSON>` — Optional JSON object mapping durable state keys to encoded values (`0x...` hex or base64)
 * `--durable-state-file <PATH>` — File containing a JSON object mapping durable state keys to encoded values (`0x...` hex or base64)
-* `--payload-json <JSON>` — Inline Norito JSON payload object or value
-* `--payload-file <PATH>` — File containing a Norito JSON payload object or value
+* `--args <JSON>` — Inline Norito JSON entrypoint arguments
+* `--args-file <PATH>` — File containing Norito JSON entrypoint arguments
 
 
 
@@ -10786,10 +10766,11 @@ Contract manifest helpers
 
 Fetch on-chain contract manifest by code hash and either print or save (if --out is provided)
 
-**Usage:** `iroha contract manifest get [OPTIONS] --code-hash <HEX64>`
+**Usage:** `iroha contract manifest get [OPTIONS] --dataspace-id <DATASPACE_ID> --code-hash <HEX64>`
 
 ###### **Options:**
 
+* `--dataspace-id <DATASPACE_ID>` — Exact artifact dataspace identifier (zero selects the universal dataspace)
 * `--code-hash <HEX64>` — Hex-encoded 32-byte code hash (0x optional)
 * `--out <PATH>` — Optional output path; if provided, writes JSON manifest to file, otherwise prints to stdout
 
@@ -10823,6 +10804,54 @@ Run an offline simulation of IVM bytecode to see the queued ISIs and header meta
 * `--code-file <CODE_FILE>` — Path to a generic (non-CNTR) compiled `.to` file (mutually exclusive with --code-b64)
 * `--code-b64 <CODE_B64>` — Base64-encoded generic program (mutually exclusive with --code-file)
 * `--gas-limit <GAS_LIMIT>` — Required executable gas bound in the typed fee payment intent
+
+
+
+## `iroha contract activity`
+
+List committed contract activity with shared filter, projection and cursor controls
+
+**Usage:** `iroha contract activity [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
+
+
+
+## `iroha contract events`
+
+List committed contract events with shared filter, projection and cursor controls
+
+**Usage:** `iroha contract events [OPTIONS]`
+
+###### **Options:**
+
+* `--filter <FILTER>` [alias: `where`] — Rows to keep, written like a SQL `WHERE` clause.
+
+   Example: `owned_by = "sorau…" and quantity >= 10.5`. Operators: `= != < <= > >=`, `in [..]`, `not in [..]`, `exists(field)`, `is null`, `is not null`, `and`, `or`, `not`; quote non-identifier path segments with backticks (``metadata.`ui-order` ``).
+* `--sort <KEYS>` — Sort keys, comma-separated; prefix a key with `-` for descending order.
+
+   Example: `-quantity,id`. At most 8 keys; the collection's default order applies otherwise.
+* `--select <FIELDS>` — Fields to return per row, comma-separated (all fields by default). Example: `id,owned_by`
+* `--limit <N>` — Rows per page: at least 1 and at most the node's maximum (Torii's default is 100)
+* `--cursor <CURSOR>` — Continue after a previous page by passing its `next_cursor`
+* `--all` — Follow `next_cursor` and read every page.
+
+   With `-o jsonl`, rows are printed one per line as pages arrive; with `-o json`, all rows are printed as one page document whose `next_cursor` is null.
+* `--include-total` — Also report the exact number of matching rows (`total`; costs a full scan on the node)
 
 
 
@@ -10875,7 +10904,12 @@ Convert account addresses between supported textual encodings
 
   Default value: `i105`
 
-  Possible values: `i105`, `canonical-hex`, `json`
+  Possible values:
+  - `i105`
+  - `canonical-hex`
+  - `public-key`:
+    Emit the single-signature public key; multisig accounts are rejected
+  - `json`
 
 
 
@@ -10919,7 +10953,12 @@ Rewrite newline-separated addresses into canonical encodings
 
   Default value: `i105`
 
-  Possible values: `i105`, `canonical-hex`, `json`
+  Possible values:
+  - `i105`
+  - `canonical-hex`
+  - `public-key`:
+    Emit the single-signature public key; multisig accounts are rejected
+  - `json`
 
 * `--allow-errors` — Succeed even if parse errors were encountered (allow auditing large dumps)
 
@@ -11177,9 +11216,16 @@ Print the canonical syscall list (min or markdown table)
 
 ###### **Options:**
 
-* `--format <FORMAT>` — Output format: 'min' (one per line) or 'markdown'
+* `--format <FORMAT>` — Rendering of the syscall list: one entry per line, or a Markdown table
 
   Default value: `min`
+
+  Possible values:
+  - `min`:
+    One `- <number> <NAME>` entry per line
+  - `markdown`:
+    A Markdown table
+
 
 
 
@@ -11211,6 +11257,131 @@ Show versions and git SHA of client and server
 
 
 
+## `iroha dataspace`
+
+Plan, apply, and inspect a dataspace definition
+
+**Usage:** `iroha dataspace <COMMAND>`
+
+###### **Subcommands:**
+
+* `export-profile` — Export independently selected network trust once for all its dataspaces
+* `verify-authority` — Replay completed allocation originals without loading credentials or contacting peers
+* `plan` — Validate the definition and save its immutable plan without submitting transactions
+* `apply` — Plan if needed, then advance the retained transactions without resubmission
+* `status` — Inspect the retained operation and verify current state without submitting
+
+
+
+## `iroha dataspace export-profile`
+
+Export independently selected network trust once for all its dataspaces
+
+**Usage:** `iroha dataspace export-profile --network-id <NETWORK_ID> --chain <CHAIN> --chain-discriminant <CHAIN_DISCRIMINANT> --genesis-signed <FILE> --genesis-public-key <FILE> --peers <FILE> --output <FILE>`
+
+###### **Options:**
+
+* `--network-id <NETWORK_ID>` — Independently selected canonical checked `NetworkId` of the retained network
+* `--chain <CHAIN>` — Explicit canonical chain ID selected by the network operator; absent from signed genesis
+* `--chain-discriminant <CHAIN_DISCRIMINANT>` — Explicit account address discriminant selected by the network operator
+* `--genesis-signed <FILE>` — Exact public `SignedBlockWire` genesis file
+* `--genesis-public-key <FILE>` — Canonical public genesis key, with an optional final newline
+* `--peers <FILE>` — Public JSON array of the existing four deployment peer records
+* `--output <FILE>` — New profile file under an existing current-owner private directory
+
+
+
+## `iroha dataspace verify-authority`
+
+Replay completed allocation originals without loading credentials or contacting peers
+
+**Usage:** `iroha dataspace verify-authority --bundle <BUNDLE> --trust <TRUST> --source-commit <SOURCE_COMMIT> --source-version <SOURCE_VERSION> --output <OUTPUT>`
+
+###### **Options:**
+
+* `--bundle <BUNDLE>` — Direct current-owner private bundle directory, with its original inventory
+* `--trust <TRUST>` — Independently selected original public genesis and four-peer trust profile
+* `--source-commit <SOURCE_COMMIT>` — Target ledger commit selected from separately authenticated signed source
+* `--source-version <SOURCE_VERSION>` — Target package version from the same separately authenticated signed source
+* `--output <OUTPUT>` — Fresh result file under an existing private directory; saved results are not authority
+
+
+
+## `iroha dataspace plan`
+
+Validate the definition and save its immutable plan without submitting transactions
+
+**Usage:** `iroha dataspace plan [OPTIONS] --trust <TRUST> <DEFINITION>`
+
+###### **Arguments:**
+
+* `<DEFINITION>` — Dataspace TOML containing only owner decisions
+
+###### **Options:**
+
+* `--trust <TRUST>` — Independently retained public genesis, network context and validator pins
+* `--state <STATE>` — Private journal root; defaults to ~/.iroha-dataspaces across definitions
+* `--verification-peer-url <URL>` — Read-only status routes, one per trusted peer in profile order. Repeat exactly four times. Signed peer identities and retained deployment intent are never changed
+* `--verification-runtime-update <DIRECTORY>` — Completed preserved-state updates on this guest, oldest to newest. Repeat for a chain
+* `--verification-source-commit <COMMIT>` — Independently authenticated target commit for read-only status with a separate verifier
+* `--verification-source-version <VERSION>` — Package version from that same independently authenticated target source
+* `--export-authority <DIRECTORY>` — New private directory for verified public allocation originals, after successful status
+* `--timeout-ms <TIMEOUT_MS>` — Total time budget for planning, dispatch and fresh verification
+
+  Default value: `180000`
+
+
+
+## `iroha dataspace apply`
+
+Plan if needed, then advance the retained transactions without resubmission
+
+**Usage:** `iroha dataspace apply [OPTIONS] --trust <TRUST> <DEFINITION>`
+
+###### **Arguments:**
+
+* `<DEFINITION>` — Dataspace TOML containing only owner decisions
+
+###### **Options:**
+
+* `--trust <TRUST>` — Independently retained public genesis, network context and validator pins
+* `--state <STATE>` — Private journal root; defaults to ~/.iroha-dataspaces across definitions
+* `--verification-peer-url <URL>` — Read-only status routes, one per trusted peer in profile order. Repeat exactly four times. Signed peer identities and retained deployment intent are never changed
+* `--verification-runtime-update <DIRECTORY>` — Completed preserved-state updates on this guest, oldest to newest. Repeat for a chain
+* `--verification-source-commit <COMMIT>` — Independently authenticated target commit for read-only status with a separate verifier
+* `--verification-source-version <VERSION>` — Package version from that same independently authenticated target source
+* `--export-authority <DIRECTORY>` — New private directory for verified public allocation originals, after successful status
+* `--timeout-ms <TIMEOUT_MS>` — Total time budget for planning, dispatch and fresh verification
+
+  Default value: `180000`
+
+
+
+## `iroha dataspace status`
+
+Inspect the retained operation and verify current state without submitting
+
+**Usage:** `iroha dataspace status [OPTIONS] --trust <TRUST> <DEFINITION>`
+
+###### **Arguments:**
+
+* `<DEFINITION>` — Dataspace TOML containing only owner decisions
+
+###### **Options:**
+
+* `--trust <TRUST>` — Independently retained public genesis, network context and validator pins
+* `--state <STATE>` — Private journal root; defaults to ~/.iroha-dataspaces across definitions
+* `--verification-peer-url <URL>` — Read-only status routes, one per trusted peer in profile order. Repeat exactly four times. Signed peer identities and retained deployment intent are never changed
+* `--verification-runtime-update <DIRECTORY>` — Completed preserved-state updates on this guest, oldest to newest. Repeat for a chain
+* `--verification-source-commit <COMMIT>` — Independently authenticated target commit for read-only status with a separate verifier
+* `--verification-source-version <VERSION>` — Package version from that same independently authenticated target source
+* `--export-authority <DIRECTORY>` — New private directory for verified public allocation originals, after successful status
+* `--timeout-ms <TIMEOUT_MS>` — Total time budget for planning, dispatch and fresh verification
+
+  Default value: `180000`
+
+
+
 ## `iroha taira`
 
 SORA Taira public testnet diagnostics and canaries
@@ -11219,13 +11390,166 @@ SORA Taira public testnet diagnostics and canaries
 
 ###### **Subcommands:**
 
+* `account` — Prepare, submit, or recover ordinary account onboarding and faucet transactions
 * `doctor` — Check Taira read-side health and MCP route posture
+* `seat-parliament` — Seat the SORA Parliament in a freshly generated Kagami Taira network: genesis citizens and the recommended `[gov]` profile (`specs/sccp.md` §4.14.5)
 * `public-reset` — Preflight or execute the strictly authorized compiled public reset
+* `stopped-owner-maintenance` — Reconcile empty stopped Inrou owners under the active routine updater lock
+* `retire-validator-config` — Remove only retired validator configuration under the routine updater owner
 * `write-canary` — Prepare, submit, or recover exactly one authorized public-reset child
-* `inrou-workspace` — Generate the canonical deploy-mode Inrou canary workspace from AArch64 guest assets
-* `inrou-stage` — Build the canonical offline artifact stage that operators preseed into all validators
-* `inrou-canary` — Register an exact preseeded stage, mutate explicitly, and verify the four-replica Inrou canary
+* `inrou-workspace` — Generate the canonical deploy-mode Inrou canary workspace from `AArch64` guest assets
+* `inrou-stage` — Build and bind the canonical offline artifact stage through the Unix host coordinator
+* `inrou-canary` — Prepare, submit, or recover one Inrou canary operation through the Unix host coordinator
 * `inrou-check` — Revalidate an exact retained stage and verify its live four-replica service without mutation
+
+
+
+## `iroha taira account`
+
+Prepare, submit, or recover ordinary account onboarding and faucet transactions
+
+**Usage:** `iroha taira account <COMMAND>`
+
+###### **Subcommands:**
+
+* `onboard` — Register the configured account and bind an operator-authorized alias
+* `faucet` — Fund the configured account using an independently trusted faucet policy
+
+
+
+## `iroha taira account onboard`
+
+Register the configured account and bind an operator-authorized alias
+
+**Usage:** `iroha taira account onboard <COMMAND>`
+
+###### **Subcommands:**
+
+* `prepare` — Verify a sponsored receipt and save the exact transaction without submitting it
+* `submit` — Submit only the exact saved transaction, or report its existing outcome
+* `resume` — Read-only reconciliation of the saved transaction or account-and-alias proof
+
+
+
+## `iroha taira account onboard prepare`
+
+Verify a sponsored receipt and save the exact transaction without submitting it
+
+**Usage:** `iroha taira account onboard prepare [OPTIONS] --journal <DIRECTORY> --alias <ALIAS> --issuer <ISSUER>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Operation directory; preparation creates it privately and refuses to replace it
+* `--timeout-secs <TIMEOUT_SECS>` — Maximum duration of each HTTP request in seconds
+
+  Default value: `30`
+* `--request-id <REQUEST_ID>` — Optional exact operation ID; otherwise a fresh random 32-byte ID is retained in the journal
+* `--expires-in-secs <EXPIRES_IN_SECS>` — Maximum envelope lifetime; onboarding is additionally bounded by the signed receipt
+
+  Default value: `120`
+* `--token-file <TOKEN_FILE>` — Owner-private token file supplied by the deployment operator; never copied into the journal
+* `--token-fd <TOKEN_FD>` — Explicit inherited owner-private token descriptor instead of a path
+* `--alias <ALIAS>` — Canonical alias to bind to the account in the client configuration
+* `--issuer <ISSUER>` — Independently trusted onboarding issuer from the deployment operator
+* `--permission <PERMISSIONS>` — Exact additional unscoped permission authorized by the operator; repeat as needed
+
+
+
+## `iroha taira account onboard submit`
+
+Submit only the exact saved transaction, or report its existing outcome
+
+**Usage:** `iroha taira account onboard submit [OPTIONS] --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Operation directory; preparation creates it privately and refuses to replace it
+* `--timeout-secs <TIMEOUT_SECS>` — Maximum duration of each HTTP request in seconds
+
+  Default value: `30`
+* `--token-file <TOKEN_FILE>` — Owner-private token file supplied by the deployment operator; never copied into the journal
+* `--token-fd <TOKEN_FD>` — Explicit inherited owner-private token descriptor instead of a path
+
+
+
+## `iroha taira account onboard resume`
+
+Read-only reconciliation of the saved transaction or account-and-alias proof
+
+**Usage:** `iroha taira account onboard resume [OPTIONS] --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Operation directory; preparation creates it privately and refuses to replace it
+* `--timeout-secs <TIMEOUT_SECS>` — Maximum duration of each HTTP request in seconds
+
+  Default value: `30`
+
+
+
+## `iroha taira account faucet`
+
+Fund the configured account using an independently trusted faucet policy
+
+**Usage:** `iroha taira account faucet <COMMAND>`
+
+###### **Subcommands:**
+
+* `prepare` — Solve the native proof of work and save the verified transaction without submitting it
+* `submit` — Submit only the exact saved transaction, or report its existing outcome
+* `resume` — Read-only reconciliation of the exact saved faucet transaction
+
+
+
+## `iroha taira account faucet prepare`
+
+Solve the native proof of work and save the verified transaction without submitting it
+
+**Usage:** `iroha taira account faucet prepare [OPTIONS] --journal <DIRECTORY> --issuer <ISSUER> --asset-definition <ASSET_DEFINITION> --amount <AMOUNT>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Operation directory; preparation creates it privately and refuses to replace it
+* `--timeout-secs <TIMEOUT_SECS>` — Maximum duration of each HTTP request in seconds
+
+  Default value: `30`
+* `--request-id <REQUEST_ID>` — Optional exact operation ID; otherwise a fresh random 32-byte ID is retained in the journal
+* `--expires-in-secs <EXPIRES_IN_SECS>` — Maximum envelope lifetime; onboarding is additionally bounded by the signed receipt
+
+  Default value: `120`
+* `--issuer <ISSUER>` — Independently trusted faucet issuer from the deployment operator
+* `--asset-definition <ASSET_DEFINITION>` — Exact canonical asset definition issued by the faucet
+* `--amount <AMOUNT>` — Exact positive quantity issued by one claim
+
+
+
+## `iroha taira account faucet submit`
+
+Submit only the exact saved transaction, or report its existing outcome
+
+**Usage:** `iroha taira account faucet submit [OPTIONS] --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Operation directory; preparation creates it privately and refuses to replace it
+* `--timeout-secs <TIMEOUT_SECS>` — Maximum duration of each HTTP request in seconds
+
+  Default value: `30`
+
+
+
+## `iroha taira account faucet resume`
+
+Read-only reconciliation of the exact saved faucet transaction
+
+**Usage:** `iroha taira account faucet resume [OPTIONS] --journal <DIRECTORY>`
+
+###### **Options:**
+
+* `--journal <DIRECTORY>` — Operation directory; preparation creates it privately and refuses to replace it
+* `--timeout-secs <TIMEOUT_SECS>` — Maximum duration of each HTTP request in seconds
+
+  Default value: `30`
 
 
 
@@ -11240,7 +11564,38 @@ Check Taira read-side health and MCP route posture
 * `--public-root <PUBLIC_ROOT>` — Public Torii root URL
 
   Default value: `https://taira.sora.org`
+* `--scope <SCOPE>` — Release surface whose availability is required
+
+  Default value: `basic`
+
+  Possible values:
+  - `basic`:
+    Basic admission readiness, account, asset, transaction and consensus connectivity
+  - `full`:
+    Include advanced service readiness and strict network-time health
+
 * `--json` — Emit a stable JSON report
+* `--parliament` — Also observe public Parliament body sizes and beacon/roster state, with warnings for unavailable seating and launch/progress requirements. Diagnostics do not authorize launch
+
+
+
+## `iroha taira seat-parliament`
+
+Seat the SORA Parliament in a freshly generated Kagami Taira network: genesis citizens and the recommended `[gov]` profile (`specs/sccp.md` §4.14.5)
+
+**Usage:** `iroha taira seat-parliament [OPTIONS] --localnet-dir <DIR>`
+
+###### **Options:**
+
+* `--localnet-dir <DIR>` — Freshly generated, not yet deployed Kagami Taira network (owner-only directory)
+* `--citizens <CITIZENS>` — Number of genesis citizens `C`
+
+  Default value: `16`
+* `--fee-float <FEE_FLOAT>` — XOR fee float minted to every citizen on top of its bond
+
+  Default value: `1000`
+* `--sccp-proposer-public-key <PUBLIC_KEY>` — Grant the genesis-only `CanProposeSccpRouteGovernance` to the registered account of this public key (the reset operator's proposing account). Off unless given
+* `--citizen-dir <DIR>` — Fresh owner-only directory for the citizen keys; defaults to `<localnet-dir>/runtime/taira-parliament-citizens`
 
 
 
@@ -11252,14 +11607,496 @@ Preflight or execute the strictly authorized compiled public reset
 
 ###### **Subcommands:**
 
-* `preflight` — Verify the signed reset inventory and pinned local inputs without contacting any host
+* `initialize-native-edge-custody` — Initialize the fixed native Mac custodian from independently pinned executable and public key
+* `capture-native-python` — Capture the pinned native Python image and supported version without changing services
+* `authorize-native-edge-owner` — Authorize explicit native custody of retained opaque incident journals
+* `prepare-native-edge-owner` — Derive complete public owner-adoption inputs from pinned native capture and incident files
+* `adopt-native-edge-owner` — Adopt the unchanged native public include under a fresh authenticated owner
+* `prepare-native-edge` — Capture the native Mac edge and authorize its same-source Darwin candidate
+* `dispatcher-transition` — Reversibly advance the fixed dispatcher after a sealed occupied deployment
+* `capture-dispatcher-current-runtime` — Capture the stopped installed runtime into a private typed transition input
+* `prepare-dispatcher-transition` — Derive a pinned reversible dispatcher plan from qualified transfer and current runtime evidence
+* `prepare-topology-intent` — Derive one fresh typed topology intent from an applied transition and new public inputs
+* `source-manifest` — Export the exact clean local source manifest without contacting hosts or loading keys
+* `config-rebase` — Materialize a retained validator config from an inherited descriptor without printing secrets
+* `torii-rate-config-amend` — Amend validator HTTP request budgets through an inherited descriptor and emit public provenance
+* `materialize-validator-config` — Materialize a fresh validator config for its exact public-reset runtime paths
+* `client-config-rebase` — Rebind a retained client config to an explicitly checked new genesis identity
+* `operator-keygen` — Generate a dedicated runtime operator credential without exposing private key bytes
+* `prepare-public-inputs` — Derive and validate the complete public genesis and canary bundle without private keys
+* `prepare-runtime-clients` — Prepare exact private client configs and public validator/faucet identities from native inputs
+* `stage-canary` — Run or read-only recover the ordered canary on one independent private candidate
+* `prepare-beacon-inputs` — Derive the signed-network-bound beacon request and exact renderer seat paths
+* `prepare-validator-units` — Render four public validator units from the embedded signed custody renderer
+* `export-deployment-profile` — Export a public deployment target profile from assembled inventory and native inputs
+* `assemble` — Assemble exact release inputs locally from an explicit inventory draft
+* `authorize` — Sign retained release inputs using an independently trusted owner key
+* `preflight` — Verify signed inputs and read-only readiness of all four validators and the edge host
 * `apply` — Execute the admitted reset with pinned SSH and runtime signing inputs
+* `abandon` — Abandon an unresolved pre-edge testnet canary, preserve its evidence, and roll back
+
+
+
+## `iroha taira public-reset initialize-native-edge-custody`
+
+Initialize the fixed native Mac custodian from independently pinned executable and public key
+
+**Usage:** `iroha taira public-reset initialize-native-edge-custody --expected-executable-sha256 <SHA256> --trusted-public-key <PATH> --expected-trusted-public-key-sha256 <SHA256>`
+
+###### **Options:**
+
+* `--expected-executable-sha256 <SHA256>` — Independently selected SHA-256 of the actual currently invoked Darwin image
+* `--trusted-public-key <PATH>` — Independently selected public `TrustedKeyV1` record, retained in owner-private custody
+* `--expected-trusted-public-key-sha256 <SHA256>` — Independent SHA-256 of the exact public authority record bytes
+
+
+
+## `iroha taira public-reset capture-native-python`
+
+Capture the pinned native Python image and supported version without changing services
+
+**Usage:** `iroha taira public-reset capture-native-python --executable <PATH> --expected-executable-sha256 <SHA256> --output <DIR>`
+
+###### **Options:**
+
+* `--executable <PATH>` — Absolute path to the actual Darwin main image, selected independently of PATH
+* `--expected-executable-sha256 <SHA256>` — Independent SHA-256 pin of the selected image's public bytes
+* `--output <DIR>` — Fresh private output directory for the typed public capability
+
+
+
+## `iroha taira public-reset authorize-native-edge-owner`
+
+Authorize explicit native custody of retained opaque incident journals
+
+**Usage:** `iroha taira public-reset authorize-native-edge-owner --request <PATH> --expected-request-sha256 <SHA256> --trusted-public-key <PATH> --signing-key-fd <FD> --output <PATH>`
+
+###### **Options:**
+
+* `--request <PATH>` — Closed public request whose exact bytes the independent owner approves
+* `--expected-request-sha256 <SHA256>` — SHA-256 of the retained request, supplied independently of its contents
+* `--trusted-public-key <PATH>` — Independently selected Ed25519 reset-owner public key
+* `--signing-key-fd <FD>` — Inherited private key descriptor; key material never enters arguments or output
+* `--output <PATH>` — Fresh authorization file in existing private custody; never replaced
+
+
+
+## `iroha taira public-reset prepare-native-edge-owner`
+
+Derive complete public owner-adoption inputs from pinned native capture and incident files
+
+**Usage:** `iroha taira public-reset prepare-native-edge-owner --host-pair <PATH> --expected-host-pair-sha256 <SHA256> --nginx-plan <PATH> --expected-nginx-plan-sha256 <SHA256> --opaque-journal <BASENAME> --output <DIR>`
+
+###### **Options:**
+
+* `--host-pair <PATH>` — Independently admitted `MacStadium` host pair
+* `--expected-host-pair-sha256 <SHA256>` — Independent SHA-256 pin of the exact host-pair bytes
+* `--nginx-plan <PATH>` — Maintained native nginx capture plan for the unchanged public include
+* `--expected-nginx-plan-sha256 <SHA256>` — Independent SHA-256 pin of the exact capture-plan bytes
+* `--opaque-journal <BASENAME>` — Ordered opaque incumbent journal basename; repeat for each admitted journal
+* `--output <DIR>` — Fresh owner-private directory beneath the independently admitted native custody
+
+
+
+## `iroha taira public-reset adopt-native-edge-owner`
+
+Adopt the unchanged native public include under a fresh authenticated owner
+
+**Usage:** `iroha taira public-reset adopt-native-edge-owner --request <PATH> --expected-request-sha256 <SHA256> --authorization <PATH> --trusted-public-key <PATH>`
+
+###### **Options:**
+
+* `--request <PATH>` — Exact independently approved public request
+* `--expected-request-sha256 <SHA256>` — Independent pin of the retained request bytes
+* `--authorization <PATH>` — Required signed adoption authorization, distinct from reset execution authorization
+* `--trusted-public-key <PATH>` — Public owner key whose raw digest the fixed native guard independently pins
+
+
+
+## `iroha taira public-reset prepare-native-edge`
+
+Capture the native Mac edge and authorize its same-source Darwin candidate
+
+**Usage:** `iroha taira public-reset prepare-native-edge --request <PATH> --expected-request-sha256 <SHA256> --native-signing-key-fd <FD> --owner-signing-key-fd <FD> --output <DIR>`
+
+###### **Options:**
+
+* `--request <PATH>` — Closed public owner selection, source and actual native input references
+* `--expected-request-sha256 <SHA256>` — Independently admitted SHA-256 of the exact request bytes
+* `--native-signing-key-fd <FD>` — Inherited owner-private native custody key; never accepted in argv or output
+* `--owner-signing-key-fd <FD>` — Inherited independently selected release-owner key
+* `--output <DIR>` — Fresh directory beneath native custody, published with all public records atomically
+
+
+
+## `iroha taira public-reset dispatcher-transition`
+
+Reversibly advance the fixed dispatcher after a sealed occupied deployment
+
+**Usage:** `iroha taira public-reset dispatcher-transition --plan <PLAN> --expected-plan-sha256 <EXPECTED_PLAN_SHA256> --action <ACTION>`
+
+###### **Options:**
+
+* `--plan <PLAN>`
+* `--expected-plan-sha256 <EXPECTED_PLAN_SHA256>`
+* `--action <ACTION>`
+
+  Possible values: `check`, `apply`, `rollback`
+
+
+
+
+## `iroha taira public-reset capture-dispatcher-current-runtime`
+
+Capture the stopped installed runtime into a private typed transition input
+
+**Usage:** `iroha taira public-reset capture-dispatcher-current-runtime --expected-host-identity-sha256 <EXPECTED_HOST_IDENTITY_SHA256> --host-pair <HOST_PAIR> --expected-host-pair-sha256 <EXPECTED_HOST_PAIR_SHA256> --native-edge-capture <NATIVE_EDGE_CAPTURE> --expected-native-edge-capture-sha256 <EXPECTED_NATIVE_EDGE_CAPTURE_SHA256> --expected-retained-inventory-sha256 <EXPECTED_RETAINED_INVENTORY_SHA256> --expected-authorization-sha256 <EXPECTED_AUTHORIZATION_SHA256> --authorization-nonce <AUTHORIZATION_NONCE> --next-genesis-hash <NEXT_GENESIS_HASH> --output <OUTPUT>`
+
+###### **Options:**
+
+* `--expected-host-identity-sha256 <EXPECTED_HOST_IDENTITY_SHA256>` — SHA-256 of `ssh-ed25519 <base64>` from the independently approved host key
+* `--host-pair <HOST_PAIR>` — Required independently admitted `MacStadium` host pair, retained on the guest
+* `--expected-host-pair-sha256 <EXPECTED_HOST_PAIR_SHA256>`
+* `--native-edge-capture <NATIVE_EDGE_CAPTURE>` — Independently signed native Mac capture; Linux never supplies edge observations
+* `--expected-native-edge-capture-sha256 <EXPECTED_NATIVE_EDGE_CAPTURE_SHA256>`
+* `--expected-retained-inventory-sha256 <EXPECTED_RETAINED_INVENTORY_SHA256>`
+* `--expected-authorization-sha256 <EXPECTED_AUTHORIZATION_SHA256>`
+* `--authorization-nonce <AUTHORIZATION_NONCE>`
+* `--next-genesis-hash <NEXT_GENESIS_HASH>`
+* `--output <OUTPUT>` — A fresh file in an existing root-owned mode0700 directory
+
+
+
+## `iroha taira public-reset prepare-dispatcher-transition`
+
+Derive a pinned reversible dispatcher plan from qualified transfer and current runtime evidence
+
+**Usage:** `iroha taira public-reset prepare-dispatcher-transition [OPTIONS] --import-root <IMPORT_ROOT> --expected-result-sha256 <EXPECTED_RESULT_SHA256> --native-edge-candidate <NATIVE_EDGE_CANDIDATE> --expected-native-edge-candidate-sha256 <EXPECTED_NATIVE_EDGE_CANDIDATE_SHA256> --native-edge-cli <NATIVE_EDGE_CLI> --source-manifest <SOURCE_MANIFEST> --retained-inventory <RETAINED_INVENTORY> --expected-retained-inventory-sha256 <EXPECTED_RETAINED_INVENTORY_SHA256> --current-runtime <CURRENT_RUNTIME> --expected-current-runtime-sha256 <EXPECTED_CURRENT_RUNTIME_SHA256> --trusted-public-key <TRUSTED_PUBLIC_KEY> --operation-id <OPERATION_ID> --output <OUTPUT>`
+
+###### **Options:**
+
+* `--import-root <IMPORT_ROOT>`
+* `--expected-result-sha256 <EXPECTED_RESULT_SHA256>`
+* `--native-edge-candidate <NATIVE_EDGE_CANDIDATE>` — Owner-signed Darwin artifact and prepared native Mac guard authorization
+* `--expected-native-edge-candidate-sha256 <EXPECTED_NATIVE_EDGE_CANDIDATE_SHA256>`
+* `--native-edge-cli <NATIVE_EDGE_CLI>` — Retained public copy of the Darwin CLI; this command never executes it
+* `--source-manifest <SOURCE_MANIFEST>`
+* `--retained-inventory <RETAINED_INVENTORY>`
+* `--expected-retained-inventory-sha256 <EXPECTED_RETAINED_INVENTORY_SHA256>`
+* `--terminal-rolled-back` — The current host lease belongs to a terminally rolled-back occupied reset. This admits a new signed candidate without reusing the failed authorization
+* `--deployment-proven-predecessor` — Supersede a deployment-proven predecessor whose seal bookkeeping is unfinished. Preserve its original journal; require sealed guest custody and stopped runtime
+* `--current-runtime <CURRENT_RUNTIME>`
+* `--expected-current-runtime-sha256 <EXPECTED_CURRENT_RUNTIME_SHA256>`
+* `--trusted-public-key <TRUSTED_PUBLIC_KEY>`
+* `--operation-id <OPERATION_ID>`
+* `--output <OUTPUT>`
+
+
+
+## `iroha taira public-reset prepare-topology-intent`
+
+Derive one fresh typed topology intent from an applied transition and new public inputs
+
+**Usage:** `iroha taira public-reset prepare-topology-intent [OPTIONS] --retained-inventory <RETAINED_INVENTORY> --expected-retained-inventory-sha256 <EXPECTED_RETAINED_INVENTORY_SHA256> --selected-inventory <SELECTED_INVENTORY> --expected-selected-inventory-sha256 <EXPECTED_SELECTED_INVENTORY_SHA256> --selected-authorization <SELECTED_AUTHORIZATION> --current-runtime <CURRENT_RUNTIME> --expected-current-runtime-sha256 <EXPECTED_CURRENT_RUNTIME_SHA256> --transition-plan <TRANSITION_PLAN> --expected-plan-sha256 <EXPECTED_PLAN_SHA256> --import-root <IMPORT_ROOT> --public-inputs <PUBLIC_INPUTS> --source-manifest <SOURCE_MANIFEST> --known-hosts <KNOWN_HOSTS> --edge-config <EDGE_CONFIG> --native-edge-cli <NATIVE_EDGE_CLI> --output <OUTPUT>`
+
+###### **Options:**
+
+* `--retained-inventory <RETAINED_INVENTORY>` — Inventory of the terminal predecessor bound to the transition lease
+* `--expected-retained-inventory-sha256 <EXPECTED_RETAINED_INVENTORY_SHA256>`
+* `--selected-inventory <SELECTED_INVENTORY>` — Inventory of the release actually selected after the transition
+* `--expected-selected-inventory-sha256 <EXPECTED_SELECTED_INVENTORY_SHA256>`
+* `--selected-authorization <SELECTED_AUTHORIZATION>` — Prior authorization signed by the transition plan's trusted public key
+* `--current-runtime <CURRENT_RUNTIME>`
+* `--expected-current-runtime-sha256 <EXPECTED_CURRENT_RUNTIME_SHA256>`
+* `--transition-plan <TRANSITION_PLAN>`
+* `--expected-plan-sha256 <EXPECTED_PLAN_SHA256>`
+* `--import-root <IMPORT_ROOT>`
+* `--public-inputs <PUBLIC_INPUTS>`
+* `--source-manifest <SOURCE_MANIFEST>`
+* `--known-hosts <KNOWN_HOSTS>`
+* `--validator-client-config <VALIDATOR_CLIENT_CONFIG>`
+* `--validator-config <VALIDATOR_CONFIG>`
+* `--initial-unit <INITIAL_UNIT>`
+* `--edge-config <EDGE_CONFIG>`
+* `--native-edge-cli <NATIVE_EDGE_CLI>` — Retained public Darwin artifact copy admitted by the signed transition candidate
+* `--output <OUTPUT>`
+
+
+
+## `iroha taira public-reset source-manifest`
+
+Export the exact clean local source manifest without contacting hosts or loading keys
+
+**Usage:** `iroha taira public-reset source-manifest --source-root <DIR>`
+
+###### **Options:**
+
+* `--source-root <DIR>` — Absolute path to the clean optimizations checkout with a direct .git directory
+
+
+
+## `iroha taira public-reset config-rebase`
+
+Materialize a retained validator config from an inherited descriptor without printing secrets
+
+**Usage:** `iroha taira public-reset config-rebase [OPTIONS] --config-fd <FD> --expected-genesis-file <PATH> --genesis-file <PATH> --output <PATH>`
+
+###### **Options:**
+
+* `--config-fd <FD>` — Inherited owner-controlled regular config descriptor; contents never enter argv/stdout
+* `--expected-genesis-file <PATH>` — Exact current genesis.file value; drift fails before creating output
+* `--genesis-file <PATH>` — Replace genesis.file with this absolute path
+* `--expected-network-id <NETWORK_ID>` — Exact current inline checked genesis identity; paired with --network-id
+* `--network-id <NETWORK_ID>` — Explicit checked identity of the new genesis; paired with --expected-network-id
+* `--operator-public-key <PUBLIC_KEY>` — Enable operator signatures with exactly this dedicated canonical Ed25519 public key
+* `--output <PATH>` — Fresh 0600 config in an existing owner-only directory; never overwritten
+
+
+
+## `iroha taira public-reset torii-rate-config-amend`
+
+Amend validator HTTP request budgets through an inherited descriptor and emit public provenance
+
+**Usage:** `iroha taira public-reset torii-rate-config-amend [OPTIONS] --config-fd <FD> --config-source-path <PATH> --rate-per-second <REQUESTS> --burst <REQUESTS> --output <PATH>`
+
+###### **Options:**
+
+* `--config-fd <FD>` — Inherited read-only owner-private regular configuration descriptor
+* `--config-source-path <PATH>` — Absolute original path; checked against the held descriptor without reopening its body
+* `--rate-per-second <REQUESTS>` — Positive steady request budget; minute budgets are derived with checked arithmetic
+* `--burst <REQUESTS>` — Positive request-token burst capacity
+* `--section <SECTION>` — Repeat to select budgets; omission selects all. Torii includes query/tx/deploy/preauth/proof/Soracloud
+
+  Possible values: `torii`, `mcp`, `push`, `content`, `connect`, `gateway`, `operator-auth`, `privacy-ingest`, `recipient-lookup`
+
+* `--output <PATH>` — Fresh 0600 runtime file beside the source, outside repositories; never overwritten
+
+
+
+## `iroha taira public-reset materialize-validator-config`
+
+Materialize a fresh validator config for its exact public-reset runtime paths
+
+**Usage:** `iroha taira public-reset materialize-validator-config [OPTIONS] --config-fd <FD> --localnet-dir <PATH> --validator <VALIDATOR> --network-id <NETWORK_ID> --genesis-file <PATH> --operator-public-key <PUBLIC_KEY> --torii-bind-address <IP:PORT> --output <PATH>`
+
+###### **Options:**
+
+* `--staging-root <DIR>` — Existing direct owner-only child of the approved Taira runtime root
+* `--staging-api-base-port <PORT>` — Independently approved first generated Torii port; reserves four consecutive ports
+* `--staging-p2p-base-port <PORT>` — Independently approved first generated P2P port; reserves four consecutive ports
+* `--config-fd <FD>` — Inherited owner-private generated validator configuration descriptor
+* `--localnet-dir <PATH>` — Exact native generator output directory containing genesis identity and HTTP signer custody
+* `--validator <VALIDATOR>` — Canonical target role; its ordinal must match the generated peer storage paths
+
+  Possible values: `taira-validator-1`, `taira-validator-2`, `taira-validator-3`, `taira-validator-4`
+
+* `--network-id <NETWORK_ID>` — Independently reviewed canonical checked identity of the generated signed genesis
+* `--genesis-file <PATH>` — Exact installed signed-genesis artifact path for this validator
+* `--operator-public-key <PUBLIC_KEY>` — Dedicated canonical Ed25519 HTTP operator-authentication public key
+* `--torii-bind-address <IP:PORT>` — Final Torii listener as canonical IP:PORT; its port must match the generated config
+* `--trusted-proxy-ip <IP>` — Additional socket-observed proxy hop permitted to forward client addresses. Repeat for each approved host; loopback proxies are included automatically
+* `--output <PATH>` — Fresh owner-private output; an existing file is never replaced
+
+
+
+## `iroha taira public-reset client-config-rebase`
+
+Rebind a retained client config to an explicitly checked new genesis identity
+
+**Usage:** `iroha taira public-reset client-config-rebase [OPTIONS] --config-fd <FD> --expected-network-id <NETWORK_ID> --network-id <NETWORK_ID> --output <PATH>`
+
+###### **Options:**
+
+* `--config-fd <FD>` — Inherited owner-controlled regular config descriptor; contents never enter argv/stdout
+* `--expected-network-id <NETWORK_ID>` — Exact current checked network identity; route projection also admits a held public file
+* `--network-id <NETWORK_ID>` — Explicit checked identity of the new genesis
+* `--expected-torii-url <URL>` — Exact current loopback HTTP or public HTTPS DNS root; paired with --torii-url and original provenance
+* `--torii-url <URL>` — Project only the Torii route while keeping the exact current `NetworkId`
+* `--config-source-path <ABSOLUTE_PATH>` — Absolute original profile path; metadata/provenance only, never reopened for its body
+* `--output <PATH>` — Fresh 0600 config in an existing owner-only directory; never overwritten
+
+
+
+## `iroha taira public-reset operator-keygen`
+
+Generate a dedicated runtime operator credential without exposing private key bytes
+
+**Usage:** `iroha taira public-reset operator-keygen --private-key-file <PATH>`
+
+###### **Options:**
+
+* `--private-key-file <PATH>` — Fresh absolute runtime key file in a direct owner-only directory outside repositories
+
+
+
+## `iroha taira public-reset prepare-public-inputs`
+
+Derive and validate the complete public genesis and canary bundle without private keys
+
+**Usage:** `iroha taira public-reset prepare-public-inputs [OPTIONS] --localnet-dir <DIR> --output-dir <DIR>`
+
+###### **Options:**
+
+* `--localnet-dir <DIR>` — Native localnet output containing signed genesis and its public identity files
+* `--canary-public-key <PATH>` — Canonical public key file for the reset's separately generated canary account
+* `--intent <PATH>` — Explicit topology intent; native account parsing derives its public canary key
+* `--output-dir <DIR>` — Atomic public bundle under an existing owner-only parent directory. Repeating the same request verifies and reuses an identical completed bundle
+
+
+
+## `iroha taira public-reset prepare-runtime-clients`
+
+Prepare exact private client configs and public validator/faucet identities from native inputs
+
+**Usage:** `iroha taira public-reset prepare-runtime-clients [OPTIONS] --localnet-dir <DIR> --public-inputs-dir <DIR> --canary-key-dir <DIR> --output-dir <DIR>`
+
+###### **Options:**
+
+* `--staging-root <DIR>` — Existing direct owner-only child of the approved Taira runtime root
+* `--staging-api-base-port <PORT>` — Independently approved first generated Torii port; reserves four consecutive ports
+* `--staging-p2p-base-port <PORT>` — Independently approved first generated P2P port; reserves four consecutive ports
+* `--localnet-dir <DIR>` — Exact new Kagami localnet directory on the approved guest
+* `--public-inputs-dir <DIR>` — Complete native prepare-public-inputs bundle for that genesis
+* `--canary-key-dir <DIR>` — Independent canary public.key and private.key directory
+* `--output-dir <DIR>` — Fresh bundle directory under an existing owner-only runtime directory
+
+
+
+## `iroha taira public-reset stage-canary`
+
+Run or read-only recover the ordered canary on one independent private candidate
+
+**Usage:** `iroha taira public-reset stage-canary [OPTIONS] --public-inputs-dir <DIR> --client-config <PATH> --faucet-authority <FAUCET_AUTHORITY> --faucet-asset-id <FAUCET_ASSET_ID> --faucet-amount <FAUCET_AMOUNT> --stage-fee-payer <STAGE_FEE_PAYER> --stage-nonce <STAGE_NONCE> --execution-not-before-unix-ms <EXECUTION_NOT_BEFORE_UNIX_MS> --execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS>`
+
+###### **Options:**
+
+* `--staging-root <DIR>` — Existing direct owner-only child of the approved Taira runtime root
+* `--staging-api-base-port <PORT>` — Independently approved first generated Torii port; reserves four consecutive ports
+* `--staging-p2p-base-port <PORT>` — Independently approved first generated P2P port; reserves four consecutive ports
+* `--public-inputs-dir <DIR>` — Exact native public-input bundle for this freshly generated candidate
+* `--client-config <PATH>` — Native generated private canary client, beneath the selected candidate root
+* `--onboarding-token-file <PATH>` — Runtime-only token; read-only recovery neither requires nor opens it
+* `--faucet-authority <FAUCET_AUTHORITY>` — Independently selected canonical faucet authority
+* `--faucet-asset-id <FAUCET_ASSET_ID>` — Independently selected canonical fee asset definition
+* `--faucet-amount <FAUCET_AMOUNT>` — Independently selected exact positive faucet amount
+* `--stage-fee-payer <STAGE_FEE_PAYER>` — Explicit private-stage fee payer selection
+
+  Possible values:
+  - `authority`:
+    Charge the transaction authority directly
+  - `sponsor`:
+    Charge one exact immutable sponsor-program revision
+
+* `--stage-fee-program <STAGE_FEE_PROGRAM>` — Exact immutable sponsor program when the stage fee payer is sponsor
+* `--stage-fee-program-revision <STAGE_FEE_PROGRAM_REVISION>` — Exact nonzero sponsor revision when the stage fee payer is sponsor
+* `--stage-nonce <STAGE_NONCE>` — Immutable 32-character operator nonce; all retries use the same value
+* `--execution-not-before-unix-ms <EXECUTION_NOT_BEFORE_UNIX_MS>` — Immutable earliest transaction creation instant for this stage identity
+* `--execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS>` — Immutable execution expiry; expired envelopes remain available for read-only recovery
+* `--recover` — Observe retained envelopes only; never prepare or dispatch another transaction
+* `--timeout-secs <TIMEOUT_SECS>` — Per-operation observation budget; no fault or regression prerequisite
+
+  Default value: `120`
+* `--json` — Emit one explicit private-stage result
+
+
+
+## `iroha taira public-reset prepare-beacon-inputs`
+
+Derive the signed-network-bound beacon request and exact renderer seat paths
+
+**Usage:** `iroha taira public-reset prepare-beacon-inputs --intent <PATH> --public-inputs <DIR> --output <PATH>`
+
+###### **Options:**
+
+* `--intent <PATH>`
+* `--public-inputs <DIR>`
+* `--output <PATH>` — New owner-private public result; never replaced
+
+
+
+## `iroha taira public-reset prepare-validator-units`
+
+Render four public validator units from the embedded signed custody renderer
+
+**Usage:** `iroha taira public-reset prepare-validator-units [OPTIONS] --import-root <DIR> --source-manifest <PATH> --network-dir <DIR> --output-dir <DIR>`
+
+###### **Options:**
+
+* `--import-root <DIR>` — Same-release imported artifact directory, named by commit and result digest
+* `--source-manifest <PATH>` — Owner-private native source manifest from this run
+* `--network-dir <DIR>` — Owner-private fresh Kagami network directory for this run
+* `--beacon-inputs <PATH>` — Owner-private native beacon seat map; omit for initial config.toml units
+* `--output-dir <DIR>` — Fresh owner-private directory for four public mode-0644 unit files
+
+
+
+## `iroha taira public-reset export-deployment-profile`
+
+Export a public deployment target profile from assembled inventory and native inputs
+
+**Usage:** `iroha taira public-reset export-deployment-profile --inventory <FILE> --public-inputs <DIR> --output <FILE>`
+
+###### **Options:**
+
+* `--inventory <FILE>` — Exact native assembled inventory for the selected candidate
+* `--public-inputs <DIR>` — Complete native prepare-public-inputs bundle
+* `--output <FILE>` — New public profile file under an existing owner-private directory
+
+
+
+## `iroha taira public-reset assemble`
+
+Assemble exact release inputs locally from an explicit inventory draft
+
+**Usage:** `iroha taira public-reset assemble [OPTIONS] --intent <PATH> --public-inputs <DIR> --runtime-client-config <PATH> --onboarding-token <PATH> --validator-operator-key <PATH> --beacon-inputs <PATH> --native-edge-capability <PATH> --known-hosts <PATH> --output <PATH>`
+
+###### **Options:**
+
+* `--intent <PATH>` — Closed topology and authority intent; native-derived pins and generated plans are forbidden
+* `--public-inputs <DIR>` — Complete native bundle produced by prepare-public-inputs; no handwritten identity fields
+* `--runtime-client-config <PATH>`
+* `--validator-client-config <PATH>`
+* `--onboarding-token <PATH>`
+* `--validator-operator-key <PATH>` — Dedicated runtime key whose public identity every validator explicitly allows
+* `--inrou-stage-dir <DIR>`
+* `--validator-unit <PATH>` — Four exact local systemd units in validator order
+* `--beacon-inputs <PATH>` — Native public request and seat map produced by prepare-beacon-inputs
+* `--beacon-validator-unit <PATH>` — Four pre-rendered FD200 units using --config-file beacon.toml, in validator order
+* `--native-edge-capability <PATH>` — Independently native-captured capability for the Mac edge owner
+* `--known-hosts <PATH>` — Independently approved known-hosts; draft host pins must already match
+* `--output <PATH>` — Fresh file in an existing owner-only directory; never overwritten
+
+
+
+## `iroha taira public-reset authorize`
+
+Sign retained release inputs using an independently trusted owner key
+
+**Usage:** `iroha taira public-reset authorize [OPTIONS] --inventory <PATH> --public-inputs <DIR> --runtime-client-config <PATH> --onboarding-token <PATH> --validator-operator-key <PATH> --beacon-inputs <PATH> --native-edge-capability <PATH> --known-hosts <PATH> --trusted-public-key <PATH> --signing-key-fd <FD> --output <PATH>`
+
+###### **Options:**
+
+* `--inventory <PATH>` — Exact retained assembler output; these file bytes are signed without reformatting
+* `--public-inputs <DIR>` — Complete native bundle produced by prepare-public-inputs; no handwritten identity fields
+* `--runtime-client-config <PATH>`
+* `--validator-client-config <PATH>`
+* `--onboarding-token <PATH>`
+* `--validator-operator-key <PATH>` — Dedicated runtime key whose public identity every validator explicitly allows
+* `--inrou-stage-dir <DIR>`
+* `--validator-unit <PATH>` — Four exact local systemd units in validator order
+* `--beacon-inputs <PATH>` — Native public request and seat map produced by prepare-beacon-inputs
+* `--beacon-validator-unit <PATH>` — Four pre-rendered FD200 units using --config-file beacon.toml, in validator order
+* `--native-edge-capability <PATH>` — Independently native-captured capability for the Mac edge owner
+* `--known-hosts <PATH>` — Independently approved known-hosts; draft host pins must already match
+* `--trusted-public-key <PATH>` — Separately trusted owner Ed25519 public-key file in existing `TrustedKeyV1` format
+* `--signing-key-fd <FD>` — Inherited descriptor of a single owner-private regular file containing the key string. Key material is never accepted as an argument or printed
+* `--output <PATH>` — Fresh owner-private authorization file; never overwritten
 
 
 
 ## `iroha taira public-reset preflight`
 
-Verify the signed reset inventory and pinned local inputs without contacting any host
+Verify signed inputs and read-only readiness of all four validators and the edge host
 
 **Usage:** `iroha taira public-reset preflight --inventory <PATH> --authorization <PATH> --trusted-public-key <PATH> --ssh-identity <PATH> --known-hosts <PATH>`
 
@@ -11286,10 +12123,57 @@ Execute the admitted reset with pinned SSH and runtime signing inputs
 * `--trusted-public-key <PATH>` — Separately trusted exact V1 authorization public-key file
 * `--ssh-identity <PATH>` — Runtime-only owner-private OpenSSH identity
 * `--known-hosts <PATH>` — Runtime-only owner-private pinned OpenSSH known-hosts file
+* `--validator-operator-key <PATH>` — Dedicated owner-private operator key for convergence and restart verification
 * `--runtime-client-config <PATH>` — Owner-private signing config for forward work or read-only mutation recovery
-* `--validator-client-config <PATH>` — Four ordered validator read configs for forward work or RestartProof recovery
+* `--validator-client-config <PATH>` — Four ordered validator read configs for forward work, Canary recovery; other recovery steps ignore these paths
 * `--onboarding-token <PATH>` — Owner-private account-onboarding token required only for forward work
 * `--inrou-stage-dir <DIR>` — Exact deploy-mode Inrou stage directory required only for forward work
+
+
+
+## `iroha taira public-reset abandon`
+
+Abandon an unresolved pre-edge testnet canary, preserve its evidence, and roll back
+
+**Usage:** `iroha taira public-reset abandon --inventory <PATH> --authorization <PATH> --trusted-public-key <PATH> --ssh-identity <PATH> --known-hosts <PATH> --expected-journal-sha256 <SHA256> --abandon-pending-mutations`
+
+###### **Options:**
+
+* `--inventory <PATH>` — Exact V1 executor inventory
+* `--authorization <PATH>` — Exact V1 authorization envelope
+* `--trusted-public-key <PATH>` — Separately trusted exact V1 authorization public-key file
+* `--ssh-identity <PATH>` — Runtime-only owner-private OpenSSH identity
+* `--known-hosts <PATH>` — Runtime-only owner-private pinned OpenSSH known-hosts file
+* `--expected-journal-sha256 <SHA256>` — Exact SHA-256 of the original recovery-pending journal, including its newline
+* `--abandon-pending-mutations` — Explicitly discard the unproven testnet without asserting a transaction outcome
+
+
+
+## `iroha taira stopped-owner-maintenance`
+
+Reconcile empty stopped Inrou owners under the active routine updater lock
+
+**Usage:** `iroha taira stopped-owner-maintenance --request-fd <REQUEST_FD>`
+
+###### **Options:**
+
+* `--request-fd <REQUEST_FD>` — Read the bounded root-owned public request from this inherited read-only descriptor
+
+
+
+## `iroha taira retire-validator-config`
+
+Remove only retired validator configuration under the routine updater owner
+
+**Usage:** `iroha taira retire-validator-config --action <ACTION> --request-fd <REQUEST_FD>`
+
+###### **Options:**
+
+* `--action <ACTION>` — Prepare private siblings, install while stopped, or restore before any startup intent
+
+  Possible values: `prepare`, `install`, `restore`
+
+* `--request-fd <REQUEST_FD>` — Inherited bounded root-private request descriptor owned by the live updater
 
 
 
@@ -11307,7 +12191,11 @@ Prepare, submit, or recover exactly one authorized public-reset child
 * `--faucet-authority <FAUCET_AUTHORITY>` — Independently trusted faucet authority; required for the faucet child
 * `--faucet-asset-id <FAUCET_ASSET_ID>` — Independently trusted exact faucet asset definition; required for the faucet child
 * `--faucet-amount <FAUCET_AMOUNT>` — Independently trusted exact faucet transfer amount; required for the faucet child
+* `--predecessor-faucet-authority <PREDECESSOR_FAUCET_AUTHORITY>` — Independently trusted faucet authority for the final canary's predecessor proof
+* `--predecessor-faucet-asset-id <PREDECESSOR_FAUCET_ASSET_ID>` — Exact faucet asset definition for the final canary's predecessor proof
+* `--predecessor-faucet-amount <PREDECESSOR_FAUCET_AMOUNT>` — Exact faucet transfer amount for the final canary's predecessor proof
 * `--onboarding-token-file <PATH>` — Owner-only onboarding token; required only while preparing or submitting the envelope
+* `--onboarding-token-fd <FD>` — Inherited read-only owner-private token descriptor for onboarding prepare or submit
 * `--operation <OPERATION>` — Exact ordered child operation; each invocation handles one transaction only
 
   Possible values:
@@ -11328,21 +12216,24 @@ Prepare, submit, or recover exactly one authorized public-reset child
 * `--submit-prepared-envelope-fd <FD>` — Submit only exact bytes read from this inherited numeric envelope descriptor
 * `--recover-prepared-envelope-fd <FD>` — Read-only classify exact bytes read from this inherited numeric envelope descriptor
 * `--prerequisite-envelope-fd <FD>` — Inherited descriptor for the exact Applied predecessor envelope during preparation
+* `--timeout-secs <TIMEOUT_SECS>` — Read-only confirmation budget in seconds; the caller owns the outer child deadline
+
+  Default value: `120`
 * `--json` — Emit a stable JSON receipt
 
 
 
 ## `iroha taira inrou-workspace`
 
-Generate the canonical deploy-mode Inrou canary workspace from AArch64 guest assets
+Generate the canonical deploy-mode Inrou canary workspace from `AArch64` guest assets
 
 **Usage:** `iroha taira inrou-workspace [OPTIONS] --kernel <PATH> --rootfs <PATH> --initrd <PATH> --output-dir <PATH>`
 
 ###### **Options:**
 
-* `--kernel <PATH>` — Direct regular AArch64 kernel image prepared for PortableVM
-* `--rootfs <PATH>` — Direct regular AArch64 ext4 root filesystem image prepared for PortableVM
-* `--initrd <PATH>` — Direct regular AArch64 initrd image prepared for PortableVM
+* `--kernel <PATH>` — Direct regular `AArch64` kernel image prepared for `PortableVM`
+* `--rootfs <PATH>` — Direct regular `AArch64` ext4 root filesystem image prepared for `PortableVM`
+* `--initrd <PATH>` — Direct regular `AArch64` initrd image prepared for `PortableVM`
 * `--output-dir <PATH>` — Fresh owner-only directory to create with the exact canonical workspace layout
 * `--json` — Emit a stable JSON report
 
@@ -11350,7 +12241,7 @@ Generate the canonical deploy-mode Inrou canary workspace from AArch64 guest ass
 
 ## `iroha taira inrou-stage`
 
-Build the canonical offline artifact stage that operators preseed into all validators
+Build and bind the canonical offline artifact stage through the Unix host coordinator
 
 **Usage:** `iroha taira inrou-stage [OPTIONS] --mode <MODE> --container <PATH> --service <PATH> --bundle-file <PATH> --sorafs-retention-epoch <UNIX_SECONDS> --stage-dir <PATH> --bind-validator-config-dir <PATH>`
 
@@ -11365,9 +12256,9 @@ Build the canonical offline artifact stage that operators preseed into all valid
     Replace an already-deployed canary revision
 
 * `--container <PATH>` — Path to the canonical strict-null, unpublished four-replica Inrou source manifest
-* `--service <PATH>` — Path to the matching public HttpService manifest
+* `--service <PATH>` — Path to the matching public `HttpService` manifest
 * `--bundle-file <PATH>` — Canonical service bundle bytes to preseed
-* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second SoraFS retention boundary embedded in both staged manifests. Retain and reuse this value when reproducing the same release stage
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second `SoraFS` retention boundary embedded in both staged manifests. Retain and reuse this value when reproducing the same release stage
 * `--placement-target <VALIDATOR,PEER>` — Exact validator account and peer identity eligible for one staged replica. Supply exactly four `VALIDATOR,PEER` values matching the public-reset inventory
 * `--stage-dir <PATH>` — Fresh owner-only directory that will contain exact manifests and payloads
 * `--bind-validator-config-dir <PATH>` — Owner-private directory containing exactly peer0.toml through peer3.toml to bind
@@ -11377,13 +12268,23 @@ Build the canonical offline artifact stage that operators preseed into all valid
 
 ## `iroha taira inrou-canary`
 
-Register an exact preseeded stage, mutate explicitly, and verify the four-replica Inrou canary
+Prepare, submit, or recover one Inrou canary operation through the Unix host coordinator
 
 **Usage:** `iroha taira inrou-canary [OPTIONS] --stage-dir <PATH> --mode <MODE> --operation <OPERATION> --authorization-sha256 <AUTHORIZATION_SHA256> --authorization-nonce <AUTHORIZATION_NONCE> --mutation-phase <MUTATION_PHASE> --idempotency-key <IDEMPOTENCY_KEY> --execution-expires-at-unix-ms <EXECUTION_EXPIRES_AT_UNIX_MS> <--prepare-envelope|--submit-prepared-envelope-fd <FD>|--recover-prepared-envelope-fd <FD>>`
 
 ###### **Options:**
 
-* `--public-root <PUBLIC_ROOT>` — Public Torii root URL used for mutation, status, and route probes
+* `--probe-scope <PROBE_SCOPE>` — Candidate runtime qualification or complete public qualification
+
+  Default value: `public`
+
+  Possible values:
+  - `candidate`:
+    Probe the admitted local candidate without public discovery
+  - `public`:
+    Require runtime, routed service, and public discovery evidence
+
+* `--public-root <PUBLIC_ROOT>` — Public or admitted loopback Torii root used for mutation, status, and route probes
 
   Default value: `https://taira.sora.org`
 * `--stage-dir <PATH>` — Owner-only stage created by `iroha taira inrou-stage` and preseeded into all validators
@@ -11401,7 +12302,7 @@ Register an exact preseeded stage, mutate explicitly, and verify the four-replic
   - `bundle-pin`:
     Register the canonical service-bundle manifest
   - `guest-pin`:
-    Register the canonical AArch64 guest-image manifest
+    Register the canonical `AArch64` guest-image manifest
   - `discovery-pin`:
     Register the canonical public-discovery manifest
   - `service-mutation`:
@@ -11432,7 +12333,17 @@ Revalidate an exact retained stage and verify its live four-replica service with
 
 ###### **Options:**
 
-* `--public-root <PUBLIC_ROOT>` — Public Torii root URL used for network preflight and public route reads.
+* `--probe-scope <PROBE_SCOPE>` — Candidate runtime qualification or complete public qualification
+
+  Default value: `public`
+
+  Possible values:
+  - `candidate`:
+    Probe the admitted local candidate without public discovery
+  - `public`:
+    Require runtime, routed service, and public discovery evidence
+
+* `--public-root <PUBLIC_ROOT>` — Public or admitted loopback Torii root used for network preflight and route reads.
 
    Signed Soracloud status reads continue to use the Torii URL from the selected client configuration so validator-specific restart checks cannot collapse onto the public edge.
 
@@ -11461,366 +12372,28 @@ Offline encoders, reports, and diagnostics
 
 ###### **Subcommands:**
 
-* `kagemusha` — Governed Kagemusha recursive-release operations
+* `registration-package` — Verify and package finalized universal-token registration originals for wallet import
 * `petal` — Petal Stream optical handoff tooling
 
 
 
-## `iroha offline kagemusha`
+## `iroha offline registration-package`
 
-Governed Kagemusha recursive-release operations
+Verify and package finalized universal-token registration originals for wallet import
 
-**Usage:** `iroha offline kagemusha <COMMAND>`
-
-###### **Subcommands:**
-
-* `lifecycle-v4` — Prepare, independently sign, assemble, and submit one exact lifecycle transaction
-* `rollout-v4` — Execute the phase-separated, exact-byte Kagemusha V4 rollout corridor
-
-
-
-## `iroha offline kagemusha lifecycle-v4`
-
-Prepare, independently sign, assemble, and submit one exact lifecycle transaction
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 <COMMAND>`
-
-###### **Subcommands:**
-
-* `prepare` — Prepare the exact ordinary transaction and a 60-second authenticated fee-quote draft
-* `sign-fee-quote` — Produce one detached member signature for the exact fee-quote request
-* `finalize-fee-quote` — Verify the fee-quote quorum, obtain the quote, and freeze the exact payload
-* `sign-transaction` — Produce one detached member signature for the exact frozen payload
-* `assemble-transaction` — Verify and assemble at least two detached signatures into exact transaction wire
-* `submit-transaction` — Submit the exact assembled wire without rebuilding or re-signing it
-
-
-
-## `iroha offline kagemusha lifecycle-v4 prepare`
-
-Prepare the exact ordinary transaction and a 60-second authenticated fee-quote draft
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 prepare [OPTIONS] --kind <KIND> --governance-authority <I105_ACCOUNT> --instruction-json <PATH> --output <PATH>`
+**Usage:** `iroha offline registration-package --input-dir <DIR> --genesis-sha256 <HEX> --scheme-sha256 <HEX> --chain-id <ID> --asset-digest <HEX> --instruction-index <INSTRUCTION_INDEX> --proof-count <PROOF_COUNT> --output-parent <DIR> --output-name <NAME>`
 
 ###### **Options:**
 
-* `--kind <KIND>` — Required lifecycle kind; Stage maps to the native Activate instruction
-
-  Possible values:
-  - `stage`:
-    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
-  - `enable`:
-    Enable issuance after the staged release closes its canary gates
-  - `cancel`:
-    Cancel a staged release
-  - `deactivate`:
-    Deactivate issuance for an enabled release
-
-* `--governance-authority <I105_ACCOUNT>` — Canonical I105 multisig account that authorizes the transition
-* `--trusted-anchor-height <HEIGHT>` — Already-finalized anchor height; required only for Stage to bind its receipt horizon
-* `--instruction-json <PATH>` — Kagami's exact JSON array containing one native lifecycle instruction
-* `--output <PATH>` — Absent destination for the canonical fee-quote draft; never replaced
-
-
-
-## `iroha offline kagemusha lifecycle-v4 sign-fee-quote`
-
-Produce one detached member signature for the exact fee-quote request
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 sign-fee-quote --kind <KIND> --governance-authority <I105_ACCOUNT> --expected-network-id <NETWORK_ID> --expected-draft-sha256 <64_HEX> --draft <PATH> --output <PATH>`
-
-###### **Options:**
-
-* `--kind <KIND>` — Lifecycle kind expected in the draft
-
-  Possible values:
-  - `stage`:
-    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
-  - `enable`:
-    Enable issuance after the staged release closes its canary gates
-  - `cancel`:
-    Cancel a staged release
-  - `deactivate`:
-    Deactivate issuance for an enabled release
-
-* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
-* `--expected-network-id <NETWORK_ID>` — Independently expected NetworkId embedded in the draft; does not consult client config
-* `--expected-draft-sha256 <64_HEX>` — Independently expected lowercase or uppercase 64-hex SHA-256 of the exact draft file
-* `--draft <PATH>` — Exact canonical fee-quote draft; stale or excessively future-dated drafts are rejected
-* `--output <PATH>` — Absent destination for this signer's canonical detached signature
-
-
-
-## `iroha offline kagemusha lifecycle-v4 finalize-fee-quote`
-
-Verify the fee-quote quorum, obtain the quote, and freeze the exact payload
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 finalize-fee-quote [OPTIONS] --kind <KIND> --governance-authority <I105_ACCOUNT> --draft <PATH> --output <PATH>`
-
-###### **Options:**
-
-* `--kind <KIND>` — Lifecycle kind expected in the draft
-
-  Possible values:
-  - `stage`:
-    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
-  - `enable`:
-    Enable issuance after the staged release closes its canary gates
-  - `cancel`:
-    Cancel a staged release
-  - `deactivate`:
-    Deactivate issuance for an enabled release
-
-* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
-* `--draft <PATH>` — Exact canonical fee-quote draft; all signatures and finalization must fit its 60-second window
-* `--signature <PATH>` — At least two independently produced fee-quote signatures
-* `--output <PATH>` — Absent destination for the exact quoted transaction payload
-
-
-
-## `iroha offline kagemusha lifecycle-v4 sign-transaction`
-
-Produce one detached member signature for the exact frozen payload
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 sign-transaction --kind <KIND> --governance-authority <I105_ACCOUNT> --expected-network-id <NETWORK_ID> --expected-payload-sha256 <64_HEX> --payload <PATH> --output <PATH>`
-
-###### **Options:**
-
-* `--kind <KIND>` — Lifecycle kind expected in the payload
-
-  Possible values:
-  - `stage`:
-    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
-  - `enable`:
-    Enable issuance after the staged release closes its canary gates
-  - `cancel`:
-    Cancel a staged release
-  - `deactivate`:
-    Deactivate issuance for an enabled release
-
-* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
-* `--expected-network-id <NETWORK_ID>` — Independently expected NetworkId embedded in the payload; does not consult client config
-* `--expected-payload-sha256 <64_HEX>` — Independently expected lowercase or uppercase 64-hex SHA-256 of the exact payload file
-* `--payload <PATH>` — Exact frozen TransactionPayload archive
-* `--output <PATH>` — Absent destination for this signer's canonical detached signature
-
-
-
-## `iroha offline kagemusha lifecycle-v4 assemble-transaction`
-
-Verify and assemble at least two detached signatures into exact transaction wire
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 assemble-transaction [OPTIONS] --kind <KIND> --governance-authority <I105_ACCOUNT> --payload <PATH> --output <PATH>`
-
-###### **Options:**
-
-* `--kind <KIND>` — Lifecycle kind expected in the payload
-
-  Possible values:
-  - `stage`:
-    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
-  - `enable`:
-    Enable issuance after the staged release closes its canary gates
-  - `cancel`:
-    Cancel a staged release
-  - `deactivate`:
-    Deactivate issuance for an enabled release
-
-* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
-* `--payload <PATH>` — Exact frozen TransactionPayload archive
-* `--signature <PATH>` — At least two independently produced transaction signatures
-* `--output <PATH>` — Absent destination for canonical versioned SignedTransaction wire
-
-
-
-## `iroha offline kagemusha lifecycle-v4 submit-transaction`
-
-Submit the exact assembled wire without rebuilding or re-signing it
-
-**Usage:** `iroha offline kagemusha lifecycle-v4 submit-transaction --kind <KIND> --governance-authority <I105_ACCOUNT> --transaction <PATH> --expected-receipt-signer <PUBLIC_KEY> --receipt-output <PATH> --write-authorized`
-
-###### **Options:**
-
-* `--kind <KIND>` — Lifecycle kind expected in the signed wire
-
-  Possible values:
-  - `stage`:
-    Stage the governed release (`ActivateKagemushaRecursiveReleaseV4` on wire)
-  - `enable`:
-    Enable issuance after the staged release closes its canary gates
-  - `cancel`:
-    Cancel a staged release
-  - `deactivate`:
-    Deactivate issuance for an enabled release
-
-* `--governance-authority <I105_ACCOUNT>` — Independently expected canonical I105 multisig authority
-* `--transaction <PATH>` — Exact canonical versioned SignedTransaction wire
-* `--expected-receipt-signer <PUBLIC_KEY>` — Independently pinned Torii receipt signer public key
-* `--receipt-output <PATH>` — Absent destination for the verified canonical submission receipt
-* `--write-authorized` — Explicit authorization for this production lifecycle write
-
-
-
-## `iroha offline kagemusha rollout-v4`
-
-Execute the phase-separated, exact-byte Kagemusha V4 rollout corridor
-
-**Usage:** `iroha offline kagemusha rollout-v4 <COMMAND>`
-
-###### **Subcommands:**
-
-* `create-expectations` — Root-sign and immutably publish pre-submission expectations
-* `submit` — Submit the exact transaction embedded in authenticated expectations
-* `finalize-receipt` — Collect finalized evidence and immutably publish the issuer-signed receipt
-* `create-canary-authorization` — Construct and controller-authorize one promotion-bound canary transaction
-* `submit-canary-authorization` — Finalize the on-chain reservation for the exact authorized canary transaction
-* `submit-canary` — Journal and submit the exact controller-authorized canary transaction
-* `finalize-canary-evidence` — Collect the canary's post-activation finality extension and publish full evidence
-* `finalize-validator-liveness` — Challenge all four qualified validators and publish issuer-signed liveness evidence
-
-
-
-## `iroha offline kagemusha rollout-v4 create-expectations`
-
-Root-sign and immutably publish pre-submission expectations
-
-**Usage:** `iroha offline kagemusha rollout-v4 create-expectations [OPTIONS] --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --activation-transaction <ABSOLUTE_PATH> --trusted-finality-anchor <ABSOLUTE_PATH> --receipt-issuer <PUBLIC_KEY> --controller-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--validator-seal <ABSOLUTE_PATH>` — Exactly four root-owned validator qualification seals
-* `--activation-transaction <ABSOLUTE_PATH>` — Complete, already-authorized versioned SignedTransaction wire
-* `--trusted-finality-anchor <ABSOLUTE_PATH>` — Independently governed, already-finalized anchor proof
-* `--receipt-issuer <PUBLIC_KEY>` — Independent durable-receipt issuer public key
-* `--controller-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private promotion-controller key file
-* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed expectations destination; it is never replaced
-
-
-
-## `iroha offline kagemusha rollout-v4 submit`
-
-Submit the exact transaction embedded in authenticated expectations
-
-**Usage:** `iroha offline kagemusha rollout-v4 submit --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --write-authorized`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--write-authorized` — Explicit authorization for this network write
-
-
-
-## `iroha offline kagemusha rollout-v4 finalize-receipt`
-
-Collect finalized evidence and immutably publish the issuer-signed receipt
-
-**Usage:** `iroha offline kagemusha rollout-v4 finalize-receipt --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --issuer-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--issuer-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private receipt-issuer key file
-* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed receipt destination; it is never replaced
-
-
-
-## `iroha offline kagemusha rollout-v4 create-canary-authorization`
-
-Construct and controller-authorize one promotion-bound canary transaction
-
-**Usage:** `iroha offline kagemusha rollout-v4 create-canary-authorization --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-ttl-ms <MILLISECONDS> --canary-expires-at-height <HEIGHT> --controller-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
-* `--canary-ttl-ms <MILLISECONDS>` — Short authorization lifetime; the transaction TTL reserves 30 seconds for construction
-* `--canary-expires-at-height <HEIGHT>` — Exact exclusive consensus-height expiry embedded in the canary transaction
-* `--controller-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private promotion-controller key file
-* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed authorization destination; it is never replaced
-
-
-
-## `iroha offline kagemusha rollout-v4 submit-canary-authorization`
-
-Finalize the on-chain reservation for the exact authorized canary transaction
-
-**Usage:** `iroha offline kagemusha rollout-v4 submit-canary-authorization --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --write-authorized`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
-* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization to reserve on-chain
-* `--write-authorized` — Explicit authorization for this production reservation write
-
-
-
-## `iroha offline kagemusha rollout-v4 submit-canary`
-
-Journal and submit the exact controller-authorized canary transaction
-
-**Usage:** `iroha offline kagemusha rollout-v4 submit-canary --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --write-authorized`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
-* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization
-* `--write-authorized` — Explicit authorization for this production canary network write
-
-
-
-## `iroha offline kagemusha rollout-v4 finalize-canary-evidence`
-
-Collect the canary's post-activation finality extension and publish full evidence
-
-**Usage:** `iroha offline kagemusha rollout-v4 finalize-canary-evidence --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --issuer-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
-* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization
-* `--issuer-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private receipt-issuer key file
-* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed canary-evidence destination; it is never replaced
-
-
-
-## `iroha offline kagemusha rollout-v4 finalize-validator-liveness`
-
-Challenge all four qualified validators and publish issuer-signed liveness evidence
-
-**Usage:** `iroha offline kagemusha rollout-v4 finalize-validator-liveness [OPTIONS] --promotion-controller <PUBLIC_KEY> --promotion-reservation <ABSOLUTE_PATH> --expectations <ABSOLUTE_PATH> --activation-receipt <ABSOLUTE_PATH> --canary-authorization <ABSOLUTE_PATH> --canary-evidence <ABSOLUTE_PATH> --issuer-private-key-file <ABSOLUTE_PATH> --output <ABSOLUTE_PATH>`
-
-###### **Options:**
-
-* `--promotion-controller <PUBLIC_KEY>` — Independently pinned promotion-controller public key
-* `--promotion-reservation <ABSOLUTE_PATH>` — Root-owned canonical promotion reservation
-* `--expectations <ABSOLUTE_PATH>` — Root-owned canonical activation expectations
-* `--activation-receipt <ABSOLUTE_PATH>` — Exact immutable issuer-signed activation-finality receipt
-* `--canary-authorization <ABSOLUTE_PATH>` — Exact controller-signed canary authorization
-* `--canary-evidence <ABSOLUTE_PATH>` — Exact immutable issuer-signed canary evidence
-* `--validator <PEER_ID=HTTPS_ORIGIN>` — Four exact `PEER_ID=https://dns-origin[:port]` mappings
-* `--collection-ttl-ms <MILLISECONDS>` — Lifetime of the precommitted collection challenge, at most five minutes
-
-  Default value: `300000`
-* `--issuer-private-key-file <ABSOLUTE_PATH>` — Runtime-only owner-private receipt-issuer key file
-* `--output <ABSOLUTE_PATH>` — Exact absent promotion-keyed liveness-evidence destination
+* `--input-dir <DIR>` — Canonical owner-private directory containing sealed scheme.norito, committed.norito and proof-00000000000000000001.norito through the selected registration height
+* `--genesis-sha256 <HEX>` — Independently authenticated SHA-256 of the entire first canonical finality proof. Obtain it from the deployment owner, never from an untrusted package
+* `--scheme-sha256 <HEX>` — Independently authenticated SHA-256 of the canonical application scheme original
+* `--chain-id <ID>` — Chain label selected with the independently authenticated genesis
+* `--asset-digest <HEX>` — Requested asset/incarnation/scale digest; this selects data, not authority
+* `--instruction-index <INSTRUCTION_INDEX>` — Direct Register instruction position in committed.norito (zero based)
+* `--proof-count <PROOF_COUNT>` — Exact consecutive proof count, including genesis and the registration block
+* `--output-parent <DIR>` — Existing canonical owner-private parent for the new package directory
+* `--output-name <NAME>` — Fresh direct child name; existing or partial packages are never overwritten
 
 
 
@@ -11832,292 +12405,112 @@ Petal Stream optical handoff tooling
 
 ###### **Subcommands:**
 
-* `encode` — Encode one payload into a deterministic Petal PNG and manifest
-* `eval-capture` — Evaluate rendered Petal PNG frames through the deterministic decoder
-* `simulate-realtime` — Replay rendered Petal PNG frames in deterministic realtime loop order
-* `score-styles` — Score the published Petal style set against deterministic capture gates
+* `encode` — Encode a payload into a stream of Petal frames (PNG sequence or animated GIF)
+* `decode` — Reassemble a payload from a directory of rendered or captured PNG frames
+* `inspect` — Report which lanes of one PNG frame decode
+* `simulate` — Play a stream on a simulated screen and camera and report completion times
 
 
 
 ## `iroha offline petal encode`
 
-Encode one payload into a deterministic Petal PNG and manifest
+Encode a payload into a stream of Petal frames (PNG sequence or animated GIF)
 
 **Usage:** `iroha offline petal encode [OPTIONS] --input <PATH> --output <DIR>`
 
 ###### **Options:**
 
-* `--input <PATH>` — Payload bytes to encode into the Petal Stream grid
-* `--output <DIR>` — Output directory for rendered frames and manifest
-* `--format <FORMAT>` — Output format. PNG is implemented for all deterministic Petal channels
+* `--input <PATH>` — Payload file to stream
+* `--output <DIR>` — Output directory for the frames and `manifest.json`
+* `--kind <KIND>` — Payload kind byte carried in the beacon (KAGEMUSHA wallet V1 envelope tags: 1 Offer, 2 Request, 3 Payment, 4 Credited, 5 `SessionControl`, 6 `PolicyData`, 7 Lineage)
+
+  Default value: `0`
+* `--frames <FRAMES>` — Frames to render. Zero renders one systematic pass plus 25 % repair (at least four extra frames)
+
+  Default value: `0`
+* `--first-frame <FIRST_FRAME>` — Frame counter of the first rendered frame; later frames use consecutive counters
+
+  Default value: `0`
+* `--size <SIZE>` — Card width in pixels; the card (the square code with a band of katakana tiles above and below it) is 1668/1024 times as tall
+
+  Default value: `1024`
+* `--fps <FPS>` — Playback rate in frames per second (recommended 8–15; used for the GIF delay and the manifest)
+
+  Default value: `12`
+* `--format <FORMAT>` — Output format
 
   Default value: `png`
 
   Possible values:
   - `png`:
-    Single-frame PNG output
+    One PNG per frame (`frame_0000.png`, …)
   - `gif`:
-    Animated GIF output is implemented for the binary grid channel
-
-* `--style <STYLE>` — Renderer style. Binary grid uses `sora-temple`; Katakana uses `sora-temple-command`
-
-  Default value: `sora-temple`
-
-  Possible values:
-  - `sora-temple`:
-    Decode-critical SORA temple grid layer
-  - `sora-temple-command`:
-    Katakana command styling for the deterministic Katakana-base94 channel
-
-* `--channel <CHANNEL>` — Visual channel
-
-  Default value: `binary-grid`
-
-  Possible values:
-  - `binary-grid`:
-    Binary luminance grid suitable for scanner bring-up
-  - `katakana-base94`:
-    Deterministic Katakana command-tile rendering with Petal luminance anchors
-
-* `--katakana-preset <KATAKANA_PRESET>` — Katakana layout preset. Defaults to balanced for katakana-base94
-
-  Possible values:
-  - `balanced`:
-    Balanced command-tile density for ordinary camera distances
-  - `distance-safe`:
-    Larger cells for longer-distance camera capture
-
-* `--dimension <DIMENSION>` — Square output dimension in pixels
-
-  Default value: `1024`
-* `--fps <FPS>` — Frames per second metadata for downstream animation tooling
-
-  Default value: `24`
-* `--animation-frames <ANIMATION_FRAMES>` — Number of deterministic animation frames to render
-
-  Default value: `1`
-* `--grid-size <GRID_SIZE>` — Override the Petal grid size. Zero keeps automatic sizing
-
-  Default value: `0`
-* `--border <BORDER>` — Override the Petal grid border thickness
-
-  Default value: `1`
-* `--anchor-size <ANCHOR_SIZE>` — Override the Petal grid anchor size
-
-  Default value: `3`
+    One looping animated GIF (`stream.gif`); requires the `offline-visual-codecs` feature
 
 
 
-## `iroha offline petal eval-capture`
 
-Evaluate rendered Petal PNG frames through the deterministic decoder
+## `iroha offline petal decode`
 
-**Usage:** `iroha offline petal eval-capture [OPTIONS] --input-dir <DIR>`
+Reassemble a payload from a directory of rendered or captured PNG frames
+
+**Usage:** `iroha offline petal decode [OPTIONS] --input-dir <DIR> --output <PATH>`
 
 ###### **Options:**
 
-* `--input-dir <DIR>` — Directory containing rendered PNG frames, or an encode output directory with manifest.json
-* `--channel <CHANNEL>` — Visual channel used by the rendered input
+* `--input-dir <DIR>` — Directory of PNG frames, read in file-name order
+* `--output <PATH>` — File that receives the reassembled payload
+* `--fps <FPS>` — Capture rate of the frames, used for the session timeouts
 
-  Default value: `binary-grid`
+  Default value: `12`
+* `--max-payload <MAX_PAYLOAD>` — Largest payload accepted
 
-  Possible values:
-  - `binary-grid`:
-    Binary luminance grid suitable for scanner bring-up
-  - `katakana-base94`:
-    Deterministic Katakana command-tile rendering with Petal luminance anchors
-
-* `--profile <PROFILE>` — Deterministic capture profile label recorded in the report
-
-  Default value: `default`
-
-  Possible values:
-  - `default`:
-    Default production deterministic capture profile
-
-* `--perturb-capture` — Apply deterministic profile luminance perturbation before decoding
-
-  Default value: `false`
-* `--capture-seed <SEED>` — Deterministic seed mixed into capture perturbation
-
-  Default value: `0`
-* `--capture-attempts <ATTEMPTS>` — Override perturbed capture attempt count per rendered source frame
-* `--capture-dark-luma <DARK_LUMA>` — Override perturbed dark-cell luminance
-* `--capture-light-luma <LIGHT_LUMA>` — Override perturbed light-cell luminance
-* `--capture-luminance-jitter <LUMINANCE_JITTER>` — Override perturbed deterministic luminance jitter
-* `--capture-downscale-cells <DOWNSCALE_CELLS>` — Average capture samples into cell blocks before decoding
-
-  Default value: `1`
-* `--capture-blur-radius <BLUR_RADIUS>` — Apply deterministic box blur over capture samples before decoding
-
-  Default value: `0`
-* `--capture-motion-blur-cells <MOTION_BLUR_CELLS>` — Apply deterministic horizontal motion blur over capture samples before decoding
-
-  Default value: `0`
-* `--capture-noise-amplitude <NOISE_AMPLITUDE>` — Apply deterministic per-cell sensor noise before decoding
-
-  Default value: `0`
-* `--capture-exposure-offset <EXPOSURE_OFFSET>` — Add a deterministic exposure offset to capture samples before decoding
-
-  Default value: `0`
-* `--min-success-ratio <RATIO>` — Minimum success ratio as a decimal in [0, 1], e.g. 0.95
-* `--min-success-ratio-bps <MIN_SUCCESS_RATIO_BPS>` — Minimum success ratio in basis points
-* `--output-report <PATH>` — Optional JSON report path. The full report is printed to stdout when omitted
-* `--grid-size <GRID_SIZE>` — Petal grid size for manifest-free directories. Zero requires a manifest
-
-  Default value: `0`
-* `--border <BORDER>` — Petal grid border thickness for manifest-free directories
-
-  Default value: `1`
-* `--anchor-size <ANCHOR_SIZE>` — Petal grid anchor size for manifest-free directories
-
-  Default value: `3`
+  Default value: `65536`
 
 
 
-## `iroha offline petal simulate-realtime`
+## `iroha offline petal inspect`
 
-Replay rendered Petal PNG frames in deterministic realtime loop order
+Report which lanes of one PNG frame decode
 
-**Usage:** `iroha offline petal simulate-realtime [OPTIONS] --input-dir <DIR>`
+**Usage:** `iroha offline petal inspect --input <PATH>`
 
 ###### **Options:**
 
-* `--input-dir <DIR>` — Directory containing rendered PNG frames, or an encode output directory with manifest.json
-* `--channel <CHANNEL>` — Visual channel used by the rendered input
-
-  Default value: `binary-grid`
-
-  Possible values:
-  - `binary-grid`:
-    Binary luminance grid suitable for scanner bring-up
-  - `katakana-base94`:
-    Deterministic Katakana command-tile rendering with Petal luminance anchors
-
-* `--profile <PROFILE>` — Deterministic capture profile label recorded in the report
-
-  Default value: `default`
-
-  Possible values:
-  - `default`:
-    Default production deterministic capture profile
-
-* `--perturb-capture` — Apply deterministic profile luminance perturbation before decoding
-
-  Default value: `false`
-* `--capture-seed <SEED>` — Deterministic seed mixed into capture perturbation
-
-  Default value: `0`
-* `--capture-attempts <ATTEMPTS>` — Override perturbed capture attempt count per rendered source frame
-* `--capture-dark-luma <DARK_LUMA>` — Override perturbed dark-cell luminance
-* `--capture-light-luma <LIGHT_LUMA>` — Override perturbed light-cell luminance
-* `--capture-luminance-jitter <LUMINANCE_JITTER>` — Override perturbed deterministic luminance jitter
-* `--capture-downscale-cells <DOWNSCALE_CELLS>` — Average capture samples into cell blocks before decoding
-
-  Default value: `1`
-* `--capture-blur-radius <BLUR_RADIUS>` — Apply deterministic box blur over capture samples before decoding
-
-  Default value: `0`
-* `--capture-motion-blur-cells <MOTION_BLUR_CELLS>` — Apply deterministic horizontal motion blur over capture samples before decoding
-
-  Default value: `0`
-* `--capture-noise-amplitude <NOISE_AMPLITUDE>` — Apply deterministic per-cell sensor noise before decoding
-
-  Default value: `0`
-* `--capture-exposure-offset <EXPOSURE_OFFSET>` — Add a deterministic exposure offset to capture samples before decoding
-
-  Default value: `0`
-* `--simulate-fps <SIMULATE_FPS>` — Replayed frame rate metadata
-
-  Default value: `24`
-* `--realtime-loops <REALTIME_LOOPS>` — Number of deterministic playback loops
-
-  Default value: `1`
-* `--output-payload <PATH>` — Optional path for the first successfully decoded payload
-* `--output-report <PATH>` — Optional JSON report path. The full report is printed to stdout when omitted
-* `--grid-size <GRID_SIZE>` — Petal grid size for manifest-free directories. Zero requires a manifest
-
-  Default value: `0`
-* `--border <BORDER>` — Petal grid border thickness for manifest-free directories
-
-  Default value: `1`
-* `--anchor-size <ANCHOR_SIZE>` — Petal grid anchor size for manifest-free directories
-
-  Default value: `3`
+* `--input <PATH>` — PNG frame to inspect
 
 
 
-## `iroha offline petal score-styles`
+## `iroha offline petal simulate`
 
-Score the published Petal style set against deterministic capture gates
+Play a stream on a simulated screen and camera and report completion times
 
-**Usage:** `iroha offline petal score-styles [OPTIONS] --input <PATH>`
+**Usage:** `iroha offline petal simulate [OPTIONS]`
 
 ###### **Options:**
 
-* `--input <PATH>` — Payload bytes to encode into the Petal Stream grid
-* `--output-report <PATH>` — Optional JSON report path. The full report is printed to stdout when omitted
-* `--style-set <STYLE_SET>` — Published style set to score
+* `--input <PATH>` — Payload file; omit to use pseudo-random bytes of `--bytes` length
+* `--bytes <BYTES>` — Payload length when no input file is given
 
-  Default value: `sora-temple-default`
+  Default value: `2048`
+* `--camera <CAMERA>` — Camera model: modern, legacy, soft or worst
 
-  Possible values:
-  - `sora-temple-default`:
-    Current production Petal style family
-  - `sora-temple-expanded`:
-    Production Petal style family plus deterministic hardening variants
+  Default value: `modern`
+* `--fps <FPS>` — Frames per second shown on the simulated screen
 
-* `--channel <CHANNEL>` — Visual channel to score
+  Default value: `12`
+* `--trials <TRIALS>` — Number of independent trials (random pose and phase each)
 
-  Default value: `binary-grid`
+  Default value: `4`
+* `--horizon-seconds <HORIZON_SECONDS>` — Give up on a trial after this many simulated seconds
 
-  Possible values:
-  - `binary-grid`:
-    Binary luminance grid suitable for scanner bring-up
-  - `katakana-base94`:
-    Deterministic Katakana command-tile rendering with Petal luminance anchors
-
-* `--katakana-preset <KATAKANA_PRESET>` — Katakana layout preset. Defaults to balanced for katakana-base94
-
-  Possible values:
-  - `balanced`:
-    Balanced command-tile density for ordinary camera distances
-  - `distance-safe`:
-    Larger cells for longer-distance camera capture
-
-* `--profile <PROFILE>` — Deterministic capture profile to apply
-
-  Default value: `default`
-
-  Possible values:
-  - `default`:
-    Default production deterministic capture profile
-
-* `--seed <SEED>` — Deterministic seed mixed into luminance jitter
-
-  Default value: `0`
-* `--fps <FPS>` — Frames per second used for the effective-payload rate estimate
-
-  Default value: `24`
-* `--target-effective-bps <TARGET_EFFECTIVE_BPS>` — Target effective payload bits per second for throughput scoring
-
-  Default value: `3000`
-* `--min-success-ratio-bps <MIN_SUCCESS_RATIO_BPS>` — Minimum capture success ratio, in basis points
-
-  Default value: `9500`
-* `--grid-size <GRID_SIZE>` — Override the Petal grid size. Zero keeps automatic sizing
-
-  Default value: `0`
-* `--border <BORDER>` — Override the Petal grid border thickness
+  Default value: `90`
+* `--seed <SEED>` — Seed of the first trial
 
   Default value: `1`
-* `--anchor-size <ANCHOR_SIZE>` — Override the Petal grid anchor size
+* `--kind <KIND>` — Payload kind byte
 
-  Default value: `3`
-* `--attempts <ATTEMPTS>` — Override capture attempt count
-* `--dark-luma <DARK_LUMA>` — Override dark-cell luminance
-* `--light-luma <LIGHT_LUMA>` — Override light-cell luminance
-* `--luminance-jitter <LUMINANCE_JITTER>` — Override deterministic luminance jitter
+  Default value: `0`
 
 
 
@@ -12280,7 +12673,7 @@ Qualify every hosted Inrou artifact offline and emit one durable app receipt
 
   Default value: `app_manifest.json`
 * `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention identity reused by the later online release
-* `--inrou-preseed-target <VALIDATOR,PEER,PATH>` — Exact validator account, active peer identity, and offline SoraFS store root
+* `--inrou-preseed-target <VALIDATOR,PEER,PATH>` — Exact validator account, active peer identity, and offline `SoraFS` store root
 * `--inrou-preseed-max-capacity-bytes <BYTES>` — Exact common configured capacity of every selected store
 * `--inrou-preseed-helper <PATH>` — Absolute path to the exact offline `sorafs-node` helper
 * `--inrou-preseed-helper-sha256 <HEX>` — Lowercase SHA-256 of the exact offline helper
@@ -12302,7 +12695,7 @@ Build, validate, deploy, and live-verify every service referenced by an app mani
 * `--manifest <PATH>` — Path to a `SoracloudAppManifestV1` JSON document
 
   Default value: `app_manifest.json`
-* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every SoraFS manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every `SoraFS` manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
 * `--torii-url <URL>` — Torii base URL for the canonical app-infra release mutation
 * `--api-token <TOKEN>` — Optional API token sent as `x-api-token` when mutating live control-plane APIs
 * `--timeout-secs <SECS>` — Positive timeout for Torii requests
@@ -12392,7 +12785,7 @@ Scaffold baseline container/service manifests
   - `http-service`:
     Generate a hosted HTTP Soracloud starter that targets Inrou
   - `site`:
-    Generate a Vue3/Vite static SPA starter with SoraFS publish workflow
+    Generate a Vue3/Vite static SPA starter with `SoraFS` publish workflow
   - `webapp`:
     Generate a Vue3 SPA + API starter with deterministic challenge-signature auth
   - `pii-app`:
@@ -12569,7 +12962,7 @@ Qualify exact Inrou artifacts in offline validator stores and emit a durable rec
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
 * `--bundle-file <PATH>` — Canonical service bundle bytes to qualify in every target store
 * `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention identity reused by the later online publication
-* `--inrou-preseed-target <VALIDATOR,PEER,PATH>` — Exact validator account, active peer identity, and offline SoraFS store root
+* `--inrou-preseed-target <VALIDATOR,PEER,PATH>` — Exact validator account, active peer identity, and offline `SoraFS` store root
 * `--inrou-preseed-max-capacity-bytes <BYTES>` — Exact common configured capacity of every selected store
 * `--inrou-preseed-helper <PATH>` — Absolute path to the exact offline `sorafs-node` helper
 * `--inrou-preseed-helper-sha256 <HEX>` — Lowercase SHA-256 of the exact offline helper
@@ -12595,7 +12988,7 @@ Validate manifests and register a new service deployment
 
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
 * `--bundle-file <PATH>` — Canonical service bundle bytes to publish before submitting the deployment
-* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every SoraFS manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every `SoraFS` manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
 * `--initial-configs <PATH>` — Optional JSON file containing a map of inline config values committed atomically with deploy
 * `--initial-secrets <PATH>` — Optional JSON file containing a map of inline secret envelopes committed atomically with deploy
 * `--inrou-preseed-receipt <PATH>` — Absolute owner-only ingest qualification produced by `soracloud service preseed`
@@ -12764,7 +13157,7 @@ Validate manifests and upgrade an existing deployed service
 
   Default value: `fixtures/soracloud/sora_service_manifest_v1.json`
 * `--bundle-file <PATH>` — Canonical service bundle bytes to publish before submitting the upgrade
-* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every SoraFS manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
+* `--sorafs-retention-epoch <UNIX_SECONDS>` — Exact Unix-second retention boundary embedded in every `SoraFS` manifest in this release. Reuse the same value for every retry; it must remain ahead of consensus time
 * `--initial-configs <PATH>` — Optional JSON file containing a map of inline config values committed atomically with upgrade
 * `--initial-secrets <PATH>` — Optional JSON file containing a map of inline secret envelopes committed atomically with upgrade
 * `--inrou-preseed-receipt <PATH>` — Absolute owner-only ingest qualification produced by `soracloud service preseed`
@@ -13090,7 +13483,7 @@ Register a SoraFS-backed uploaded-model bundle into the model registry
 
 ###### **Options:**
 
-* `--bundle-file <PATH>` — Path to a `SoraUploadedModelBundleV1` JSON document with an approved SoraFS digest
+* `--bundle-file <PATH>` — Path to a `SoraUploadedModelBundleV1` JSON document with an approved `SoraFS` digest
 * `--request-file <PATH>` — Path to an `UploadedModelFinalizePayload` JSON document describing registry metadata
 * `--service-name <NAME>` — Service name that owns the uploaded model
 * `--container <PATH>` — Optional unpublished Soracloud container workspace used to resolve the service name
@@ -13502,6 +13895,948 @@ Show autonomous-run policy state for an apartment
 * `--timeout-secs <SECS>` — HTTP timeout for live control-plane query
 
   Default value: `10`
+
+
+
+## `iroha sccp`
+
+SORA Cross-Chain Protocol reads, transfers and proofs
+
+**Usage:** `iroha sccp <COMMAND>`
+
+###### **Subcommands:**
+
+* `info` — Show the Taira identity, SCCP parameters and native finality metadata
+* `routes` — List the routes with their revisions, escrows and liabilities
+* `reconcile` — Inspect held revisions or prove an authenticated forged destination mint
+* `fast-pause` — Inspect standing pause panels, retained rounds and current eligibility availability
+* `evidence` — Build, submit and inspect original-root forgery evidence
+* `monitor` — Compare bounded pinned destination observations and build original-root evidence
+* `send` — Record an outbound transfer from the configured account and print its record
+* `burn` — Burn destination tokens for a canonical Taira recipient
+* `settle` — Retry an admitted inbound settlement
+* `void` — Permanently void an expired or frozen outbound message
+* `refund` — Prove a destination void or retry its Taira refund
+* `ton-retry` — Fund an existing TON recovery operation without replaying the original transfer
+* `status` — Show the status of one message id (outbound, inbound or unknown)
+* `recent` — List the newest outbound or inbound records
+* `proof` — Fetch the native certificate proof bundle of one outbound message
+* `committee` — Show a committee generation (the current one by default)
+* `finality` — Fetch an original native finality certificate at a height or the durable tip
+* `rotations` — Fetch the catch-up rotation chain from a generation
+* `control` — Apply a certified destination control
+* `deployment` — Verify a registered deployment against the independently authenticated route
+* `finalize` — Mint a certified outbound message on its EVM or TON destination
+* `committee-sync` — Advance an EVM or TON committee by at most sixteen generations; rerun after confirmation
+* `governance` — SCCP proposals to the SORA Parliament
+* `deploy` — Deploy an EVM or TON destination pinned to a Taira generation and print its `RegisterRoute`
+* `claim` — Prove an Ethereum or BSC (`transferToTaira`) or TON (`sccp_burn_to_taira`) burn on Taira and settle it, submitting the `Backfill` advances an aged burn needs first
+* `light-client` — Advance Taira's Ethereum, BSC or TON light client toward the latest finality, one bounded step per run
+* `lc-profile` — Build the Parliament `ActivateLightClientProfile` action of a profile version compiled into this release
+
+
+
+## `iroha sccp info`
+
+Show the Taira identity, SCCP parameters and native finality metadata
+
+**Usage:** `iroha sccp info`
+
+
+
+## `iroha sccp routes`
+
+List the routes with their revisions, escrows and liabilities
+
+**Usage:** `iroha sccp routes`
+
+
+
+## `iroha sccp reconcile`
+
+Inspect held revisions or prove an authenticated forged destination mint
+
+**Usage:** `iroha sccp reconcile <COMMAND>`
+
+###### **Subcommands:**
+
+* `status` — Show effective holds, the proof window, forged supply and fixed payout rate
+* `prove-mint` — Submit an authenticated destination finalization proof within an open window
+
+
+
+## `iroha sccp reconcile status`
+
+Show effective holds, the proof window, forged supply and fixed payout rate
+
+**Usage:** `iroha sccp reconcile status [OPTIONS]`
+
+###### **Options:**
+
+* `--network <NETWORK>` — External network profile; omit to page across all external routes
+* `--revision <REVISION>` — Specific nonzero revision of the selected network
+* `--after-network <AFTER_NETWORK>` — Network of the previous page's next cursor; requires after-revision
+* `--after-revision <AFTER_REVISION>` — Revision of the previous page's next cursor; requires after-network
+* `--limit <LIMIT>` — Maximum scalar rows in this page
+
+  Default value: `64`
+
+
+
+## `iroha sccp reconcile prove-mint`
+
+Submit an authenticated destination finalization proof within an open window
+
+**Usage:** `iroha sccp reconcile prove-mint --network <NETWORK> --revision <REVISION> --proof <PROOF>`
+
+###### **Options:**
+
+* `--network <NETWORK>` — Destination network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--revision <REVISION>` — Quarantined destination revision with an open reconciliation window
+* `--proof <PROOF>` — Norito JSON `SccpForgedMintProofV1` file with source proof and canonical payload preimage
+
+
+
+## `iroha sccp fast-pause`
+
+Inspect standing pause panels, retained rounds and current eligibility availability
+
+**Usage:** `iroha sccp fast-pause <COMMAND>`
+
+###### **Subcommands:**
+
+* `panel` — Show the original draw, recorded acceptances and current seat availability
+* `accept` — Accept the explicitly selected standing panel as a drawn member
+* `endorse` — Endorse one explicitly selected current panel and `FastHold` head
+* `status` — Show retained rounds, active hold parts, suspensions and panel observations
+
+
+
+## `iroha sccp fast-pause panel`
+
+Show the original draw, recorded acceptances and current seat availability
+
+**Usage:** `iroha sccp fast-pause panel`
+
+
+
+## `iroha sccp fast-pause accept`
+
+Accept the explicitly selected standing panel as a drawn member
+
+**Usage:** `iroha sccp fast-pause accept --panel-seq <PANEL_SEQ>`
+
+###### **Options:**
+
+* `--panel-seq <PANEL_SEQ>` — Nonzero sequence shown by `fast-pause panel`
+
+
+
+## `iroha sccp fast-pause endorse`
+
+Endorse one explicitly selected current panel and `FastHold` head
+
+**Usage:** `iroha sccp fast-pause endorse --network <NETWORK> --panel-id <PANEL_ID> --head <HEAD> --incident-digest <INCIDENT_DIGEST>`
+
+###### **Options:**
+
+* `--network <NETWORK>` — External network: ethereum-mainnet, bsc-mainnet or ton-mainnet
+* `--panel-id <PANEL_ID>` — Primary or backup panel identity, as 32-byte hexadecimal
+* `--head <HEAD>` — Current `FastHold` subject revision shown by `governance revisions` (initially zero)
+* `--incident-digest <INCIDENT_DIGEST>` — Nonzero 32-byte hexadecimal digest identifying the public incident
+
+
+
+## `iroha sccp fast-pause status`
+
+Show retained rounds, active hold parts, suspensions and panel observations
+
+**Usage:** `iroha sccp fast-pause status`
+
+
+
+## `iroha sccp evidence`
+
+Build, submit and inspect original-root forgery evidence
+
+**Usage:** `iroha sccp evidence <COMMAND>`
+
+###### **Subcommands:**
+
+* `build` — Verify a destination certificate against an original native cut and build a candidate
+* `submit` — Recheck and durably submit an original-root evidence candidate
+* `status` — Read one committed record or a bounded page of original evidence statuses
+* `anchor` — Read an original completed-chunk anchor witness
+
+
+
+## `iroha sccp evidence build`
+
+Verify a destination certificate against an original native cut and build a candidate
+
+**Usage:** `iroha sccp evidence build --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --certificate <CERTIFICATE>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--certificate <CERTIFICATE>` — Norito JSON `SubmitSccpForgeryEvidenceV1`; any supplied anchor is replaced from the node
+
+
+
+## `iroha sccp evidence submit`
+
+Recheck and durably submit an original-root evidence candidate
+
+**Usage:** `iroha sccp evidence submit [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --candidate <CANDIDATE>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--candidate <CANDIDATE>` — Norito JSON output of evidence build or monitor
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+
+
+
+## `iroha sccp evidence status`
+
+Read one committed record or a bounded page of original evidence statuses
+
+**Usage:** `iroha sccp evidence status [OPTIONS]`
+
+###### **Options:**
+
+* `--evidence-id <EVIDENCE_ID>` — Exact 32-byte evidence id; mutually exclusive with paging arguments
+* `--after <AFTER>` — Exclusive evidence-id cursor from the previous page
+* `--limit <LIMIT>` — Page size, at most 64; defaults to 64
+
+
+
+## `iroha sccp evidence anchor`
+
+Read an original completed-chunk anchor witness
+
+**Usage:** `iroha sccp evidence anchor <HEIGHT>`
+
+###### **Arguments:**
+
+* `<HEIGHT>` — Nonzero committed Taira height; the open chunk needs no witness path
+
+
+
+## `iroha sccp monitor`
+
+Compare bounded pinned destination observations and build original-root evidence
+
+**Usage:** `iroha sccp monitor [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — Restrict configured pinned deployments to one external network
+* `--revision <REVISION>` — Restrict to one revision; requires network
+* `--evm-cursor <EVM_CURSOR>` — Exclusive EVM discovery cursor `BLOCK:LOG_INDEX`; requires one exact revision
+* `--ton-cursor <TON_CURSOR>` — Next older TON transaction cursor LT:HASH; requires one exact revision
+
+
+
+## `iroha sccp send`
+
+Record an outbound transfer from the configured account and print its record
+
+**Usage:** `iroha sccp send [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --amount <AMOUNT> --recipient <RECIPIENT>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--rpc-url <RPC_URL>` — EVM JSON-RPC endpoint or TON liteserver list for the registered destination
+
+  Default value: ``
+* `--inclusion-margin-ms <INCLUSION_MARGIN_MS>` — Expected inclusion latency, added to twice the protocol maximum clock-drift bound
+
+  Default value: `60000`
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--network <NETWORK>` — External target network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--amount <AMOUNT>` — XOR amount, for example `1.5`
+* `--recipient <RECIPIENT>` — Recipient on the target: `0x`-hex (EVM, 20 bytes; mixed case must pass EIP-55), or a TON raw `0:<64 hex>` or user-friendly address (checksum, mainnet flags and workchain 0 checked)
+* `--revision <REVISION>` — Route revision to record on; defaults to the route's `Bidirectional` revision
+
+
+
+## `iroha sccp burn`
+
+Burn destination tokens for a canonical Taira recipient
+
+**Usage:** `iroha sccp burn [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --revision <REVISION> --amount <AMOUNT> --key-file <KEY_FILE>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — Source destination network
+* `--revision <REVISION>` — Exact source revision
+* `--recipient <RECIPIENT>` — Canonical Taira recipient; defaults to the configured account
+* `--amount <AMOUNT>` — Positive XOR amount in decimal units
+* `--rpc-url <RPC_URL>` — External-chain endpoint
+
+  Default value: ``
+* `--key-file <KEY_FILE>` — Runtime-only fee payer key file
+* `--ton-wallet <TON_WALLET>` — TON fee payer's deployed v5r1 wallet address
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+
+
+
+## `iroha sccp settle`
+
+Retry an admitted inbound settlement
+
+**Usage:** `iroha sccp settle [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --message-id <MESSAGE_ID>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--message-id <MESSAGE_ID>` — Inbound message identity
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+
+
+
+## `iroha sccp void`
+
+Permanently void an expired or frozen outbound message
+
+**Usage:** `iroha sccp void [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --message-id <MESSAGE_ID>`
+
+###### **Options:**
+
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--message-id <MESSAGE_ID>` — Message id (32-byte hex)
+* `--rpc-url <RPC_URL>` — JSON-RPC endpoint (EVM), or comma-separated liteservers (TON; empty for the compiled list)
+
+  Default value: ``
+* `--key-file <KEY_FILE>` — Owner-only key file of the account that pays for the call (secp256k1; TON: the Ed25519 seed of the wallet)
+* `--emit` — Export an unsigned request for an external signer without signing or broadcasting
+* `--payer <PAYER>` — EVM external fee payer address, required for unsigned export
+* `--ton-wallet <TON_WALLET>` — TON: the raw `0:<hex>` address of the deployed `v5r1` wallet the key file controls
+* `--at <AT>` — Proof height: `record`, `latest` or a positive Taira height
+
+  Default value: `record`
+* `--frozen` — Use the protocol frozen-destination path (still checked on the destination)
+
+
+
+## `iroha sccp refund`
+
+Prove a destination void or retry its Taira refund
+
+**Usage:** `iroha sccp refund [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --message-id <MESSAGE_ID>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--message-id <MESSAGE_ID>` — Original outbound message identity
+* `--tx-hash <TX_HASH>` — Destination transaction hash; TON uses lt:hash
+* `--event-index <EVENT_INDEX>` — Event position within the transaction (receipt log or TON external message)
+
+  Default value: `0`
+* `--rpc-url <RPC_URL>` — EVM JSON-RPC endpoint or TON liteserver list
+
+  Default value: ``
+* `--beacon-url <BEACON_URL>` — Ethereum beacon API for the original active profile
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+
+
+
+## `iroha sccp ton-retry`
+
+Fund an existing TON recovery operation without replaying the original transfer
+
+**Usage:** `iroha sccp ton-retry [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --revision <REVISION> --operation-id <OPERATION_ID> --key-file <KEY_FILE> --ton-wallet <TON_WALLET>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--revision <REVISION>` — Original TON route revision
+* `--operation-id <OPERATION_ID>` — Immutable operation id from the minter's retained recovery book
+* `--rpc-url <RPC_URL>` — TON liteserver list
+
+  Default value: ``
+* `--key-file <KEY_FILE>` — Runtime-only wallet seed file
+* `--ton-wallet <TON_WALLET>` — Deployed basechain v5r1 fee payer
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+
+
+
+## `iroha sccp status`
+
+Show the status of one message id (outbound, inbound or unknown)
+
+**Usage:** `iroha sccp status --message-id <MESSAGE_ID>`
+
+###### **Options:**
+
+* `--message-id <MESSAGE_ID>` — Message id (32-byte hex)
+
+
+
+## `iroha sccp recent`
+
+List the newest outbound or inbound records
+
+**Usage:** `iroha sccp recent [OPTIONS]`
+
+###### **Options:**
+
+* `--direction <DIRECTION>` — `outbound` (Taira → external) or `inbound` (external → Taira)
+
+  Default value: `outbound`
+* `--network <NETWORK>` — Only this external network
+* `--before <BEFORE>` — `next_before` cursor of the previous page
+* `--limit <LIMIT>` — Records per page (at most 50)
+
+  Default value: `50`
+
+
+
+## `iroha sccp proof`
+
+Fetch the native certificate proof bundle of one outbound message
+
+**Usage:** `iroha sccp proof [OPTIONS] --message-id <MESSAGE_ID>`
+
+###### **Options:**
+
+* `--message-id <MESSAGE_ID>` — Message id (32-byte hex)
+* `--at <AT>` — Proof height: `record`, `latest` or a positive Taira height
+
+  Default value: `record`
+
+
+
+## `iroha sccp committee`
+
+Show a committee generation (the current one by default)
+
+**Usage:** `iroha sccp committee [OPTIONS]`
+
+###### **Options:**
+
+* `--generation <GENERATION>` — Positive generation; the current one when absent
+
+
+
+## `iroha sccp finality`
+
+Fetch an original native finality certificate at a height or the durable tip
+
+**Usage:** `iroha sccp finality [OPTIONS]`
+
+###### **Options:**
+
+* `--height <HEIGHT>` — Positive certified height; the durable tip when absent
+
+
+
+## `iroha sccp rotations`
+
+Fetch the catch-up rotation chain from a generation
+
+**Usage:** `iroha sccp rotations [OPTIONS] --after-generation <AFTER_GENERATION>`
+
+###### **Options:**
+
+* `--after-generation <AFTER_GENERATION>` — Generation the destination currently trusts
+* `--limit <LIMIT>` — Steps per page (at most 16)
+
+  Default value: `16`
+
+
+
+## `iroha sccp control`
+
+Apply a certified destination control
+
+**Usage:** `iroha sccp control <COMMAND>`
+
+###### **Subcommands:**
+
+* `apply` — Verify and apply a complete control; defaults to the newest observed control
+* `status` — Compare the original native control with the destination's applied pause state
+
+
+
+## `iroha sccp control apply`
+
+Verify and apply a complete control; defaults to the newest observed control
+
+**Usage:** `iroha sccp control apply [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --revision <REVISION> --key-file <KEY_FILE>`
+
+###### **Options:**
+
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — External network profile
+* `--revision <REVISION>` — Exact registered revision
+* `--rpc-url <RPC_URL>` — EVM JSON-RPC endpoint or TON liteserver list
+
+  Default value: ``
+* `--nonce <NONCE>` — Exact control nonce; defaults to the newest observed committed nonce
+* `--at <AT>` — Certificate height: record, latest, or an explicit positive height
+
+  Default value: `latest`
+* `--key-file <KEY_FILE>` — Owner-only fee payer key file
+* `--ton-wallet <TON_WALLET>` — TON fee payer's deployed v5r1 wallet, in raw 0:<hex> form
+
+
+
+## `iroha sccp control status`
+
+Compare the original native control with the destination's applied pause state
+
+**Usage:** `iroha sccp control status [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --revision <REVISION>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — External network profile
+* `--revision <REVISION>` — Exact registered revision
+* `--rpc-url <RPC_URL>` — EVM JSON-RPC endpoint or TON liteserver list
+
+  Default value: ``
+
+
+
+## `iroha sccp deployment`
+
+Verify a registered deployment against the independently authenticated route
+
+**Usage:** `iroha sccp deployment <COMMAND>`
+
+###### **Subcommands:**
+
+* `verify` — Recompute the registered address and inspect the destination's identity and code
+
+
+
+## `iroha sccp deployment verify`
+
+Recompute the registered address and inspect the destination's identity and code
+
+**Usage:** `iroha sccp deployment verify [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --revision <REVISION>`
+
+###### **Options:**
+
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — External network profile
+* `--revision <REVISION>` — Exact revision selected from the proposal or authenticated registry
+* `--actions <ACTIONS>` — Bounded JSON array of proposed SCCP actions, including this `RegisterRoute`
+* `--proposal-id <PROPOSAL_ID>` — Exact proposal content id; its body must reproduce this fingerprint
+* `--rpc-url <RPC_URL>` — Configured endpoint override; empty uses the SCCP client configuration
+
+  Default value: ``
+* `--checkpoint-height <CHECKPOINT_HEIGHT>` — Additional EVM checkpoint heights to inspect (at most sixteen)
+
+
+
+## `iroha sccp finalize`
+
+Mint a certified outbound message on its EVM or TON destination
+
+**Usage:** `iroha sccp finalize [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --message-id <MESSAGE_ID>`
+
+###### **Options:**
+
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--message-id <MESSAGE_ID>` — Message id (32-byte hex)
+* `--rpc-url <RPC_URL>` — JSON-RPC endpoint (EVM), or comma-separated liteservers (TON; empty for the compiled list)
+
+  Default value: ``
+* `--key-file <KEY_FILE>` — Owner-only key file of the account that pays for the call (secp256k1; TON: the Ed25519 seed of the wallet)
+* `--emit` — Export an unsigned request for an external signer without signing or broadcasting
+* `--payer <PAYER>` — EVM external fee payer address, required for unsigned export
+* `--ton-wallet <TON_WALLET>` — TON: the raw `0:<hex>` address of the deployed `v5r1` wallet the key file controls
+* `--at <AT>` — Proof height: `record`, `latest` or a positive Taira height
+
+  Default value: `record`
+
+
+
+## `iroha sccp committee-sync`
+
+Advance an EVM or TON committee by at most sixteen generations; rerun after confirmation
+
+**Usage:** `iroha sccp committee-sync [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --key-file <KEY_FILE>`
+
+###### **Options:**
+
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — External network of the deployment
+* `--revision <REVISION>` — Route revision of the deployment; defaults to the route's live revision
+* `--rpc-url <RPC_URL>` — JSON-RPC endpoint (EVM), or comma-separated liteservers (TON; empty for the compiled list)
+
+  Default value: ``
+* `--key-file <KEY_FILE>` — Owner-only key file of the account that pays for the calls (secp256k1; TON: the Ed25519 seed of the wallet)
+* `--ton-wallet <TON_WALLET>` — TON: the raw `0:<hex>` address of the deployed `v5r1` wallet the key file controls
+
+
+
+## `iroha sccp governance`
+
+SCCP proposals to the SORA Parliament
+
+**Usage:** `iroha sccp governance <COMMAND>`
+
+###### **Subcommands:**
+
+* `propose` — Propose SCCP actions to the Parliament against Taira's current revisions
+* `show` — Show a proposal body, current-revision verdict, deployment checks and attempts
+* `readiness` — Show governance readiness from the current committed state
+* `revisions` — Show Taira's nonzero per-subject governance revisions
+* `drive` — Run the Parliament driver: carry SCCP proposals through their Parliament attempts
+
+
+
+## `iroha sccp governance propose`
+
+Propose SCCP actions to the Parliament against Taira's current revisions
+
+**Usage:** `iroha sccp governance propose [OPTIONS] --actions <ACTIONS>`
+
+###### **Options:**
+
+* `--actions <ACTIONS>` — JSON file with the array of `SccpGovernanceActionV1` to apply in order
+* `--dry-run` — Print the proposal instead of submitting it
+
+
+
+## `iroha sccp governance show`
+
+Show a proposal body, current-revision verdict, deployment checks and attempts
+
+**Usage:** `iroha sccp governance show <CONTENT_ID>`
+
+###### **Arguments:**
+
+* `<CONTENT_ID>` — Proposal content id (32-byte hexadecimal)
+
+
+
+## `iroha sccp governance readiness`
+
+Show governance readiness from the current committed state
+
+**Usage:** `iroha sccp governance readiness`
+
+
+
+## `iroha sccp governance revisions`
+
+Show Taira's nonzero per-subject governance revisions
+
+**Usage:** `iroha sccp governance revisions`
+
+
+
+## `iroha sccp governance drive`
+
+Run the Parliament driver: carry SCCP proposals through their Parliament attempts
+
+**Usage:** `iroha sccp governance drive [OPTIONS]`
+
+###### **Options:**
+
+* `--poll-interval-ms <POLL_INTERVAL_MS>` — Milliseconds between polls
+
+  Default value: `500`
+* `--retry-interval-ms <RETRY_INTERVAL_MS>` — Retry still-needed intents after this interval even if the tip has not advanced
+
+  Default value: `4000`
+* `--polls <POLLS>` — Stop after this many polls; 0 runs until interrupted
+
+  Default value: `0`
+
+
+
+## `iroha sccp deploy`
+
+Deploy an EVM or TON destination pinned to a Taira generation and print its `RegisterRoute`
+
+**Usage:** `iroha sccp deploy [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --revision <REVISION> --max-supply <MAX_SUPPLY> --key-file <KEY_FILE>`
+
+###### **Options:**
+
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — Destination network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--revision <REVISION>` — Route revision the deployment serves (the route's next revision)
+* `--max-supply <MAX_SUPPLY>` — Supply cap in XOR
+* `--generation <GENERATION>` — Taira committee generation to pin; the current one when absent
+* `--creation-bytecode <CREATION_BYTECODE>` — EVM: creation bytecode from `scripts/contract_artifact_corridor.py build` (hex text); it must match the locked artifact
+* `--ton-build-dir <TON_BUILD_DIR>` — TON: the Acton build directory holding `SccpTairaXorMinter.json`, `SccpTairaXorWallet.json` and `SccpConsumedBucket.json`
+* `--rpc-url <RPC_URL>` — JSON-RPC endpoint (EVM), or comma-separated `<ip>:<port>:<base64 key>` liteservers (TON; empty for the compiled list)
+
+  Default value: ``
+* `--key-file <KEY_FILE>` — Owner-only key file of the deploying account (secp256k1; TON: the Ed25519 seed of the wallet)
+* `--ton-wallet <TON_WALLET>` — TON: the raw `0:<hex>` address of the deployed `v5r1` wallet the key file controls. It funds the minter with `MINTER_FLOOR` at mainnet storage prices plus 25% and initialization headroom
+
+
+
+## `iroha sccp claim`
+
+Prove an Ethereum or BSC (`transferToTaira`) or TON (`sccp_burn_to_taira`) burn on Taira and settle it, submitting the `Backfill` advances an aged burn needs first
+
+**Usage:** `iroha sccp claim [OPTIONS] --signed-genesis <SIGNED_GENESIS> --genesis-manifest <GENESIS_MANIFEST> --genesis-public-key <GENESIS_PUBLIC_KEY> --genesis-hash <GENESIS_HASH> --at-height <AT_HEIGHT> --world-snapshot <WORLD_SNAPSHOT> --world-schema-hash <WORLD_SCHEMA_HASH> --network <NETWORK> --tx-hash <TX_HASH>`
+
+###### **Options:**
+
+* `--flow-id <FLOW_ID>` — Stable 32-byte flow id. Reuse it after a crash; choose another only for a new transfer
+* `--rebroadcast` — Reconcile first, then rebroadcast only identical retained signed bytes if still unknown
+* `--retry` — Prepare a new attempt only after the retained attempt has an authenticated terminal result
+* `--signed-genesis <SIGNED_GENESIS>` — Canonical signed genesis retained independently of Torii discovery
+* `--genesis-manifest <GENESIS_MANIFEST>` — Original manifest checked against the signed genesis semantics
+* `--genesis-public-key <GENESIS_PUBLIC_KEY>` — Independently retained genesis verification key
+* `--genesis-hash <GENESIS_HASH>` — Independently retained canonical genesis hash
+* `--at-height <AT_HEIGHT>` — Explicit applied height of the complete snapshot (at least 2). Resume transaction confirmation with a selected cut at or after its committed height
+* `--world-snapshot <WORLD_SNAPSHOT>` — Complete canonical `WorldStateSnapshotV1` frame exported at that native cut
+* `--world-schema-hash <WORLD_SCHEMA_HASH>` — Native registry schema hash independently selected with the release that produced the snapshot
+* `--network <NETWORK>` — Source network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--tx-hash <TX_HASH>` — Burn transaction: EVM `transferToTaira` tx hash, or TON `<lt>:<hash>` of the minter transaction that emitted `sccp_transfer_to_taira`
+* `--rpc-url <RPC_URL>` — Comma-separated source endpoints (EVM) or liteservers (TON); omit for the configured list
+
+  Default value: ``
+* `--beacon-url <BEACON_URL>` — Comma-separated Beacon API endpoints (Ethereum); omit for the configured list
+* `--self-claim` — Submit one recipient-owned exempt bundle, including all proof prerequisites
+* `--register-self` — Include bare registration of the configured recipient before its first claim
+* `--max-advances <MAX_ADVANCES>` — Maximum catch-up and backfill instructions in one self-claim; larger catch-up needs a keeper
+
+  Default value: `4`
+
+
+
+## `iroha sccp light-client`
+
+Advance Taira's Ethereum, BSC or TON light client toward the latest finality, one bounded step per run
+
+**Usage:** `iroha sccp light-client <COMMAND>`
+
+###### **Subcommands:**
+
+* `status` — Show one light client, or all installed light clients
+* `advance` — Advance toward finalized source state by one bounded step
+* `backfill` — Prove an older EVM header range against an exact retained checkpoint
+* `bootstrap` — Build or independently verify a Parliament initialization action
+
+
+
+## `iroha sccp light-client status`
+
+Show one light client, or all installed light clients
+
+**Usage:** `iroha sccp light-client status [OPTIONS]`
+
+###### **Options:**
+
+* `--network <NETWORK>` — External source network; omit to list all installed clients
+
+
+
+## `iroha sccp light-client advance`
+
+Advance toward finalized source state by one bounded step
+
+**Usage:** `iroha sccp light-client advance [OPTIONS] --network <NETWORK>`
+
+###### **Options:**
+
+* `--network <NETWORK>` — Source network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--rpc-url <RPC_URL>` — Comma-separated source endpoints (EVM) or liteservers (TON); omit for the configured list
+
+  Default value: ``
+* `--beacon-url <BEACON_URL>` — Comma-separated Beacon API endpoints (Ethereum); omit for the configured list
+
+
+
+## `iroha sccp light-client backfill`
+
+Prove an older EVM header range against an exact retained checkpoint
+
+**Usage:** `iroha sccp light-client backfill [OPTIONS] --network <NETWORK> --first-height <FIRST_HEIGHT> --checkpoint-height <CHECKPOINT_HEIGHT>`
+
+###### **Options:**
+
+* `--network <NETWORK>` — Ethereum or BSC source network
+* `--rpc-url <RPC_URL>` — Comma-separated source execution JSON-RPC endpoints; omit for the configured list
+
+  Default value: ``
+* `--first-height <FIRST_HEIGHT>` — First older source height to authenticate
+* `--checkpoint-height <CHECKPOINT_HEIGHT>` — Exact retained checkpoint height closing this range
+
+
+
+## `iroha sccp light-client bootstrap`
+
+Build or independently verify a Parliament initialization action
+
+**Usage:** `iroha sccp light-client bootstrap <COMMAND>`
+
+###### **Subcommands:**
+
+* `build` — Build an initialization action from finalized source state
+* `verify` — Verify exactly the initialization actions in a JSON action file
+
+
+
+## `iroha sccp light-client bootstrap build`
+
+Build an initialization action from finalized source state
+
+**Usage:** `iroha sccp light-client bootstrap build [OPTIONS] --network <NETWORK>`
+
+###### **Options:**
+
+* `--network <NETWORK>` — Source network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--rpc-url <RPC_URL>` — Comma-separated source endpoints (EVM) or liteservers (TON); omit for the configured list
+
+  Default value: ``
+* `--beacon-url <BEACON_URL>` — Comma-separated Beacon API endpoints (Ethereum); omit for the configured list
+* `--reinitialize` — Re-initialize a frozen or aged light client instead of installing a first one
+
+
+
+## `iroha sccp light-client bootstrap verify`
+
+Verify exactly the initialization actions in a JSON action file
+
+**Usage:** `iroha sccp light-client bootstrap verify --actions <ACTIONS>`
+
+###### **Options:**
+
+* `--actions <ACTIONS>` — JSON array containing only `InitializeLightClient` actions
+
+
+
+## `iroha sccp lc-profile`
+
+Build the Parliament `ActivateLightClientProfile` action of a profile version compiled into this release
+
+**Usage:** `iroha sccp lc-profile --network <NETWORK>`
+
+###### **Options:**
+
+* `--network <NETWORK>` — Source network (`ethereum-mainnet`, `bsc-mainnet`, `ton-mainnet`)
+* `--version <VERSION>` — Compiled profile version to activate (default: the newest compiled version)
 
 
 

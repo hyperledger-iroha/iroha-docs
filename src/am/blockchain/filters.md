@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ማጣሪያዎች {#filters}
 
 ጠባብ የክስተት ዥረቶችን ያጣራል እና ሁኔታዎችን ያነሳሳል። የአሁኑ የከፍተኛ ደረጃ ክስተት ማጣሪያ `EventFilterBox` ነው፣ እሱም ከእነዚህ የክስተት ቤተሰቦች ጋር ሊዛመድ ይችላል።

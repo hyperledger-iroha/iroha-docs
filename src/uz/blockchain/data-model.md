@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/data-model.md
-translation_source_hash: 147562d2286bf11e60a941969e6d52bffc1534c3cfc04d440e0bcf78598a1ca7
+translation_source_hash: fa1bbcbb2bad4e262a17eb04e67a94c3795d726ac52c0ab17370da9ec119e557
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-naming-amendment+reviewed-delta
 ---
-
 # Ma’lumotlar modeli {#data-model}
 
 Iroha reyestr yozuvlarini `World` da saqlaydi. Birinchi reliz ma’lumotlar modeli quyidagi kanonik identifikator va subyektlardan foydalanadi:
@@ -122,9 +121,9 @@ Taxalluslar kanonik reyestr identifikatorlari ustiga qo‘yiladigan, inson o‘q
 | Aktiv ta’rifi | kanonik `AssetDefinitionId` Base58 manzili | `name#domain.dataspace` yoki `name#dataspace` | `AssetDefinitionAlias` aktiv ta’rifiga bog‘lanadi |
 | Shartnoma | kanonik Bech32m `ContractAddress` | `name::domain.dataspace` yoki `name::dataspace` | `ContractAlias` joylashtirilgan shartnoma manziliga bog‘lanadi |
 | Domen nomi | `domain.dataspace` shaklidagi `DomainId` | `domain.dataspace` | SNS `domain` nomlar makonidagi yozuv |
-| Ma’lumotlar makoni nomi | faol Nexus katalogidagi raqamli `DataSpaceId` | `universal`, `paynet` yoki `zk` kabi ma’lumotlar makoni taxallusi | SNS `dataspace` nomlar makoni yozuvlari va faol ma’lumotlar makoni katalogi |
+| Ma’lumotlar makoni nomi | faol SORA Nexus katalogidagi raqamli `DataSpaceId` | `universal` yoki `paynet` kabi ma’lumotlar makoni taxallusi | SNS `dataspace` nomlar makoni yozuvlari va faol ma’lumotlar makoni katalogi |
 
-Hisob taxalluslari foydalanuvchiga ko‘rinadigan hisob nomlaridir. Taxallus global holat indekslari va hisob kalitini almashtirish yozuvlari orqali faol hisob identifikatoriga ishora qilgani uchun kalit almashtirilgandan keyin ham saqlanadi. Hisobning asosiy yorlig‘i uchun `SetPrimaryAccountAlias`, qo‘shimcha asosiy bo‘lmagan taxalluslar uchun `SetAccountAliasBinding`, o‘qish uchun esa `FindAccountByAlias` yoki `FindAliasesByAccountId` dan foydalaning. Hisob taxalluslari odatda `AcquireAccountAliasLease` bilan olinadigan va `RenewAccountAliasLease` bilan yangilanadigan faol SNS hisob-taxallus ijarasini talab qiladi.
+Hisob taxalluslari foydalanuvchiga ko‘rinadigan hisob nomlaridir. Taxallus global holat indekslari va hisob kalitini almashtirish yozuvlari orqali faol hisob identifikatoriga ishora qilgani uchun kalit almashtirilgandan keyin ham saqlanadi. Hisob taxallusi ijarasini olish va taxallusni bog‘lash uchun `EnsureAlias` dan (odatda `app alias setup` rejalashtirish va qo‘llash jarayoni orqali), asosiy yorliqni o‘zgartirish uchun `CompareAndSetPrimaryAccountAlias` dan, taxallusni boshqa hisobga ko‘chirish uchun `RebindAccountAlias` dan, o‘qish uchun esa `FindAccountByAlias` yoki `FindAliasesByAccountId` dan foydalaning. Ijaralarni `RenewAliasLease` bilan yangilang yoki `ConfigureAliasAutoRenew` bilan avtomatik yangilashni sozlang.
 
 Aktiv taxalluslari alohida hisob balanslarini emas, aktiv ta’riflarini nomlaydi. Aktiv va shartnoma taxalluslari o‘qiladigan nomni mavjud kanonik nishonga bevosita bog‘laydi. Aktiv taxalluslari `SetAssetDefinitionAlias` bilan o‘rnatiladi; taxallus nomi bo‘lagi aktiv ta’rifining ko‘rsatiladigan yoki proyeksiya qilingan nomiga mos kelishi shart. Shartnoma taxalluslari `SetContractAlias` bilan o‘rnatiladi; taxallusdagi ma’lumotlar makoni shartnoma manzilida kodlangan ma’lumotlar makoniga mos kelishi kerak. Har ikki bog‘lanish `lease_expiry_ms` ni saqlashi mumkin; imtiyozli muddat ham tugagach ular yechilmaydi va global holat indekslaridan olib tashlanadi.
 

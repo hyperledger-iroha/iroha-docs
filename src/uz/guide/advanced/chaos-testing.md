@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Izanami bilan Chaqiriq Testi {#chaos-testing-with-izanami}
 
 Izanami yuqori darajadagi Iroha ish maydonida chaosnet boshqaruvchisidir. U ishlatiladigan mahalliy Iroha klasterni ishga tushiradi, sozlanadigan ish yukini yuboradi va tanlangan tarmoq birikmalariga xatoliklarni kiritadi, shunda operatorlar tarmoq nazorat ostidagi nosozlikda ham rivojlanishni davom ettirayotganligini tekshirishi mumkin.

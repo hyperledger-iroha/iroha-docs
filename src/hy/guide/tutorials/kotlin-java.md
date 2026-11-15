@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/kotlin-java.md
-translation_source_hash: f2411fec1cc35b1bf7795a7ab5a0eb7a8eb6b60b4799ebf3db47208b902f87e6
+translation_source_hash: 804ef15b3d5ecdfae9fd559d3f312772571938ed9872f4adbd251baa3471e4e2
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Kotlin, Android եւ Java {#kotlin-android-and-java}
 
 Գլխավոր էջ Kotlin SDK է ստանդարտ հաճախորդի փաթեթը JVM եւ Android Կենդանակերպի նշաններ `kotlin/` դաշտում Iroha պահեստային եւ բաժանված է հարթակի այնպես, որ պորտալ կոդը չի ձեռք բերել Android կախվածություն:
@@ -16,7 +15,7 @@ translation_engine: nllb-200-ct2
 | --- | --- | --- |
 |`org.hyperledger.iroha.sdk:core-jvm` |JAR |Pure Kotlin/JVM Norito, տվյալների մոդել, կրիպտո, գործարք, Torii եւ արձանագրության կոդ |
 |`org.hyperledger.iroha.sdk:client-android` |AAR |Android ստեղնաշարի, սարքավորումների հեռաչափության եւ JNI աջակցությամբ հաճախորդների ինտեգրման |
-|`org.hyperledger.iroha.sdk:offline-wallet-android` |AAR |Android անջատված դրամապանակի տրանսպորտ եւ ինտեգրում, որը կառուցվել է `client-android` |
+|`org.hyperledger.iroha.sdk:kagemusha-wallet-android` |AAR |Android անջատված դրամապանակի տրանսպորտ եւ ինտեգրում, որը կառուցվել է `client-android` |
 
 Գործիքները դեռ չեն հրապարակվել Maven Central- ում: Կառուցեք եւ տեղականորեն հրապարակի՛ր դրանք փակված Iroha աղբյուրի վերանայման միջոցով.
 
@@ -37,21 +36,21 @@ dependencies {
     // Android client features:
     // implementation("org.hyperledger.iroha.sdk:client-android:0.1.0")
     // Android offline-wallet features:
-    // implementation("org.hyperledger.iroha.sdk:offline-wallet-android:0.1.0")
+    // implementation("org.hyperledger.iroha.sdk:kagemusha-wallet-android:0.1.0")
 }
 ```
 
-`core-jvm` պարունակում է ոչ Android կախվածություններ: Android Client եւ keystore կոդը `client-android`, եւ օգտագործումը `offline-wallet-android` համար Android-միայն անջատված դրամապանակի եւ JNI հոսում է:
+`core-jvm` պարունակում է ոչ Android կախվածություններ: Android Client եւ keystore կոդը `client-android`, եւ օգտագործումը `kagemusha-wallet-android` համար Android-միայն անջատված դրամապանակի եւ JNI հոսում է:
 
 ## Kotlin եւ Java համատեղելիություն {#kotlin-and-java-compatibility}
 
-Հանրությունը API է Kotlin-առաջին եւ ապահովում է Java interop որտեղ JVM Զանգահարողները դրա կարիքն ունեն: Նման փոփոխություններ են արտացոլվում համապատասխան `java/` իրականացում: Նոր Android ինտեգրումը պետք է սկսվի Kotlin վերեւում գտնվող արվեստագետները:
+Հանրային API-ն Kotlin-ին ուղղված է և Java-ից կանչողների համար կանոնական իրականացումն է. `core-jvm`-ում Java սկզբնական կոդով սպառողների թեստերն այն ուղղակիորեն ստուգում են։ `java/` ծառը պարունակում է կրկնօրինակ իրականացումներ, որոնք աստիճանաբար դուրս են բերվում և տեղափոխվում Kotlin մոդուլներ։ Նոր Android ինտեգրումները պետք է սկսվեն վերևում նշված Kotlin արտեֆակտներից։
 
 Բոլորը Kotlin մոդուլների կիրառման JDK 8 API համատեղելիություն կազմման ժամանակ `-Xjdk-release=8`, չնայած կառուցման գործիքների շղթան ինքն է օգտագործում JDK 21. Մի օգտագործեք JDK 9+ APIs մինետ SDK կոդը:
 
 ## Կառուցեք եւ փորձարկեք {#build-and-test}
 
-Փորձարկել JVM պորտալ փորձարկումները.
+Գործարկեք JVM թեստերը նույն սկզբնական կոդից կառուցված `connect_norito_bridge` գրադարանով `IROHA_NATIVE_LIBRARY_PATH`-ում և `kotlin-fixture-gen`-ով `IROHA_KOTLIN_FIXTURE_GEN_BIN`-ում, ինչպես նկարագրված է Kotlin SDK-ի README-ում. առանց դրանց բնիկ բաղադրիչներից կախված թեստերը ձախողվում են.
 
 ```bash
 cd kotlin
@@ -62,7 +61,7 @@ cd kotlin
 
 ```bash
 ./gradlew :client-android:assembleRelease \
-  :offline-wallet-android:assembleRelease --quiet
+  :kagemusha-wallet-android:assembleRelease --quiet
 ```
 
 ## Ներկայիս ծավալը {#current-coverage}
@@ -73,8 +72,8 @@ Kotlin SDK-ը ներառում է:
 - վարկային հաշիվների եւ ակտիվների հասցեների կառավարումը
 - գործարքների կառուցում, ստորագրում եւ անջատված փաթեթներ
 - Torii HTTP, WebSocket եւ SSE հաճախորդների
-- Multisignature, բաժանորդագրություն, SoraFS, Nexus եւ Connect մոդելներ
+- Multisignature, բաժանորդագրություն, SoraFS, SORA Nexus եւ Connect մոդելներ
 - Android առանցքային պահեստի եւ սարքի հեռաչափության ինտեգրումը
 - Android անջատված QR, մոտակա եւ NFC տրանսպորտներ
 
-Նայեք [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/kotlin/README.md) մոդուլ-հատուկ APIs եւ ճշգրիտ կառուցման հրամանները:
+Նայեք [Kotlin SDK README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/kotlin/README.md) մոդուլ-հատուկ APIs եւ ճշգրիտ կառուցման հրամանները:

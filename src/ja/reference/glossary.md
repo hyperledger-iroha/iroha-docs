@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # 用語集 <!-- omit in toc --> {#glossary}
 
 ここでは、すべての Iroha 関連のエンティティの定義を見つけることができます。
@@ -42,7 +41,7 @@ translation_engine: bing-translator-llm
 
 ## ネットワークピア {#peer}
 
-Iroha のネットワークピアとは、他の Iroha プロセスおよびクライアントアプリケーションが接続できる Iroha プロセスインスタンスを意味します。単一のマシンは複数の Iroha ネットワークピアをホストすることができます。ネットワークのピアは、そのリソースと能力に関しては平等ですが、重要な例外があります：Iroha ネットワークのブートストラップ段階では、ネットワークのピアのうちの一つだけがブロックチェーンのジェネシスブロックを実行します。
+ピアは、他のピアやクライアントアプリケーションからの接続を受け付ける Iroha ノードのプロセスです。1 台のマシンで、設定とストレージを分けて複数のピアを稼働できます。空の状態からコンセンサスを開始する各ピアは、ネットワークの署名済みジェネシスを認証して適用します。認証済みスナップショットから復元したピアは、その状態から処理を再開します。
 
 他のブロックチェーンでは、同じ概念をノードやバリデーターと呼ぶことがあります。
 
@@ -80,7 +79,7 @@ Iroha のネットワークピアとは、他の Iroha プロセスおよびク�
 
 ## ビザンチン障害耐性（BFT） {#byzantine-fault-tolerance-bft}
 
-ネットワーク内に一定割合の悪意ある参加者が含まれていても適切に機能できる特性。Iroha は、そのピアツーピアネットワーク内で最大33%の悪意ある参加者がいても機能することができる。
+ネットワーク内に一定割合の悪意ある参加者が含まれていても適切に機能できる特性。Sumeragi の委員会は正確に `3f + 1` 個のバリデーターで構成され、委員会の 3 分の 1 未満である最大 `f` 個のビザンチンバリデーターを許容する。
 
 ## Iroha コンポーネント {#iroha-components}
 
@@ -92,7 +91,7 @@ Rust は Iroha の機能を含むモジュールです。
 
 ### Torii（ゲート） {#torii-gate}
 
-[ネットワークピア](#peer)のための着信リクエスト処理ロジックを持つモジュールです。これは、着信指示および HTTP クエリを受信、受理、ルーティングするため、および実行時の設定更新を行うために使用されます。
+[ピア](#peer)への受信リクエストを処理するモジュールです。命令、HTTP クエリ、運用担当者による設定の確認に関するリクエストを受信し、受け付け、適切な処理先に振り分けます。
 
 ### Kura（倉庫） {#kura-warehouse}
 
@@ -108,7 +107,7 @@ Rust は Iroha の機能を含むモジュールです。
 
 ### スマートコントラクト {#smart-contracts}
 
-スマートコントラクトは、特定の条件が満たされたときに実行されるブロックチェーンベースのプログラムです。Iroha では、スマートコントラクトは[コア Iroha 命令操作](#core-iroha-special-instructions)を使用して実装されています。
+スマートコントラクトは、特定の条件が満たされたときに実行されるブロックチェーンベースのプログラムです。Iroha 3 では、スマートコントラクトは Kotodama で記述され、IVM バイトコード（`.to`）にコンパイルされます。コントラクトは、ホスト呼び出しを通じて [Iroha 特殊命令](#core-iroha-special-instructions) を発行することで状態を変更します。
 
 ### トリガー {#triggers}
 
@@ -116,11 +115,11 @@ Rust は Iroha の機能を含むモジュールです。
 
 ### バージョン管理 {#versioning}
 
-各リクエストには、それが属する API バージョンのラベルが付けられています。これにより、Iroha クライアント/ピアソフトウェアの異なるバイナリバージョンの組み合わせが相互運用できるようになり、結果として Iroha ネットワークでのソフトウェアアップグレードが可能になります。
+Iroha 3 の初回リリースは、正規のブロック通信形式のバージョンを 1 つだけサポートします。`/v1/api/version` エンドポイントは、ジェネシスの適用後に `SignedBlock::WIRE_VERSION` を返し、適用前には利用不可の応答を返します。これはサポートする通信形式を示すものであり、異なるプロトコルのレイアウト間で互換性を交渉したり、ネットワークのアップグレードを承認したりするものではありません。
 
 ### 聖（ネットワークピア評価システム） {#hijiri-peer-reputation-system}
 
-Iroha の評価システム。これは、実績のある[ネットワークピア](#peer)とのコミュニケーションを優先し、悪意のある[ネットワークピア](#peer)によって引き起こされる被害を減らすことを可能にします。
+Iroha のピアおよびアカウントの評価システム。そのコンセンサスが所有するパラメーターは Hijiri の手数料ポリシーとアカウントリスク記録を保持し、ガバナンス管理下のオブザーバーレジストリが、アカウントのリスクスコアを調整するアカウントアテステーションを発行する。
 
 ## Iroha モジュール {#iroha-modules}
 
@@ -132,7 +131,7 @@ Iroha に付属するスマートコントラクトのライブラリ。これ�
 
 #### ユーティリティ Iroha 操作手順 {#utility-iroha-special-instructions}
 
-この[イシ](#iroha-special-instructions-isi)のセットには、`If`のような論理的指示、`Notify`のような入出力関連、`Sequence`のような構成があります。それらは主に[カスタム指示](#custom-iroha-special-instruction)として使用されます。
+この[isi](#iroha-special-instructions-isi)のセットには、`Log`、`ExecuteTrigger`、`SetParameter`、`Upgrade` など、ドメイン固有のエンティティを変更しない命令が含まれます。Iroha 3 には `If`、`Notify`、`Sequence` の命令はありません。
 
 ### コア Iroha 命令操作 {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ Iroha に付属するスマートコントラクトのライブラリ。これ�
 
 ## リーダー {#leader}
 
-中で Iroha ネットワークでは、ネットワークのピアがランダムに選ばれ、特別な特権が与えられます 次のブロックを形成すること。この特権は、達成するネットワークでは取り消される可能性があります [ビザンチン障害耐性](#byzantine-fault-tolerance-bft) 経由 [ビューの変更](#view-change).
+各ブロック高とビューについて、Sumeragi は委員会、認証済みのリーダー選出シード、確定済みのスキップされたリーダーの履歴から、提案者を決定論的に導出します。[ビュー変更](#view-change)では、同じ[ビザンチン障害耐性](#byzantine-fault-tolerance-bft)の規則に従い、次の適格な委員会メンバーに交代します。

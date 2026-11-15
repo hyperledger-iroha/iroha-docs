@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Разрешения {#permissions}
 
 Аккаунтам необходимы токены разрешений для различных действий в блокчейне, например, для выпуска или уничтожения активов.
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Проверки разрешений {#permission-validators}
 
-Разрешения существуют для того, чтобы только учетные записи с требуемым токеном разрешений могли выполнять защищенное действие. Исполнитель по умолчанию проверяет разрешения во время выполнения инструкций, запросов и выражений.
+Разрешения существуют для того, чтобы только учетные записи с требуемым токеном разрешений могли выполнять защищенное действие. Исполнитель по умолчанию проверяет разрешения во время выполнения транзакций и инструкций, а также при проверке запросов.
 
 Поверхность валидатора по умолчанию сгруппирована по зонам распределённого реестра блокчейна:
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - активы, NFTs и эскроу
 - триггеры
 - роли и разрешения
-- исполнитель/время выполнения, доказательства, мосты и модули SORA/Nexus
+- исполнитель/время выполнения, доказательства, мосты и модули SORA Nexus
 
 Точный список токенов поддерживается источником в [Справочник по токенам разрешений](/ru/reference/permissions.md).
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 Проверки разрешений выполняются активным исполнителем. Исполнитель по умолчанию предоставляет встроенные валидаторы разрешений и определения токенов, и сеть может изменить политику, обновив используемого исполнителя.
 
-Валидаторы возвращают вердикт валидации. Валидатор может разрешить операцию, отклонить её с указанием причины или пропустить, если операция выходит за пределы области действия данного валидатора. Выбранный судья объединяет эти вердикты, чтобы определить, может ли инструкция, запрос или выражение быть выполнено.
+Исполнитель либо разрешает операцию, либо отклоняет её с причиной `ValidationFail`. Отклонённая инструкция приводит к отклонению её транзакции, а отклонённый запрос возвращает ошибку вызывающей стороне.
 
 ## Поддерживаемые запросы {#supported-queries}
 

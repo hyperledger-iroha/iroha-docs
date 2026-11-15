@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Токены разрешений {#permission-tokens}
 
 На этой странице перечислены типы токенов разрешений по умолчанию, доступные в текущей модели данных исполнителя Iroha. Для концептуального руководства по ролям и разрешениям смотрите [Разрешения](/ru/blockchain/permissions.md).
@@ -17,7 +16,6 @@ translation_engine: bing-translator-llm
 |Токен разрешения|Категория|Операция|
 | --- | --- | --- |
 | `CanManagePeers` |сетевой узел|Зарегистрируйте, отмените регистрацию или иным образом управляйте сетевыми узлами.|
-| `CanManageLaneRelayEmergency` |сетевой узел|Управлять аварийными релейными элементами полосы движения.|
 | `CanRegisterDomain` |Домен|Зарегистрировать домен.|
 | `CanUnregisterDomain` |Домен|Отменить регистрацию домена.|
 | `CanModifyDomainMetadata` |Домен|Изменить метаданные домена.|
@@ -29,7 +27,7 @@ translation_engine: bing-translator-llm
 | `CanMintAssetWithDefinition` |Актив|выпускать активы для конкретного определения.|
 | `CanBurnAssetWithDefinition` |Актив|уничтожить активы для конкретного определения.|
 | `CanTransferAssetWithDefinition` |Актив|Передача активов для конкретного определения.|
-| `CanMintAsset` |Актив|выдать конкретный баланс актива.|
+| `CanMintAssetToAccount` |Актив|выдать конкретный баланс актива.|
 | `CanBurnAsset` |Актив|уничтожить конкретный баланс актива.|
 | `CanTransferAsset` |Актив|Перевести баланс конкретного актива.|
 | `CanRegisterNft` | NFT |Зарегистрируйте NFT.|
@@ -44,8 +42,9 @@ translation_engine: bing-translator-llm
 | `CanModifyTrigger` |Спусковой крючок|Изменить конфигурацию триггера.|
 | `CanModifyTriggerMetadata` |Триггер|Изменить метаданные триггера.|
 | `CanUpgradeExecutor` |Исполнитель|Обновите исполнитель времени выполнения программного обеспечения.|
-| `CanRegisterSmartContractCode` |Умный контракт|Зарегистрировать код смарт-контракта.|
-| `CanUseFeeSponsor` | Nexus |Взимать Nexus сборы с указанного спонсорского счёта.|
+| `CanManageSmartContractCode` |Умный контракт|Удалять артефакты кода, на которые нет ссылок, и делегировать точки входа контрактов. Зарегистрированные аккаунты могут создавать проверенные артефакты без этого разрешения.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Управление программами, принадлежащими указанной учётной записи спонсора. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Управление бенефициарами одной конкретной программы спонсора. |
 
 ## Собственность {#ownership}
 

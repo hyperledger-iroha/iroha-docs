@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/python.md
-translation_source_hash: d0ecbade221ceba455730e80c6e12db930c65a4cbcf9e643c1c2d4cba47b0940
+translation_source_hash: b862cfaa66da6dee6a0f9e057f42928270ed1738945b524ef4782ffb7e489f1d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Python {#python}
 
 በላይኛው የስራ ቦታ ውስጥ ያለው Python SDK `iroha-python` ነው። የመጀመሪያው Iroha 3 ልቀት የአሁኑን Torii እና Norito ንጣፎችን ያነጣጠረ ነው። SDK እና ኖድ በተመሳሳይ ተከታታይ ቅርጸት ክለሳ ላይ እንዲቆዩ በውህደትዎ ጥቅም ላይ የዋለውን የጥቅል ስሪት ወይም የምንጭ ክለሳ ይሰኩት።
@@ -46,7 +45,7 @@ PY
 
 ## ፈጣን ጅምር {#quickstart}
 
-ይፋዊ፣ ተነባቢ-ብቻ Taira API የመጨረሻ ነጥቦች ጀምር
+ይፋዊ፣ ተነባቢ-ብቻ Taira የመጨረሻ ነጥቦች ጀምር
 
 ```python
 from iroha_python import (
@@ -57,7 +56,7 @@ client = create_torii_client("https://taira.sora.org")
 
 # Public reads do not need an authority or private key.
 status = client.request_json("GET", "/status", expected_status=(200,))
-accounts = client.list_accounts_typed(limit=5)
+accounts = client.accounts.list(limit=5)
 
 print(status["build"]["version"])
 for account in accounts.items:
@@ -87,7 +86,7 @@ from iroha_python import (
 
 TORII_URL = "https://taira.sora.org"
 TAIRA_NETWORK_ID = NetworkId.parse(
-    "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+    "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 )
 AUTH_TOKEN = None
 
@@ -105,9 +104,9 @@ canonical_auth = ToriiCanonicalRequestAuth(
     signer=alice_pair.sign,
 )
 
-ROSE_DEFINITION = "rose#wonderland"
+ROSE_DEFINITION = "<rose-asset-definition-id>"  # canonical unprefixed Base58
 ROSE_ASSET = "<rose-asset-id>"
-BADGE_NFT = "badge$wonderland"
+BADGE_NFT = "badge$wonderland.universal"
 
 APP_METADATA = {"source": "python-docs"}
 # Torii replaces the empty maxima with an exact, validated live fee quote before
@@ -174,20 +173,16 @@ for limit in fee_quote["intent"]["value"]["charge_limits"]:
 
 ```python
 FEE_ASSET_DEFINITION = "6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-# The faucet returns the concrete account asset ID to check here.
-FEE_ASSET_ID = "<fee-asset-id-from-faucet-response>"
-
 # Fail before submitting if the signer cannot pay gas.
-fee_assets = client.list_account_assets_typed(
-    alice,
+fee_assets = client.accounts.assets(alice).list(
+    filter=F.asset == FEE_ASSET_DEFINITION,
     limit=10,
-    asset_id=FEE_ASSET_ID,
 )
 if not fee_assets.items:
     raise RuntimeError("fund the authority account with the Taira fee asset first")
 ```
 
-የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ለሂሳብ ቼክ ጥቅም ላይ የሚውለውን ኮንክሪት `asset_id` ይመልሳል። የቀጥታ ጥቅሱ `FEE_ASSET_DEFINITION` ክፍያ እንደሚያስከፍል ያረጋግጡ; ግብይቱ ያንን ንብረት በሜታዳታ አይመርጥም።
+የመለያውን ቀሪ ሒሳቦች ፋውሴቱ ገንዘብ በሞላበት የክፍያ ንብረት ፍቺ ያጣሩ። የቀጥታ የክፍያ ግምቱ `FEE_ASSET_DEFINITION` እንደሚያስከፍል ያረጋግጡ፤ ግብይቱ ያንን ንብረት በሜታዳታ አይመርጥም።
 
 የመተግበሪያ ሜታዳታ አማራጭ ነው እና ምንም የክፍያ ትርጓሜ የለውም -
 
@@ -217,10 +212,10 @@ client = create_torii_client("https://taira.sora.org")
 status = client.request_json("GET", "/status", expected_status=(200,))
 parameters = client.request_json("GET", "/v1/parameters", expected_status=(200,))
 
-# Typed helpers parse pagination and records into dataclasses.
-accounts = client.list_accounts_typed(limit=1)
-domains = client.list_domains_typed(limit=1)
-definitions = client.list_asset_definitions_typed(limit=1)
+# Collection pages parse cursors and rows into typed records.
+accounts = client.accounts.list(limit=1, include_total=True)
+domains = client.domains.list(limit=1, include_total=True)
+definitions = client.asset_definitions.list(limit=1, include_total=True)
 
 # These calls inspect live node subsystems without mutating state.
 time_now = client.get_time_now()
@@ -241,10 +236,10 @@ SDK በጣም ለተለመዱት የማስተማሪያ ቤተሰቦች የተተ
 
 |ትምህርት ቤተሰብ|Python ፊት|
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|ይመዝገቡ|`register_account`፣ `register_asset_definition_numeric`፣ `register_rwa`፣ `register_time_trigger`፣ `register_precommit_trigger`; `register_domain` ለጀነሲስ/ቡት ማሰሪያ መሳሪያ የተያዘ ነው።|
+|ይመዝገቡ|`register_account`፣ `register_asset_definition`፣ `register_rwa`፣ `register_time_trigger`፣ `register_precommit_trigger`; `register_domain` ለጀነሲስ/ቡት ማሰሪያ መሳሪያ የተያዘ ነው።|
 |ከምዝገባ ይውጡ|`unregister_trigger`; ለሌሎች ተለዋጮች `Instruction.from_json` ተጠቀም|
-|ሚንት / ማቃጠል|`mint_asset_numeric`፣ `burn_asset_numeric`፣ `mint_trigger_repetitions`፣ `burn_trigger_repetitions`|
-|ማስተላለፍ|`transfer_asset_numeric`፣ `transfer_domain`፣ `transfer_asset_definition`፣ `transfer_nft`፣ `transfer_rwa`፣ `force_transfer_rwa`|
+|ሚንት / ማቃጠል|`mint_asset_quantity`፣ `burn_asset_quantity`፣ `mint_trigger_repetitions`፣ `burn_trigger_repetitions`|
+|ማስተላለፍ|`transfer_asset_quantity`፣ `transfer_domain`፣ `transfer_asset_definition`፣ `transfer_nft`፣ `transfer_rwa`፣ `force_transfer_rwa`|
 |ሜታዳታ እና መቆጣጠሪያዎች|`set_account_key_value`፣ `remove_account_key_value`፣ `set_rwa_controls`፣ `set_rwa_key_value`፣ `remove_rwa_key_value`|
 |RWA የሕይወት ዑደት|`merge_rwas`፣ `redeem_rwa`፣ `freeze_rwa`፣ `unfreeze_rwa`፣ `hold_rwa`፣ `release_rwa`|
 |ExecuteTrigger|`execute_trigger`|
@@ -252,7 +247,7 @@ SDK በጣም ለተለመዱት የማስተማሪያ ቤተሰቦች የተተ
 |ቤተኛ የንብረት መቆለፊያዎች|`open_asset_lock`፣ `drawdown_asset_lock`፣ `cancel_asset_lock`፣ `expire_asset_lock`፣ እና ደንበኛ `*_and_wait` ረዳቶች|
 |ስጦታ/መሻር፣ SetParameter፣ ምዝግብ ማስታወሻ፣ ብጁ፣ አሻሽል፣ እና ብዙም ያልተለመዱ የመመዝገቢያ/መመዝገቢያ ልዩነቶች|`Instruction.from_json` ወይም `TransactionBuilder.add_instruction_json` ከነጠላ ፕሮቶኮል-መደበኛ `InstructionBox` JSON ጋር|
 
-ለ escrow አይነት ሁኔታዊ ክፍያዎች፣ [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#python-asset-locks) ይመልከቱ። Python በአሁኑ ጊዜ ለአጠቃላይ የንብረት መቆለፊያዎች አንደኛ ደረጃ ረዳቶችን ይሰጣል። የገበያ ቦታ እና ማንነታቸው ያልታወቁ የዋስትና ረዳቶች ገና አንደኛ ደረጃ Python ዘዴዎች አይደሉም።.
+ለ escrow አይነት ሁኔታዊ ክፍያዎች፣ [ቤተኛ ንብረት Escrow](/am/blockchain/escrow.md#python-asset-locks) ይመልከቱ። Python በአሁኑ ጊዜ ለአጠቃላይ የንብረት መቆለፊያዎች አንደኛ ደረጃ ረዳቶችን ይሰጣል፤ የገበያ ቦታ እና ሁኔታዊ escrow ረዳቶች ገና አንደኛ ደረጃ Python ዘዴዎች አይደሉም።
 
 ### ጎራዎችን ያዋቅሩ እና መለያዎችን እና ንብረቶችን ያስመዝግቡ {#set-up-domains-then-register-accounts-and-assets}
 
@@ -265,12 +260,13 @@ SDK በጣም ለተለመዱት የማስተማሪያ ቤተሰቦች የተተ
 submit(
     Instruction.register_account(alice, {"display_name": "Alice"}),
     Instruction.register_account(bob, {"display_name": "Bob"}),
-    Instruction.register_asset_definition_numeric(
+    Instruction.register_asset_definition(
         ROSE_DEFINITION,
-        owner=alice,
+        owning_domain=None,
+        balance_scope_policy="Global",
+        name="Rose",
         scale=2,
         mintable="Infinitely",
-        confidential_policy="TransparentOnly",
         metadata={"symbol": "ROS"},
     ),
 )
@@ -284,13 +280,13 @@ submit(
 
 ```python
 # Increase the account's asset balance.
-submit(Instruction.mint_asset_numeric(ROSE_ASSET, "100.00"))
+submit(Instruction.mint_asset_quantity(ROSE_ASSET, "100.00"))
 
 # Move part of the balance to another account.
-submit(Instruction.transfer_asset_numeric(ROSE_ASSET, "25.50", bob))
+submit(Instruction.transfer_asset_quantity(ROSE_ASSET, "25.50", bob))
 
 # Decrease the remaining balance.
-submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
+submit(Instruction.burn_asset_quantity(ROSE_ASSET, "10.00"))
 ```
 
 ### የባለቤትነት መብትን ያስተላልፉ {#transfer-ownership}
@@ -299,7 +295,7 @@ submit(Instruction.burn_asset_numeric(ROSE_ASSET, "10.00"))
 
 ```python
 # The first argument is the current owner; the last is the new owner.
-submit(Instruction.transfer_domain(alice, "wonderland", bob))
+submit(Instruction.transfer_domain(alice, "wonderland.universal", bob))
 submit(Instruction.transfer_asset_definition(alice, ROSE_DEFINITION, bob))
 submit(Instruction.transfer_nft(alice, BADGE_NFT, bob))
 ```
@@ -381,7 +377,7 @@ draft.register_rwa(
 የምዝገባ ግብይቱ ከተጠናቀቀ በኋላ፣ የተፈጠረውን መታወቂያ ለማግኘት `FindRwas`፣ `/v1/rwas`፣ RWA ክስተት ወይም የአሳሽ መንገድ ተዘጋጅቷል።
 
 ```python
-page = client.list_rwas_typed(limit=20, offset=0)
+page = client.rwas.list(limit=20)
 
 for lot in page.items:
     print(lot.id)
@@ -461,11 +457,11 @@ draft.force_transfer_rwa(
 
 ### ቀስቅሴዎች {#triggers}
 
-አስፈፃሚው ሌላ የመመሪያ ቅደም ተከተል ሲሆን ቀስቅሴ ምዝገባ ረዳቶችን ይጠቀሙ -
+የሚፈጸመው ይዘት ሌላ የመመሪያ ቅደም ተከተል ሲሆን የቀስቅሴ ምዝገባ ረዳቶችን ይጠቀሙ፦
 
 ```python
 # The trigger executable is just another instruction payload.
-reward = Instruction.mint_asset_numeric(ROSE_ASSET, "1")
+reward = Instruction.mint_asset_quantity(ROSE_ASSET, "1")
 
 # Time triggers run on a schedule once registered.
 register_hourly = Instruction.register_time_trigger(
@@ -620,7 +616,7 @@ submit(instruction)
 
 ```python
 # Round trips are useful for validating fixtures generated by another tool.
-payload = Instruction.mint_asset_numeric(ROSE_ASSET, "1").to_json()
+payload = Instruction.mint_asset_quantity(ROSE_ASSET, "1").to_json()
 same_instruction = Instruction.from_json(payload)
 print(same_instruction.as_dict())
 ```
@@ -699,17 +695,17 @@ envelope, fee_quote = draft.quote_and_sign(client, alice_pair.private_key)
 የተተየቡ መጠይቅ ረዳቶች ከጥሬ JSON መዝገበ-ቃላት ይልቅ የውሂብ ክፍሎችን ይመልሳሉ። ለመጀመር ቀላሉ መንገድ ናቸው ምክንያቱም SDK ገጽ አወጣጥ እና የጋራ መዝገብ መስኮችን ለእርስዎ ስለሚተነትኑ -
 
 ```python
-# Typed pages expose `.items` plus pagination metadata such as `.total`.
-accounts = client.list_accounts_typed(limit=25, sort="id")
+# Collection pages expose `.items`, `.next_cursor`, and `.total` (with include_total=True).
+accounts = client.accounts.list(limit=25, sort="id")
 for account in accounts.items:
     print(account.id, account.metadata)
 
-domains = client.list_domains_typed(limit=10)
-definitions = client.list_asset_definitions_typed(limit=10)
+domains = client.domains.list(limit=10, include_total=True)
+definitions = client.asset_definitions.list(limit=10, include_total=True)
 print(domains.total, definitions.total)
 ```
 
-Torii API የመጨረሻ ነጥብ ገና የተተየበ የሶፍትዌር አስማሚ ከሌለው አጠቃላይ የጥያቄ ረዳቶችን ይጠቀሙ -
+የTorii መገናኛ ነጥብ ገና አይነት ያለው መጠቅለያ ካልኖረው፣ አጠቃላይ የጥያቄ ረዳቶችን ይጠቀሙ:
 
 ```python
 from urllib.request import Request, urlopen
@@ -724,13 +720,13 @@ with urlopen(request, timeout=5) as response:
     metrics = response.read().decode("utf-8")
 ```
 
-የመለያ ክምችት ረዳቶች በ SDK መደበኛነት ተቀባይነት ያለው መለያ መለያ ያስፈልጋቸዋል። ነጠላ ፕሮቶኮል-መደበኛ I105 መለያ መታወቂያዎችን ወይም በሰንሰለት ላይ ያሉ ተለዋጭ ስሞችን ይጠቀሙ; የብሎክ አሳሽ ወይም ጥሬ API የመጨረሻ ነጥብ SDK ውድቅ ያደረገውን መታወቂያ ከመለሰ፣ እነዚህን ረዳቶች ከመደወልዎ በፊት ወደ አንድ ፕሮቶኮል-መደበኛ መለያ መታወቂያ ይፍቱት።
+የመለያ ዝርዝር ረዳቶች በSDK መደበኛ ቅርጽ አድራጊ ተቀባይነት ያለውን የመለያ መታወቂያ ይፈልጋሉ። ቀኖናዊ I105 የመለያ IDዎች ወይም በሰንሰለቱ ላይ ያሉ ተለዋጭ ስሞችን ይጠቀሙ፤ የብሎክ አሳሽ ወይም ጥሬ መገናኛ ነጥብ SDK የማይቀበለውን ID ከመለሰ፣ ረዳቶቹን ከመጥራትዎ በፊት ወደ ቀኖናዊ የመለያ ID ይፍቱት:
 
 ```python
 # These helpers expect a canonical account ID or an alias the SDK can normalize.
-assets = client.list_account_assets_typed(alice, limit=10)
-transactions = client.query_account_transactions_typed(alice, limit=5)
-permissions = client.list_account_permissions_typed(alice, limit=20)
+assets = client.accounts.assets(alice).list(limit=10)
+transactions = client.accounts.transactions(alice).list(limit=5)
+permissions = client.accounts.permissions(alice).list(limit=20)
 
 print(len(assets.items), len(transactions.items), len(permissions.items))
 ```
@@ -740,13 +736,10 @@ print(len(assets.items), len(transactions.items), len(permissions.items))
 የዥረት ረዳቶች JSON ጭነቶችን በነባሪነት ይፈታሉ። የ SSE የክስተት ስም፣ መታወቂያ፣ ፍንጭ እንደገና ይሞክሩ እና ጥሬ ጭነት ሲፈልጉ `with_metadata=True`ን ይለፉ። ነጠላ ፕሮቶኮል-ስታንዳርድ `/v1/events/sse` ምግብ የቀጥታ ስርጭት ብቻ ነው - ምንም የመልሶ ማጫወት መታወቂያዎችን አያወጣም እና ምንም የመልሶ ማጫወት ምዝግብ ማስታወሻ አይይዝም፣ ስለዚህ እነዚህ ረዳቶች ምንም ጠቋሚ ወይም ከቆመበት ቀጥል ክርክር አይሰጡም። እንደገና መገናኘት አዲስ የደንበኝነት ምዝገባ ይጀምራል እና ክፍተት ሊኖረው ይችላል። ሙሉው የብሎክቼይን መዝገብ ታሪክ ሲያስፈልግ `/v1/blocks/stream`ን ከሚታወቅ ከፍታ ይጠቀሙ። እነዚህ ምሳሌዎች የቀጥታ ክስተቶችን ይጠብቃሉ፣ ስለዚህ ዥረቱ ከነቃ እና ንቁ በሆነበት ኖድ ላይ ያሂዷቸው።
 
 ```python
-from iroha_python import DataEventFilter, SseStreamError
+from iroha_python import F, SseStreamError
 
-# Narrow the stream to proof events with the expected backend and proof hash.
-proof_filter = DataEventFilter.proof(
-    backend="halo2/ipa",
-    proof_hash_hex="deadbeef" * 8,
-)
+# Narrow the stream to proof events with the expected backend and call hash.
+proof_filter = (F.proof_backend == "halo2/ipa") & (F.proof_call_hash == "deadbeef" * 8)
 
 try:
     for event in client.stream_events(filter=proof_filter, with_metadata=True):
@@ -755,11 +748,7 @@ try:
 except SseStreamError as error:
     print(error.code, error.dropped_messages, error.replay_available)
 
-for event in client.stream_trigger_events(trigger_id="hourly_reward"):
-    print(event)
-    break
-
-for tx_event in client.stream_pipeline_transactions(status="Queued"):
+for tx_event in client.stream_events(filter=F.tx_status == "Queued"):
     print(tx_event)
     break
 ```
@@ -1026,26 +1015,6 @@ client = create_torii_client(
 )
 ```
 
-## የካጌሙሻ ዝግጁነት {#kagemusha-readiness}
-
-የ Python SDK የአሁኑን JSON ዝግጁነት መንገድ በአጠቃላይ Torii ጥያቄ ረዳት በኩል መጠየቅ ይችላል -
-
-```python
-ASSET_DEFINITION_ID = "<canonical_asset_definition_id>"
-
-readiness = client.request_json(
-    "GET",
-    "/v1/offline/readiness",
-    params={"asset_definition_id": ASSET_DEFINITION_ID},
-    headers={"Accept": "application/json"},
-    expected_status=(200,),
-)
-print(readiness["ready"])
-print(readiness["blockers"])
-```
-
-Python የተተየቡ የካጌሙሻ መሙያ ወይም መቤዠት ማህደር ግንበኞችን አያጋልጥም።. ነጠላ ፕሮቶኮል-ስታንዳርድ V4 ማህደሮችን ለመገንባት የተተየበ Swift ወይም JVM የኪስ ቦርሳ ይጠቀሙ፣ ከዚያ በሚደገፍ የKagemusha Torii ደንበኛ በኩል ያስገቡ እና ይመርጧቸው።
-
 ## የደንበኝነት ምዝገባዎች {#subscriptions}
 
 የደንበኝነት ምዝገባ ንባቦች እና ረቂቅ ግንበኞች በ`iroha_python.ToriiClient` ጥቅም ላይ ከሚውለው የጋራ Torii ደንበኛ ይወርሳሉ። እያንዳንዱ ሚውቴሽን ከውሂብ አካል ጋር በተያያዘ ነጠላ ይቀበላል ፕሮቶኮል-መደበኛ መለያ ፊርማ እና ያልተፈረመ የግብይት ረቂቅ ይመልሳል። Torii የግል ቁልፍን በጭራሽ አይቀበልም እና ረቂቁን አያቀርብልዎትም።.
@@ -1282,8 +1251,7 @@ print(status["blocks"], status["txs_approved"])
 
 # Sumeragi and time-status endpoints use the operator client configured above.
 sumeragi = operator_client.get_sumeragi_status_typed()
-diagnostics = operator_client.get_sumeragi_diagnostics_typed()
-print(sumeragi.last_committed_height, diagnostics.tx_queue_saturated)
+print(sumeragi.committed_height, sumeragi.applied_height)
 
 time_now = client.get_time_now()
 time_status = operator_client.get_time_status()
@@ -1300,22 +1268,20 @@ if connect_status is not None:
 
 ## SoraFS፣ UAID እና Kaigi ረዳቶች {#sorafs-uaid-and-kaigi-helpers}
 
-እነዚህ ረዳቶች የሚገኙት የዒላማው ኖድ ተጓዳኝ Nexus/SORA API የመጨረሻ ነጥቦችን ሲያጋልጥ ነው። ባዶ ዝርዝሮችን እንደ ትክክለኛ ምላሽ ይያዙ ይፋዊ Taira መንገዱ ያለ ውሂብ ሊነቃ ይችላል ቴክኒካል ማኒፌስት ወይም UAID።
+እነዚህ ረዳቶች የታለመው ኖድ ተዛማጅ የSORA Nexus መገናኛ ነጥቦችን ሲያቀርብ ይገኛሉ። ባዶ ዝርዝሮችን እንደ ትክክለኛ ምላሽ ይቁጠሩ፤ ክፍቱ Taira መንገዱን አንቅቶ ለምሳሌው ማኒፌስት ወይም UAID ውሂብ ላይኖረው ይችላል።
 
 ```python
 # SoraFS status queries are reads scoped by manifest and status.
 por_status = client.get_sorafs_por_status(manifest_hex="ab" * 32, status="verified")
 print(len(por_status))
 
-# UAID helpers inspect wallet/data-space bindings for one identifier.
-uaid = "aabb" * 16
+# UAID helpers inspect wallet and data space bindings for one identifier.
+uaid = "uaid:" + "aabb" * 16
 bindings = client.get_uaid_bindings_typed(uaid)
-manifests = client.list_space_directory_manifests_typed(
-    uaid,
-    dataspace=11,
-    status="active",
+manifests = client.uaid_manifests(uaid).list(
+    filter=(F.dataspace_id == 11) & (F.status == "Active"),
 )
-print(len(bindings.dataspaces), len(manifests.manifests))
+print(len(bindings.dataspaces), len(manifests.items))
 
 # Kaigi relay health is an operator snapshot, even though it is read-only.
 health = operator_client.get_kaigi_relays_health_typed()
@@ -1324,7 +1290,7 @@ print(health.healthy_total, health.failovers_total)
 
 ## Norito RPC እና GPU ረዳቶች {#norito-rpc-and-gpu-helpers}
 
-አስቀድመው Norito ባይት ሲኖርዎት እና ሁለትዮሽ Torii API የመጨረሻ ነጥብ መጥራት ሲፈልጉ `NoritoRpcClient` ይጠቀሙ። ምሳሌው ከቀዳሚው የግብይት አብነት የተፈረመ የውሂብ መያዣ ያስፈልገዋል -
+አስቀድመው የNorito ባይቶች ካሉዎት እና ሁለትዮሽ የTorii መገናኛ ነጥብ መጥራት ከፈለጉ `NoritoRpcClient` ይጠቀሙ። ምሳሌው ከቀደመ የግብይት አብነት የመጣ የተፈረመ ኤንቨሎፕ ይፈልጋል:
 
 ```python
 from iroha_python import NoritoRpcClient, NoritoRpcConfig
@@ -1354,13 +1320,13 @@ if cuda_available():
 Python SDK አስቀድሞ ረዳቶችን ያካትታል -
 
 - Torii ማስረከቢያ፣ ሁኔታ፣ መጠይቅ እና የአስተዳዳሪ ፍሰቶች
-- የተተየቡ መመሪያ ገንቢዎች ለጋራ ISI እና ጎራ-ተኮር ቅጥያዎች
+- ለተለመዱ ISI እና ለጎራ-ተኮር ቅጥያዎች በውሂብ ዓይነቶች የተወሰኑ የመመሪያ ገንቢዎች
 - የግብይት ረቂቆች፣ ቴክኒካዊ መግለጫዎች፣ ፊርማ እና የተፈረመ የግብይት ውሂብ መያዣ የስራ ፍሰቶች
 - የቀጥታ ክስተት ዥረቶች እና የተተየቡ ማጣሪያዎች; የተጠናቀቁ የብሎክ ዥረቶች የተሟላ ታሪክ ይሰጣሉ
-- አጠቃላይ የ Kagemusha ዝግጁነት መዳረሻ እና Torii የደንበኝነት ምዝገባ ረዳቶች; የተተየቡ መሙያ እና መቤዠት ግንበኞች አይጋለጡም
+- የTorii ደንበኝነት ንባቦች እና ያልተፈረሙ የግብይት ረቂቅ ገንቢዎች
 - የመለያ አድራሻ፣ ሁሉም-አልጎሪዝም ፊርማ ረዳቶች፣ ባለብዙ ሃሽ ክብ ጉዞዎች፣ SM2፣ GOST፣ ML-DSA፣ BLS እና ሚስጥራዊ ቁልፍ አያያዝ
 - URIs ን፣ ክፍለ-ጊዜዎችን፣ ክፈፎችን፣ ምስጠራ ረዳቶችን እና የመመዝገቢያ አስተዳዳሪን ያገናኙ
-- አስተዳደር፣ የሶፍትዌር ማስፈጸሚያ አካባቢ ማሻሻል፣ Sumeragi፣ ኖድ-አስተዳዳሪ፣ SoraFS፣ UAID እና Kaigi API የመጨረሻ ነጥብ ሶፍትዌር አስማሚዎች ኖድ እነዚያን ባህሪያት የሚያጋልጥባቸው
+- አስተዳደር፣ የሶፍትዌር ማስፈጸሚያ አካባቢ ማሻሻል፣ Sumeragi፣ ኖድ-አስተዳዳሪ፣ SoraFS፣ UAID እና Kaigi የመጨረሻ ነጥብ ሶፍትዌር አስማሚዎች ኖድ እነዚያን ባህሪያት የሚያጋልጥባቸው
 
 ## የላይኛው ማጣቀሻዎች {#upstream-references}
 

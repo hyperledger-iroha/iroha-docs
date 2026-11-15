@@ -5,7 +5,6 @@ translation_source_hash: 423f8c17d5d7072d1733ccac2337d70243f6e725f7786e9f2fc7052
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 数据建模 {#data-modeling}
 
 账本数据应该围绕所有权,转移行为,许可界限和查询模式进行模拟.选择可以支持可审计性和确定性执行的最小的链上表示.

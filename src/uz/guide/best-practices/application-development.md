@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # Ilovalar rivojlanishi {#application-development}
 
 Iroha ilovalari tranzaksiya xatti-harakatini aniqlashtirishi, imzolash holatini saqlab qolishi va so'rovlar va hodisalarni ishlab chiqarishda kuzatish oson bo'lgan tarzda ishlatishi kerak.
@@ -45,7 +44,7 @@ Qarang [So'rovlar](/uz/blockchain/queries.md), [Havf-havoyatlar](/uz/blockchain/
 - Xususiy kalitlarni, hisobni tiklash materialini, API tokenlarini yoki yo'naltirilgan autentifikatsiya sarlavhalarini ko'rsatkichlarga qo'ymang.
 - Har qanday agent jonli testnet tranzaksiyasini taqdim etishdan oldin muomala rejasi talab qilinadi. rejada tarmoq, vakolat, ko'rsatmalar, to'lov aktivlari, parvozdan oldingi o'qishlar, kutilayotgan natija va qayta urinish xatti-harakatlari nomlanishi kerak.
 
-Taira MCP ish oqimi uchun [ni ko'rish: SORA 3: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Taira MCP ish jarayoni uchun [SORA Nexus ustida ishlab chiqish: Taira va Minamoto](/uz/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents) bo‘limiga qarang.
 
 ## SDK gigiyena {#sdk-hygiene}
 

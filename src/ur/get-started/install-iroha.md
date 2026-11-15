@@ -1,20 +1,21 @@
 ---
 translation_locale: ur
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha 3 انسٹال کریں {#install-iroha-3}
 
 اس صفحے میں Iroha 3 ٹول چین اور بائنری کے لئے موجودہ تنصیب ورک فلو کا احاطہ کیا گیا ہے جو `hyperledger-iroha/iroha` اپ اسٹریم ورک اسپیس کا استعمال کرتے ہوئے ہے۔
+
+میزبان پر براہ راست تنصیب کے لیے نیچے دی گئی Rust کی ہدایات پر عمل کریں۔ Docker کے ذریعے چار توثیقی نوڈ چلانے کے لیے [Iroha 3 چلانے کی ہدایات](/ur/get-started/launch-iroha.md) سے شروع کریں۔
 
 ## 1۔ ضروریات {#_1-prerequisites}
 
 پہلے ان کو انسٹال کریں:
 
-- [rustup](https://www.rust-lang.org/tools/install)، تاکہ بند `rust-toolchain.toml` ٹولچین (`1.93.1`) خود بخود نصب کیا جائے۔
+- [rustup](https://www.rust-lang.org/tools/install)، تاکہ بند `rust-toolchain.toml` ٹولچین (`1.99.1`) خود بخود نصب کیا جائے۔
 - `git`
 - اختیاری طور پر، Docker اور Docker Compose کے لئے مقامی کثیر نیٹ ورک نوڈ تیز رفتار شروع
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 موجودہ ماخذ کی حمایت یافتہ لوکل نیٹ فلو Kagami کے ذریعہ تیار کیا جاتا ہے۔ اس میں نیٹ ورک نوڈ ترتیب ، جینیس آرٹیفیکٹس ، کلائنٹ ترتیب ، مددگار اسکرپٹ اور ایک اختیاری کمپوز فائل لکھی جاتی ہے جو چیک آؤٹ کوڈ سے ملتی ہے:
 
-- `kagami localnet` مقامی نیٹ ورک نوڈ اسکرپٹ کے لئے
+- زیرِ انتظام مقامی نیٹ ورک کے لیے `kagami localnet up`، جسے Kagami شروع کرتا اور اس کی نگرانی کرتا ہے
+- نَیٹو مقامی پیئر اسکرپٹس کے لیے `kagami localnet generate`
 - `kagami docker` کے لئے Docker Compose مقامی نیٹ ورک کی ڈائرکٹری سے پیدا
 
 [لانچنگ Iroha 3](/ur/get-started/launch-iroha.md) کے ساتھ جاری رکھیں.

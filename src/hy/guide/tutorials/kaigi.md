@@ -1,7 +1,7 @@
 ---
 translation_locale: hy
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Մաքուրը SDK փաթեթը չի պարունակում բեռի աշխատանքային տարածքը, որը պահանջվում է `npm run build:native`, այնպես որ վերակառուցել այն Iroha աղբյուրի ստուգումից հետո SDK Փոփոխությունները: SDK աղբյուրը կոշտացած է [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+Մաքուրը SDK փաթեթը չի պարունակում բեռի աշխատանքային տարածքը, որը պահանջվում է `npm run build:native`, այնպես որ վերակառուցել այն Iroha աղբյուրի ստուգումից հետո SDK Փոփոխությունները: SDK աղբյուրը կոշտացած է [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## Փորձեք վերջնական կետը {#check-the-endpoint}
 
@@ -201,7 +201,7 @@ iroha://kaigi/join?call=kaigi.universal%3Akaigi-<meeting>&secret=<base64url>
 
 Հավելվածի մեջ ընկած հետընթացը նույնն է, ինչպես `#/kaigi` հարցումը: Թողեք կրկնակի, անհայտ, դատարկ, պաշված կամ ոչ կանոնիկ պարամետրեր: Դեմոն սահմանում է հանդիպման ժամկետը 24 ժամից հետո `scheduledStartMs`:
 
-Հրավերի գաղտնիքը վերծանում է host-ի offer metadata-ն։ Դա bearer secret է. մի՛ գրանցեք այն, մի՛ ներառեք analytics-ում և մի՛ պահեք գրանցամատյանի metadata-ում։ Host-ի առանձին X25519 keypair-ը վերծանում է guest response signaling-ը և պետք է մնա host session-ի local միջավայրում։
+Հրավերի գաղտնիքը վերծանում է հյուրընկալողի առաջարկի մետատվյալները։ Դա տիրապետողին իրավունք տվող գաղտնիք է․ մի գրանցեք այն մատյանում, մի ուղարկեք վերլուծական համակարգեր և մի պահեք գրանցամատյանի մետատվյալներում։ Հյուրընկալողի առանձին X25519 բանալիների զույգը վերծանում է հյուրերի պատասխանի ազդանշանները և պետք է մնա միայն հյուրընկալողի նստաշրջանի տեղական միջավայրում։
 
 ## Հանդիպման կենսաշրջան {#meeting-lifecycle}
 

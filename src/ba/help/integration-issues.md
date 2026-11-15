@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Интеграцияға бәйле проблемаларҙы хәл итеү {#troubleshooting-integration-issues}
 
 Был бүлектә Iroha 3 интеграцияһы өсөн проблемаларҙы хәл итеү буйынса кәңәштәр бирелә. Әгәр һеҙ кисергән мәсьәлә бында һүрәтләнмәгән икән, беҙгә [Telegram](https://t.me/hyperledgeriroha) аша мөрәжәғәт итегеҙ.
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI тикшереүҙәр өсөн, шул уҡ файлды асыҡтан-асыҡ тапшырығыҙ:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Әгәр пирҙар килеп инһә Docker йәки Kubernetes, клиент процесы менән барып етә торған хост йәки сервис адресын ҡулланырға. `127.0.0.1` контейнер эсендә - хост машина түгел.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - клиент конфигурацияһындағы иҫәп-хисап асыҡ асҡысы ҡулланма өсөн ҡулланылған шәхси асҡыс менән тап килмәй.
 - иҫәп яҙмаһы генезиста йәки элекке транзакция менән теркәлмәгән
 - аккаунтҡа идара итеү ваҡытын раҫлаусы талап ителгән рөхсәт билдәһе йәки роле юҡ
-- ID домен үҙенең мәғлүмәт киңлеге квалификацияһын юғалтҡан, мәҫәлән, `domain.dataspace`
+- домен идентификаторында, мәҫәлән, `domain.dataspace` формаһындағы мәғлүмәт киңлеге аныҡлауы етмәй
 
 `--output-format text` ҡағиҙәләрен дебэглағанда CLI ҡушымтаһын ҡулланығыҙ, шуға күрә хаталарҙы уҡыу еңелерәк:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Һорауҙар буш һөҙөмтәләр бирә {#queries-return-empty-results}
@@ -65,12 +64,12 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 Домен тикшереүҙәр өсөн иң киң һорау менән башларға кәрәк:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Ваҡиғалар йәки блоктар ағымдары иртәрәк туҡтай {#event-or-block-streams-stop-early}
 
-Блок һәм ваҡиға ағымдары миҫалдар Torii ағыу йомғаҡ пункттарына таяна. Peer һаман да эшләй икәнен тикшерегеҙ, һуңынан ваҡыт үтеү менән һынағыҙ:
+Блок һәм ваҡиға ағымдары миҫалдары Torii-ның ағым нөктәләренә таяна. Тиңдәштең әле лә эшләүен тикшерегеҙ, һуңынан ваҡыт сиге ҡуйып һынағыҙ:
 
 ```bash
 cargo run --bin iroha -- --config ./localnet/client.toml ledger blocks 1 --timeout 30s

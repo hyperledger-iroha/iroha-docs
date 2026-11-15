@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የተኳኋኝነት ማትሪክስ {#compatibility-matrix}
 
 የተኳኋኝነት ማትሪክስ መስቀልን ያሳያል-SDK ለአሁኑ ሁኔታ ሽፋን Iroha 3 ሰነዶች ተዘጋጅተዋል. በነባሪነት፣ ገጹ ከተሰካው የተፈጠረውን የተጠቀለለ ነጥብ-በጊዜ ውሂብ እይታ ይጭናል [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) ክለሳ.

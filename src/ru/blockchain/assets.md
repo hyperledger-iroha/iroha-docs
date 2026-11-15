@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /blockchain/assets.md
-translation_source_hash: c80e6025007653b355d373394465d04adefc1221c8f34d9008f1c9cbabd3dc40
+translation_source_hash: f5f0eb99e76287db695cc21b8580fd2a9b4dc2a989237c1a1d3d7333c14561ce
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Активы {#assets}
 
 Актив Iroha — это числовой баланс, хранящийся на счете. Каждый конкретный баланс указывает на `AssetDefinition`, а определение описывает, как этот актив может быть назван, выпущен, отображен и разделен.
@@ -22,7 +21,8 @@ translation_engine: bing-translator-llm
 - `mintable`: политика выпуска активов
 - `logo`: необязательно `SoraFS` URI
 - `metadata`: произвольные метаданные в формате ключ-значение
-- `balance_scope_policy`: являются ли балансы глобальными или ограниченными пространством данных
+- `balance_scope_policy`: являются ли балансы глобальными или ограничены пространством данных
+- `owning_domain`: домен-владелец определения, принадлежащего домену; отсутствует у определений, зарегистрированных непосредственно в пространстве данных
 - `owned_by`: аккаунт, который зарегистрировал или владеет определением
 - `total_quantity`: общий выданный объём
 - `confidential_policy`: политика для операций с защищёнными активами
@@ -34,9 +34,9 @@ translation_engine: bing-translator-llm
 В `Asset` содержится:
 
 - `id`: `AssetId`, который объединяет определение актива, счет держателя и необязательный диапазон баланса актива
-- `value`: `Numeric` баланс
+- `value`: `Quantity` баланс
 
-Аккаунт держателя является каноническим и бездоменным. Определение актива может быть проецировано в домен с квалификацией пространства данных, например `payments.universal`.
+Учётная запись держателя канонична и не содержит домен. Определение актива может быть представлено в домене, имя которого дополнено пространством данных, например `payments.universal`.
 
 ## Политика выпуска активов {#mintability}
 
@@ -56,9 +56,9 @@ translation_engine: bing-translator-llm
 `balance_scope_policy` управляет тем, как распределяются балансы:
 
 - `Global`: одна балансная партия на каждый счёт и определение актива
-- `DataspaceRestricted`: балансы разделены по контексту пространства данных
+- `DataspaceRestricted`: балансы разделяются по контексту пространства данных
 
-Баланс, ограниченный области данных, полезен, когда одно и то же определение актива используется в нескольких областях данных Nexus, но балансы должны оставаться изолированными.
+Балансы, ограниченные пространством данных, полезны, когда одно определение актива используется в нескольких пространствах данных SORA Nexus, но балансы должны оставаться изолированными.
 
 ## Запустите этот рабочий процесс на Taira {#try-it-on-taira}
 
@@ -89,19 +89,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=100" \
     | {id, name, metadata}'
 ```
 
-Все три примера являются операциями чтения. Чтобы выпустить, уничтожить или передать активы на Taira, используйте аккаунт с тестовой сетью и защищённый поток в [Подключиться к SORA Nexus Dataspaces](/ru/get-started/sora-nexus-dataspaces.md).
+Все три примера выполняют чтение. Для выпуска, сжигания или перевода активов в Taira используйте учётную запись, пополненную через кран тестовой сети, и защищённую проверками процедуру из раздела [Разработка на SORA Nexus с использованием Taira и Minamoto](/ru/get-started/sora-nexus-dataspaces.md).
 
-Для примера платного актива Taira сохраните помощника сервиса финансирования тестовой сети из [Получить тестовую сеть XOR на Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) как `taira_faucet_claim.py`, затем сначала получите актив сервиса финансирования тестовой сети и используйте его в качестве актива для оплаты выполнения транзакции:
+Для примера операции с активами Taira, требующей комиссии, сначала пополните учётную запись подписанта по процедуре с предварительной подготовкой запроса к крану из раздела [Получение тестовых XOR в Taira](/ru/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). Затем укажите `--fee-payer authority` в командах `ledger asset mint`, `ledger asset burn` и `ledger asset transfer`. Перед подписанием CLI рассчитывает точную комиссию в активе, используемом для оплаты комиссий Taira.
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
+iroha --config ./taira.client.toml --fee-payer authority \
+  ledger asset transfer \
+  --definition "<ASSET_DEFINITION_BASE58>" \
+  --account "<TAIRA_I105_ACCOUNT_ID>" \
+  --to "<RECIPIENT_I105_ACCOUNT_ID>" \
+  --quantity 1
 ```
-
-Затем включите `--metadata ./taira.tx-metadata.json` в команды `ledger asset mint`, `ledger asset burn` и `ledger asset transfer`.
 
 ## Инструкции {#instructions}
 

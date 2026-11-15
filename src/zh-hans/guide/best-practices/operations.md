@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-first-release-source-amendment
 ---
-
 # 运营 {#operations}
 
 操作准备意味着网络可以观察,更改,备份和恢复而不需要依赖于即兴访问验证器主机.
@@ -38,7 +37,7 @@ translation_engine: nllb-200-ct2
 ## 变革管理 {#change-management}
 
 - 将链上配置变更视为需要审查、变更前读取、授权和变更后验证的交易。
-- 推出兼容性计划和反弹决定点的对等节点二进制升级.
+- 安装对等节点版本前，应验证该版本实现了网络已认证的运行时选择，以及其启动检查点之上的历史。协议定义的变更需要经过资格验证并由治理批准的选择转换；激活后，恢复应使用纠正性转换，而不是降级到不兼容的旧二进制版本。
 - 避免在同一维护窗口中改变对等节点拓,共识时间和应用工作负载,除非迁移计划要求这样做.
 - 记录交易哈希和区块高度,以进行操作变化.
 

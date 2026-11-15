@@ -1,11 +1,10 @@
 ---
 translation_locale: ur
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # اسمبلیوں کا نام {#naming-conventions}
 
 جب آپ اکاؤنٹس، ڈومینز یا اثاثوں کا نام دیتے ہیں تو، آپ کو Iroha میں استعمال ہونے والے مندرجہ ذیل کنونشنوں کو ذہن میں رکھنا ہوگا:
@@ -16,10 +15,9 @@ translation_engine: nllb-200-ct2
    - `#` اثاثہ کی تعریف کے ناموں اور اثاثہ بیلنس لٹریلز کے لئے محفوظ ہے
    - `::` معاہدے کے مستعار ناموں کے لئے محفوظ ہے
    - `.` ڈومین اور ڈیٹا اسپیس کے لئے مخصوص ہے
-   - `$` ٹرگر اسکینڈل ٹیکسٹ فارم کے لئے محفوظ ہے
-   - `%` توثیق کرنے والے دائرہ کار کے متن فارموں کے لئے محفوظ ہے
+   - `$` NFT شناخت کنندگان کے لیے مخصوص ہے، جیسے `name$domain.dataspace`
 
-2. ایک نام میں حروف کی زیادہ سے زیادہ تعداد (بشمول UTF-8 حروف) دو عوامل کے ذریعہ محدود ہے: `[0, u32::MAX]` اور فی الحال مختص کردہ اسٹیک جگہ.
+2. نام غیر خالی ہونا چاہیے، یونیکوڈ NFC صورت میں ہو، زیادہ سے زیادہ 255 UTF-8 بائٹس طویل ہو، اور خالی جگہ، کنٹرول اور دو طرفہ کنٹرول کے حروف سے پاک ہو۔
 
 ## Taira پر آزمائیں {#try-it-on-taira}
 

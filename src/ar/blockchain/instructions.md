@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha عمليات التعليمات {#iroha-special-instructions}
 
 عندما تحدثنا عن [كيف يعمل Iroha](/ar/blockchain/iroha-explained)، قلنا أن عمليات تعليمات Iroha هي الطريقة الوحيدة لتعديل حالة العالم. إذن، ما نوع التعليمات ما العمليات التي لدينا؟ إذا كنت قد قرأت الأدلة الخاصة باللغة في هذا الدرس، فقد شاهدت بالفعل بعض التعليمات: `Register<Account>` و `Mint<Numeric>`.
@@ -35,14 +34,14 @@ translation_engine: bing-translator-llm
 
 |تعليمات|الأشياء|وجهة|
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias)                               |إعداد النطاق العادي، واسم مستعار لمجال البيانات، واسم مستعار للحساب|                      |
+| [EnsureAlias](#ensurealias) | إعداد النطاقات العادية والأسماء المستعارة لمساحات البيانات والحسابات | |
 |[تسجيل/إلغاء التسجيل](#un-register)|الحسابات، تعريفات الأصول، NFTs، الأدوار، المشغلات، نظراء الشبكة؛ إزالة النطاق|                      |
 | [Mint/Burn](#mint-burn) |الأصول الرقمية، تكرار المحفزات|حسابات أو محفزات|
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |الكائنات التي تحتوي على [البيانات الوصفية](./metadata.md): النطاقات، الحسابات، تعريفات الأصول، NFTs، RWAs، المشغلات|                      |
 |[SetParameter](#setparameter)|معلمات السلسلة|                      |
 | [Grant/Revoke](#grant-revoke)                             | [الأدوار، رموز الصلاحيات](/ar/blockchain/permissions.md)                                                  |الحسابات أو الأدوار|
 |[نقل](#transfer)|النطاقات، تعريفات الأصول، الأصول الرقمية، NFTs|الحسابات|
-| [الحساب الضامن الأصلي وقفل الأصول](#native-escrow-and-asset-locks) |الضمانات الرقمية للأصول، تأمين الأصول، قيم الالتزام التشفيري للضمانات المجهولة|المشترون، الوجهات، أو تقسيمات النزاعات|
+| [الحساب الضامن الأصلي وقفل الأصول](#native-escrow-and-asset-locks) | ضمانات الأصول الرقمية، وأقفال الأصول، والضمانات المشروطة | المشترون، الوجهات، أو تقسيمات النزاعات |
 |[تسوية المعاملات المالية الخاصة الذرية](#atomic-private-settlement)|مجموعات بيانات البروتوكول السرية محدودة النطاق، تدوير السياسات، الحزم النهائية، وعلامات الإيقاف|                      |
 | [ExecuteTrigger](#executetrigger)                         |المحفزات|                      |
 | [Log/Custom/Upgrade](#other-instructions)                 |السجلات، الحمولات الخاصة بالمُنَفِّذ، ترقيات المُنفِّذ|                      |
@@ -69,7 +68,7 @@ translation_engine: bing-translator-llm
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-إذا قمت بتثبيت النسخة الثنائية `iroha`، استخدم `iroha --config ./defaults/client.toml` بدلاً منها. استبدل العناصر النائبة أدناه بالقيم من شبكتك:
+إذا ثبّتّ الملف التنفيذي `iroha`، فاستخدم `iroha --config ./defaults/client.toml` بدلًا من ذلك. تمرّر الأوامر التي ترسل معاملة الخيار `--fee-payer authority` أيضًا، وهو يحمّل الرسوم لحساب التوقيع؛ وتعرض CLI الرسوم الدقيقة قبل التوقيع. استبدل القيم النائبة أدناه بقيم من شبكتك:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-عند استهداف شبكة الاختبار العامة Taira، استخدم تكوين عميل Taira. قبل تشغيل الأمثلة التي تتطلب دفع رسوم، احفظ مساعد خدمة تمويل شبكة الاختبار من [احصل على Testnet XOR على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) باسم `taira_faucet_claim.py`، ثم اطلب XOR من شبكة الاختبار من خدمة تمويل شبكة الاختبار:
+عند استهداف شبكة Taira التجريبية العامة، استخدم إعداد عميل Taira وموّل حسابه باتباع تدفق خدمة التمويل التجريبي ذي مرحلة الإعداد في [الحصول على XOR التجريبي على Taira](/ar/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). تحقق من ظهور رصيد أصل الرسوم قبل تشغيل أمثلة تدفع رسومًا:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-بعد ظهور الأصل المموّل من خدمة الاختبار، أرفق بعمليات الكتابة بيانات تعريف أصل رسوم التنفيذ المطلوبة:
+تستخدم عمليات الكتابة على Taira الاختيار نفسه `--fee-payer authority`، وتعرض CLI الرسوم بعملة رسوم Taira. لا تُرفق مفاتيح الرسوم مثل `gas_asset_id` ضمن البيانات الوصفية للمعاملة؛ فالعميل يرفضها:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` هو المسار العادي للإصدار الأول لإنشاء النطاقات وعقود الإيجار الخاصة بها SNS. إنه يربط بشكل إعلاني مساحة البيانات الدقيقة، المالك، مدة الإيجار، وحارس التحقق من الرسوم والسعر، ثم ينشئ أو يصلح جميع الحالات المطلوبة بشكل ذري. استخدم نقطة النهاية المصادقة `POST /v1/aliases/setup/plan` API أو سير العمل المطابق CLI:
+`EnsureAlias` هو المسار المعتاد في الإصدار الأول لإنشاء النطاقات وإيجارات SNS الخاصة بها. يربط بصورة تصريحية مساحة البيانات والمالك ومدة الإيجار وشرط التحقق من التسعير المحددة بدقة، ثم ينشئ كل الحالة المطلوبة أو يصلحها بصورة ذرية. استخدم نقطة النهاية التي تتطلب المصادقة `POST /v1/aliases/setup/plan` أو سير عمل CLI المقابل:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 تسجيل وإلغاء تسجيل الحسابات:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 تسجيل وإلغاء تسجيل تعريفات الأصول:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +198,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 تسجيل وإلغاء تسجيل الأدوار:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 تسجيل وإلغاء تسجيل المشغلات. يحتاج تسجيل المشغل إما إلى الشيفرة البايتية IVM المترجمة أو قائمة تعليمات مسلسلة. يبني هذا المثال تعليمات `Log` باستخدام CLI ويقوم بتمريرها إلى تسجيل المشغل:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 سجّل وألغِ تسجيل نظراء الشبكة. قم بإنشاء المفتاح BLS و PoP مع `kagami` إذا لم تكن لديك بالفعل:
@@ -241,10 +239,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +268,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 إصدار وتدمير الأصول الرقمية:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 إصدار وتدمير تكرارات الزناد:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## نقل {#transfer}
@@ -302,7 +300,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 نقل الأصول الرقمية:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,21 +311,21 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 نقل ملكية النطاق والأصل وتحديد الملكية NFT:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## الضمان الأصلي وقفل الأصول {#native-escrow-and-asset-locks}
 
-تعليمات الضمان الأصلية تقفل الأصول الرقمية التي يديرها بروتوكول دفتر الأستاذ على البلوكشين. تُستخدم لتسوية المعاملات المالية على نمط السوق، وقفل الأصول العامة، وتدفقات الضمان المحمية المجهولة.
+تقفل تعليمات الضمان الأصلية الأصول الرقمية في حفظ بروتوكولي يديره دفتر السجل. تُستخدم لتسوية المعاملات على نمط السوق، وأقفال الأصول العامة، والضمانات المشروطة المرتبطة بجهات تصديق.
 
-يستخدم الضمان في السوق `OpenAssetEscrow`، `AcceptAssetEscrow`، `MarkEscrowPaymentSent`، `ReleaseAssetEscrow`، `CancelAssetEscrow`، `OpenEscrowDispute`، و`ResolveEscrowDispute`. تستخدم الأقفال العامة للأصول `OpenAssetLock`، `DrawdownAssetLock` `CancelAssetLock` و `ExpireAssetLock`. يعكس الضمان المجهول دورة حياة السوق مع `OpenAnonymousAssetEscrow` و `AcceptAnonymousAssetEscrow` و `MarkAnonymousEscrowPaymentSent` و `ReleaseAnonymousAssetEscrow` و `CancelAnonymousAssetEscrow` و `OpenAnonymousEscrowDispute` و `ResolveAnonymousEscrowDispute`.
+يستخدم ضمان السوق `OpenAssetEscrow` و`AcceptAssetEscrow` و`MarkEscrowPaymentSent` و`ReleaseAssetEscrow` و`CancelAssetEscrow` و`OpenEscrowDispute` و`ResolveEscrowDispute`. وتستخدم أقفال الأصول العامة `OpenAssetLock` و`DrawdownAssetLock` و`CancelAssetLock` و`ExpireAssetLock`. ويستخدم الضمان المشروط `OpenConditionalEscrow` و`AttestEscrowCondition` و`ExpireConditionalEscrow`.
 
 هذه ISIs لا تمتلك حاليًا أوامر CLI من الدرجة الأولى. استخدم منشئي SDK بالنمط المطبوع أو حمولات التعليمات التسلسلية، وانظر إلى [ضمان الأصل الأصلي](/ar/blockchain/escrow.md) لتفاصيل دورة الحياة، الأذونات، الاستفسارات، الأحداث، و Rust الأمثلة.
 
@@ -337,7 +335,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 `RotatePrivateSettlementPoolPolicyV1` مقيد بحوكمة الخصوصية. يتطلب القيمة الدقيقة الحالية لهضم التشفير الخاص بالحوكمة، ويحافظ على المسار، ومجموعة بيانات البروتوكول، وقيمة الالتزام التشفيري المرتبطة بالأصول، والحدود الحالة، ومجموعات الإعادة، وسجلات نتائج البروتوكول النهائية. يُقدّم المراجعة العامة بمقدار واحد، ويستخدم فترة مفتاح مدقق أحدث. يتم تفعيل التدوير عند ارتفاع إدراجه ولا يمكن أن يشارك هذا الارتفاع مع سجل نتيجة البروتوكول لنفس المسار/المجمع. يحافظ خط النسخ العام على سجلات نتائج البروتوكول النهائية قبل إعادة تشغيل التدوير - صالحة ومطابقة لإعادة التشغيل بشكل متسق؛ تفشل حزَم السياسات القديمة الجارية مغلقة. يجب على المشغلين الاحتفاظ بمفاتيح فك التشفير القديمة للكبسولات المخزنة أو إدارة وإختبار إعادة تغليف الكبسولة قبل تدميرها.
 
-يظل المسار معطلاً بشكل افتراضي وليس مؤهلاً للإنتاج. راجع [تشغيل تسوية المعاملات المالية الخاصة عبر المساحات البيانية الذرية](/ar/get-started/atomic-private-settlement) لمتطلبات التهيئة، ومبدأ التفويض، والتدقيق، والاسترداد، والإصدار.
+يظل هذا المسار معطّلًا افتراضيًا ولم يُؤهّل للاستخدام الإنتاجي. راجع [تشغيل التسوية الخاصة الذرية بين مساحات البيانات](/ar/get-started/atomic-private-settlement) لمتطلبات الإعداد والتفويض والتدقيق والاسترداد والإصدار.
 
 ## منح/سحب {#grant-revoke}
 
@@ -348,34 +346,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 منح وسحب دور على حساب:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 منح وسحب رموز الإذن. تقوم أوامر الإذن بقراءة كائن الإذن من الإدخال القياسي:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 منح وإلغاء الأذونات على دور:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +385,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +396,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -421,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 قم بتعيين معلمة بتمرير كائن معلمة واحد JSON عبر الإدخال القياسي:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 يُستخدم هذا التعليمات لتنفيذ [المحفزات](./triggers.md).
 
-يمكن لـ CLI تسجيل المحفزات والاشتراك في أحداث تنفيذ المحفز مباشرةً. لا يوفر أمر `execute trigger` مكتوب النوع، لذا لتقديم تعليمات الدليل `ExecuteTrigger`، توليد `InstructionBox` مسلسل باستخدام أداة SDK أو منفذ وتنفيذ تمرير مصفوفة JSON الناتجة عبر `ledger transaction stdin`:
+ترسل CLI تعليمة `ExecuteTrigger` يدوية لمشغّل مسجّل بالمرشح الافتراضي `execute`، مع وسيطات JSON اختياريًا، ويمكنها الاشتراك في أحداث تنفيذ المشغّل:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## تعليمات أخرى {#other-instructions}
@@ -452,21 +449,21 @@ Iroha يكشف أيضًا عن التعليمات منخفضة المستوى ل
 قدّم تعليمات `Log` باستخدام مساعد البينغ:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 قم بإرسال تعليمات منفذ مخصص كـ `InstructionBox` مسلسلة. شكل الحمولة محدد حسب المنفذ، لذا قم بإنشاء التعليمات باستخدام SDK المتوافق أو أدوات المنفذ:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 قم بترقية المنفذ من ملف البايت كود المترجم IVM:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

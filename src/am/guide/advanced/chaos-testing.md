@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ከኢዛናሚ ጋር ትርምስ ሙከራ {#chaos-testing-with-izanami}
 
 ኢዛናሚ በላይኛው ተፋሰስ Iroha የስራ ቦታ ውስጥ ያለው ትርምስ ኦርኬስትራ ነው። ሊጣል የሚችል የአካባቢ Iroha ክላስተር ይጀምራል፣ ሊዋቀር የሚችል የስራ ጫና ያቀርባል እና በተመረጡ የአውታረ መረብ እኩዮች ላይ ስህተቶችን ያስገባል ስለዚህ ኦፕሬተሮች አውታረ መረቡ ቁጥጥር በሚደረግበት ውድቀት እድገት ማድረጉን ያረጋግጡ።

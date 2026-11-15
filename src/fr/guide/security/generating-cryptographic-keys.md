@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Génération de clés cryptographiques {#generating-cryptographic-keys}
 
 Utilisez `kagami keys` pour générer le matériel de clé client, pair réseau et validateur pour Iroha 3.
@@ -18,7 +17,7 @@ Utilisez `kagami keys` pour générer le matériel de clé client, pair réseau 
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Le répertoire parent doit déjà exister. La cible doit être nouvelle ou déjà possédée par l'utilisateur actuel, en mode `0700`, sans liens symboliques et vide. `kagami` écrit `public.key` et `private.key` en mode `0600` et n'affiche pas le matériel de clé. Avec `--pop`, il écrit également `pop.hex`.
+Le répertoire parent doit déjà exister. Le répertoire cible ne doit pas exister : Kagami refuse même un répertoire existant vide. Il crée la cible avec le mode `0700`, applique les contrôles du système de fichiers réservant l’accès au propriétaire et rejette les liens symboliques. `kagami` écrit `public.key` et `private.key` avec le mode `0600` sans afficher les clés. Avec `--pop`, il écrit aussi `pop.hex`.
 
 `--out-dir` échoue en position fermée sur les plateformes où Kagami ne peut pas appliquer ces règles de système de fichiers réservées au propriétaire. Le fichier de clé privée est une exportation non chiffrée, pas un matériel ou signataire cryptographique de production non exportable. Importez-le dans la limite de garde approuvée et supprimez l'exportation selon la procédure de déploiement.
 
@@ -57,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` n'est valide qu'avec `bls_normal` ; il ajoute `pop.hex` au répertoire de garde. La genèse de la blockchain signée nécessite un PoP correspondant pour chaque validateur de vote. Dans la configuration des pairs du réseau, une carte `trusted_peers_pop` non vide sélectionne le sous-ensemble de validateurs ; les pairs de réseau de confiance omis de cette carte non vide sont des observateurs. Si la carte est vide, tous les pairs du réseau de confiance BLS-normaux entrent dans l'ensemble des candidats au bootstrap, le votant PoPs étant toujours fourni par la genèse du blockchain signée.
+`--pop` n'est valide qu'avec `bls_normal` ; il ajoute `pop.hex` au répertoire de garde. La genèse de la blockchain signée nécessite un PoP correspondant pour chaque validateur de vote. Dans la configuration des pairs du réseau, indiquez le PoP de chaque validateur dans `trusted_peers_pop` : les pairs de confiance sans PoP valide sont exclus de la liste de consensus, et une carte vide ne produit aucun validateur, de sorte qu'un nœud dont la carte omet les validateurs de la genèse refuse de démarrer. Exécutez un nœud de synchronisation seule avec `[sumeragi] role = "observer"`.
 
 ## Sortie de garde {#custody-output}
 

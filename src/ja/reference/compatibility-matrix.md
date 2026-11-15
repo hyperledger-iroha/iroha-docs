@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # 互換性マトリックス {#compatibility-matrix}
 
 互換性マトリックスはクロスを示しています SDK 現在のシナリオカバレッジ Iroha 3 ドキュメントが設定されました。デフォルトでは、ページは固定されたものから生成されたバンドルデータのスナップショットを読み込みます [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) 改訂。

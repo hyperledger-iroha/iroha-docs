@@ -1,26 +1,25 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 域名 {#domains}
 
-域名是注册的名称空间 `World`. 在当前 Iroha 3 数据模型一个域名由其母数据空间资格化,因此正义标识符是:
+域是在 `World` 中注册的具名命名空间。在当前 Iroha 3 数据模型中，域由其所属数据空间限定，因此规范标识符为：
 
 ```text
 domain.dataspace
 ```
 
-例如, `payments.universal` 在 `universal` 数据空间内命名`payments`域名.
+例如，`payments.universal` 表示 `universal` 数据空间中的 `payments` 域。
 
 ## 结构 {#structure}
 
 已注册的 `Domain` 包含:
 
-- `id`:有数据空间资格的 `DomainId`
+- `id`：由数据空间限定的 `DomainId`
 - `logo`:域名标志的可选标志`SoraFS` URI
 - `metadata`:任意的关键值元数据
 - `owned_by`:域名所有权的账户,通常是注册该域名的帐户
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-意图确定`payments.universal`,其数值数据空间,规范 I105 所有者,租收购期限以及当前的政策/支付报价监护人.规划者端点是 `POST /v1/aliases/setup/plan`;其返回的计划是链,授权主体,州和截止日期.域移除仍然使用[`Unregister`](/zh-hans/blockchain/instructions.md#un-register).
+意图指定 `payments.universal`、其数据空间的数字标识、采用规范 I105 标识的所有者、租约获取期限，以及当前策略和支付报价的校验条件。规划端点为 `POST /v1/aliases/setup/plan`；返回的计划绑定具体链、授权主体、状态和截止时间。删除域仍使用 [`Unregister`](/zh-hans/blockchain/instructions.md#un-register)。
 
 创建或删除域名需要在主动运行时验证器下获得适当的域管理权限. 当权限主体有权修改该域名时,域名元数据可以通过 [`SetKeyValue`和 `RemoveKeyValue`](/zh-hans/blockchain/instructions.md#setkeyvalue-removekeyvalue)更新.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-将公共路径目录重新映射到数据空间别名:
+将公开执行通道目录中的条目映射回数据空间别名：
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-在应用程序需要检查域名是否存在时使用第一个命令.在需要确认数据空间是否是公开,限制或落后于核心线路时,使用通道目录.
+当应用程序需要检查域是否存在时，请使用第一个命令。使用执行通道目录检查与数据空间关联的执行通道，包括每个执行通道的公开或受限可见性以及相对于核心执行通道的同步状态。
 
-配置域是一项需要付费的写入操作。在 Taira 上尝试之前，请将在[在 Taira 上获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中提供的水龙头辅助脚本保存为 `taira_faucet_claim.py`，通过公共水龙头为签名者充值，并附加费用元数据：
+域设置是一项需要付费的写入操作。在 Taira 上尝试之前，先按[在 Taira 获取测试网 XOR](/zh-hans/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)中带有准备步骤的水龙头流程为签名账户提供资金，然后明确指定费用支付方并应用计划。CLI 会在签名前给出准确的费用报价：
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

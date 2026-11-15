@@ -1,18 +1,17 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/sample-apps.md
-translation_source_hash: 4979ab2c52eba4040d7f003f3da73dbc333fa7e047b0259816d0d34f97377749
+translation_source_hash: 50fac5ad01faf8d09441cba90f29472da04630dbeb3c80111a19f3fb50bb1224
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # ናሙናዎች እና የተግባር መመሪያዎች {#samples-and-recipes}
 
 የ Iroha ምንጭ ማከማቻው ከኖድ ጋር ተመሳሳይ ክለሳ የሚከታተሉ SDK የተግባር መመሪያዎችን እና የሙከራ ስብስቦችን ይዟል።
 
 ## JavaScript የተግባር መመሪያዎች {#javascript-recipes}
 
-[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/recipes) ለዲተርሚኒስቲክ ግብይት ባች ያተኮሩ ምሳሌዎችን ይዟል፣ Nexus የመተግበሪያ ዝውውሮች ፣ NFT እና የመለያ ድግግሞሽ፣ ISO ድልድይ ፍሰቶች, እና Torii በዥረት መልቀቅ. እያንዳንዱ የተግባር መመሪያ ከመስመር ውጭ የሚሰራ ወይም የቀጥታ ግንኙነት የሚፈልግ መሆኑን ይመዘግባል Torii API የመጨረሻ ነጥብ.
+[`javascript/iroha_js/recipes`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/recipes) ለዲተርሚኒስቲክ ግብይት ባች ያተኮሩ ምሳሌዎችን ይዟል፣ SORA Nexus የመተግበሪያ ዝውውሮች ፣ NFT እና የመለያ ድግግሞሽ፣ ISO ድልድይ ፍሰቶች, እና Torii በዥረት መልቀቅ. እያንዳንዱ የተግባር መመሪያ ከመስመር ውጭ የሚሰራ ወይም የቀጥታ ግንኙነት የሚፈልግ መሆኑን ይመዘግባል Torii API የመጨረሻ ነጥብ.
 
 ## Swift እና iOS {#swift-and-ios}
 
@@ -20,4 +19,4 @@ translation_engine: bing-translator-llm
 
 ## Android {#android}
 
-ለአዲስ Android ስራ፣ በ[Kotlin፣ Android እና ጃቫ](/am/guide/tutorials/kotlin-java.md) ውስጥ የተገለጹትን Kotlin-የመጀመሪያ `core-jvm`፣ `client-android` እና `offline-wallet-android` ሞጁሎችን ይጠቀሙ። Kotlin SDK ለ Android ሸማቾች ነጠላ ፕሮቶኮል-መደበኛ መነሻ ነው።
+ለአዲስ Android ስራ፣ በ[Kotlin፣ Android እና ጃቫ](/am/guide/tutorials/kotlin-java.md) ውስጥ የተገለጹትን Kotlin-የመጀመሪያ `core-jvm`፣ `client-android` እና `kagemusha-wallet-android` ሞጁሎችን ይጠቀሙ። Kotlin SDK ለ Android ሸማቾች ነጠላ ፕሮቶኮል-መደበኛ መነሻ ነው።

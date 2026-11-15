@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # פעל Iroha 3 דרך CLI {#operate-iroha-3-via-cli}
 
@@ -11,15 +11,14 @@ translation_engine: nllb-200-ct2
 
 ## 1. תנאים מוקדמים {#_1-prerequisites}
 
-להפעיל רשת מקומית קודם:
-
-- [שיגור Iroha 3](./launch-iroha.md)
-
-הדוגמאות הבאות מניעות את ההסדרים של הלקוח שנוצרו מהרשת המקומית שנוצרה ב [Lunch Iroha 3 ](./launch-iroha.md):
+מתוך עותק מקומי של Iroha בגרסת המקור המתועדת, צרו והפעילו רשת מקומית בת ארבעה עמיתים:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+הדוגמאות שלהלן משתמשות בתצורת הלקוח שנוצרה עבורה, `./localnet/client.toml`.
 
 ## 2. הגדרות בסיסיות CLI {#_2-basic-cli-setup}
 
@@ -31,16 +30,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI מאורגן לקבוצות הפיקוד הבאות:
 
-- `account` עבור קיצוצים ממוקדים על חשבון
-- `tx` עבור עוזרים ברמה של עסקאות
+- `account` לקריאת חשבונות ולשינויים בהם
+- `explorer` להזנות הסייר עם מסננים משותפים וחלוקה לדפים
+- `tx` למצב עסקאות ולכלי עזר לעסקאות
 - `ledger` לקריאה ולכתיבה בספר החשבונות
+- `trigger` לקריאה, לכתיבה ולהפעלה של טריגרים
 - `ops` לדיאגנסטיקה של המפעיל
 - `app` עבור עוזרי האפליקציה API
-- `contract` עבור הפעלת חוזים והזמנות
+- `contract` לקריאות לחוזים, לתצוגות ולניפוי שגיאות מקומי; לפריסה השתמשו ב־`kagami contract deploy` או ב־`musubi deploy`
 - `tools` עבור שירותי דיאגנוסטיקה ופתוחים
-- `taira` עבור Taira ו Nexus-תנועות עבודה ממוקדות
+- `dataspace` לתכנון, להחלה ולבדיקה של הגדרת מרחב נתונים
+- `taira` לאבחון Taira ולצירוף חשבונות
+- `offline` למקודדים, לדוחות ולאבחון במצב לא מקוון
+- `soracloud` לכלי עזר של פלטפורמת היישומים Soracloud
+- `sccp` לקריאות, להעברות ולהוכחות של SORA Cross-Chain Protocol
 
-קבוצת `ledger` מכילה גם עוזרי עסקאות ספציפיים לתחום, כגון `ledger transaction`.
+כל פקודה שמגישה עסקה מחייבת ציון מפורש של משלם העמלה, למשל `--fee-payer authority`; ה־CLI מציג את העמלה המדויקת לפני החתימה.
 
 השתמש `--output-format text` עבור יצירתו של המפעיל שניתן לקרוא על ידי אדם ו `--machine` עבור מצב אוטומציה קפדן.
 
@@ -55,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-רשימה של תחומים ציבוריים במרחב נתונים `universal`:
+הצגת הדומיינים הגלויים לקורא שלא עבר אימות:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -75,32 +80,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-צרו את `taira.client.toml` רק כאשר אתם מוכנים לבדוק פקודות חתומות. להגדרות, לשירות המימון ולתהליך הקנרית ראו [התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md). אל תריצו פקודות כתיבה מול Taira לפני שהחשבון מומן בנכס העמלה שמספק שירות המימון.
+צרו את `taira.client.toml` רק כשאתם מוכנים לבדוק פקודות חתומות. התצורה, הברז ותהליך בדיקת העשן מתוארים ב־[התחברות למרחבי הנתונים של SORA Nexus](/he/get-started/sora-nexus-dataspaces.md). אל תפעילו פקודות כתיבה מול Taira לפני שהחשבון מומן בנכס העמלות של הברז.
 
-עבור כל דוגמא בתשלום Taira CLI, שמור את עוזר ה-faucet מ- [Get Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כ- `taira_faucet_claim.py`, ולאחר מכן תביאו קודם testnet XOR:
+בכל דוגמת CLI של Taira המחייבת תשלום עמלה, מַמנו את החותם באמצעות תהליך הברז המוכן ב־[קבלת XOR לרשת הניסוי ב־Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), ואז בדקו את היתרה:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-אם הפאזל של faucet או מסלול התביעה חוזר `502`, חכו ותנסו שוב. זו בעיה של זמינות רשתת מבחן ציבורית, ולא אות לשחזור מפתחות החשבון.
+אם מסלול של הברז מחזיר `502`, המתינו ונסו שוב. זוהי בעיית זמינות של רשת הניסוי הציבורית, ולא סיבה ליצור מחדש את מפתחות החשבון.
 
-לאחר שהמשארית נראית, לצרף את המטא-נתונים של נכס העלויות לכתוב:
+לאחר שהיתרה מוצגת, הגישו פעולות כתיבה עם `--fee-payer authority`. ה־CLI מציג את העמלה המדויקת, בנכס העמלות של Taira, לפני החתימה:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. פקודות ספר החשבונות הבסיסיות {#_4-basic-ledger-commands}
@@ -108,7 +111,7 @@ iroha --config ./taira.client.toml \
 רשום את כל הדומנים:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 יצירת דומיין רגילה משתמשת בתכנן התכוונית הצהרת; לפקודה `ledger domain` אין פקודה תת `register`. להכין כוונה ללא סוד `AliasSetupPlanRequestV1` עבור `docs.universal` עם שירות SDK או חיבור, ולאחר מכן לתכנן וליישום אותה:
@@ -119,16 +122,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-הכוונה מקבעת את ה־dataspace ID, את חשבון הבעלים הקנוני, את תקופת החכירה ואת מנגנון ההגנה העדכני על הצעת המחיר. המתכנן מאמת את המצב החי ומחזיר את תוכנית `EnsureAlias` האטומית המדויקת להגשה. אל תעתיקו ידנית ערכי הגנה מרשת אחרת.
+הכוונה מקבעת את מזהה מרחב הנתונים, את חשבון הבעלים הקנוני, את תקופת החכירה ואת ערכי ההגנה הנוכחיים של הצעת המחיר. המתכנן מאמת את המצב החי ומחזיר את תוכנית `EnsureAlias` האטומית המדויקת להגשה. אל תעתיקו ידנית ערכי הגנה מרשת אחרת.
 
 שלח עסקאות פינג פשוטות:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 קרא בלוק אחרון או לחתום על אירועים בלוק:
@@ -140,10 +143,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. פיקוד המפעיל {#_5-operator-commands}
 
-פקודות של מפעיל הסכמה דורשות מפתח זמן עבודה רשמי. שמור אותו מחוץ ל `client.toml` ותעבירו את הקובץ של הבעלים בלבד במפורש:
+פקודות מפעיל הקונצנזוס מחייבות מפתח זמן ריצה שברשימת ההרשאה. השאירו אותו מחוץ ל־`client.toml` והעבירו את הקובץ, שהגישה אליו מוגבלת לבעלים, באמצעות הנתיב המוחלט שלו:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -160,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-תעודות קוורום גבוהים ביותר:
+נתיבי הקונצנזוס המאושרים ומצב המופעים בצומת הזה:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 פרמטרים של הסכמה על שרשרת:
@@ -183,10 +187,10 @@ cargo run --bin iroha -- \
 - [SDK לימודי הדרכה](/he/guide/tutorials/)
 - [נקודות קצה Torii ](/he/reference/torii-endpoints.md)
 - [עבודה עם Iroha בינרים](/he/reference/binaries.md)
-- [קובץ README של ה־CLI](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-כדי לשחזר תמונת מצב מלאה של סיוע מרקדון מהמחאה המקורית, תפעול:
+כדי להדפיס תמונת מצב מלאה של העזרה בפורמט Markdown מתוך עותק המקור המקומי, הריצו:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

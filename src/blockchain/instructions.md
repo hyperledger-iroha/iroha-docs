@@ -39,14 +39,14 @@ all you need is the object that you want to register.
 
 | Instruction                                               | Objects                                                                                                 | Destination          |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias)                               | ordinary domain, dataspace-alias, and account-alias setup                                                 |                      |
+| [EnsureAlias](#ensurealias)                               | ordinary domain, data space alias, and account-alias setup                                                 |                      |
 | [Register/Unregister](#un-register)                       | accounts, asset definitions, NFTs, roles, triggers, peers; domain removal                                |                      |
 | [Mint/Burn](#mint-burn)                                   | numeric assets, trigger repetitions                                                                     | accounts or triggers |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) | objects that have [metadata](./metadata.md): domains, accounts, asset definitions, NFTs, RWAs, triggers |                      |
 | [SetParameter](#setparameter)                             | chain parameters                                                                                        |                      |
 | [Grant/Revoke](#grant-revoke)                             | [roles, permission tokens](/blockchain/permissions.md)                                                  | accounts or roles    |
 | [Transfer](#transfer)                                     | domains, asset definitions, numeric assets, NFTs                                                        | accounts             |
-| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, anonymous escrow commitments                                    | buyers, destinations, or dispute splits |
+| [Native escrow and asset locks](#native-escrow-and-asset-locks) | numeric asset escrows, asset locks, conditional escrows                                              | buyers, destinations, or dispute splits |
 | [Atomic private settlement](#atomic-private-settlement)   | route-scoped confidential pools, policy rotations, finalized bundles, and abort markers                 |                      |
 | [ExecuteTrigger](#executetrigger)                         | triggers                                                                                                |                      |
 | [Log/Custom/Upgrade](#other-instructions)                 | logs, executor-specific payloads, executor upgrades                                                     |                      |
@@ -76,8 +76,10 @@ cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
 If you installed the `iroha` binary, use
-`iroha --config ./defaults/client.toml` instead. Replace the placeholders
-below with values from your network:
+`iroha --config ./defaults/client.toml` instead. Commands that submit a
+transaction also pass `--fee-payer authority`, which charges the signing
+account; the CLI quotes the exact fee before signing. Replace the
+placeholders below with values from your network:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -87,39 +89,39 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-When targeting the public Taira testnet, use a Taira client configuration.
-Before running fee-paying examples, save the faucet helper from
-[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira)
-as `taira_faucet_claim.py`, then claim testnet XOR from the faucet:
+When targeting the public Taira testnet, use a Taira client configuration
+and fund its account with the prepared faucet flow in
+[Get Testnet XOR on Taira](/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira).
+Check that the fee asset balance is visible before running fee-paying
+examples:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-After the faucet-funded asset is visible, attach the required gas asset
-metadata to write transactions:
+Taira writes use the same `--fee-payer authority` selection, and the CLI
+quotes the fee in Taira's fee asset. Do not attach fee keys such as
+`gas_asset_id` as transaction metadata; the client rejects them:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias
 
 `EnsureAlias` is the ordinary first-release path for creating domains and
-their SNS leases. It declaratively binds the exact dataspace, owner, lease
+their SNS leases. It declaratively binds the exact data space, owner, lease
 term, and quote guard, then creates or repairs all required state atomically.
 Use the authenticated `POST /v1/aliases/setup/plan` endpoint or the matching
 CLI workflow:
@@ -130,7 +132,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -209,34 +211,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 Register and unregister accounts:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 Register and unregister asset definitions:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -245,20 +248,20 @@ standard input:
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 Register and unregister roles:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
@@ -267,17 +270,17 @@ compiled IVM bytecode or a serialized instruction list. This example builds
 a `Log` instruction with the CLI and pipes it into trigger registration:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 Register and unregister peers. Generate the BLS key and PoP with `kagami`
@@ -289,10 +292,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -322,13 +325,13 @@ Here are examples of burning assets:
 Mint and burn numeric assets:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -338,11 +341,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Mint and burn trigger repetitions:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## Transfer
@@ -361,7 +364,7 @@ example on how to transfer assets with
 Transfer numeric assets:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -372,13 +375,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 Transfer domain, asset-definition, and NFT ownership:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
@@ -386,17 +389,14 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 Native escrow instructions lock numeric assets in ledger-managed protocol
 custody. They are used for marketplace-style settlement, generic asset
-locks, and anonymous shielded escrow flows.
+locks, and attestor-bound conditional escrows.
 
 Marketplace escrow uses `OpenAssetEscrow`, `AcceptAssetEscrow`,
 `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`,
 `OpenEscrowDispute`, and `ResolveEscrowDispute`. Generic asset locks use
 `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, and
-`ExpireAssetLock`. Anonymous escrow mirrors the marketplace lifecycle with
-`OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`,
-`MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`,
-`CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, and
-`ResolveAnonymousEscrowDispute`.
+`ExpireAssetLock`. Conditional escrow uses `OpenConditionalEscrow`,
+`AttestEscrowCondition`, and `ExpireConditionalEscrow`.
 
 These ISIs do not currently have first-class CLI commands. Use typed SDK
 builders or serialized instruction payloads, and see
@@ -424,7 +424,7 @@ old-policy bundles fail closed. Operators must retain old decryption keys for
 stored capsules or govern and test capsule rewrapping before destroying them.
 
 The path remains disabled by default and is not production-qualified. See
-[Run Atomic Private Cross-Dataspace Settlement](/get-started/atomic-private-settlement)
+[Run Atomic Private Cross-Data Space Settlement](/get-started/atomic-private-settlement)
 for configuration, authority, audit, recovery, and release requirements.
 
 ## Grant/Revoke
@@ -440,11 +440,11 @@ be used carefully.
 Grant and revoke a role on an account:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 Grant and revoke permission tokens. Permission commands read a permission
@@ -452,23 +452,23 @@ object from standard input:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 Grant and revoke permissions on a role:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -482,10 +482,10 @@ Metadata `set` commands read the JSON value from standard input:
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -494,20 +494,20 @@ and triggers:
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter`
@@ -519,8 +519,8 @@ Set a parameter by passing a single parameter JSON object on standard
 input:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -528,19 +528,16 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 This instruction is used to execute [triggers](./triggers.md).
 
-The CLI can register triggers and subscribe to trigger execution events
-directly. It does not provide a typed `execute trigger` command, so to
-submit a manual `ExecuteTrigger` instruction, generate a serialized
-`InstructionBox` with an SDK or executor tool and pass the resulting JSON
-array through `ledger transaction stdin`:
+The CLI submits a manual `ExecuteTrigger` instruction for a trigger
+registered with the default `execute` filter, optionally with JSON
+arguments, and can subscribe to trigger execution events:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## Other instructions
@@ -555,8 +552,8 @@ integration:
 Submit a `Log` instruction with the ping helper:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 Submit a custom executor instruction as a serialized `InstructionBox`. The
@@ -565,13 +562,13 @@ matching SDK or executor tooling:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 Upgrade the executor from a compiled IVM bytecode file:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Generando Claves Criptográficas {#generating-cryptographic-keys}
 
 Utilice `kagami keys` para generar material clave de cliente, par de red y validador para Iroha 3.
@@ -18,7 +17,7 @@ Desde la copia de trabajo del código fuente Iroha:
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-El directorio principal ya debe existir. El destino debe ser nuevo o ya pertenecer al usuario actual, con modo `0700`, libre de enlaces simbólicos y vacío. `kagami` escribe `public.key` y `private.key` con modo `0600` y no imprime material clave. Con `--pop`, también escribe `pop.hex`.
+El directorio padre ya debe existir. El destino no debe existir: Kagami rechaza incluso un directorio vacío existente. Crea el destino con modo `0700`, verifica que el acceso al sistema de archivos sea exclusivo del propietario y rechaza los enlaces simbólicos. `kagami` escribe `public.key` y `private.key` con modo `0600` y no imprime las claves. Con `--pop`, también escribe `pop.hex`.
 
 `--out-dir` falla al cerrarse en plataformas donde Kagami no puede hacer cumplir estas reglas del sistema de archivos solo para el propietario. El archivo de clave privada es una exportación sin cifrar, no un firmware o firmante criptográfico de producción no exportable. Imprórtelo al límite de custodia aprobado y elimine la exportación de acuerdo con el procedimiento de implementación.
 
@@ -57,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` es válido únicamente con `bls_normal`; añade `pop.hex` al directorio de custodia. La génesis de blockchain firmada requiere un PoP coincidente para cada validador votante. En la configuración de pares de red, un mapa `trusted_peers_pop` no vacío selecciona el subconjunto de validadores; los pares de red de confianza omitidos de ese mapa no vacío son observadores. Si el mapa está vacío, todos los pares de red confiables BLS-normales entran en el conjunto de candidatos a bootstrap, con el votante PoPs aún suministrado por el génesis de blockchain firmado.
+`--pop` es válido únicamente con `bls_normal`; añade `pop.hex` al directorio de custodia. El génesis firmado requiere un PoP coincidente para cada validador votante. En la configuración de pares de red, enumere el PoP de cada validador en `trusted_peers_pop`: los pares de red de confianza sin un PoP válido quedan excluidos de la lista de consenso, y un mapa vacío no produce ningún validador, por lo que un nodo cuyo mapa omite los validadores del génesis se niega a arrancar. Ejecute un nodo solo de sincronización con `[sumeragi] role = "observer"`.
 
 ## Salida de custodia {#custody-output}
 

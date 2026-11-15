@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # کارکردگی اور پیمائش {#performance-and-metrics}
 
@@ -20,11 +20,11 @@ Iroha کارکردگی ورک لوڈ ، توثیق کنندہ ٹاپولوجی �
 
 ## کیا ناپنا ہے {#what-to-measure}
 
-پبلک نوڈ اسنیپ شاٹ اور پرومیتھوس سکریپ سے شروع کریں ، پھر آپریٹر کی تصدیق شدہ اتفاق رائے ریاست کے لئے CLI کا استعمال کریں۔ ہدف نوڈ کی طرف سے آپریٹر کلید کی اجازت ہونی چاہئے اور صرف رن ٹائم میں بھری ہوئی ہے:
+پہلے عوامی نوڈ کا اسنیپ شاٹ اور Prometheus کے جمع کردہ اعداد دیکھیں۔ پھر آپریٹر کی شناخت کے ساتھ اتفاقِ رائے کی حالت معلوم کرنے کے لیے CLI استعمال کریں۔ ہدف نوڈ پر آپریٹر کی کلید کی اجازت ضروری ہے؛ کلید صرف عمل درآمد کے وقت لوڈ ہوتی ہے:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -37,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -52,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 اپنے تعیناتی کے لیے عوامی ٹیسٹ نیٹ کی مشاہدات کو پیداواری صلاحیت کے اعداد و شمار کے طور پر استعمال نہ کریں۔
@@ -130,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### امیدوار اور داخلے کی حدود {#candidate-and-ingress-bounds}
 
-نوڈ لوکل Sumeragi حدود کا تعین کرتے ہیں کہ ایک تصدیق کنندہ کتنا امیدوار اور بازیابی کام برقرار رکھ سکتا ہے:
+بلاک کا حجم اور لین دین کی حدود دستخط شدہ جینیسس اور چین کے کمیٹ شدہ پیرامیٹرز سے آتی ہیں۔ نوڈ کی مقامی `[sumeragi]` ترتیبات شرکت کا کردار، دستخطی مواد کی تحویل، حفاظتی ریکارڈ کے راستے، اور دستاویزی مقامی ٹائم آؤٹ و ہم وقت سازی کی تبدیلیاں متعین کرتی ہیں۔
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` اور `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes` ، `sumeragi.queues.chunks`، اور `sumeragi.queues.ready_bodies`
-
-بہت چھوٹی حدیں قطار یا پے لوڈ کی بازیابی کا دباؤ پیدا کرتی ہیں۔ زیادہ سائز کی حدیں برقرار رکھنے والی میموری اور بدسلوکی نیٹ ورک نوڈ کے لئے دستیاب کام کی مقدار میں اضافہ کرتی ہیں۔ ایک بار میں ایک حد کو تبدیل کرنے سے پہلے تشخیصی اسنیپ شاٹ کو پروسیس میموری ، پیغام ہینڈلنگ ، اور لاپتہ جسم کی پیمائش کے ساتھ موازنہ کریں:
+نیٹ ورک میں داخلے اور لین دین کی قطار کی حدود مقامی طور پر محفوظ کام کو قابو کرتی ہیں۔ کسی عملی حد کو بدلنے سے پہلے تشخیصی اسنیپ شاٹ کا موازنہ پروسیس میموری، پیغامات کی کارروائی اور غائب باڈی کی میٹرکس سے کریں۔ ایک ہی نیٹ ورک کے رنز کا موازنہ کرتے وقت چین کے دستخط شدہ پیرامیٹرز یکساں رکھیں:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -194,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |قبول شدہ آؤٹ پٹ |`sum(rate(txs{type="accepted"}[5m]))` |مستحکم حالت میں ہدف TPS کو پورا کرنا یا اس سے زیادہ ہونا چاہئے |
 |مستردیاں |`sum(rate(txs{type="rejected"}[5m]))` |ٹیسٹ کے منصوبے کی طرف سے وضاحت کرنا چاہئے |
-|تاخیر کا پابند |`histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |تاخیر کے بجٹ کے ساتھ p95/p99 کا موازنہ کریں |
+| کمٹ کی تاخیر | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`، `last_commit_time_ms` | تاخیر کے بجٹ کے ساتھ p95/p99 کا موازنہ کریں |
 |قطار کی گہرائی |`queue_size`، `sumeragi_tx_queue_depth` |چوٹی لوڈ کے دوران محدود رہنا چاہئے |
 |قطار کی سیر |`sumeragi_tx_queue_saturated` |برقرار رکھنے والے غیر صفر اقدار کا مطلب ہے کہ زیادہ بوجھ |
-|منظر کی تبدیلیاں |`view_changes`، `sumeragi_view_change_suggest_total`، `sumeragi_view_change_install_total` |بڑھتی ہوئی اقدار، وقت بندی، topology، پے لوڈ یا نیٹ ورک کی خرابی کی نشاندہی کرتی ہیں۔ |
-|ڈراپ شدہ پیغامات |`dropped_messages`، `sumeragi_consensus_message_handling_total` |لوڈ کے دوران کمی عام طور پر تاخیر کی چوٹیوں کی وضاحت |
-|payload اور DA وصولی | `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |مسلسل درخواستوں، بڑھتی ہوئی عمر، یا بار بار DA گیٹس جسم یا ٹکڑا حصول کے مسائل کی نشاندہی |
-|کمیٹ کووروم |`sumeragi_commit_signatures_counted`، `sumeragi_commit_signatures_required` |گنتی شدہ دستخطوں کو فوری طور پر مطلوبہ تعداد تک پہنچنا چاہئے۔|
+|منظر کی تبدیلیاں |`view_changes`، `sumeragi_view_changes_total`، `sumeragi_timeout_votes_total` |بڑھتی ہوئی اقدار، وقت بندی، topology، پے لوڈ یا نیٹ ورک کی خرابی کی نشاندہی کرتی ہیں۔ |
+|ڈراپ شدہ پیغامات |`sumeragi_dropped_total`، `p2p_queue_dropped_total` |لوڈ کے دوران کمی عام طور پر تاخیر کی چوٹیوں کی وضاحت |
+| پیلوڈ اور پیچھے رہ جانے کی تلافی کی بازیافتیں | `sumeragi_fetch_requests_total{kind="body"}`، `sumeragi_fetch_requests_total{kind="sync"}` | مسلسل باڈی یا ہم وقت سازی کی بازیافتیں پیلوڈ کے حصول یا پیچھے رہ جانے کی تلافی میں مسئلے کی نشاندہی کرتی ہیں |
+| کمٹ کی پیش رفت | `sumeragi_committed_height`، `sumeragi_applied_height` | تصدیق شدہ اور لاگو شدہ اونچائیاں ساتھ ساتھ آگے بڑھنی چاہئیں |
 
 جب ایک میٹرک صرف `/v1/sumeragi/status` میں موجود ہے، تو JSON اسنیپ شاٹ کو پرومیٹیئس سکریپ کے طور پر اسی رن آرٹیفیکٹس میں قبضہ کریں.
 
@@ -243,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - تصدیق کنندہ اور ناظرین کی گنتی
 - اتفاق رائے کا موڈ، دستخط شدہ بلاک کیڈنسی، اور DA ترتیب
 - درست `3f + 1` کمیٹی، کووروم اور مبصرین کی فہرست
-- `sumeragi.block` ، `sumeragi.queues`، `sumeragi.limits`، نیٹ ورک میں داخلے اور لین دین کی قطار کی حدیں
+- چین کے دستخط شدہ پیرامیٹرز، مقامی Sumeragi تبدیلیاں، نیٹ ورک میں داخلے اور لین دین کی قطار کی حدود
 - ٹیلی میٹری پروفائل
 - ہارڈویئر، اسٹوریج اور OS کی تفصیلات
 - نیٹ ورک RTT، jitter، نقصان، اور بینڈوڈتھ مفروضے
@@ -252,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - قبول / مسترد TPS
 - p50/p95/p99 commit latency
 - قطار کی گہرائی اور تناؤ
-- تبدیلیاں دیکھیں، چھوڑ دیئے گئے پیغامات، لاپتہ بلاک کی وصولی، اور DA گیٹ کاؤنٹر
+- ویو کی تبدیلیاں، ٹائم آؤٹ ووٹ، Sumeragi کے گرائے گئے پیغامات، اور باڈی اور ہم وقت سازی کی بازیافتیں
 - CPU ، میموری، ڈسک اور نیٹ ورک کا استعمال فی ویلیڈیٹر
 
 ان تفصیلات کے بغیر، TPS نمبر کو غیر معمولی سمجھا جانا چاہئے.

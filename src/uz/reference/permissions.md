@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Ruxsat tokenlari {#permission-tokens}
 
 Ushbu sahifa joriy Iroha ijrochi ma'lumotlar modeli tomonidan ochilgan standart ruxsatnoma-token turlarini ro'yxatlaydi. Rollar va ruxsatnomalarga oid tushuntirish qo'llanmasi uchun [Ruxsatlar](/uz/blockchain/permissions.md) ga qarang.
@@ -17,7 +16,6 @@ Ruxsat tekshiruvlari faol dasturiy ta'minotni bajarish muhitini tasdiqlovchi tom
 |Ruxsatnoma tokeni|Kategoriya|Operatsiya|
 | --- | --- | --- |
 | `CanManagePeers` |tarmoq tengdosh|Tarmoq tengdoshlarini ro‘yxatdan o‘tkazish, ro‘yxatdan chiqarish yoki boshqa tarzda boshqarish.|
-| `CanManageLaneRelayEmergency` |tarmoq tengdosh|Favqulodda ehtimoliy yo‘l signalini boshqarishni boshqarish.|
 | `CanRegisterDomain` |Domen|Domenni ro'yxatdan o'tkazing.|
 | `CanUnregisterDomain` |Domen|Domenni ro‘yxatdan o‘chirish.|
 | `CanModifyDomainMetadata` |Domen|Domen metama'lumotlarini o'zgartirish.|
@@ -29,7 +27,7 @@ Ruxsat tekshiruvlari faol dasturiy ta'minotni bajarish muhitini tasdiqlovchi tom
 | `CanMintAssetWithDefinition` |Aktiv|ma'lum bir ta'rif uchun aktivlarni chiqarish.|
 | `CanBurnAssetWithDefinition` |Aktiv|ma'lum bir ta'rif uchun aktivlarni yo'q qilish.|
 | `CanTransferAssetWithDefinition` |Aktiv|Muayyan ta'rif uchun aktivlarni o'tkazish.|
-| `CanMintAsset` |Aktiv|aniq bir aktiv balansini chiqarish.|
+| `CanMintAssetToAccount` |Aktiv|aniq bir aktiv balansini chiqarish.|
 | `CanBurnAsset` |Aktiv|aniq bir aktiv balansini yo'q qilish.|
 | `CanTransferAsset` |Aktiv|Ma'lum bir aktiv balansini o'tkazing.|
 | `CanRegisterNft` | NFT |NFT uchun ro'yxatdan o'ting.|
@@ -44,8 +42,9 @@ Ruxsat tekshiruvlari faol dasturiy ta'minotni bajarish muhitini tasdiqlovchi tom
 | `CanModifyTrigger` |Tutrqich|Trigger konfiguratsiyasini o'zgartiring.|
 | `CanModifyTriggerMetadata` |Tutrqich|Trigger metama'lumotlarini o'zgartiring.|
 | `CanUpgradeExecutor` |Ijrochi|Dasturiy ta'minot bajarish muhiti ijrochisini yangilang.|
-| `CanRegisterSmartContractCode` |Aqlli shartnoma|Aqlli shartnoma kodini ro‘yxatdan o‘tkazing.|
-| `CanUseFeeSponsor` | Nexus |Belgilangan homiy hisobiga Nexus to‘lovlarni qo‘llash.|
+| `CanManageSmartContractCode` |Aqlli shartnoma|Hech qayerda havola qilinmagan kod artefaktlarini o‘chirish va shartnoma kirish nuqtalarini delegatsiya qilish. Ro‘yxatdan o‘tgan hisoblar tekshirilgan artefaktlarni bu ruxsatsiz ham yarata oladi.|
+| `CanManageFeeSponsorProgram` | SORA Nexus | Aynan homiy hisobiga tegishli dasturlarni boshqarish. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | Aynan bitta homiy dasturining benefitsiarlarini boshqarish. |
 
 ## Egalik {#ownership}
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: ba
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito данлыҡтың консенсус, ҡултамғалау, хэшин
 |Torii тип яуаптар |Типлы бинар яуаптар ярҙамында тамамлау пункттары `Accept: application/x-norito` ҡуллана. |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, һәм Android клиенттар ҡуллана Norito ҡул менән йыйылған байттар урынына төҙөүселәр йәки бәйләүҙәр. |
 |Kura һаҡлау |Блок файҙалы commit, тергеҙеү ярҙәмсе яҙмалары, реестры һәм commit markers Norito‐ҡа рамкалы мәғлүмәт булараҡ һаҡлана. |
-|Манифесттар |Nexus, мәғлүмәттәрҙең булыуы, SoraFS, трансляция һәм ҡушымтаға ҡараған манифестар ҡулланмаһын ҡулланалар Norito, әгәр манифестҡа ҡул ҡуйырға кәрәк.|
+|Манифесттар |SORA Nexus, мәғлүмәттәрҙең булыуы, SoraFS, трансляция һәм ҡушымтаға ҡараған манифестар ҡулланмаһын ҡулланалар Norito, әгәр манифестҡа ҡул ҡуйырға кәрәк.|
 |Стримлау |Norito Стримингта Norito манифесттар, сегмент башлыҡтары, идара итеү кадрҙары һәм ярашлылыҡ һынау мәғлүмәттәре ҡулланыла. |
 
 Norito - был аҡыллы килешеү теле түгел, ә операцияларҙы, контракт саҡырыуҙарын, манифесттарҙы һәм API файҙалы йөкләмәләрен алып барған детерминистик конверт һәм кодек.
@@ -134,7 +134,7 @@ Iroha йәки SDK бәйләнештәрен сығанаҡтан төҙөгә�
 |`packed-seq` |Оффсет таблицалары ярҙамында йыйылмалар әҙерләү. |
 |`packed-struct` |Баҫмалы сығарылмалар менән барлыҡҡа килгән структуралар. |
 |`compact-len` |Varint оҙонлоғо буйынса prefixes. |
-|`columnar` |Norito Колонна блоктары, адаптив AoS/NCB сират кодэктары һәм сканерлыҡ ауыр юлдары өсөн алынған ҡараштар; default `node-codec` функциялар йыйылмаһына индерелгән. |
+| `columnar` | Norito Column Blocks, адаптив AoS/NCB рәт кодектары һәм күп сканлау талап иткән юлдар өсөн күсермәһеҙ алынған күренештәр; ғәҙәттәге `node-codec` мөмкинлектәр йыйылмаһына инә. |
 |`strict-safe` |Паникаларҙы декодлау хаталы юлдары структуралаштырылған хаталарға әйләндерә. |
 |`simd-accel` |CPU тиҙләтеү, әгәр мөмкин булһа, детерминистик кире ҡайтыу менән. |
 |`json` |Эске JSON анализлаусы, яҙыусы, DOM, типланған сығарылмалар һәм тиҙ юлдар. |
@@ -199,11 +199,11 @@ Norito Стриминг шул уҡ детерминистик алымды ме
 - [Torii сикләү пункттары](/ba/reference/torii-endpoints.md)
 - [Башланмыш шиғыры](/ba/reference/genesis.md)
 - [Мәғлүмәттәр моделе схемаһы](/ba/reference/data-model-schema.md)
-- [JavaScript /TypeScript SDK](/ba/guide/tutorials/javascript.md)
+- [JavaScript / TypeScript SDK](/ba/guide/tutorials/javascript.md)
 - [Python SDK](/ba/guide/tutorials/python.md)
 - [Swift һәм iOS SDK](/ba/guide/tutorials/swift.md)
 
 ## Үрге йүнәлештәге ссылкалар {#upstream-references}
 
-- [Norito форматы буйынса спецификация](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito форматы буйынса спецификация](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

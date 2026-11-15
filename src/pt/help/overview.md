@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Solução de problemas {#troubleshooting}
 
 Esta seção ajuda a resolver problemas durante o uso do Iroha. Se algo der errado, [verifique primeiro as chaves](#check-the-keys). Se isso não bastar, consulte as instruções de cada etapa:

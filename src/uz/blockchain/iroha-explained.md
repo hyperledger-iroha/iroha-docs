@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /blockchain/iroha-explained.md
-translation_source_hash: ba591b2c1aa819837177625b1ae457b5fa492197576dc690b19ca2897562a436
+translation_source_hash: 16acd0a607bbec336ff336363478a3a0deeb24ad9a2ad59e753c9f65134b061f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha haqida {#iroha-explained}
 
 Iroha 3 — Hyperledger Iroha platformasining birinchi relizi. Ayni yadro mustaqil joylashtiriladigan tarmoqlarni hamda ma’lumotlar makonlari va ko‘p yo‘lakli yo‘naltirish uchun SORA Nexus bajarish modelini qo‘llab-quvvatlaydi.
@@ -25,46 +24,50 @@ Iroha 3 — Hyperledger Iroha platformasining birinchi relizi. Ayni yadro mustaq
 
 Global holatdagi har bir o‘zgarish tranzaksiya orqali amalga oshadi. Tranzaksiyalar ko‘rsatmalar yoki IVM baytkodini olib yuradi; Torii mijozlar ularni yuborishi yoki ta’sirini kuzatishining asosiy yo‘lidir.
 
-- Nexus ni hisobga oladigan sozlamalar bir nechta yo‘lakni belgilashi mumkin;
-- ma’lumotlar makonlari ish yuklarini ajratadi, ammo ular ayni reyestr modelining qismi bo‘lib qoladi;
-- yo‘naltirish siyosati muayyan ish turini qaysi yo‘lak va ma’lumotlar makoni bajarishini belgilaydi.
+- ma’lumotlar makonlari institutsional ma’lumot, vakolat, siyosat va ilovalar uchun muhitlarni beradi
+- yo‘laklar shu muhitlarda marshrutlash va sertifikatlash sig‘imini beradi
+- mustaqil imzolangan ma’lumotlar makoni ildizi o‘z State’i va mahalliy yakuniyligiga egalik qiladi
 
-## Ko‘p ma’lumotlar makonli arxitektura {#multi-dataspace-architecture}
+## Ma’lumotlar makonlari va bajarish ildizlari {#multi-dataspace-architecture}
 
-Ma’lumotlar makoni — yo‘naltirish va nomlar makoni chegarasi, alohida blokcheyn emas. Bajarish muhitida hanuz bitta `World`, bitta tranzaksiya modeli va bitta konsensus konveyeri mavjud. Nexus tugunga ishni yo‘laklar bo‘yicha qanday ajratish va bu yo‘laklar xizmat qiladigan ma’lumotlar makonlarini qanday nomlashni ko‘rsatadigan kataloglarni qo‘shadi.
+Ma’lumotlar makoni katalog yozuvi muhit va uning identifikatorini belgilaydi. Faqat katalog yozuvi mustaqil bajarish ildizini o‘rnatmaydi. Ochiq yo‘laklar tranzaksiya to‘plamlarini global zanjirda bajarish uchun sertifikatlaydi; mustaqil imzolangan ma’lumotlar makoni ildizining o‘z State’i, qo‘mitasi va mahalliy yakuniyligi bor.
 
-Bajarish vaqtida ma’lumotlar makoni raqamli `DataSpaceId` va katalog metama’lumotlari bilan ifodalanadi. `DataSpaceId::UNIVERSAL` uchun `0` ajratilgan; standart katalog `universal` ma’lumotlar makonini o‘z ichiga oladi. Har bir sozlangan ma’lumotlar makonida quyidagilar bor:
+`DataSpaceCatalog` ma’lumotlar makonlarini, `LaneCatalog` esa yo‘laklarni belgilaydi. Har bir yo‘lak `dataspace_id` orqali aniq bitta ma’lumotlar makoniga havola qiladi; ma’lumotlar makoni bir nechta yo‘lakni o‘z ichiga olishi mumkin. `DataSpaceId` va `LaneId` alohida identifikatorlardir, yo‘lak taxallusi yana bir ma’lumotlar makonini yaratmaydi.
+
+Bajarish vaqtida ma’lumotlar makoni raqamli `DataSpaceId` va katalog metadatasi bilan ifodalanadi. `DataSpaceId::UNIVERSAL` uchun `0` ajratilgan; standart katalogda `universal` ma’lumotlar makoni bor. Har bir sozlangan ma’lumotlar makonida quyidagilar mavjud:
 
 - noyob raqamli identifikator;
-- `universal`, `governance` yoki `zk` kabi noyob taxallus;
+- `universal` kabi noyob taxallus yoki ochiq ro‘yxatdan o‘tkazilgan institutsional nom
 - operator interfeyslari uchun ixtiyoriy tavsif;
 - uzatuvchi qo‘mitalar hajmini belgilashda ishlatiladigan nol bo‘lmagan `fault_tolerance` qiymati
 
-Yo‘laklar — shu ma’lumotlar makonlariga bog‘langan bajarish va saqlash yo‘llaridir. Har bir yozuv `LaneId`, xizmat ko‘rsatiladigan `DataSpaceId`, taxallus, ko‘rinish (`public` yoki `restricted`), saqlash profili (`full_replica`, `commitment_only` yoki `split_replica`), isbot sxemasi hamda ixtiyoriy boshqaruv, hisob-kitob va rejalashtirish metama’lumotlarini o‘z ichiga oladi. Bajarish muhiti shu katalogdan har bir yo‘lak uchun Kura bo‘lagi nomlari va deterministik kalit prefikslarini ham qamrab oladigan saqlash tuzilishini hosil qiladi.
+Yo‘laklar shu ma’lumotlar makonlariga bog‘langan marshrutlash va sertifikatlash resurslaridir. Yo‘lak yozuvi `LaneId`, xizmat ko‘rsatiladigan `DataSpaceId`, taxallus, ko‘rinish (`public` yoki `restricted`), saqlash profili (`full_replica`, `commitment_only` yoki `split_replica`), isbot sxemasi hamda ixtiyoriy boshqaruv, hisob-kitob va rejalashtiruvchi metadatasini saqlaydi. Bajarish muhiti bu katalogdan har bir yo‘lakning saqlash tuzilmasini, jumladan Kura segment nomlari va deterministik kalit prefikslarini hosil qiladi.
 
 Yo‘naltirish jarayoni quyidagicha:
 
-1. Sozlama tekshirilgan `DataSpaceCatalog`, `LaneCatalog` va `LaneRoutingPolicy` ni tuzadi. Bir nechta yo‘lak, bir nechta ma’lumotlar makoni yoki nostandart yo‘naltirish uchun `nexus.enabled = true` talab qilinadi.
-2. Tranzaksiyalar navbati faol yo‘lak yo‘naltiruvchisidan yo‘lak identifikatori va ma’lumotlar makoni identifikatorini o‘z ichiga olgan `RoutingDecision` ni so‘raydi.
-3. Aniq yo‘naltirish qoidalari vakolat/hisob yoki ko‘rsatma yorlig‘iga mos kelishi mumkin. Mos qoida bo‘lmasa, yo‘naltiruvchi ma’lumotlar makonini domen identifikatorlari, aktiv ta’rifi proyeksiyalari, makon doirasidagi ruxsatlar, hisob-kitob qismlari yoki vakolat hisobining bog‘langan doirasidan hosil qilishi mumkin.
-4. Aniqlangan yo‘nalish ikkala katalogga nisbatan tekshiriladi. Noma’lum yo‘lak, noma’lum ma’lumotlar makoni va yo‘lak/makon mos kelmasligi deterministik yo‘naltirish xatosidir. Tranzaksiya ikki xil ma’lumotlar makonidagi nishonga yozsa, ziddiyatli yo‘nalish sifatida rad etiladi; makonlararo DVP/PVP hisob-kitobi universal muvofiqlashtiruvchi yo‘lak orqali yo‘naltiriladi.
-5. Sumeragi va telemetriya tayinlovni yo‘lak hamda ma’lumotlar makoni faoliyati, navbat qoldig‘i va majburiyat oniy tasvirlari sifatida ko‘rsatadi.
+1. Sozlama tekshirilgan `DataSpaceCatalog`, `LaneCatalog` va `LaneRoutingPolicy`ni yaratadi. SORA Nexus marshrutlashi majburiy. Global ildizda bir nechta ma’lumotlar makoni, yo‘lak yoki nostandart marshrutlash SORA Nexus profili (`--sora`) va NPoSni talab qiladi; mustaqil imzolangan ma’lumotlar makoni ildizi ruxsatli rejimda ishlaydi.
+2. Tranzaksiya navbati tranzaksiya va commit qilingan holatdan `RoutingPlan`ni yechadi. Har bir koordinator yoki ishtirokchi marshruti yo‘lak ID si va ma’lumotlar makoni ID sini saqlaydi; Native AMX rejalari to‘liq ishtirokchilar to‘plamini saqlaydi.
+3. Global bajarish uchun boshqaruv qatlamining to‘liq to‘plamlari va ma’lumotlar makonlari orasidagi koordinatorlar yo‘lak `0`dan foydalanadi. Aniq universal bo‘lmagan ko‘rsatma yoki kontrakt manzili maqsadlari hisob yoki ko‘rsatma yorlig‘i qoidalaridan oldin mos ma’lumotlar makoni va qo‘mitasi bor qabul qilingan belgilangan yo‘lakni tanlaydi. Boshqa ish commit qilingan aniq qoidalar va standart shardingga amal qiladi; aniq universal maqsadlar universal yo‘laklarda qoladi.
+4. Har bir marshrut kataloglar va faol yo‘lak holatiga nisbatan tekshiriladi. Noma’lum ID lar va yo‘lak/ma’lumotlar makoni nomuvofiqligi rad etiladi; mavjud bo‘lmagan xususiy maqsad universal bajarishga o‘ta olmaydi. Bir nechta ma’lumotlar makoni maqsadi Native AMX rejasini hosil qilishi mumkin. `reject_cross_dataspace`ga teng `amx_policy` tranzaksiya metadatasi makonlararo rejalarni rad etadi. Faqat marshrutlash rejasi mustaqil ildizlar orasidagi hisob-kitobga vakolat bermaydi va uni tugatmaydi.
+5. Telemetriya bu taqsimotni `/status` yo‘lak suratida (`teu_lane_commit`) har bir yo‘lak bo‘yicha faollik va navbatdagi ishlar sifatida ko‘rsatib turadi.
 
-Shu sababli obyekt identifikatorlari muhim. Domen identifikatori `payments.universal` singari ma’lumotlar makoni taxallusini o‘z ichiga oladi, shuning uchun domen doirasidagi yozishlar yo‘naltirilishi mumkin. Hisoblar kanonik va domensiz qoladi; ayni hisobni `AccountId` ni o‘zgartirmasdan turli ilova doiralariga bog‘lash mumkin. Aktiv ta’riflari domen/ma’lumotlar makoni proyeksiyasini saqlashi mumkin, natijada aktiv amallari kerakli ma’lumotlar makoni yo‘nalishini meros qilib oladi.
+Shu sababli obyekt identifikatorlari muhim. Domen ID si ma’lumotlar makoni taxallusini, masalan `payments.universal`ni o‘z ichiga oladi, shunda domen doirasidagi yozishlar yo‘naltiriladi. Hisoblar kanonik va domensiz qoladi, shu bois bitta hisobni uning `AccountId`sini o‘zgartirmasdan turli ilova doiralariga bog‘lash mumkin. Aktiv ta’riflari domen/ma’lumotlar makoni proyeksiyasini saqlashi mumkin, bu aktiv amallariga to‘g‘ri ma’lumotlar makoni marshrutini meros qilib beradi.
 
-Nexus o‘zgartirishlarisiz tugun bitta yo‘lak va `universal` ma’lumotlar makonidan foydalanadi. To‘plamdagi SORA profili buning o‘rniga uch yo‘lakli katalogni beradi: universal ochiq yo‘lak uchun `core`, boshqaruv trafigi uchun `governance`, nol bilim ilovalari va shartnoma joylashtirish trafigi uchun `zk`.
+SORA Nexus o‘zgartirishlarisiz tugun bitta yo‘lak va `universal` ma’lumotlar makonidan foydalanadi. Birga yetkazilgan SORA Nexus profili uni uch yo‘lakli katalog bilan almashtiradi: universal ochiq yo‘lak uchun `core`, boshqaruv trafigi uchun `governance`, zero-knowledge biriktirmalari va kontrakt joylashtirish trafigi uchun `zk`.
 
-Ushbu uchta andoza ish yuklari sinflarini ajratish uchun mavjud:
+Birga yetkazilgan uchala yo‘lak ham ochiq va ayni `universal` ma’lumotlar makoniga havola qiladi. Ular ish sinflarini ajratadi:
 
 | Ma’lumotlar makoni | Yo‘lak | Vazifasi |
 | ------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `universal` | `core` | Odatiy ochiq reyestr trafigi va zaxira yo‘naltirish uchun ajratilgan standart makon (`DataSpaceId::UNIVERSAL == 0`) |
-| `governance` | `governance` | Boshqaruv va parlament trafigi uchun cheklangan yo‘lak; boshqaruv qatlami faoliyatini umumiy ilova yozuvlaridan ajratadi. |
-| `zk` | `zk` | Nol bilim isbotlari, ilovalar va shartnoma joylashtirish uchun cheklangan yo‘lak; isbotga boy jarayonlarni odatiy yozuvlardan ajratadi. |
+| `universal` | `core` | Odatiy ochiq reyestr trafigi va standart marshrutlash. |
+| `universal` | `governance` | Ochiq boshqaruv va SORA Parliament trafigi. |
+| `universal` | `zk` | Ochiq zero-knowledge biriktirmalari va kontrakt joylashtirish trafigi. |
 
-Faqat `universal` ajratilgan asosiy makondir. `governance` va `zk` to‘plamdagi katalog va yo‘naltirish siyosatida kodlangan SORA profil tanlovlaridir; operatorlar boshqa ma’lumotlar makoni chegaralari kerak bo‘lsa, boshqa katalog belgilashi mumkin.
+`DataSpaceId::UNIVERSAL == 0` — ajratilgan asosiy qiymat. Yuqoridagi `governance` va `zk` nomlari alohida ma’lumotlar makonlari emas, yo‘laklarni bildiradi. Turli institutsional chegaralar uchun aniq ma’lumotlar makoni yozuvlari kerak; mustaqil bajarish uchun qo‘shimcha ravishda mustaqil autentifikatsiyalangan ildiz zarur.
 
-Sumeragi har doim ma'lumotlar mavjudligi va ishonchli etkazib berishdan foydalanadi. Ushbu yo'llar Iroha 3 konsensus protokolining bir qismi bo'lib, ishga tushirish profillari tomonidan o'chirib qo'yilmaydi.
+Bu munosabatlar belgilangan [profil konstruktorlari](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_config/src/parameters/actual.rs), [yo‘lak amalga oshirilishi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs) va [mustaqil ildiz shartnomasi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) bilan belgilanadi.
+
+Sumeragi har doim imzolangan RS16 foydali yuki mavjudligi va sertifikatlangan tanani tiklashdan foydalanadi. Ushbu yo‘llar Iroha 3 konsensus protokolining bir qismi bo‘lib, joylashtirish profili orqali o‘chirib qo‘yilmaydi.
 
 Bajarish muhiti xatti-harakati sozlama fayllari va zanjirdagi parametrlardan olinadi. Muhit o‘zgaruvchilari ishlab chiqarish imkoniyatlarini yoqish vositasi emas.
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Atamalar lug‘ati <!-- omit in toc --> {#glossary}
 
 Bu yerda Iroha bilan bog‘liq tushuncha va obyektlarning ta’riflari berilgan.
@@ -42,7 +41,7 @@ O‘rta asrlarda hisob daftarlari jamoatchilik ko‘rishi va yozuvlar to‘g‘r
 
 ## Tugun {#peer}
 
-Iroha-da tugun — boshqa Iroha jarayonlari va mijoz ilovalari ulana oladigan Iroha jarayonining nusxasi. Bitta kompyuter bir nechta Iroha tuguniga mezbonlik qilishi mumkin. Tugunlar resurslari va imkoniyatlari jihatidan teng. Muhim istisno shuki, Iroha tarmog‘ini dastlab ishga tushirish bosqichida genezis blokini faqat bitta tugun bajaradi.
+Tarmoq tuguni — boshqa tugunlar va mijoz ilovalaridan ulanishlarni qabul qiladigan Iroha tugun jarayoni. Bitta mashinada sozlamalari va saqlash joylari alohida bo‘lgan bir nechta tugun ishlashi mumkin. Bo‘sh holatdan konsensusni boshlayotgan har bir tugun tarmoqning imzolangan genezisining haqiqiyligini tekshiradi va uni qo‘llaydi; haqiqiyligi tasdiqlangan holat nusxalaridan tiklangan tugunlar esa o‘sha holatdan ishni davom ettiradi.
 
 Boshqa blokcheynlarda ayni tushuncha tugun yoki tasdiqlovchi deb atalishi mumkin.
 
@@ -80,7 +79,7 @@ Aktivning boshlang‘ich miqdori bir marta belgilanib, keyin o‘zgarmasa, u qo�
 
 ## Bizansdagi xatolarga chidamlilik (BFT) {#byzantine-fault-tolerance-bft}
 
-Tarmoq ishtirokchilarining muayyan qismi zararli bo‘lsa ham tizimning to‘g‘ri ishlay olish xususiyati. Iroha tugunlararo tarmog‘ida zararli tugunlar ulushi 33% gacha bo‘lganda ishlay oladi.
+Tarmoq ishtirokchilarining muayyan qismi zararli bo‘lsa ham tizimning to‘g‘ri ishlay olish xususiyati. Sumeragi qo‘mitasi aynan `3f + 1` ta validatordan iborat bo‘lib, `f` tagacha Vizantiya xatoli validatorga, ya’ni qo‘mitaning uchdan biridan kamiga bardosh beradi.
 
 ## Iroha komponentlari {#iroha-components}
 
@@ -92,7 +91,7 @@ Konsensus uchun javob beradigan Iroha moduli.
 
 ### Torii (Darvoza) {#torii-gate}
 
-[Tugun](#peer) uchun kiruvchi so‘rovlarni boshqarish mantiqini o‘z ichiga olgan modul. U kiruvchi ko‘rsatmalar va HTTP so‘rovlarini qabul qiladi hamda yo‘naltiradi, shuningdek bajarish muhiti sozlamalarining yangilanishlarini boshqaradi.
+[Tengdosh](#peer)ga keluvchi so‘rovlarni qayta ishlash mantig‘i joylashgan modul. U keluvchi ko‘rsatmalar, HTTP so‘rovlari va operator sozlamasi tekshiruvini olish, qabul qilish va yo‘naltirish uchun ishlatiladi.
 
 ### Kura (Ombor) {#kura-warehouse}
 
@@ -108,7 +107,7 @@ Har bir blok balandligidagi holatni tasdiqlash va tekshirish uchun ishlatiladiga
 
 ### Aqlli shartnomalar {#smart-contracts}
 
-Aqlli shartnomalar — muayyan shartlar bajarilganda ishga tushadigan blokcheyn dasturlari. Iroha-da aqlli shartnomalar [asosiy Iroha maxsus ko‘rsatmalari](#core-iroha-special-instructions) yordamida amalga oshiriladi.
+Aqlli shartnomalar — muayyan shartlar bajarilganda ishga tushadigan blokcheyn dasturlari. Iroha 3 da aqlli shartnomalar Kotodama tilida yoziladi va IVM baytkodiga (`.to`) kompilyatsiya qilinadi; shartnoma holatni mezbon chaqiruvlari orqali [Iroha maxsus ko‘rsatmalari](#core-iroha-special-instructions)ni berib o‘zgartiradi.
 
 ### Qo‘zg‘atuvchilar {#triggers}
 
@@ -116,11 +115,11 @@ Muayyan blok yakunlanganda, belgilangan vaqtda (ayrim cheklovlar bilan) yoki bos
 
 ### Versiyalash {#versioning}
 
-Har bir so‘rov tegishli API versiyasi bilan belgilanadi. Shu tufayli Iroha mijoz va tugun dasturlarining turli bajariluvchi versiyalari o‘zaro ishlay oladi hamda Iroha tarmog‘idagi dasturiy ta’minotni bosqichma-bosqich yangilash mumkin bo‘ladi.
+Iroha 3 ning birinchi chiqarilishi blokni uzatish formatining bitta kanonik versiyasini qo‘llab-quvvatlaydi. `/v1/api/version` oxirgi nuqtasi genezis qo‘llanganidan keyin `SignedBlock::WIRE_VERSION` qiymatini qaytaradi, ungacha esa xizmat mavjud emasligi haqidagi javobni beradi. Bu qo‘llab-quvvatlanadigan uzatish formatini bildiradi; u turli protokol tuzilmalari o‘rtasidagi moslikni kelishmaydi va tarmoqni yangilashga ruxsat bermaydi.
 
 ### Hijiri (tugunlar obro‘si tizimi) {#hijiri-peer-reputation-system}
 
-Iroha obro‘ tizimi yaxshi tarixga ega [tugunlar](#peer) bilan aloqani ustuvorlashtirish va zararli [tugunlar](#peer) yetkazishi mumkin bo‘lgan ziyonni kamaytirish imkonini beradi.
+Iroha’ning tugunlar va hisoblar uchun obro‘ tizimi. Uning konsensusga tegishli parametrlari Hijiri komissiya siyosati va hisob xavfi yozuvlarini saqlaydi, boshqariladigan kuzatuvchi reyestrlari esa hisobning xavf ballini o‘zgartiradigan hisob attestatsiyalarini beradi.
 
 ## Iroha modullari {#iroha-modules}
 
@@ -132,7 +131,7 @@ Iroha bilan birga taqdim etiladigan aqlli shartnomalar kutubxonasi. Ularni tranz
 
 #### Yordamchi Iroha maxsus ko‘rsatmalari {#utility-iroha-special-instructions}
 
-Bu [ISI](#iroha-special-instructions-isi) to‘plamiga `If` kabi mantiqiy ko‘rsatmalar, `Notify` kabi kiritish-chiqarish amallari va `Sequence` kabi kompozitsiyalar kiradi. Ular asosan [maxsus ko‘rsatmalarni](#custom-iroha-special-instruction) tuzishda ishlatiladi.
+Bu [isi](#iroha-special-instructions-isi) to‘plamiga `Log`, `ExecuteTrigger`, `SetParameter` va `Upgrade` kabi domenga xos obyektni o‘zgartirmaydigan ko‘rsatmalar kiradi. Iroha 3 da `If`, `Notify` yoki `Sequence` ko‘rsatmalari yo‘q.
 
 ### Asosiy Iroha maxsus ko‘rsatmalari {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ Joriy blokcheyn holatining xotiradagi ifodasi. WSV tarkibiga `World`, yakunlanga
 
 ## Yetakchi {#leader}
 
-Iroha tarmog‘ida bitta tugun tasodifiy tanlanib, unga keyingi blokni tuzish vakolati beriladi. [Vizantiya xatolariga chidamlilikni](#byzantine-fault-tolerance-bft) ta’minlaydigan tarmoqlarda bu vakolat [ko‘rinishni almashtirish](#view-change) orqali bekor qilinishi mumkin.
+Har bir blok balandligi va ko‘rinish uchun Sumeragi blok taklif qiluvchini qo‘mita tarkibi, haqiqiyligi tasdiqlangan yetakchi tanlash urug‘i va tasdiqlab yozilgan o‘tkazib yuborilgan yetakchilar tarixidan deterministik tarzda aniqlaydi. [Ko‘rinish almashishi](#view-change) paytida navbat o‘sha [Vizantiya xatolariga chidamlilik](#byzantine-fault-tolerance-bft) qoidalari bo‘yicha qo‘mitaning keyingi munosib a’zosiga o‘tadi.

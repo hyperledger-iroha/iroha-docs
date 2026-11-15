@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-source-title-amendment
 ---
 # ལག་ལེན་གྱི་གོང་འཕེལ་ {#application-development}
 
@@ -44,7 +44,7 @@ Iroha གློག་རིམ་ཚུ་གིས་ ཚོང་འབྲེ�
 - སྒེར་གྱི་ལྡེ་མིག་ རྩིས་ཐོ་སླར་གསོའི་གནད་སྡུད་ API ཊོ་ཀེན་ ཡང་ན་ བརྒྱུད་བཏང་བདེན་དཔྱད་མགོ་ཡིག་ཚུ་ བཀོད་བརྡའི་ནང་མ་སྦྱར།
 - ལས་ཚབ་གང་རུང་གིས་ ཐད་རི་བ་རི་ བརྟག་དཔྱད་ནེཊ་ཚོང་འབྲེལ་མ་བཙུགས་པའི་ཧེ་མ་ ཚོང་འབྲེལ་འཆར་གཞི་དགོཔ་ཨིན། འཆར་གཞི་འདི་གིས་ ཡོངས་འབྲེལ་དང་དབང་ཚད་ བཀོད་རྒྱ་ འཐུས་རྒྱུ་དངོས་ སྔོན་འགྲོའི་འཕུར་འགྲུལ་ལྷག་ནི་ རེ་བ་བསྐྱེད་པའི་གྲུབ་འབྲས་ དེ་ལས་ ལོག་སྟེ་དཔའ་བཅམ་པའི་སྤྱོད་ལམ་ཚུ་ལུ་ མིང་བཏགས་དགོ།
 
-Taira MCP གི་ལཱ་རྒྱུན་ལམ་ལུ་བལྟ་བ་ཅིན་ [འདི་ SORA ལུ་ གཞི་བཙུགས་འབདཝ་ཨིན། ༣: Taira དང་ Minamoto](/dz/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Taira MCP གི་ལཱ་གི་གོ་རིམ་དོན་ལུ་ [SORA Nexus གུ་བཟོ་སྐྲུན་འབད་ནི་: Taira དང་ Minamoto](/dz/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents) ལུ་བལྟ།
 
 ## SDK གཙང་སྦྲ་གནས་སྟངས་ {#sdk-hygiene}
 

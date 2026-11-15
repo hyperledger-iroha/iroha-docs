@@ -105,6 +105,28 @@ pnpm translate --provider=nllb \
   --route=guide/tutorials/python.md,blockchain/permissions.md
 ```
 
+For pages with reviewed translations, use the incremental helpers in
+`etc/translate-delta.ts` instead of regenerating their complete prose.
+`planTranslationDelta` aligns exact old and new English prose units;
+`assembleTranslationDelta` retains the latest localized text for those units
+and takes code blocks and other structure from the new English page. Supply
+reviewed translations only for the changed units. Missing units, attempts to
+replace retained prose, mismatched source hashes, and structural drift fail.
+English frontmatter changes require a separate reviewed update.
+
+`namingOnlyDeltaTranslations` can reuse a unique preceding translation only
+when the English difference consists entirely of the approved data space and
+SORA Nexus prose spelling changes. It leaves code, URLs, anchors, and BIS Nexus
+unchanged. This proves equivalence of the source change, not the semantic
+quality of the preceding translation; inspect reused text and retain its review
+record. Do not automatically approve arbitrary provider output.
+
+`publishTranslationDelta` validates the complete candidate with the locale and
+English-run guards, rechecks the source and translation snapshots, and only
+then replaces the page. Keep provider drafts and unit review records outside
+`src/` until review is complete. Never update a stale page's source hash merely
+to make validation pass.
+
 Translated headings receive explicit IDs derived from the English VitePress
 slugs. This keeps fragment links stable across scripts and prevents localized
 heading text from changing public anchors. To synchronize those IDs into

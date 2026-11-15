@@ -1,20 +1,21 @@
 ---
 translation_locale: ar
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # تثبيت Iroha 3 {#install-iroha-3}
 
 تغطي هذه الصفحة سير عمل التثبيت الحالي لأدوات وسلاسل البرمجيات Iroha 3 والملفات الثنائية باستخدام مساحة العمل العليا `hyperledger-iroha/iroha`.
+
+للتثبيت مباشرة على المضيف، اتبع تعليمات Rust أدناه. ولتشغيل أربع عُقَد تحقق باستخدام Docker، ابدأ بدليل [تشغيل Iroha 3](/ar/get-started/launch-iroha.md).
 
 ## 1. المتطلبات الأساسية {#_1-prerequisites}
 
 قم بتثبيت هذه أولاً:
 
-- [rustup](https://www.rust-lang.org/tools/install)، لذلك يتم تثبيت سلسلة أدوات `rust-toolchain.toml` المثبتة (`1.93.1`) تلقائيًا
+- [rustup](https://www.rust-lang.org/tools/install)، لذلك يتم تثبيت سلسلة أدوات `rust-toolchain.toml` المثبتة (`1.99.1`) تلقائيًا
 - `git`
 - اختياريًا، Docker و Docker Compose لبدء التشغيل السريع متعدد الأقران المحلي
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 يتم إنشاء تدفق localnet المدعوم بالمصدر الحالي بواسطة Kagami. يقوم بكتابة إعدادات نظراء الشبكة وقطع بداية البلوكشين وإعدادات العميل والبرمجيات المساعدة وملف Compose اختياري يتطابق مع الكود الذي تم التحقق منه:
 
-- `kagami localnet` لبرمجيات الأقران المحلية الأصلية للشبكة
+- `kagami localnet up` لشبكة محلية مُدارة يبدأها Kagami ويشرف عليها
+- `kagami localnet generate` لتوليد نصوص تشغيل محلية أصلية للأقران
 - `kagami docker` لـ Docker Compose تم إنشاؤه من دليل localnet
 
 واصل مع [إطلاق Iroha 3](/ar/get-started/launch-iroha.md).

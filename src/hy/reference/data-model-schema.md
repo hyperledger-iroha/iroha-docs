@@ -1,9 +1,9 @@
 ---
 translation_locale: hy
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # Տվյալների մոդելային ծրագիր {#data-model-schema}
 
@@ -16,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-Մի՛ ստեղծեք կապեր ստուգված փաստաթղթերի կտորից, քանի դեռ դրա ծագման վիճակը սպասվում է: Կենդանի հանգույցի արձագանքը հեղինակավոր է այդ հանգույցի կոմպիլացված տվյալների մոդելի համար. պահեք այն ձեր ինտեգրման կողմից օգտագործվող հանգույցի կառուցվածքի կողքին.
+Կապակցող կոդը ստեղծեք այդ պատասխանից, ոչ թե այլ հավաքման համար հրապարակված պատճենից։ Գործող հանգույցի պատասխանը դրա կազմարկված տվյալների մոդելի լիազորված աղբյուրն է․ այն ամրագրեք ձեր ինտեգրման օգտագործած հանգույցի հավաքման հետ միասին։

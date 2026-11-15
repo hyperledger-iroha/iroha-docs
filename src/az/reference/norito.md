@@ -1,16 +1,15 @@
 ---
 translation_locale: az
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Norito {#norito}
 
 Norito Iroha-in tək protokol-standart seriyalaşdırma təbəqəsidir. Bu, şəbəkə tərəfləri, SDKs, CLI alətləri, Torii, Kura və yaradılmış artefaktlar eyni dəqiq yük haqqında razılaşmalı olduqda istifadə olunan bayt formatıdır.
 
-Məlumat konsensusun, imzalamanın, hash-ləmənin, davamlılığın və ya çarpaz-SDK qarşılıqlı işləmənin bir hissəsi olduqda Norito-dan istifadə edin. Operatorlar, tablolər və ya sürətli səhvlərin düzəldilməsi üçün insan tərəfindən oxuna bilən bir proyeksiyanı açıq şəkildə təklif edən API son nöqtəsi üçün JSON-dən istifadə edin.
+Məlumat konsensusun, imzalamanın, hash-ləmənin, davamlılığın və ya çarpaz-SDK qarşılıqlı işləmənin bir hissəsi olduqda Norito-dan istifadə edin. Operatorlar, tablolər və ya sürətli səhvlərin düzəldilməsi üçün insan tərəfindən oxuna bilən bir proyeksiyanı açıq şəkildə təklif edən son nöqtəsi üçün JSON-dən istifadə edin.
 
 ## Norito Harada Görünür {#where-norito-appears}
 
@@ -18,10 +17,10 @@ Məlumat konsensusun, imzalamanın, hash-ləmənin, davamlılığın və ya çar
 | --- | --- |
 |Əməliyyatlar və sorğular| Torii vasitəsilə göndərilən imzalı əməliyyat və sorğu yükü Norito kimi kodlanır.|
 |blokçeyn başlanğıcı| `kagami genesis sign` şəbəkə dostlarının işə düşərkən yüklədiyi imzalanmış `.nrt` bloku yaradır. |
-| Torii yazılmış cavablar | API tipli ikili cavabları dəstəkləyən son nöqtələr `Accept: application/x-norito` istifadə edir. |
+| Torii yazılmış cavablar | tipli ikili cavabları dəstəkləyən son nöqtələr `Accept: application/x-norito` istifadə edir. |
 | SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift və Android müştərilər əl ilə yığılmış baytlar əvəzinə Norito qurucularından və ya bağlamalarından istifadə edirlər.|
 |Kura anbar|Blok yükü, bərpa yardımı qeydləri, siyahılar və blokun tamamlanmasını göstərən göstəricilər Norito-çərçivələnmiş məlumat kimi saxlanılır.|
-|texniki bəyanatlar| Nexus, məlumat əlçatanlığı, SoraFS, axın və tətbiq yönümlü texniki manifestlər texniki manifestin imzalanması və ya xəşlənməsi lazım olduqda Norito-dən istifadə edir.|
+|texniki bəyanatlar| SORA Nexus, məlumat əlçatanlığı, SoraFS, axın və tətbiq yönümlü texniki manifestlər texniki manifestin imzalanması və ya xəşlənməsi lazım olduqda Norito-dən istifadə edir.|
 |Axın| Norito Axın Norito texniki manifestlər, seqment başlıqları, nəzarət çərçivələri və uyğunluq cihazları istifadə edir. |
 
 Norito ağıllı müqavilə dili deyil. Bu, əməliyyatları, müqavilə zənglərini, texniki manifesləri və tiplənmiş API yükləri daşıyan deterministik məlumat konteyneri və kodekdir.
@@ -96,7 +95,7 @@ Hardware sürətləndirilməsi heç vaxt dekod edilmiş məzmunu dəyişdirmir. 
 
 ## JSON Dəstək {#json-support}
 
-Norito API son nöqtələri və JSON tələb edən alətlər üçün yerli JSON stekini əhatə edir və bunu Norito tip sistemi tərk etmədən edir.
+Norito son nöqtələri və JSON tələb edən alətlər üçün yerli JSON stekini əhatə edir və bunu Norito tip sistemi tərk etmədən edir.
 
 | JSON xüsusiyyət |İstifadə vəziyyəti|
 | --- | --- |
@@ -152,14 +151,14 @@ Funksiyaların mövcudluğu SDKs və buraxılış profilləri arasında fərqlə
 
 Torii bir çox operator marşrutları üçün JSON-ü ortaya çıxarır, lakin tipli ikili marşrutlar Norito-dən istifadə edir. Cari tipli Norito HTTP bədənləri üçün media tipi `application/x-norito`-dır.
 
-Typed Norito qəbul edən və ya qaytaran API uç nöqtəsində bu başlıqlardan istifadə edin:
+Typed Norito qəbul edən və ya qaytaran uç nöqtəsində bu başlıqlardan istifadə edin:
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-Bir API son nöqtəsi hər iki təqdimatı dəstəklədikdə, müştərilər açıq üstünlük siyahısını göndərə bilərlər:
+Bir son nöqtəsi hər iki təqdimatı dəstəklədikdə, müştərilər açıq üstünlük siyahısını göndərə bilərlər:
 
 ```http
 Accept: application/x-norito, application/json
@@ -192,12 +191,12 @@ Axın üçün xüsusi kodeklər və entropiya profilləri əsas Norito əməliyy
 - Şema uyğunsuzluğunu keçici şəbəkə xətası kimi deyil, versiya və ya test artefaktı problemi kimi qəbul edin.
 - Buraxılış və ya onların yaradıldığı hadisə paketindəki `.nrt`, `.norito` və texniki manifesto artefaktlarını arxivləyin.
 - İmzalanmış, hash edilmiş və ya saxlanmış məlumatlar üçün həqiqət mənbəyi olaraq Norito-dan istifadə edin. Tabloslar və əl ilə yoxlama üçün JSON proyeksiyalarından istifadə edin.
-- Yeni tipli Torii API son nöqtəsi əlavə edərkən, onun JSON, Norito və ya hər ikisini qəbul edib-etmədiyini sənədləşdirin və dəstəklənən məzmun növlərini `/openapi.json`-da göstərin.
+- Yeni tipli Torii son nöqtəsi əlavə edərkən, onun JSON, Norito və ya hər ikisini qəbul edib-etmədiyini sənədləşdirin və dəstəklənən məzmun növlərini `/openapi.json`-da göstərin.
 - Akseleratoru aktivləşdirməzdən əvvəl, skaler çıxışa qarşı bərabərlik testlərini aparın. Əgər akselerator uğursuz olarsa, deterministik skaler ehtiyat yolundan istifadə edin. Yükləmə semantikasının dəyişməməsi lazımdır.
 
 ## Əlaqəli Səhifələr {#related-pages}
 
-- [Torii API son nöqtələr](/az/reference/torii-endpoints.md)
+- [Torii son nöqtələr](/az/reference/torii-endpoints.md)
 - [blokçeyn başlanğıc istinadı](/az/reference/genesis.md)
 - [Məlumat modeli sxemi](/az/reference/data-model-schema.md)
 - [JavaScript / TypeScript SDK](/az/guide/tutorials/javascript.md)
@@ -206,5 +205,5 @@ Axın üçün xüsusi kodeklər və entropiya profilləri əsas Norito əməliyy
 
 ## Yuxarı Axın İstinadları {#upstream-references}
 
-- [Norito format tələbləri](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito format tələbləri](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

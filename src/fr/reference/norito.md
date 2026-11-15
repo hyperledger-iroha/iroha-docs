@@ -1,16 +1,15 @@
 ---
 translation_locale: fr
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Norito {#norito}
 
 Norito est la couche de sérialisation canonique de Iroha. C'est le format binaire utilisé lorsque les pairs du réseau, SDKs, les outils CLI, Torii, Kura, et les artefacts générés doivent être d'accord sur exactement la même charge utile.
 
-Utilisez Norito lorsque les données font partie du consensus, de la signature, du hachage, de la persistance ou de l'interopérabilité cross-SDK. Utilisez JSON lorsqu'un point de terminaison API offre explicitement une projection lisible par l'homme pour les opérateurs, les tableaux de bord ou le débogage rapide.
+Utilisez Norito lorsque les données font partie du consensus, de la signature, du hachage, de la persistance ou de l'interopérabilité cross-SDK. Utilisez JSON lorsqu'un point de terminaison offre explicitement une projection lisible par l'homme pour les opérateurs, les tableaux de bord ou le débogage rapide.
 
 ## Où Norito apparaît {#where-norito-appears}
 
@@ -18,10 +17,10 @@ Utilisez Norito lorsque les données font partie du consensus, de la signature, 
 | --- | --- |
 |Transactions et requêtes|Les transactions signées et les charges utiles de requête soumises via Torii sont encodées en tant que Norito.|
 |genèse de la blockchain| `kagami genesis sign` produit un bloc `.nrt` signé que les pairs du réseau chargent au démarrage. |
-| Torii réponses saisies | API les points de terminaison qui prennent en charge des réponses binaires typées utilisent `Accept: application/x-norito`. |
+| Torii réponses saisies | les points de terminaison qui prennent en charge des réponses binaires typées utilisent `Accept: application/x-norito`. |
 | SDKs |Les clients Rust, Python, JavaScript, Kotlin/Java, Swift et Android utilisent des constructeurs ou des liaisons Norito au lieu d'octets assemblés à la main.|
 |Stockage Kura|Les charges de blocs, annexes de récupération, listes et marqueurs de validation sont stockés dans des trames Norito.|
-|manifestes techniques| Nexus, disponibilité des données, SoraFS, streaming, et manifestes techniques orientés vers l'application utilisent Norito lorsque le manifeste technique doit être signé ou haché. |
+|manifestes techniques| SORA Nexus, disponibilité des données, SoraFS, streaming, et manifestes techniques orientés vers l'application utilisent Norito lorsque le manifeste technique doit être signé ou haché. |
 | Diffusion en continu | Norito Streaming utilise des manifestes Norito, des en-têtes de segment, des trames de contrôle et des vecteurs de test de conformité. |
 
 Norito n'est pas un langage de contrat intelligent. C'est le conteneur de données déterministe et le codec qui transporte les transactions, les appels de contrat, les manifestes techniques et les charges utiles typées API.
@@ -96,7 +95,7 @@ L'accélération matérielle ne modifie jamais le contenu décodé. Les accélé
 
 ## Prise en charge de JSON {#json-support}
 
-Norito inclut une pile native JSON pour les points de terminaison API et les outils qui nécessitent JSON sans quitter le système de types Norito.
+Norito inclut une pile native JSON pour les points de terminaison et les outils qui nécessitent JSON sans quitter le système de types Norito.
 
 |JSON fonctionnalité|Cas d'utilisation|
 | --- | --- |
@@ -152,14 +151,14 @@ La disponibilité des fonctionnalités peut différer entre SDKs et les profils 
 
 Torii expose JSON pour de nombreuses routes opérateur, mais les routes binaires typées utilisent Norito. Le type de média pour les corps Norito HTTP typés actuels est `application/x-norito`.
 
-Utilisez ces en-têtes lorsqu'un point de terminaison API accepte ou renvoie des Norito typés :
+Utilisez ces en-têtes lorsqu'un point de terminaison accepte ou renvoie des Norito typés :
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-Lorsque un point de terminaison API prend en charge les deux représentations, les clients peuvent envoyer une liste de préférences explicite :
+Lorsque un point de terminaison prend en charge les deux représentations, les clients peuvent envoyer une liste de préférences explicite :
 
 ```http
 Accept: application/x-norito, application/json
@@ -192,12 +191,12 @@ Les codecs spécifiques au streaming et les profils d'entropie sont séparés du
 - Considérez la non-correspondance de schéma comme un problème de version ou d'artefact de test, et non comme une défaillance réseau passagère.
 - Archiver `.nrt`, `.norito` et les artefacts de manifeste technique dans le paquet de version ou d'incident qui les a produits.
 - Utilisez Norito comme source de vérité pour les données signées, hachées ou persistées. Utilisez les projections JSON pour les tableaux de bord et l'inspection manuelle.
-- Lors de l'ajout d'un nouvel endpoint typé Torii API, documentez s'il accepte JSON, Norito, ou les deux, et exposez les types de contenu pris en charge dans `/openapi.json`.
+- Lors de l'ajout d'un nouvel endpoint typé Torii, documentez s'il accepte JSON, Norito, ou les deux, et exposez les types de contenu pris en charge dans `/openapi.json`.
 - Avant d'activer un accélérateur, exécutez des tests de parité sur la sortie scalaire. Si un accélérateur échoue, utilisez la solution de repli scalaire déterministe. La sémantique de la charge utile doit rester inchangée.
 
 ## Pages liées {#related-pages}
 
-- [Torii API points de terminaison](/fr/reference/torii-endpoints.md)
+- [Torii points de terminaison](/fr/reference/torii-endpoints.md)
 - [référence de genèse de la blockchain](/fr/reference/genesis.md)
 - [Schéma du modèle de données](/fr/reference/data-model-schema.md)
 - [JavaScript / TypeScript SDK](/fr/guide/tutorials/javascript.md)
@@ -206,5 +205,5 @@ Les codecs spécifiques au streaming et les profils d'entropie sont séparés du
 
 ## Références en amont {#upstream-references}
 
-- [Norito spécification de format](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito spécification de format](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

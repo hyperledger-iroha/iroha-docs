@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ምናባዊ የግል አውታረ መረቦች {#virtual-private-networks}
 
 A <abbr title="Virtual Private Network">VPN</abbr> Iroha አገልግሎቶችን ማን መድረስ እንደሚችል የሚገድብ የአውታረ መረብ ቁጥጥር ነው። አረጋጋጮች፣ የመተግበሪያ ጀርባዎች እና ኦፕሬተሮች ክፍት የኢንተርኔት መስመሮችን ከመክፈት ይልቅ በግል አድራሻዎች መገናኘት ለሚችሉበት ለግል እና ለጥምረት ማሰማራት በጣም ጠቃሚ ነው።

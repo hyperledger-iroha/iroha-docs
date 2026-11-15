@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ሜታዳታ እና blockchain መዝገብ ማከማቻ ምርጫዎች {#metadata-and-ledger-storage-choices}
 
 የ Iroha 3 የውሂብ ሞዴል ለዘፈቀደ የቁልፍ-እሴት ውሂብ የተለየ `Store` የንብረት አይነት የለውም። የሚከተሉትን የማከማቻ ምርጫዎች ይጠቀሙ።

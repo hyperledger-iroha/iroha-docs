@@ -1,9 +1,9 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
 # Musubi Kotodama پیکجوں {#musubi-kotodama-packages}
 
@@ -31,7 +31,7 @@ namespace/package
 namespace/package@version
 ```
 
-ناموں کی جگہ سے پہلے کوئی لیڈ `@` نہیں ہے۔ ایک نام کی جگہ یا تو ڈیٹا اسپیس جڑ ہے جیسے `universal` یا ڈومین کے اہل ڈیٹا اسپیس جیسے `dex.universal`۔ لائیجر اس ساختی نام کی جگہ کو ایک مستحکم ہوم ڈیٹا اسپیس سے منسلک کرتا ہے جس پر پیکیج کا دعوی کیا جاسکتا ہے۔
+نیم اسپیس سے پہلے کوئی ابتدائی `@` نہیں ہوتا۔ نیم اسپیس یا تو ڈیٹا اسپیس روٹ ہوتی ہے جیسے `universal` یا ڈومین سے متعین نیم اسپیس جیسے `dex.universal`۔ کسی پیکیج پر دعویٰ کیے جانے سے پہلے لیجر اس ساختی نیم اسپیس کو ایک مستحکم ہوم ڈیٹا اسپیس سے باندھ دیتا ہے۔
 
 ## مینی فیسٹ اور لاک فائل {#manifest-and-lockfile}
 
@@ -67,10 +67,10 @@ Taira اس کام کے بہاؤ کے لئے عوامی ٹیسٹ نیٹ ورک ہ
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 

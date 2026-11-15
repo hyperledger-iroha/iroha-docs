@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Iroha の設定 {#configuring-iroha}
 
 ローカルネットワークピアの構成は次で設定されます TOML ファイル。これは、チェーン上での構成変更によるものとは異なります [`SetParameter`](/ja/blockchain/instructions.md#setparameter) 指示。生産の動作は設定で表現されなければなりません ファイルまたはオンチェーンのパラメータ; 環境変数は機能ゲートではありません。

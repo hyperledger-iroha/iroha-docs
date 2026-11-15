@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Muammolarni bartaraf etish {#troubleshooting}
 
 Ushbu bo‘lim Iroha bilan ishlashda muammolarga duch kelsangiz yordam berish maqsadida mo‘ljallangan. Agar biror narsa noto‘g‘ri bo‘lsa, iltimos, avvalo [tugmalarni tekshiring](#check-the-keys) qilishingiz kerak. Agar bu yordam bermasa, har bir bosqich uchun nosozliklarni tuzatish ko‘rsatmalarini tekshiring:

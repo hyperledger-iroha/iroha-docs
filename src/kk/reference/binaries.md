@@ -1,19 +1,18 @@
 ---
 translation_locale: kk
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Бинарларымен жұмыс істеу {#working-with-iroha-binaries}
 
 Iroha 3 оператордың жұмыс үрдісі төрт негізгі екілік файлдарға негізделген:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) желі серіктес демонды іске қосу үшін
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) желі серіктес демонды іске қосу үшін
 - `iroha3d_taira` бір протокол-стандарт Taira валидаторын іске қосу үшін
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) үшін CLI және оператор командалары
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) кілттер үшін, блокчейн генезисі, локальді желілер және профильдер
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) үшін CLI және оператор командалары
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) кілттер үшін, блокчейн генезисі, локальді желілер және профильдер
 
 ## Дереккөзден құру {#build-from-source}
 
@@ -50,31 +49,11 @@ cargo run --bin kagami -- --help
 
 ## Docker Сурет {#docker-image}
 
-Жоғары ағысты жұмыс кеңістігі `kagami localnet` және `kagami docker` қолдана отырып, тексеріп шығарылған кодқа сәйкес келетін Docker Compose файлдарын генерациялайды. Сол генерацияланған файлдармен `hyperledger/iroha:dev` бейнесін пайдалануға болады.
-
-Контейнерде CLI-ді іске қосыңыз:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Контейнерде Kagami-ді іске қосыңыз:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Желілік әріптесті іске қосу үшін алдымен localnet және Compose файлын жасаңыз:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker ішінде бір нұсқадан жиналған екілік файлдармен төрт валидаторды құрып, іске қосу үшін [Iroha 3 іске қосу](/kk/get-started/launch-iroha.md) нұсқаулығын қараңыз.
 
 ## Қай Бинарлық Файлды Қолдануым Керек? {#which-binary-should-i-use}
 
 - Қоғамдық Taira тексеруші нұсқасынан тыс желі серіктестерін бастағанда немесе жұмыс істегенде `iroha3d` пайдаланыңыз.
 - `iroha3d_taira --sora` тек бір протокол стандартындағы Taira валидатор орналастыру үшін қолданыңыз; бұл Taira тізбегінің, сақтау орнын және орындау-қолтаңба профилін жүзеге асырады.
 - `iroha` блокчейн есептік тізілімін сұрау, транзакцияларды жіберу немесе оператор API нүктелерін тексеру қажет болғанда қолданыңыз.
-- `kagami` қажет болғанда кілттерді, блокчейннің генезис техникалық манифесттерін, профиль бандлдарын немесе localnet активтерін пайдаланыңыз.
+- Кілттер, генезис манифесттері, профиль топтамалары немесе жергілікті желі активтері қажет болғанда `kagami` пайдаланыңыз.

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Performans və Ölçülər {#performance-and-metrics}
 
 Iroha performans iş yükündən, təsdiqləyici topologiyasından, şəbəkə şərtlərindən və konsensus parametrlərindən asılıdır. Buna görə də, tək bir TPS nömrəsi yalnız sabit konfiqurasiyaya malik benchmark icrası ilə əlaqələndirildiyi zaman faydalıdır.
@@ -24,8 +23,8 @@ Bu səhifədən istifadə edərək müəyyən bir düyün sayı, şəbəkə geci
 İctimai node vaxt nöqtəsi məlumat baxışı və Prometheus yığımı ilə başlayın, sonra operator tərəfindən təsdiqlənmiş konsensus vəziyyəti üçün CLI istifadə edin. Operator açarı hədəf node tərəfindən icazə verilməli və yalnız proqram icra mühitində yüklənir:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Öz yerləşdirməniz üçün istehsal tutumu rəqəmləri kimi ictimai testnet müşahidələrindən istifadə etməyin.
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Namizəd və Daxilolma Hüdudları {#candidate-and-ingress-bounds}
 
-Qovşaq-yerli Sumeragi sərhədlər, bir təsdiqləyicinin nə qədər namizəd və bərpa işi saxlaya biləcəyini müəyyən edir:
+Blok ölçüsü və əməliyyat hədləri imzalanmış genezisdən və təsdiqlənmiş zəncir parametrlərindən gəlir. Qovşağa məxsus yerli `[sumeragi]` parametrləri iştirak rolunu, imzalama materiallarının mühafizəsini, təhlükəsizlik qeydlərinin yollarını və sənədləşdirilmiş yerli vaxt aşımı və sinxronizasiya əvəzləmələrini əhatə edir.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` və `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks` və `sumeragi.queues.ready_bodies`
-
-Çox kiçik sərhədlər növbə və ya yük bərpası təzyiqi yaradır; həddindən böyük sərhədlər isə saxlanılan yaddaşı və sui-istifadə edən şəbəkəyə mövcud iş miqdarını artırır Həmyaşıdı. Hər dəfə bir sərhədi dəyişdirməzdən əvvəl diaqnostikaların müəyyən zaman nöqtəsinə aid verilənlər görüntüsünü proses yaddaşı, mesaj işlənməsi və bədən çatışmazlığı göstəriciləri ilə müqayisə edin:
+Şəbəkə girişi və əməliyyat növbəsinin hədləri yerli saxlanılan işin miqdarını idarə edir. Əməliyyat həddini dəyişdirməzdən əvvəl diaqnostikanın anlıq görüntüsünü proses yaddaşı, mesaj emalı və çatışmayan gövdə metrikləri ilə müqayisə edin. Eyni şəbəkənin işə salınmalarını müqayisə edərkən imzalanmış zəncir parametrlərini dəyişməz saxlayın:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ Metrlərin adları yoxlanılmış telemetriya kataloqundan gəlir. Seriyaların 
 | --- | --- | --- |
 |Qəbul edilmiş ötürmə sürəti| `sum(rate(txs{type="accepted"}[5m]))` |Sabit vəziyyətdə hədəf TPS-ə çatmalı və ya onu aşmalıdır|
 |Rədd etmələr| `sum(rate(txs{type="rejected"}[5m]))` |Test planı ilə izah edilə bilməlidir|
-|protokolun yekunlaşdırılma gecikməsi| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-i gecikmə büdcəsi ilə müqayisə edin|
+|protokolun yekunlaşdırılma gecikməsi| `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` |p95/p99-i gecikmə büdcəsi ilə müqayisə edin|
 |Növbə dərinliyi| `queue_size`, `sumeragi_tx_queue_depth` |Yüksək yüklənmə zamanı məhdud qalmalıdır|
 |Növbənin doyması| `sumeragi_tx_queue_saturated` |Davamlı sıfırdan fərqli dəyərlər həddindən artıq yüklənmə deməkdir|
-|Dəyişiklikləri göstər| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Yüksələn dəyərlər zamanlama, topologiya, yükləmə və ya şəbəkə problemi göstərir|
-|Atılmış mesajlar| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Yük zamanı düşmələr adətən gecikmə artımlarını izah edir|
-|Yük və DA bərpası| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Davamlı sorğular, artan yaş və ya təkrarlanan DA qapılar bədən və ya parça əldə etmə çətinliyini göstərir|
-|konsensusun yekunlaşdırılması üçün kvorum| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Sayılan imzalar tələb olunan səs çoxluğuna tez çatmalıdır|
+|Dəyişiklikləri göstər| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Yüksələn dəyərlər zamanlama, topologiya, yükləmə və ya şəbəkə problemi göstərir|
+|Atılmış mesajlar| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Yük zamanı düşmələr adətən gecikmə artımlarını izah edir|
+|Yük və geriləməni aradan qaldırma sorğuları| `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` |Davamlı gövdə və ya sinxronizasiya sorğuları yükün əldə edilməsində və ya geriləmənin aradan qaldırılmasında problem olduğunu göstərir|
+|Yekunlaşdırma irəliləyişi| `sumeragi_committed_height`, `sumeragi_applied_height` |Sertifikatlaşdırılmış və tətbiq edilmiş hündürlüklər birlikdə irəliləməlidir|
 
 Bir metrik yalnız `/v1/sumeragi/status` mövcud olduqda, JSON nöqtəsində vaxt məlumatlarının görünüşünü Prometheus skreypi ilə eyni işləmə artefaktlarında tutun.
 
@@ -244,7 +236,7 @@ Performans göstəricilərini yalnız onları təkrarlamaq üçün kifayət qəd
 - təsdiqləyici və müşahidəçi sayı
 - konsensus rejimi, imzalı blok kadençası və DA tərtibatı
 - dəqiq `3f + 1` komitə, kvorum və müşahidəçi siyahısı
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, şəbəkə-giriş və əməliyyat-növbəsi sərhədləri
+- imzalanmış zəncir parametrləri, yerli Sumeragi əvəzləmələri, şəbəkə girişi və əməliyyat növbəsinin hədləri
 - telemetriya profili
 - avadanlıq, saxlama və OS detallar
 - şəbəkə RTT, tərpənmə, itkilər və genişlik fərziyyələri
@@ -253,7 +245,7 @@ Performans göstəricilərini yalnız onları təkrarlamaq üçün kifayət qəd
 - qəbul edildi/rədd edildi TPS
 - p50/p95/p99 protokolunun yekunlaşma gecikməsi
 - növbə dərinliyi və doyma
-- dəyişikləri baxın, batmış mesajlar, blok alınmalarının itməsi və DA-qapı sayğacları
+- baxış dəyişiklikləri, vaxt aşımı səsləri, Sumeragi atılmaları, gövdə və sinxronizasiya sorğuları
 - CPU, hər bir təsdiqləyici üzrə yaddaş, disk və şəbəkə istifadəsi
 
 Bu detallarsız, TPS nömrəsi hekayəvi kimi qəbul edilməlidir.

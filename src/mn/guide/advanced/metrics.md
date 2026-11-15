@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Гүйцэтгэл ба үзүүлэлтүүд {#performance-and-metrics}
 
 Iroha-ийн гүйцэтгэл нь ажлын ачаалал, баталгаажуулагчийн хэв шинж, сүлжээний нөхцөл байдал, зөвшилцөх тохиргооноос хамаарна. Тиймээс нэг TPS тоо нь зөвхөн тогтмол тохиргоотой бенчмаркийн гүйцэтгэлийн талаар холбогдсон үед ашигтай байдаг.
@@ -24,8 +23,8 @@ Iroha-ийн гүйцэтгэл нь ажлын ачаалал, баталгаа
 Олон нийтийн зангилааны цэгийн цаг үеийн өгөгдлийн үзэлт ба Prometheus скрэпээр эхлээд, дараа нь оператороор баталгаажсан консенсусын төлөвт CLI-ийг ашиглана. Операторын түлхүүрийг зорилтот зангилаа зөвшөөрсөн байх ёстой бөгөөд зөвхөн програмын гүйцэтгэлийн орчинд ачаалагдана:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 Өөрийн суурилуулалтанд зориулж олон нийтийн тест сүлжээний ажиглалтыг үйлдвэрлэлийн хүчин чадлын тоогоор битгий ашигла.
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### Нэр дэвшигч ба Орж ирэх хязгаарууд {#candidate-and-ingress-bounds}
 
-Нод-дотоод Sumeragi хязгаар нь батлагч хэчнээн олон нэр дэвшигч болон сэргээх ажлыг хадгалах боломжтойг тодорхойлдог:
+Блокийн хэмжээ болон гүйлгээний хязгаарууд гарын үсэгтэй эхлэл төлөв, батлагдсан сүлжээний параметрүүдээс ирнэ. Зангилааны дотоод `[sumeragi]` тохиргоо нь оролцох үүрэг, гарын үсгийн материалын хамгаалалт, аюулгүй байдлын бүртгэлийн зам болон баримтжуулсан дотоод хугацаа, синхрончлолын орлуулах утгуудыг хамарна.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` ба `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`, `sumeragi.queues.chunks`, ба `sumeragi.queues.ready_bodies`
-
-Хэт жижиг хязгаарууд нь ээлж эсвэл өгөгдөл сэргээх дарамт үүсгэдэг; хэт том хязгаарууд нь хадгалсан санах ой болон хэвлэж болох ажлын хэмжээг нэмэгдүүлдэг. тэнцүүлэгч. Нэг хязгаарыг нэгэн зэрэг өөрчлөхийн өмнө оношилгооны цэгийн цагийн өгөгдлийн харагдах байдлыг процессын санах ой, мессежийг боловсруулах болон алга болсон биеийн хэмжигдэхүүнтэй харьцуулах:
+Сүлжээний оролт болон гүйлгээний дарааллын хязгаарууд дотоодод хадгалах ажлын хэмжээг удирдана. Ашиглалтын хязгаарыг өөрчлөхөөс өмнө оношилгооны агшин төлөвийг процессын санах ой, мессеж боловсруулалт болон дутуу агуулгын хэмжүүртэй харьцуулна. Ижил сүлжээний ажиллуулалтуудыг харьцуулахдаа гарын үсэгтэй сүлжээний параметрүүдийг тогтмол байлгана:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |Өргөтгөсөн дамжуулалт| `sum(rate(txs{type="accepted"}[5m]))` |Тогтмол нөхцөлд зорилт TPS-ийг хангах эсвэл давсан байх ёстой|
 |Татгалзсан| `sum(rate(txs{type="rejected"}[5m]))` |Төстөлгийн төлөвлөгөөнөөр тайлбарлагдах ёстой|
-|протоколын эцсийн шийдвэрийн хүлээлт| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |p95/p99-ийг хүлээлтийн төсөвтэй харьцуул|
+| Commit-ийн хоцрогдол | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`, `last_commit_time_ms` | p95/p99-ийг хоцрогдлын төсөвтэй харьцуулна |
 |Элсэнд орох дарааллын гүн| `queue_size`, `sumeragi_tx_queue_depth` |Дээд ачааллын үед хязгаарлагдмал байх ёстой|
 |Өөрчлөлттэй дараалал дүүрэлт| `sumeragi_tx_queue_saturated` |Тасралтгүй тэгээс ялгаатай утгууд нь ачааллын хэтрэлийг илтгэнэ|
-|Өөрчлөлтүүдийг үзэх| `view_changes`, `sumeragi_view_change_suggest_total`, `sumeragi_view_change_install_total` |Өсч буй утгууд нь цаг хугацаа, топологи, ачаа материал эсвэл сүлжээний асуудлыг зааж байна|
-|Алдагдсан мессежүүд| `dropped_messages`, `sumeragi_consensus_message_handling_total` |Ачааллын үед бууралт нь ихэвчлэн хойшиллын огцом өсөлтийг тайлбардаг|
-|Тээвэрлэлт ба DA сэргээх| `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total`, `sumeragi_da_gate_satisfied_total` |Тууштай хүсэл, нас нэмэгдэх эсвэл давтагдсан DA хаалтууд нь бие махбодь эсвэл хэсэг авахад асуудал байгааг илэрхийлнэ|
-|нэгдсэн шийдвэрийн эцсийн процессын оролцогчдын тоо| `sumeragi_commit_signatures_counted`, `sumeragi_commit_signatures_required` |Тоологдсон гарын үсэг шаардлагатай кворумд хурдан хүрэх ёстой|
+|Өөрчлөлтүүдийг үзэх| `view_changes`, `sumeragi_view_changes_total`, `sumeragi_timeout_votes_total` |Өсч буй утгууд нь цаг хугацаа, топологи, ачаа материал эсвэл сүлжээний асуудлыг зааж байна|
+|Алдагдсан мессежүүд| `sumeragi_dropped_total`, `p2p_queue_dropped_total` |Ачааллын үед бууралт нь ихэвчлэн хойшиллын огцом өсөлтийг тайлбардаг|
+| Payload болон гүйцэх татан авалт | `sumeragi_fetch_requests_total{kind="body"}`, `sumeragi_fetch_requests_total{kind="sync"}` | Үргэлжилсэн агуулга эсвэл sync татан авалт нь payload авах эсвэл гүйцэх синхрончлолын асуудлыг илтгэнэ |
+| Commit-ийн явц | `sumeragi_committed_height`, `sumeragi_applied_height` | Гэрчилгээжсэн болон хэрэглэгдсэн өндрүүд хамт ахих ёстой |
 
 Хэрэв метрк зөвхөн `/v1/sumeragi/status`-д байдаг бол, Прометеусын скраптай ижил ажиллах урсгалын артефактуудад JSON цэг-цагийн өгөгдлийн үзэлтийг барина.
 
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - баталгаажуулах болон ажиглагчдын тоо
 - аюулгүй горим, гарын үсэгтэй блокын хэмнэл, ба DA зохион байгуулалт
 - яг `3f + 1` хороо, кворум, болон ажиглагчдын нэрсийн жагсаалт
-- `sumeragi.block`, `sumeragi.queues`, `sumeragi.limits`, сүлжээ-орж ирэлт, болон гүйлгээ-өрөг хязгаарууд
+- гарын үсэгтэй сүлжээний параметрүүд, дотоод Sumeragi орлуулах утгууд, сүлжээний оролт болон гүйлгээний дарааллын хязгаарууд
 - телеметрийн профайл
 - техникийн тоног төхөөрөмж, хадгалах газар, ба OS дэлгэрэнгүй мэдээлэл
 - сүлжээ RTT, чичрэлт, алдагдал, ба өргөн зурвасын таамаглал
@@ -253,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - зөвшөөрсөн/татгалзсан TPS
 - p50/p95/p99 протоколын эцсийн баталгаажлын хойшлогдол
 - ачуулгын гүн ба дүүргэлт
-- өөрчлөлтүүдийг үзэх, алдагдсан зурвасууд, ороогүй блокуудыг татах, болон DA-хаалга тоолуурууд
+- view өөрчлөлт, хугацаа хэтэрсэн санал, Sumeragi-ийн хаягдал, мөн агуулга болон sync татан авалт
 - CPU, баталгаажуулагчаар санах ой, диск ба сүлжээний хэрэглээ
 
 Эдгээр дэлгэрэнгүй мэдээлэлгүйгээр, TPS дугаарыг зүгээр л домог маягийн гэж үзэх ёстой.
@@ -261,6 +253,6 @@ iroha --config ./localnet/client.toml \
 ## Холбогдсон хуудаснууд {#related-pages}
 
 - [Изанамитэй Хаос Туршилт](./chaos-testing.md)
-- [Torii API төгсгөлүүд](../../reference/torii-endpoints.md)
+- [Torii төгсгөлийн цэгүүд](../../reference/torii-endpoints.md)
 - [Iroha 3 -г CLI ашиглан ажиллуулна](../../get-started/operate-iroha-via-cli.md)
 - [сүлжээний хөршийн тохиргооны лавлагаа](../../reference/peer-config/params.md)

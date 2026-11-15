@@ -1,16 +1,15 @@
 ---
 translation_locale: ja
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Norito {#norito}
 
 Norito は Iroha の公式のシリアル化レイヤーです。ネットワークのピア、SDKs、CLI ツール、Torii、Kura、および生成されたアーティファクトがまったく同じペイロードに合意する必要がある場合に使用されるバイト形式です。
 
-データがコンセンサス、署名、ハッシュ化、永続化、またはクロス-SDK の相互運用性の一部である場合は、Norito を使用してください。API エンドポイントがオペレーター、ダッシュボード、または迅速なデバッグのために人間が読み取れる投影を明示的に提供する場合は、JSON を使用してください。
+データがコンセンサス、署名、ハッシュ化、永続化、またはクロス-SDK の相互運用性の一部である場合は、Norito を使用してください。エンドポイントがオペレーター、ダッシュボード、または迅速なデバッグのために人間が読み取れる投影を明示的に提供する場合は、JSON を使用してください。
 
 ## Norito が現れる場所 {#where-norito-appears}
 
@@ -18,10 +17,10 @@ Norito は Iroha の公式のシリアル化レイヤーです。ネットワー
 | --- | --- |
 |取引と照会|Torii を通じて送信された署名付きトランザクションおよびクエリペイロードは、Norito としてエンコードされます。|
 |ブロックチェーンのジェネシス| `kagami genesis sign` は、ネットワークのピアが起動時に読み込む署名付きの `.nrt` ブロックを生成します。 |
-| Torii タイプされた応答| API 型付きバイナリレスポンスをサポートするエンドポイントは `Accept: application/x-norito` を使用します。 |
+| Torii タイプされた応答| 型付きバイナリレスポンスをサポートするエンドポイントは `Accept: application/x-norito` を使用します。 |
 | SDKs | Rust、Python、JavaScript、Kotlin/Java、Swift、および Android クライアントは、手作業で組み立てたバイトの代わりに Norito ビルダーまたはバインディングを使用します。|
 |Kura ストレージ|ブロックのペイロード、回復補助レコード、名簿、ブロック最終化マーカーは、Norito フレーム付きデータとして保存されます。|
-|技術的マニフェスト| Nexus、データの利用可能性、SoraFS、ストリーミング、およびアプリ向けの技術マニフェストは、技術マニフェストを署名またはハッシュする必要がある場合に Norito を使用します。|
+| マニフェスト | SORA Nexus、データ可用性、SoraFS、ストリーミング、アプリ向けのマニフェストには、署名またはハッシュ化が必要な場合に Norito を使用します。 |
 |ストリーミング| Norito ストリーミングは、Norito の技術マニフェスト、セグメントヘッダー、制御フレーム、および適合性フィクスチャを使用します。|
 
 Norito はスマートコントラクト言語ではありません。これは、取引、契約呼び出し、技術マニフェスト、および型付き API ペイロードを運ぶ決定論的データコンテナおよびコーデックです。
@@ -96,7 +95,7 @@ Norito は、論理ペイロードを変更することなく、明示的およ�
 
 ## JSON サポート {#json-support}
 
-Norito は、Norito 型システムを離れることなく、JSON を必要とする API エンドポイントおよびツール向けのネイティブ JSON スタックを含みます。
+Norito は、Norito 型システムを離れることなく、JSON を必要とする エンドポイントおよびツール向けのネイティブ JSON スタックを含みます。
 
 | JSON 機能 |ユースケース|
 | --- | --- |
@@ -152,14 +151,14 @@ Rust のデータ型は、通常、手動でのコーデックコードではな
 
 Torii は多くのオペレータールートで JSON を公開しますが、型付きバイナリールートは Norito を使用します。現在の型付き Norito HTTP 本文のメディアタイプは `application/x-norito` です。
 
-これらのヘッダーは、API エンドポイントが型付きの Norito を受け入れる場合または返す場合に使用してください:
+これらのヘッダーは、エンドポイントが型付きの Norito を受け入れる場合または返す場合に使用してください:
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-API エンドポイントが両方の表現をサポートしている場合、クライアントは明示的な優先リストを送信できます:
+エンドポイントが両方の表現をサポートしている場合、クライアントは明示的な優先リストを送信できます:
 
 ```http
 Accept: application/x-norito, application/json
@@ -192,12 +191,12 @@ Norito ストリーミングは、メディアおよびリアルタイムトラ�
 - スキーマの不一致は一時的なネットワーク障害ではなく、バージョンやテストの問題として扱うべきです。
 - リリースまたはそれらを生成したインシデントバンドル内のアーカイブ `.nrt`、`.norito` および技術マニフェストアーティファクト。
 - 署名済み、ハッシュ済み、または永続化されたデータの信頼できる情報源として Norito を使用してください。ダッシュボードや手動検査のためには JSON のプロジェクションを使用してください。
-- 新しい型付きの Torii API エンドポイントを追加する際には、JSON、Norito、またはその両方を受け入れるかどうかを文書化し、サポートされているコンテンツタイプを `/openapi.json` に公開してください。
+- 新しい型付きの Torii エンドポイントを追加する際には、JSON、Norito、またはその両方を受け入れるかどうかを文書化し、サポートされているコンテンツタイプを `/openapi.json` に公開してください。
 - アクセラレータを有効にする前に、スカラ出力に対してパリティテストを実行してください。アクセラレータが失敗した場合は、決定論的なスカラフォールバックを使用してください。ペイロードのセマンティクスは変更されてはいけません。
 
 ## 関連ページ {#related-pages}
 
-- [Torii API エンドポイント](/ja/reference/torii-endpoints.md)
+- [Torii エンドポイント](/ja/reference/torii-endpoints.md)
 - [ブロックチェーンのジェネシス参照](/ja/reference/genesis.md)
 - [データモデルスキーマ](/ja/reference/data-model-schema.md)
 - [JavaScript / TypeScript SDK](/ja/guide/tutorials/javascript.md)
@@ -206,5 +205,5 @@ Norito ストリーミングは、メディアおよびリアルタイムトラ�
 
 ## 上流参照 {#upstream-references}
 
-- [Norito 形式仕様](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito 形式仕様](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

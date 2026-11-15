@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha Зааврын үйлдлүүд {#iroha-special-instructions}
 
 Одоогийн өгөгдлийн загвар нь эдгээр урьдчилан байршуулсан зааврын гэр бүлүүдийг харуулж байна:
@@ -28,7 +27,6 @@ translation_engine: bing-translator-llm
 | [`CustomInstruction`](/mn/blockchain/instructions.md#other-instructions) |гүйцэтгэгч-онцлог JSON ачаа|
 | [Уугуул хөрөнгийн итгэмжлэл](/mn/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [Ерөнхий хөрөнгийн түгжээнүүд](/mn/blockchain/escrow.md#generic-asset-locks) | `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [Нэргүй хөрөнгийн итгэмжлэл](/mn/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [Атомын хувийн санхүүгийн гүйлгээний тохиролцоо](/mn/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Нэмэлт Iroha 3 модуль нь зааврын бүртгэлээр дамжуулан тодорхой домэйны зааврын төрлийг бүртгүүлэх боломжтой. Node-authoritative схем болон үүнийг барьж авсан командын талаар [Өгөгдлийн загварын схем](./data-model-schema.md)-ыг үзнэ үү.
@@ -85,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

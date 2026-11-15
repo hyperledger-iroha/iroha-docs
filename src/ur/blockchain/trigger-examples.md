@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # واقعہ ٹرگر مثال {#event-trigger-example}
 
 اس مثال میں Iroha 3 ڈیٹا ماڈل میں کینونیکل ڈومین لیس اکاؤنٹ IDs اور متوقع اثاثہ تعریفیں استعمال کی جاتی ہیں.

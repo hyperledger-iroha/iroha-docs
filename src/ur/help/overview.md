@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # خرابی کا سراغ لگانا {#troubleshooting}
 
 اس سیکشن کا مقصد مدد کرنا ہے اگر آپ کے ساتھ کام کرتے وقت مسائل کا سامنا کرنا پڑتا ہے Iroha. اگر کچھ غلط ہو جاتا ہے، براہ مہربانی [چابیاں چیک کریں](#check-the-keys) سب سے پہلے. اگر یہ مدد نہیں کرتا تو، ہر مرحلے کے لئے خرابی حل ہدایات چیک کریں:

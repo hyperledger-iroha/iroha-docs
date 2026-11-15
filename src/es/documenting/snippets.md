@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Fragmentos de código {#code-snippets}
 
 Los fragmentos generados mantienen los ejemplos asociados con el código, la configuración y los esquemas de la revisión Iroha que los produjo.

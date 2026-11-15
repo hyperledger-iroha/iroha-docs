@@ -1,14 +1,13 @@
 ---
 translation_locale: fr
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript et TypeScript {#javascript-and-typescript}
 
-Le JavaScript SDK actuel est le package `@iroha/iroha-js` dans l'arborescence source Iroha. C'est le Node.js-premier SDK pour Torii, les constructeurs Norito, la signature, la pagination, les aperçus Connect et le transport de commandes Kagemusha.
+Le JavaScript SDK actuel est le package `@iroha/iroha-js` dans l'arborescence source Iroha. C'est le SDK conçu d'abord pour Node.js qui couvre Torii, les constructeurs Norito, la signature, la pagination et les aperçus Connect.
 
 ## Construire à partir du source {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ Le SDK se concentre sur :
 - Signature et génération de clés Ed25519
 - assistants de pagination et de réessai
 - Connecter les assistants de démarrage du navigateur
-- Aides au transport pour la préparation de Kagemusha, le rechargement, le remboursement et l'état de fonctionnement
 
 ## Références en amont {#upstream-references}
 

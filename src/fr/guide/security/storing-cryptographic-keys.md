@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Stockage des clés cryptographiques {#storing-cryptographic-keys}
 
 Une clé privée peut autoriser chaque action permise à son principal d'autorisation. Ne partagez jamais une clé privée. Protégez le matériau de départ, les secrets de récupération, les jetons porteurs et les fichiers de clés exportés avec la même attention.
@@ -28,7 +27,7 @@ Pour le développement local, les tests contrôlés ou un transfert sécurisé d
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-Le répertoire parent doit exister. La cible doit être nouvelle ou déjà possédée par l'utilisateur actuel, mode `0700`, sans liens symboliques, et vide. Kagami écrit `public.key` et `private.key` avec le mode `0600` ; `--pop` écrit également `pop.hex`. La commande échoue sur les plateformes où Kagami ne peut pas appliquer les règles du système de fichiers réservées au propriétaire.
+Le répertoire parent doit exister. La cible ne doit pas exister, même sous forme de répertoire vide. Kagami la crée avec le mode `0700`, impose les contrôles du système de fichiers réservant l’accès au propriétaire, rejette les liens symboliques et écrit `public.key` et `private.key` avec le mode `0600` ; `--pop` écrit aussi `pop.hex`. La commande échoue sur les plateformes où Kagami ne peut pas faire respecter ces règles d’accès exclusif au propriétaire.
 
 Le fichier de clé privée est une exportation non chiffrée. Tenez-le à l’écart du contrôle de source, des dossiers partagés, des journaux, des tickets, des conversations et des artefacts de compilation. Importez une clé de production dans son périmètre de garde approuvé, puis supprimez l’exportation conformément à la procédure de déploiement. Ne réutilisez pas une clé de développement en production.
 

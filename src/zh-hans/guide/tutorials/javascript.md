@@ -1,14 +1,13 @@
 ---
 translation_locale: zh-hans
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript 和 TypeScript {#javascript-and-typescript}
 
-目前 JavaScript SDK 是`@iroha/iroha-js`源树中的 Iroha 包.它是 Node.js-第一个 SDK 的 Torii,Norito 构建者,签字,页面化,连接预览和Kagemusha命令运输.
+当前的 JavaScript SDK 是 Iroha 源代码树中的 `@iroha/iroha-js` 包。它是以 Node.js 为优先的 SDK，支持 Torii、Norito 构建器、签名、分页以及 Connect 预览。
 
 ## 建立从源头 {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ SDK 专注于:
 - Ed25519 签字和关键生成
 - 页面化和重试辅助器
 - 连接浏览器启动辅助器
-- 卡盖穆沙备用,补充,赎回和运营状态的交通辅助人员
 
 ## 上游引用 {#upstream-references}
 

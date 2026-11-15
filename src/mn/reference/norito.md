@@ -1,9 +1,9 @@
 ---
 translation_locale: mn
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-supplemental-naming-link
 ---
 # Norito {#norito}
 
@@ -20,7 +20,7 @@ Norito -ийг ашиглах нь өгөгдлийн нэгдсэн тохир�
 |Torii товчлосон хариулт |Бинэрийн хариуг түрээслэхэд дэмждэг эцсийн цэгүүд `Accept: application/x-norito` ашиглана. |
 |SDKs | Rust, Python, JavaScript, Kotlin/Java, Swift, болон Android үйлчлүүлэгчид ашигладаг Norito гарын үсэгт байтын оронд бүтээн байгуулагч эсвэл холбогч. |
 |Kura хадгалах |Блок нөөцийн ачаалал, сэргээлт дутагдал, жагсаалт, commit тэмдэгүүд Norito -ийн багцтай мэдээллээр хадгалагдаж байна. |
-|Manifest-ууд |Nexus, data availability, SoraFS, streaming болон app-facing manifest-д гарын үсэг зурах эсвэл hash хийх шаардлагатай үед Norito ашиглана. |
+|Manifest-ууд |SORA Nexus, data availability, SoraFS, streaming болон app-facing manifest-д гарын үсэг зурах эсвэл hash хийх шаардлагатай үед Norito ашиглана. |
 |Урсгал |Norito Streaming нь Norito manifest, сегментийн толгой, хяналтын frame болон нийцлийн туршилтын өгөгдлийг ашиглана. |
 
 Norito бол ухаалаг гэрээний хэл биш. Энэ нь гүйлгээ, гэрээний дуудлага, манифест болон API ашиглах ачааллыг дамжуулах тодорхойлогч хуудас ба кодэк юм.
@@ -205,5 +205,5 @@ Norito Стриминг нь хэвлэл мэдээллийн хэрэгсэл 
 
 ## Урьдчилсан нэвтрүүлэг {#upstream-references}
 
-- [Norito форматтын онцлог](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito форматтын онцлог](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

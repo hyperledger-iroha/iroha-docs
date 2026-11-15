@@ -1,19 +1,18 @@
 ---
 translation_locale: az
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha İkilik Fayllarla İş {#working-with-iroha-binaries}
 
 Iroha 3 operator iş axını dörd əsas binar ətrafında fırlanır:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) şəbəkə həmkar demonu işlətmək üçün
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) şəbəkə həmkar demonu işlətmək üçün
 - `iroha3d_taira` tək protokol-standart Taira təsdiqedicisi başlatıcısı üçün
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) üçün CLI və operator əmrləri
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) açarlar, blokçeyn başlanğıcı, yerli şəbəkələr və profillər
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) üçün CLI və operator əmrləri
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) açarlar, blokçeyn başlanğıcı, yerli şəbəkələr və profillər
 
 ## Mənbədən qur {#build-from-source}
 
@@ -50,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker Şəkil {#docker-image}
 
-Yuxarı axın iş sahəsi `kagami localnet` və `kagami docker`-dən istifadə edərək yoxlanmış kod ilə uyğun gələn Docker Compose faylları yaradır. `hyperledger/iroha:dev` şəkli həmin yaradılmış fayllarla istifadə oluna bilər.
-
-Konteynerdə CLI-i işə salın:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-Bir konteynerdə Kagami-i işə salın:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-Şəbəkə həmkarını işə salmaq üçün əvvəlcə bir localnet və Compose faylı yaradın:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker-də eyni reviziyadan yığılmış icra faylları ilə dörd təsdiqləyici qovşaq qurub işə salmaq üçün [Iroha 3-i işə sal](/az/get-started/launch-iroha.md) təlimatına əməl edin.
 
 ## Hansı ikili fayldan istifadə etməliyəm? {#which-binary-should-i-use}
 

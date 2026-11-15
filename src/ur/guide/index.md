@@ -5,7 +5,6 @@ translation_source_hash: 5ea24369e85692bd9069e446d1e50612efade2d83e4ddf73a498058
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # گائیڈ {#guide}
 
 جب آپ Iroha کے ساتھ تعمیر ، آپریشن یا انضمام کرتے ہیں تو اس حصے کا استعمال کریں۔ پہلے کلائنٹ کے لئے SDK سبق سے شروع کریں ، پھر مشترکہ نیٹ ورک کے خلاف تعینات کرنے سے پہلے بہترین طریقوں اور آپریٹر ریفرنسز پر جائیں۔

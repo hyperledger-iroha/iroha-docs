@@ -5,7 +5,6 @@ translation_source_hash: 3f6c2d84c7b6d325d76fb1b1a3ec0efb75381521f7fc69e7924a965
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # Հանրային եւ մասնավոր բլոկթեյններ {#public-and-private-blockchains}
 
 Iroha կարող է գործարկվել տարբեր ձեւաչափերով: Որպես ձեր սեփական ցանցի կառավարիչը, դուք որոշում եք, որ կատարող եւ թույլտվությունների քաղաքականությունը որոշում են, թե արդյոք գործարքը ընդունվում է.

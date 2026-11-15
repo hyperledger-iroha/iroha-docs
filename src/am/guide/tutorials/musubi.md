@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Musubi Kotodama ጥቅሎች {#musubi-kotodama-packages}
 
 Musubi ለ Kotodama ምንጭ ፓኬጆች የመጀመሪያ ልቀት ጥቅል አስተዳዳሪ ነው።. በሰንሰለት ላይ ትክክለኛ ጥገኝነት ግራፍ ይፈታል፣ የ SoraFS ምንጭን ያረጋግጣል የተመረጠውን የስራ ቦታ ማህደር፣ ያጠናቅራል እና ይፈትሻል፣ ነጠላ ፕሮቶኮል-ስታንዳርድ CAR ማህደሮችን ይገነባል፣ እና የማይለወጡ ልቀቶችን በ Iroha ያትማል።
@@ -32,7 +31,7 @@ namespace/package
 namespace/package@version
 ```
 
-ከስም ቦታ በፊት ምንም መሪ `@` የለም። የስም ቦታ እንደ `universal` ያለ የውሂብ ቦታ ስር ወይም እንደ `dex.universal` ያለ ጎራ ብቁ የሆነ የውሂብ ቦታ ነው። የብሎክቼይን መዝገብ ጥቅል ከመጠየቁ በፊት ያንን መዋቅራዊ የስም ቦታ ከአንድ የተረጋጋ የቤት ዳታ ቦታ ጋር ያገናኛል።
+ከስም ቦታ በፊት ምንም መሪ `@` የለም። የስም ቦታ እንደ `universal` ያለ የውሂብ ቦታ ሥር ወይም እንደ `dex.universal` ያለ በጎራ የተገለጸ የስም ቦታ ነው። የብሎክቼይን መዝገብ ጥቅል ከመጠየቁ በፊት ያንን መዋቅራዊ የስም ቦታ ከአንድ የተረጋጋ የቤት የውሂብ ቦታ ጋር ያገናኛል።
 
 ## የቴክኒክ ማኒፌስት እና የመቆለፊያ ፋይል {#manifest-and-lockfile}
 
@@ -68,10 +67,10 @@ Taira ለዚህ የስራ ሂደት ይፋዊ የሙከራ መረብ ነው።. 
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-የአቅራቢው ካታሎግ የአቅራቢ ማንነቶችን እና የማስታወቂያ API የመጨረሻ ነጥቦችን ያቀርባል። ከተመረጠው አቅራቢ ተጓዳኝ የኦፕሬተር ፍቃድ ያግኙ። የሶፍትዌር ማስፈጸሚያ አካባቢ የታሰሩ የዥረት ቶከኖችን ለመጠየቅ ያንን ቁልፍ ይጠቀማል; ቶከኖች CLI ክርክሮች ወይም የመቆለፊያ ፋይል ይዘት አይደሉም።
+የአቅራቢው ካታሎግ የአቅራቢ ማንነቶችን እና የማስታወቂያ የመጨረሻ ነጥቦችን ያቀርባል። ከተመረጠው አቅራቢ ተጓዳኝ የኦፕሬተር ፍቃድ ያግኙ። የሶፍትዌር ማስፈጸሚያ አካባቢ የታሰሩ የዥረት ቶከኖችን ለመጠየቅ ያንን ቁልፍ ይጠቀማል; ቶከኖች CLI ክርክሮች ወይም የመቆለፊያ ፋይል ይዘት አይደሉም።
 
-የ Taira አረጋጋጭ ፒን URL ን እንደ `url` አይጠቀሙ። ተመዝግበው የገቡት አረጋጋጮች SoraFS ማከማቻን ተካትተዋል። የእነሱ `https://taira-validator-{1,2,3,4}.sora.org` API የመጨረሻ ነጥቦቻቸው የፒን ምዝገባን ይቀበላሉ፣ የማህደር ንባብ ደግሞ የተመረጠውን የተቀበለውን አቅራቢ HTTPS አመጣጥ ይጠቀማሉ።
+የ Taira አረጋጋጭ ፒን URL ን እንደ `url` አይጠቀሙ። ተመዝግበው የገቡት አረጋጋጮች SoraFS ማከማቻን ተካትተዋል። የእነሱ `https://taira-validator-{1,2,3,4}.sora.org` የመጨረሻ ነጥቦቻቸው የፒን ምዝገባን ይቀበላሉ፣ የማህደር ንባብ ደግሞ የተመረጠውን የተቀበለውን አቅራቢ HTTPS አመጣጥ ይጠቀማሉ።
 
 ## አካባቢያዊ የሥራ ፍሰት {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi የመጀመሪያ ልቀት V1 መመሪያዎችን እና መጠይቆ
 |`FindMusubiArchiveLocationsV1`|የተጠናቀቁ በአቅራቢ የሚደገፉ የማህደር ቦታዎችን ያንብቡ።|
 |`FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`|የአሁኑን ተለዋጭ ስም ኢላማ ወይም የማይለወጥ ታሪኩን ያንብቡ።|
 
-Torii በ`/v1/musubi/*` ስር የመተግበሪያውን መንገድ ቤተሰብ ያጋልጣል። MCP መሳሪያዎች የአሁኑን `iroha.musubi.queries.*` እና `iroha.musubi.instructions.*` ስሞችን ይጠቀማሉ። ለሰፊው API ካርታ [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) እና [የመጠይቅ ማጣቀሻ](/am/reference/queries.md) ይመልከቱ።
+Torii በ`/v1/musubi/*` ስር የመተግበሪያውን መንገድ ቤተሰብ ያጋልጣል። MCP መሳሪያዎች የአሁኑን `iroha.musubi.queries.*` እና `iroha.musubi.instructions.*` ስሞችን ይጠቀማሉ። ለሰፊው API ካርታ [Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md) እና [የመጠይቅ ማጣቀሻ](/am/reference/queries.md) ይመልከቱ።

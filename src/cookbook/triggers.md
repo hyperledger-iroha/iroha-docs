@@ -8,8 +8,10 @@ block history.
 
 ## Prerequisites
 
-- A funded signer, `taira.client.toml`, `taira.tx-metadata.json`, and
-  `TAIRA_ACCOUNT_ID` from [Connect to Taira](./connect-to-taira.md).
+- A funded signer, `taira.client.toml`, and `TAIRA_ACCOUNT_ID` from
+  [Connect to Taira](./connect-to-taira.md). Writes use
+  `--fee-payer authority`; the CLI quotes the exact fee, in Taira's fee
+  asset, before signing.
 - Taira permission to register a trigger for `TAIRA_ACCOUNT_ID` and execute
   the resulting trigger. The relevant tokens are `CanRegisterTrigger`
   scoped by `authority` and `CanExecuteTrigger` scoped by `trigger`.
@@ -19,7 +21,6 @@ block history.
 
 ```bash
 CONFIG=./taira.client.toml
-FEE_METADATA=./taira.tx-metadata.json
 TRIGGER_ID=cookbook_by_call_log
 test -n "$TAIRA_ACCOUNT_ID"
 ```
@@ -28,17 +29,17 @@ test -n "$TAIRA_ACCOUNT_ID"
 
 ### 1. Register an instruction-backed trigger
 
-`--instructions-stdin` accepts a JSON array of instructions. A `Log`
-instruction keeps this example focused on trigger authorization rather than
-a second ledger object's permissions.
+`--instructions-stdin` accepts the JSON instruction array that
+`--emit-instructions` prints. `tx ping` emits one `Log` instruction, which
+keeps this example focused on trigger authorization rather than a second
+ledger object's permissions.
 
 ```bash
-printf '%s\n' \
-  '[{"Log":{"level":"INFO","message":"cookbook trigger executed"}}]' |
+iroha --config "$CONFIG" --emit-instructions \
+  tx ping --log-level INFO --msg 'cookbook trigger executed' |
   iroha --config "$CONFIG" \
     --fee-payer authority \
-    --metadata "$FEE_METADATA" \
-    ledger trigger register \
+    trigger register \
     --id "$TRIGGER_ID" \
     --instructions-stdin \
     --repeats 3 \
@@ -53,12 +54,13 @@ action.
 ### 2. Inspect the declaration before execution
 
 ```bash
-iroha --config "$CONFIG" ledger trigger get --id "$TRIGGER_ID"
-iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger get --id "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
 Confirm the I105 authority, the execute filter, the remaining repetitions,
-and the single `Log` instruction before spending another fee.
+and the single encoded instruction in `executable` before spending another
+fee.
 
 ### 3. Execute and wait for both layers
 
@@ -69,8 +71,7 @@ runtime completion diagnostics.
 ```bash
 iroha --config "$CONFIG" \
   --fee-payer authority \
-  --metadata "$FEE_METADATA" \
-  ledger trigger execute \
+  trigger execute \
   --wait \
   --trace \
   --timeout-ms 60000 \
@@ -78,24 +79,25 @@ iroha --config "$CONFIG" \
 ```
 
 Rust clients build the same two typed instructions. Here `authority` is an
-`AccountId` and `client` signs as that account:
+`AccountId`, and `client` is an `iroha::blocking::Client` that signs as
+that account; `submit` waits for Applied finality:
 
 ```rust
 use iroha::data_model::{prelude::*, transaction::FeePaymentIntent};
 
 let trigger_id: TriggerId = "cookbook_by_call_log".parse()?;
 let action = Action::new(
-    vec![Log::new(Level::INFO, "cookbook trigger executed".to_owned()).into()],
+    vec![Log::new(Level::INFO, "cookbook trigger executed".to_owned())],
     Repeats::Exactly(3),
     authority.clone(),
     ExecuteTriggerEventFilter::new()
         .for_trigger(trigger_id.clone())
         .under_authority(authority),
-);
+)?;
 let fee = FeePaymentIntent::authority(Vec::new(), None);
 
-client.submit_blocking(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.clone())?;
-client.submit_blocking(ExecuteTrigger::new(trigger_id), fee)?;
+client.submit(Register::trigger(Trigger::new(trigger_id.clone(), action)), fee.clone())?;
+client.submit(ExecuteTrigger::new(trigger_id), fee)?;
 ```
 
 ## Verify
@@ -104,12 +106,12 @@ Scan committed block history for the completion and inspect the decremented
 repetition count:
 
 ```bash
-iroha --config "$CONFIG" ledger trigger completed list \
+iroha --config "$CONFIG" trigger completed list \
   --id "$TRIGGER_ID" \
   --outcome success \
   --limit 5
 
-iroha --config "$CONFIG" ledger trigger inspect "$TRIGGER_ID"
+iroha --config "$CONFIG" trigger inspect "$TRIGGER_ID"
 ```
 
 At least one completion must report success. The trigger must remain active
@@ -124,19 +126,19 @@ trigger completion is not sufficient verification.
 - A transaction can reach Applied while the trigger action reports failure.
   Read the completion outcome and error; then check the trigger authority's
   permissions for every embedded instruction.
-- `trigger not found` can mean the registration transaction was rejected or
-  a different Torii/chain configuration was used for execution.
+- `Trigger with id … not found` can mean the registration transaction was
+  rejected or a different Torii/chain configuration was used for execution.
 - When repetitions reach zero, minting more repetitions is another
   privileged write. Do not silently change this recipe to an indefinite
   trigger.
-- For cleanup, `ledger trigger unregister --id "$TRIGGER_ID"` requires
+- For cleanup, `trigger unregister --id "$TRIGGER_ID"` requires
   `CanUnregisterTrigger` for that trigger plus explicit fee selection.
 
 ## Source and related docs
 
-- [By-call trigger integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/triggers/by_call_trigger.rs)
-- [Event and trigger integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/integration_tests/tests/events_and_triggers.rs)
-- [Trigger instruction execution at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
+- [By-call trigger integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/triggers/by_call_trigger.rs)
+- [Event and trigger integration tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/integration_tests/tests/events_and_triggers.rs)
+- [Trigger instruction execution at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/smartcontracts/isi/triggers/mod.rs)
 - [Triggers](/blockchain/triggers.md)
 - [Trigger examples](/blockchain/trigger-examples.md)
 - [Events](./stream-events.md)

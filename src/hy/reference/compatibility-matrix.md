@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Համատեղելիության մատրիկա {#compatibility-matrix}
 
 Համատեղելիության մատrix- ը ցույց է տալիս ներկա Iroha 3 փաստաթղթերի հավաքածուի համար խաչմերուկային SDK սցենարի ծավալը: Ըստ նախապայմանի, էջը բեռնում է փաթեթավորված շտկված նկարը, որը ստեղծվել է պինացված [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) վերանայմանից:

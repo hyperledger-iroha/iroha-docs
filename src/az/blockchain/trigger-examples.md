@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Hadisə Tətikləyici Nümunəsi {#event-trigger-example}
 
 Bu nümunə Iroha 3 məlumat modeli üzrə tək protokol-standart domen olmayan hesab identifikatorlarından və proqnozlaşdırılmış aktiv təriflərindən istifadə edir.

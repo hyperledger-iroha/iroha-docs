@@ -1,9 +1,9 @@
 ---
 translation_locale: uz
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: 59147443b612bef0cdd1b7cf2124d168c692a9488d8c38f723187e5ae8d3ba65
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 
 outline: [ 2, 3 ]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-Tugunning xususiy kaliti. U `public_key` bilan mos bo'lishi kerak; konsensus tasdiqlovchi tugunlar BLS-Normal kalitlaridan foydalanishlari kerak.
+Tengdoshning maxfiy kaliti. `private_key` yoki faqat egaga ochiq kalit faylining yo‘li bo‘lgan `private_key_file`dan aniq bittasini sozlang. Kalit `public_key`ga mos bo‘lishi kerak; konsensus validator tengdoshlari BLS-Normal kalitlarini ishlatadi.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## Ibtido {#genesis}
+
+Dastlabki va qayta ishga tushirishda aniq bitta genesis ishonch ildizi manbasi zarur: `genesis.expected_hash` yoki `genesis.expected_hash_file`. Yaratilgan tengdosh sozlamalari imzolangan blok yonidagi `genesis.expected_hash`ga ishora qiluvchi ikkinchi usulni ishlatadi. Yaratilgan profilni ko‘chirganda bu bog‘lanishni saqlang.
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-Bir xil sinxronlashtirish xabarida jo'natilishi mumkin bo'lgan bloklar soni.
+Blok sinxronizatsiyasi gossip tarqatish chegarasi: tengdosh namunalari va blok sinxronizatsiyasi yangilanishlari.
 
 <param-table type=number default-value=4 />
 
@@ -430,12 +432,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip Ish vaqti yangilanishi
-
-Ushbu parametr Torii operator oxirgi nuqtalari orqali ishga tushirish vaqti konfiguratsiyasi yangilanishiga to'g'ri keladi.
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 [`logger.level`](#param-logger-level) ga qo'shimcha ravishda sozlangan log filtrlari. Har bir maqsad bo'yicha yozish verbositetini moslash imkonini beradi.
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter` bilan birga ishlaydi [`logger.level`](#param-logger-level) va hech biri boshqa biridan ustun qo'ymadi.
 
 Masalan, `logger.level` qiymati `INFO`, `logger.filter` qiymati esa `iroha_core=debug` bo‘lsa, hosil bo‘ladigan filtr `info,iroha_core=debug` bo‘ladi (ya’ni barcha modullar uchun `info`, `iroha_core` uchun `debug`).
-
-:::
-
-::: tip Ish vaqti yangilanishi
-
-Ushbu parametr Torii operator oxirgi nuqtalari orqali ishga tushirish vaqti konfiguratsiyasi yangilanishiga to'g'ri keladi.
 
 :::
 
@@ -547,7 +537,7 @@ Kura boshlash usuli. `strict` odatiy va andoza usulidir: u nod faollashishdan ol
 
 `fast` - operatsiyaviy ko'rinishni tiklash uchun favqulodda holatda xizmatni buzgan rejimdir. to'liq boshlang'ich audit uzilish xavfi bo'lishi mumkin. `strict` va to'g'ri beshta artefaktni o'z ichiga olgan joriy snapshotlar avlodi: `snapshot.data`, `snapshot.sha256`, `snapshot.sig`, `snapshot.fast.norito`, va `snapshot.merkle.json`. Domenlar bo'yicha alohida operator imzosi reklama qilingan foydali yukni o'chirish va cheklangan manifestni bog'laydi; manifestda foydali yukning uzunligi, zanjir/tarmoq kimligi, terminal balandligi/hash to'g'risida ma'lumot beriladi; SCCP siyosat hash, va bootstrap liniyasi mavjudligi. tezlik bilan bootstrap rad etadi nasldan kelib chiqishi va o'ziga xos belgilash/hisoblash/to'g'ri chiziq chegaralarini talab qiladi Kura. Birinchi chiqarilgan nodlar aynan shu beshta artefaktni qabul qiladi va boshqa barcha artefaktlar soni yoki fayl nomlari setini rad etadi.
 
-Ushbu beshta ism va metadatalarni tezkor inventarizatsiya qiladi, payload va Merkle fayllarini bog'laydi, ammo ularning mazmunini o'qib, hash qilmaydi, tahlil qilmaydi yoki dekodlamaydi. U imzolangan manifestdan minimal dunyo / Nexus yaratadi, aniq Kura hash prefiksini faqat o'qish uchun xaritalaydi va world, block-hash arrayni qoldiradi. operatsiyalar tarixi, hosil bo'lgan indekslar va uzoq muddatli tiklanish jurnallari ochilmagan. Merkle, kanonik va semantik tezkor tekshiruvlar, tarixiy blok / yakun/SCCP muvofiqlashtirish, Sumeragi faol balandlikni tiklash, birlashtirish va so'rov jurnallari, yo'nalish manifesti / muvofiqlik manbalari, Kura tomonidan qo'llab-quvvatlanadigan SoraFS arxivlari, rekursiv saqlash hisobi va ixtiyoriy xizmatlarni birlashtiruvchi vositalar kechiktirilmoqda. Mahalliy bitimlarni qabul qilish, takliflar, ovoz berish, kanonik yozuvlar va yordamchi ishlab chiqaruvchilar faoliyatsiz qolmoqda. Kura o'zi yozuvchi ishga tushirilishini va uzoq muddatli mutatsiyalarni rad etadi; konveyer va FASTPQ chidamlilik navbatlari uni saqlab qolish yoki kodlashning o'rniga ishni darhol rad qiladi. Kura o'qiladi APIs shuningdek, ta'mirlash va chidamlilik-sinkronizatsiya xatti-harakatlarini o'chirib tashlaydi: vaqtinchalik yordamchi yozuvlari rag'batlantirilmaydi, yo'qolgan yo'l artefaktlari nashr etilmaydi va rivojlanish to'siqlari sinxronlashtirilmaydi. Sumeragi va tranzaksiya mish-mishlar ishga tushirilmaydi . Torii faqat sog'liq, jonlilik, tayyorlik, tugunlar va konfiguratsiya operatsiyalarini aks ettiradi; API-versiya, status, metrikalar va barcha odatdagi holat / tarix yo'nalishlari mavjud emas.
+Fast shu beshta nomni inventarizatsiya qiladi va foydali yuk hamda Merkle fayllarini metadata orqali bog‘laydi, lekin ularning mazmunini o‘qimaydi, xeshlamaydi, tahlil yoki dekod qilmaydi. U imzolangan manifestdan minimal World va SORA Nexus holatini yaratadi, Kura xeshining aniq prefiksini faqat o‘qish uchun xaritalaydi va surat World’i, blok xeshlari massivi, tranzaksiya tarixi, hosila indekslar hamda mustahkam tiklash jurnallarini ochmaydi. Merkle, kanoniklik va semantik surat auditlari, tarixiy blok/yakuniylik/SCCP moslashtirishlari, Sumeragi faol balandligini tiklash, birlashtirish va so‘rov jurnallari, yo‘lak manifesti/muvofiqlik manbalari, Kura asosidagi SoraFS arxivlari, rekursiv ombor hisobi va ixtiyoriy xizmat moslashtiruvchilari kechiktiriladi. Mahalliy tranzaksiya qabuli, takliflar, ovoz berish, kanonik yozishlar va yordamchi ishlab chiqaruvchilar o‘chirilgan qoladi. Kura o‘zi yozuvchi boshlanishi va mustahkam o‘zgartirishlarni rad etadi; konveyer va FASTPQ saqlash navbatlari ishni ushlab turish yoki kodlash o‘rniga darhol rad etadi. Kura o‘qish APIs interfeyslari ham ta’mirlash va mustahkamlik sinxronizatsiyasini o‘chiradi: vaqtinchalik yon yozuvlar doimiy holatga ko‘tarilmaydi, yetishmayotgan yo‘lak artefaktlari nashr etilmaydi va rivojlanish to‘siqlari fsync qilinmaydi. Sumeragi va tranzaksiya gossip ishga tushmaydi. Torii faqat sog‘lomlik, tiriklik, tayyorlik, tengdosh va sozlama amallarini beradi; API versiyasi, holat, metrikalar va barcha odatiy holat/tarix marshrutlari mavjud emas. Strict rejimida qayta ishga tushirilmaguncha tayyorlik mavjud bo‘lmaydi.
 
 `fast` ni faqat hodisa uchun ishlating. Xizmat barqaror bo'lganidan so'ng, nodni to'xtatish, `strict` ni tiklash va qayta ishga tushirish, shuning uchun har bir kechiktirilgan tekshirish va indeksni qayta qurish ishlab chiqarish davom etmasdan oldin ishlaydi. Tezkor rejimda kechiktirilgan birlashtirish logini talab qilmaydi va kanonik saqlashni yaratmaydi, ta'mirlamaydi, qisqartirmaydi yoki import qilmaydi; nashr etilmagan suffixlar va kutilmagan yordamchi tiklash bosqichlari o'qib bo'lmasdan yoki mutatsiya qilinmasdan e'tiborsiz qoldiriladi, so'ngra qat'iy tiklash uchun qoldiriladi. Import qilingan faqat hashli snapshotlar liniyasi mavjud emas. Yo'qolgan yoki haqiqiy bo'lmagan joriy snapshot darhol muvaffaqiyatsizlikka uchraydi; tez hech qachon bo'sh dunyoga yoki tarixiy takrorlashni qayta tiklashga tushmaydi.
 
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` tugunga mahalliy ishtirok, imzolash materiallari saqlanishi, xavfsizlik yozuvi yo‘llari hamda hujjatlashtirilgan vaqt cheklovi va sinxronizatsiya o‘zgartirishlarini saqlaydi. Konsensus rejimi, qo‘mita tuzilmasi, kvorum, blok hajmi va tranzaksiya chegaralari imzolangan genesis va commit qilingan holatdan keladi. Xato kiritish deterministik simulyatorga tegishli.
 
-Sumeragi yumshoq furqonlarni boshqarish yo'nalishlarini amalga oshirish uchun faqat debug-switch. Uni nazorat qilinadigan sinovlardan tashqarida o'chirib qo'ying; uni ishlaydigan ishlab chiqarish tarmog'ida o'zgartirish tugunlarning konsensus xatti-harakatlari haqida kelishmovchiliklarga olib kelishi mumkin.
+Qo‘llanadigan maydonlar uchun [sozlama](/uz/guide/configure/overview.md) va belgilangan [sozlama ma’lumotnomasi](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md)ga qarang.
 
-<param-table type=bool default-value=false />
+## SORA Nexus atomik maxfiy hisob-kitobi {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` bitta tugunda shifrlangan yon yozuvlar saqlanishini sozlaydi. Unda aniq ikkita mahalliy saqlash chegarasi bor:
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`: saqlanadigan shifrlangan hisob-kitob yozuvlarining eng ko‘p soni.
+- `sidecar_max_total_bytes`: saqlanadigan kanonik baytlarning eng ko‘p miqdori.
 
-:::
+Faollashtirish, isbot profillari, to‘lov chegaralari, amal muddati va auditor siyosati commit qilingan maxfiylik siyosatidan keladi. Tugun sozlamasi bu yaroqlilik qoidalarini faollashtira yoki o‘zgartira olmaydi.
 
-## Nexus Atomik xususiy kelishuv {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` alohida `AtomicPrivateSettlementV1` yo'nalishini boshqaradi. U andoza ravishda o'chiritiladi. `enabled = true` sozlash uchun ham `activation_height` kerak; kirish hali ham yopilmaydi, agar zanjirdagi imkoniyat, xabardorlik muddati, qat'iy dalil profillari va fond / audit boshqaruvi faol bo'lmasa.
-
-Asosiy chegaralar: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, va `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` O'z navbatida, bu o'simliklarning V1 to'ldirish sinflari. `permitted_policy_versions` faqat qabul qiladi V1.
-
-`max_capsule_bytes` to'liq `PrivateSettlementAuditCapsuleV1` bytesining kanonik Norito baytlarini, shu jumladan AAD, nonce, kodli matn, vektorlar o'rnatish va har bir auditorning DEK qatorini o'lchab oladi; bu faqat kodli matnda bo'lgan chegara emas. Har bir qo'llaniladigan to'ldirish sinflari kamida `default_min_auditor_approvals` auditorlar uchun konservativ butun kapsula qadoqqa mos bo'lishi kerak. Ushbu ruxsat berish sohasi ham tartibga solinadi: Torii yangi qabul qilingan siyosatni `min_approvals` qiymatidan kamroq va har qanday haqiqiy kapsulani kanonik byt chegarasidan ortiqcha rad etadi.
-
-Bu sozlamalarda ishlab chiqarish muhiti o‘zgaruvchisi orqali faollashtirishni chetlab o‘tish yo‘li yo‘q. To‘liq konfiguratsiya namunasi va operatsion talablar uchun [Ma’lumotlar makonlari orasidagi atomik maxfiy hisob-kitobni ishga tushirish](/uz/get-started/atomic-private-settlement) bo‘limiga qarang. Hujjatlashtirilgan tashqi reliz darvozalari o‘tmaguncha bu yo‘l ishlab chiqarish uchun yaroqli emas.
+Saqlash sozlamasi va amaliy talablar uchun [Ma’lumotlar makonlari orasida atomik maxfiy hisob-kitobni bajarish](/uz/get-started/atomic-private-settlement.md)ga qarang. Komponentning amalga oshirilishi ishlab chiqarish muhiti uchun malaka isboti emas.
 
 ## Oʻrinli snapshot {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## Telemetriya {#telemetry}
 
-Telemetriya tugunlari tashxisini tashqi telemetriya kollektoriga eksport qiladi. Tugunlari to'plamga xabar berishi kerak bo'lganda `telemetry.name` va `telemetry.url` ni sozlash; telemetriyadan foydalanilmaganida, bu bo'limni qoldiring.
-
-`name` va `url` juftlanishi kerak.
-
-`telemetry` bo'limining barchasi fakultativ.
-
-### `telemetry.name` {#param-telemetry-name}
-
-Telemetriyada nodning nomi ko'rsatilishi kerak.
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+Telemetriya tengdosh diagnostikasini tashqi telemetriya yig‘uvchiga eksport qiladi. Tengdosh yig‘uvchiga hisobot berishi kerak bo‘lsa, `telemetry.url`ni sozlang; yig‘uvchi bo‘lmasa, bo‘limni tashlab keting. Qayta urinish vaqtlari shu ixtiyoriy jadvalda sozlanadi.
 
 ### `telemetry.url` {#param-telemetry-url}
 

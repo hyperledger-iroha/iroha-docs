@@ -1,7 +1,7 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
@@ -47,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Таҙа SDK пакетта йөк өсөн кәрәкле эш урыны юҡ `npm run build:native`, Шулай итеп, уны яңынан Iroha сығанаҡ иҫәбен алыуҙан һуң SDK үҙгәрештәр. SDK сығанағы ҡуйылған [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+Таҙа SDK пакетта йөк өсөн кәрәкле эш урыны юҡ `npm run build:native`, Шулай итеп, уны яңынан Iroha сығанаҡ иҫәбен алыуҙан һуң SDK үҙгәрештәр. SDK сығанағы ҡуйылған [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## Ахыр сиккә иғтибар итегеҙ . {#check-the-endpoint}
 
@@ -201,7 +201,7 @@ iroha://kaigi/join?call=kaigi.universal%3Akaigi-<meeting>&secret=<base64url>
 
 Ҡулланма эсендә кире ҡайтыу `#/kaigi` буйынса тап шул уҡ һорау. Дупликат, билдәһеҙ, буш, ҡапланған йәки каноник булмаған параметрҙарҙы кире ҡағыу. Демо осрашыуҙың тамамланыуын `scheduledStartMs`ҙан һуң 24 сәғәткә ҡуя.
 
-Саҡырыу сере host offer metadata-һын шифрҙан аса. Ул bearer secret: уны log-ҡа яҙмағыҙ, analytics-ҡа индермәгеҙ һәм ledger metadata-һында һаҡламағыҙ. Host-тың айырым X25519 key pair-ы guest answer signal-дарын шифрҙан аса һәм host session эсендә генә локаль ҡалырға тейеш.
+Саҡырыу сере ойоштороусының тәҡдим метамәғлүмәтен шифрҙан аса. Кемдә ошо сер бар, шул уны ҡуллана ала; уны журналға яҙмағыҙ, аналитикаға ебәрмәгеҙ һәм реестр метамәғлүмәтендә һаҡламағыҙ. Ойоштороусының айырым X25519 асҡыстар пары ҡунаҡтың яуап сигналдарын шифрҙан аса һәм ошо хост сеансында ғына ҡалырға тейеш.
 
 ## Осрашыуҙың ғүмере {#meeting-lifecycle}
 

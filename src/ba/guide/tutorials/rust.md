@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /guide/tutorials/rust.md
-translation_source_hash: 98b0c3a193c6dfe8b266bcc498d7016426cf2f838a7bf7ebfbef145ffdcc7944
+translation_source_hash: 9d9848de91a85c84221efc39bc7dfb8443f5c50b448d336207c06efce3bc07e8
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Rust {#rust}
 
 Rust ғәмәлгә ашырыу төп эш урындарында йәшәй һәм Iroha 3 код базаһы менән эшләүҙең иң тура ысулы булып ҡала.
@@ -31,7 +30,7 @@ cargo build --workspace
 Референс клиентын теркәлгән дефолт клиент конфигурацияһы менән эшләтегеҙ:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
 ## Taira Тик уҡырға ғына {#try-taira-read-only}
@@ -54,7 +53,7 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=5' \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-`taira.client.toml` булдырғандан һуң, шул уҡ бинар Taira менән ҡул ҡуйылған канар командаларын эшләй ала. Уларҙы ғәҙәти берәмек һынауҙарынан айырып ҡалдырығыҙ, сөнки улар faucet-финансланған иҫәпкә һәм тере тест селтәренә эйә булырға тейеш.
+`taira.client.toml` булдырғандан һуң, шул уҡ бинар файл `iroha taira account` ярҙамында иҫәпте теркәй һәм уға аҡса күсерә ала, шулай уҡ Taira селтәренә ғәҙәти ҡул ҡуйылған реестр командаларын ебәрә ала. Уларҙы ғәҙәти берәмек һынауҙарынан айырым тотоғоҙ, сөнки улар һынау аҡсаһы биреү хеҙмәте аша аҡсаландырылған иҫәпте һәм эшләп торған һынау селтәрен талап итә.
 
 ## Rust Client Crate-ын ҡулланыу {#using-the-rust-client-crate}
 
@@ -71,7 +70,7 @@ iroha = { git = "https://github.com/hyperledger-iroha/iroha.git", rev = "<IROHA_
 - `crates/iroha/README.md`
 - `crates/iroha_cli/README.md`
 
-Бланк менән идара итеүсе конфиденциаль бурыстар буйынса эш процестары өсөн [Төп актив эскроуы](/ba/blockchain/escrow.md#rust-sdk) ҡарағыҙ. Rust мәғлүмәттәр моделендә әлеге ваҡытта баҙарҙағы конфиденция, дөйөм активтар бикләүҙәр, аноним конфиденсиаль бурыстар, һорауҙар һәм ваҡиғалар өсөн иң тулы типланған ҡаплау бар.
+Реестр идара иткән эскроу эш ағымдары өсөн [протоколға индерелгән актив эскроуын](/ba/blockchain/escrow.md#rust-sdk) ҡарағыҙ. Rust мәғлүмәттәр моделендә әлеге ваҡытта баҙар эскроуы, дөйөм актив бикләүҙәре, шартлы эскроу, һорауҙар һәм ваҡиғалар өсөн иң тулы типлы ҡаплау бар.
 
 Һеҙ урындағы CLI ярҙам snapshot менән регенерациялау мөмкин:
 

@@ -5,7 +5,6 @@ translation_source_hash: d0e20c3784c9456f74a68821530920043b0ed5d65890e97d488be30
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # פתרון בעיות {#troubleshooting}
 
 הפרק הזה נועד לעזור אם אתה נתקל בבעיות בעת עבודה עם Iroha. אם משהו הולך לא בסדר, בבקשה. [בדוק את המפתחות.](#check-the-keys) אם זה לא עוזר, בדוק את הוראות פתרון בעיות עבור כל שלב.

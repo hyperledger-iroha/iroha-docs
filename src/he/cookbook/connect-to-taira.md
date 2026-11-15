@@ -1,28 +1,27 @@
 ---
 translation_locale: he
 translation_source: /cookbook/connect-to-taira.md
-translation_source_hash: e14be7d9314f26f40f6aa30678fddcfcfea39eda9b98016f1b2f84838203c548
+translation_source_hash: 31555f0c56bddb8892d09af250cef732a2dfdd39564c83de8b344200157751b9
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # חיבור ל- Taira {#connect-to-taira}
 
-## התוצאה {#outcome}
+## תוצאה {#outcome}
 
-ודאו שניתן להגיע אל Taira, הפיקו את ID חשבון I105 הקנוני מתצורת לקוח מקומית, מימנו את החותם ב-XOR של testnet והגישו עסקת canary אחת עם הצעת עמלה. המתכון הזה לעולם אינו שולח כתיבה ל-Minamoto.
+ודאו שניתן להגיע אל Taira, גזרו את מזהה החשבון הקנוני מסוג I105 מתצורת לקוח מקומית, מַמנו את החותם ב־XOR של רשת הבדיקה ושלחו עסקת בדיקה אחת עם הצעת מחיר לעמלה. מתכון זה לעולם אינו שולח כתיבה ל־Minamoto.
 
 ## תנאים מוקדמים {#prerequisites}
 
-- `curl`, `jq`, Python 3.11 או מאוחר יותר, ובינרי זמני `iroha` ו `kagami`.
-- א `taira.client.toml` נוצר עם Taira שרשרת, נקודה סופית, פרופיל חשבון, ומפתח רשת מבחן מיוחד. [ליצור Taira הגדרת הלקוח](/he/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) ושמרו את הקובץ מחוץ לפיקוח המקור.
-- המתוכנן לריצה. `taira_faucet_claim.py` מ [קבל Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), נשמר ליד הקונפיגציה של הלקוח.
+- `curl`, `jq`, Python 3.11 או חדש יותר, וקובצי הריצה העדכניים של `iroha` ושל `kagami`.
+- קובץ `taira.client.toml` שנוצר עם השרשרת של Taira, ה־`network_id` המדויק, נקודת הקצה, פרופיל החשבון ומפתח ייעודי לרשת הבדיקה. פעלו לפי [יצירת תצורת לקוח ל־Taira](/he/get-started/sora-nexus-dataspaces.md#_3-create-a-taira-client-config) והשאירו את הקובץ מחוץ למערכת בקרת הגרסאות.
+- תיקיית עבודה עם הרשאות כתיבה עבור יומן ה־faucet: `iroha taira account faucet prepare` יוצר את `./taira-faucet` עם הרשאות גישה פרטיות ומסרב להחליף תיקייה קיימת.
 
-## צעדים {#steps}
+## שלבים {#steps}
 
-### 1. הפרדה בין חיות לעידנות {#_1-separate-liveness-from-readiness}
+### 1. הבדילו בין פעילות התהליך לבין מוכנות לשירות {#_1-separate-liveness-from-readiness}
 
-`/livez` הוא סונדה של תוחלת תהליך בטקסט פשוט. `/status`, `/health`, ו `/readyz` חוזרים JSON. קשר פועל יכול באופן לגיטימי להחזיר `503` מהסונדות ההכנות כאשר תת-מערכת הנדרשת נעולה.
+`/livez`, `/health` ו־`/readyz` הן בדיקות שמחזירות טקסט פשוט; `/status` מחזיר JSON. צומת פועל יכול להחזיר באופן לגיטימי `503` מ־`/readyz` כאשר מנגנון הקבלה של הקונצנזוס או תת־מערכת נדרשת אחרת אינם זמינים.
 
 ```bash
 curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
@@ -30,13 +29,13 @@ curl -fsS -H 'Accept: text/plain' https://taira.sora.org/livez
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
-curl -sS -H 'Accept: application/json' \
+curl -sS -H 'Accept: text/plain, application/json' \
   -w '\nHTTP %{http_code}\n' https://taira.sora.org/readyz
 ```
 
-השתמש `/livez` רק כדי להחליט אם התהליך עונה. השתמש ב- `/readyz` עבור הכניסה לתנועה ולבדוק את פרטי הבלוקר של JSON לפני שאתה מתייחס ל- `503` כפסקת תנועה.
+השתמשו ב־`/livez` רק כדי להחליט אם התהליך מגיב. השתמשו ב־`/readyz` לבקרת הקבלה של תעבורה. ה־`503` שלו הוא מעטפת שגיאה מסוג `service_unavailable` ללא פרטים על הגורם החוסם, ולכן הריצו את בדיקות האבחון שלהלן לפני שתתייחסו אליו כהשבתה.
 
-### 2. לנהל את האבחנות הציבורית {#_2-run-the-public-diagnostics}
+### 2. הריצו את כלי האבחון הציבוריים {#_2-run-the-public-diagnostics}
 
 בדיקה זו מיועדת לקריאה בלבד ואינה טוענת את תצורת החותם:
 
@@ -44,11 +43,11 @@ curl -sS -H 'Accept: application/json' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-אל תמשיכו לכתוב כאשר הרופא מדווח על כישלון קשה DNS, TLS, שרשרת, או נקודת סוף. שורה ציבורית מלאה היא זמנית; חכו ונסו שוב עם מדיניות מוגבלת.
+אל תמשיכו לכתיבה כאשר כלי האבחון מדווח על כשל מוחלט ב־DNS, ב־TLS, בשרשרת או בנקודת הקצה. רוויה בתור הציבורי היא מצב זמני; המתינו ונסו שוב לפי מדיניות מוגבלת.
 
-### 3. להוציא את החשבון Taira ID מבלי לחתום סוד. {#_3-derive-the-taira-account-id-without-printing-a-secret}
+### 3. גזרו את מזהה החשבון ב־Taira בלי להדפיס סוד {#_3-derive-the-taira-account-id-without-printing-a-secret}
 
-קראו רק את המפתח הציבורי מהקונפיג, ולאחר מכן הקודו אותו עם הפרופיל Taira I105. הערך `[account].domain` מספק תיאור ההסלול; הוא אינו חלק מהחשבון ID.
+קראו רק את המפתח הציבורי מהקונפיג, ולאחר מכן קודדו אותו עם פרופיל ה־I105 של Taira. מזהה החשבון אינו כולל דומיין; `[account].profile` בוחר רק את קידומת הרשת שלו.
 
 ```bash
 TAIRA_PUBLIC_KEY="$(python3 - <<'PY'
@@ -65,22 +64,33 @@ export TAIRA_ACCOUNT_ID="$(
 printf '%s\n' "$TAIRA_ACCOUNT_ID"
 ```
 
-ההוצא הוא כתובת קנוניקה I105 ללא דומיין. שמות כמו `wallet@payments.universal` הם שם כינוי וצריך לפתור אותם לפני שימשו בשדות חשבונות קפדניים.
+הפלט הוא כתובת I105 קנונית ללא דומיין. שמות כגון `wallet@payments.universal` הם כינויים, ויש לפתור אותם לפני שימוש בשדות חשבון המחייבים צורה קנונית.
 
-### 4. תביעה על נכס דמי הוצאות הנוכחית Taira {#_4-claim-the-current-taira-fee-asset}
+### 4. בקשו את נכס העמלה הנוכחי של Taira {#_4-claim-the-current-taira-fee-asset}
 
-תשובה faucet היא מקור האמת להגדיר נכס תשלום. שמור את Base58 ID שהחזר במקום להעתיק ID מרשת אחרת או מעבר ישן.
+מדיניות ה־faucet מציינת את הגדרת נכס העמלה הנוכחית. שמרו את ה־Base58 ID שלה במקום להעתיק ID מרשת אחרת או מהרצה ישנה. המדיניות היא נתוני גילוי לא חתומים, ולכן אוטומציה צריכה לקבע את המנפיק, את הגדרת הנכס ואת הסכום שהיא מצפה להם, במקום לסמוך על כל תגובה.
 
 ```bash
-python3 ./taira_faucet_claim.py "$TAIRA_ACCOUNT_ID" \
-  | tee taira-faucet.json
+curl -fsS -H 'Accept: application/json' \
+  https://taira.sora.org/v1/accounts/faucet/policy \
+  | tee taira-faucet-policy.json
 
-export TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet.json)"
-jq -n --arg gas_asset_id "$TAIRA_FEE_ASSET" \
-  '{gas_asset_id: $gas_asset_id}' > taira.tx-metadata.json
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-בדקו את היתרה במשך דקה לכל היותר. ה-faucet עשוי להחזיר `202 Accepted` לפני שטרנזקציית המימון נראית.
+`prepare` פותר את הוכחת העבודה ושומר את העסקה החתומה המדויקת; `submit` שולח אותה פעם אחת וחוזר לאחר שהיא הוחלה. אם `submit` מדווח `Pending` או חורג מזמן ההמתנה, הריצו את `taira account faucet resume` עם אותה תצורה ואותו יומן במקום להכין בקשה נוספת. לאחר מכן בדקו את היתרה במשך דקה לכל היותר.
 
 ```bash
 funded=false
@@ -96,18 +106,17 @@ done
 test "$funded" = true
 ```
 
-`gas_asset_id` הוא מטא-מידע של עסקאות. הבחירה המפורשת `--fee-payer authority` קשורה לחתימה, ו CLI מקבלת תמחור עמלה מדויק לפני שהיא חותמת.
+השתמשו ב־`--fee-payer authority` בכל פעולת כתיבה ב־Taira. הבחירה קשורה לחתימה, וה־CLI מקבל הצעת עמלה מדויקת, בנכס העמלה של Taira, לפני החתימה.
 
-## לאמת {#verify}
+## אימות {#verify}
 
-שלחו הוראת log, שמרו את קבלת ה־JSON והמתינו לסופיות `Applied`. השמטת `--no-wait` גורמת גם להגשה הראשונית להמתין לאישור; קריאת הסטטוס המפורשת מוכיחה את המצב הסופי של שרשרת עיבוד העיבוד.
+שלחו הוראת רישום ביומן, שמרו את קבלת ה־JSON והמתינו לסופיות במצב Applied. השמטת `--no-wait` גורמת גם לשליחה הראשונית להמתין לאישור; קריאת המצב המפורשת מוכיחה את המצב הסופי של שרשרת העיבוד.
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-connect' \
+  tx ping --msg 'cookbook-connect' \
   > taira-connect-submission.json
 
 jq '{hash, fee_quote}' taira-connect-submission.json
@@ -115,27 +124,27 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-connect-submission.json)"
 
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000
 ```
 
-הפקודה הסופית מצליחה רק לאחר העסקה מגיעה למצב הטרמינל המקובל `Applied`. שמור את האש בהוכיחות הבדיקה; לעולם אל תחזיקו בו את המפתח הפרטי או את הקונפיגציה של הלקוח.
+הפקודה האחרונה מצליחה רק לאחר שהסטטוס הגלובלי המדויק מדווח על סופיות `Applied` שנקבעה על פי המצב. שמרו את הגיבוב בראיות הבדיקה; לעולם אל תשמרו איתו את המפתח הפרטי או את תצורת הלקוח המלאה.
 
 ## פתרון בעיות {#troubleshooting}
 
-- `/livez` חוזר `406` כאשר מבקשת JSON כי נקודת הסיום זו היא `text/plain` לשלוח `Accept: text/plain` כפי שנראה לעיל.
-- `/health` או `/readyz` עשויים להחזיר את `503` עם בלוקר קריא מכונה גם כאשר `/livez` ו `/status` עובדים. לתקן או לחכות בלוקר זה; מפתחות חידוש לא ישנה את הכנות של קשרים.
-- אספקה `502`, פסק זמן, או מעגל ראיה לעבודה מיושן הוא כישלון שירות ציבורי.
-- א I105 שגיאה של קוד מקובל אומר שהמפתח הציבורי היה מוצפן עם הפרופיל הלא נכון. `iroha tools address convert --profile taira`.
-- סירוב של תמחור תשלום בדרך כלל פירושו שהרשות לא הועמדה, נתוני המטא אסיטי התשלום ישתנו, או שלא נבחר משלם תשלום מפורש.
-- רישום, מיטינג או ניהול חלל שמות עדיין ניתן לסרב לאחר שהקאנרי הזה מצליח. פעולות אלה דורשות אישורים נפרדים בזמן ההפעלה; להתאמנות בהם ברשת המקומית המובצרת כאשר גישה Taira לא נתנה.
+- `/livez`, `/health` ו־`/readyz` מחזירים `406` כאשר מבקשים מהם JSON בלבד, משום שהם עונים ב־`text/plain`. שלחו את כותרות ה־`Accept` שמוצגות לעיל.
+- `/readyz` עשוי להחזיר `503` עם מעטפת שגיאה מסוג `service_unavailable` גם כאשר `/livez` ו־`/status` פועלים. המתינו למוכנות או הריצו `iroha taira doctor`; יצירת מפתחות מחדש לא תשנה את מוכנות הצומת.
+- שגיאת `502` של ה־faucet או חריגה מזמן ההמתנה במהלך `submit` משאירות את תוצאת הבקשה לא ידועה: הריצו את `taira account faucet resume` עם אותה תצורה ואותו יומן במקום להכין בקשה נוספת. עוגן מיושן של הוכחת העבודה גורם ל־`prepare` להיכשל; הכינו מחדש בתיקיית יומן חדשה.
+- שגיאת קידומת I105 פירושה שהמפתח הציבורי קודד בפרופיל שגוי. הריצו שוב `iroha tools address convert --profile taira`.
+- דחיית הצעת עמלה פירושה בדרך כלל שהסמכות אינה ממומנת או שה־`network_id` שהוגדר אינו של Taira. היעדר `--fee-payer`, או מפתח עמלה כגון `gas_asset_id` ב־`--metadata`, נכשלים באופן מקומי לפני קבלת ההצעה.
+- רישום, הנפקה או ניהול מרחבי שמות עשויים להידחות גם לאחר שעסקת הבדיקה הצליחה. פעולות אלה דורשות הרשאות נפרדות בסביבת הריצה; תרגלו אותן ברשת המקומית שנוצרה כאשר לא ניתנה גישה ב־Taira.
 
-## מקור ומסמכים קשורים {#source-and-related-docs}
+## מקור ותיעוד קשור {#source-and-related-docs}
 
-- [Taira CLI דיאגנוסטיקה ומקור קנרי בקיום commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/taira.rs)
-- [בחירת עמלה מפורשת ומקור ההפצה CLI בביצוע commit המוקבעת ](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Taira מדריך החשבון והקרס](/he/get-started/sora-nexus-dataspaces.md)
-- [קונפיגורת הלקוח](/he/guide/configure/client-configuration.md)
-- [עסקים](/he/blockchain/transactions.md)
+- [קוד המקור של האבחון ושל עסקת ה־canary ב־CLI של Taira](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira.rs) ו־[פקודות ה־faucet](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/taira_onboarding.rs) ב־commit המקובע
+- [קוד המקור לבחירת עמלה מפורשת ולשליחה ב־CLI בקומיט המקובע](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [מדריך החשבון והברז של Taira](/he/get-started/sora-nexus-dataspaces.md)
+- [תצורת הלקוח](/he/guide/configure/client-configuration.md)
+- [עסקאות](/he/blockchain/transactions.md)

@@ -18,13 +18,14 @@ async function fixture(targetContent = 'generated\n') {
       schema_version: 1,
       source: {
         repository: IROHA_REPOSITORY,
+        track: { branch: 'optimizations', release_tags: 'v3*' },
+        ref: 'refs/heads/optimizations',
         commit: '0123456789abcdef0123456789abcdef01234567',
       },
       artifacts: [
         {
           id: 'fixture',
           kind: 'copy',
-          status: 'current',
           source: 'defaults/fixture.txt',
           source_sha256: digest,
           target: 'src/snippets/fixture.txt',
@@ -36,9 +37,25 @@ async function fixture(targetContent = 'generated\n') {
   return root
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function editManifest(root: string, edit: (manifest: any) => void) {
+  const manifestPath = path.join(root, 'provenance', 'iroha.json')
+  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
+  edit(manifest)
+  await writeFile(manifestPath, JSON.stringify(manifest))
+}
+
 describe('artifact provenance validation', () => {
   test('accepts a pinned source and matching artifact hash', async () => {
     expect(await validateProvenance(await fixture())).toEqual([])
+  })
+
+  test('accepts a pin taken from a tracked release tag', async () => {
+    const root = await fixture()
+    await editManifest(root, (manifest) => {
+      manifest.source.ref = 'refs/tags/v3.0.0'
+    })
+    expect(await validateProvenance(root)).toEqual([])
   })
 
   test('rejects target drift', async () => {
@@ -47,38 +64,54 @@ describe('artifact provenance validation', () => {
     expect(await validateProvenance(root)).toContain('fixture: target hash mismatch for src/snippets/fixture.txt')
   })
 
-  test('accepts a public candidate while a signed source commit is still pending', async () => {
+  test('rejects a pin from a ref outside the tracked branch and release tags', async () => {
     const root = await fixture()
-    const manifestPath = path.join(root, 'provenance', 'iroha.json')
-    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-    manifest.source.refresh_state = 'awaiting-signed-source-commit'
-    manifest.artifacts[0].status = 'pending-signed-source-commit'
-    await writeFile(manifestPath, JSON.stringify(manifest))
-
-    expect(await validateProvenance(root)).toEqual([])
-  })
-
-  test('rejects current artifacts while a signed source commit is pending', async () => {
-    const root = await fixture()
-    const manifestPath = path.join(root, 'provenance', 'iroha.json')
-    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-    manifest.source.refresh_state = 'awaiting-signed-source-commit'
-    await writeFile(manifestPath, JSON.stringify(manifest))
-
+    await editManifest(root, (manifest) => {
+      manifest.source.ref = 'refs/heads/feature'
+    })
     expect(await validateProvenance(root)).toContain(
-      'provenance/iroha.json: awaiting-signed-source-commit requires every artifact to remain pending',
+      'provenance/iroha.json: source.ref must be the tracked branch refs/heads/optimizations',
+    )
+
+    await editManifest(root, (manifest) => {
+      manifest.source.ref = 'refs/tags/v2.0.0'
+    })
+    expect(await validateProvenance(root)).toContain(
+      'provenance/iroha.json: source.ref must be a tracked v3* release tag',
     )
   })
 
-  test('rejects signed-source-pending artifacts without the matching source state', async () => {
+  test('requires the tracking policy and a well-formed ref', async () => {
     const root = await fixture()
-    const manifestPath = path.join(root, 'provenance', 'iroha.json')
-    const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-    manifest.artifacts[0].status = 'pending-signed-source-commit'
-    await writeFile(manifestPath, JSON.stringify(manifest))
-
-    expect(await validateProvenance(root)).toContain(
-      'fixture: output awaiting a signed source commit requires an explicit source refresh_state',
+    await editManifest(root, (manifest) => {
+      manifest.source.ref = 'optimizations'
+      manifest.source.track = { branch: '../main', release_tags: 'v3 *' }
+    })
+    expect(await validateProvenance(root)).toEqual(
+      expect.arrayContaining([
+        'provenance/iroha.json: source.track.branch must be a branch name',
+        'provenance/iroha.json: source.track.release_tags must be a tag glob such as v3*',
+        'provenance/iroha.json: source.ref must be refs/heads/<branch> or refs/tags/<tag>',
+      ]),
     )
+
+    await editManifest(root, (manifest) => {
+      delete manifest.source.track
+    })
+    expect(await validateProvenance(root)).toContain(
+      'provenance/iroha.json: source.track must name the tracked branch and release tag glob',
+    )
+  })
+
+  test('rejects retired pending-state fields', async () => {
+    const root = await fixture()
+    await editManifest(root, (manifest) => {
+      manifest.source.refresh_state = 'awaiting-signed-source-commit'
+      manifest.artifacts[0].status = 'pending-signed-source-commit'
+    })
+    expect(await validateProvenance(root)).toEqual([
+      'provenance/iroha.json: source.refresh_state is not a supported field',
+      'fixture: status is not a supported field',
+    ])
   })
 })

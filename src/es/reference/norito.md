@@ -1,16 +1,15 @@
 ---
 translation_locale: es
 translation_source: /reference/norito.md
-translation_source_hash: b3b7c03bc0df3f7fa3df7e44b0ec8d755d615f9edca66bbcfe5613c33c8afbfe
+translation_source_hash: 0446444ac147b80efcf1d0d07610ad7c81e6f02fb308fe032b8f213afe15bc74
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link
 ---
-
 # Norito {#norito}
 
 Norito es la capa de serialización canónica de Iroha. Es el formato de bytes utilizado cuando los pares de red, SDKs, las herramientas CLI, Torii, Kura y los artefactos generados necesitan coincidir exactamente en la misma carga útil.
 
-Use Norito cuando los datos son parte del consenso, la firma, el hash, la persistencia o la interoperabilidad cruzada SDK. Use JSON cuando un endpoint API ofrece explícitamente una proyección legible por humanos para operadores, paneles o depuración rápida.
+Use Norito cuando los datos son parte del consenso, la firma, el hash, la persistencia o la interoperabilidad cruzada SDK. Use JSON cuando un endpoint ofrece explícitamente una proyección legible por humanos para operadores, paneles o depuración rápida.
 
 ## Dónde aparece Norito {#where-norito-appears}
 
@@ -18,10 +17,10 @@ Use Norito cuando los datos son parte del consenso, la firma, el hash, la persis
 | --- | --- |
 |Transacciones y consultas|Los pagos de transacciones firmadas y consultas enviadas a través de Torii se codifican como Norito.|
 |génesis de la blockchain| `kagami genesis sign` produce un bloque `.nrt` firmado que los pares de la red cargan al iniciar.|
-|respuestas escritas Torii| API los endpoints que soportan respuestas binarias tipadas usan `Accept: application/x-norito`. |
+|respuestas escritas Torii| los endpoints que soportan respuestas binarias tipadas usan `Accept: application/x-norito`. |
 | SDKs |Los clientes Rust, Python, JavaScript, Kotlin/Java, Swift y Android usan constructores o enlaces Norito en lugar de bytes ensamblados a mano.|
 |Almacenamiento Kura|Las cargas de bloques, los anexos de recuperación, las listas y los marcadores de confirmación se almacenan en tramas Norito.|
-|manifiestos técnicos| Nexus, disponibilidad de datos, SoraFS, transmisión y manifiestos técnicos orientados a aplicaciones usan Norito cuando el manifiesto técnico debe ser firmado o hashed.|
+|manifiestos técnicos| SORA Nexus, disponibilidad de datos, SoraFS, transmisión y manifiestos técnicos orientados a aplicaciones usan Norito cuando el manifiesto técnico debe ser firmado o hashed.|
 | Transmisión | Norito Streaming utiliza manifiestos de Norito, encabezados de segmento, tramas de control y vectores de prueba de conformidad. |
 
 Norito no es un lenguaje de contratos inteligentes. Es el contenedor de datos determinista y el códec que transporta transacciones, llamadas a contratos, manifiestos técnicos y cargas útiles tipadas API.
@@ -96,7 +95,7 @@ La aceleración de hardware nunca cambia el contenido decodificado. Los acelerad
 
 ## JSON Soporte {#json-support}
 
-Norito incluye una pila nativa JSON para endpoints API y herramientas que necesitan JSON sin salir del sistema de tipos Norito.
+Norito incluye una pila nativa JSON para endpoints y herramientas que necesitan JSON sin salir del sistema de tipos Norito.
 
 |JSON característica|Caso de uso|
 | --- | --- |
@@ -152,14 +151,14 @@ La disponibilidad de funciones puede diferir entre SDKs y los perfiles de lanzam
 
 Torii expone JSON para muchas rutas de operador, pero las rutas binarias tipadas usan Norito. El tipo de medio para los cuerpos actuales tipados Norito HTTP es `application/x-norito`.
 
-Use estos encabezados cuando un endpoint API acepte o devuelva Norito tipados:
+Use estos encabezados cuando un endpoint acepte o devuelva Norito tipados:
 
 ```http
 Content-Type: application/x-norito
 Accept: application/x-norito
 ```
 
-Cuando un endpoint API admite ambas representaciones, los clientes pueden enviar una lista de preferencias explícita:
+Cuando un endpoint admite ambas representaciones, los clientes pueden enviar una lista de preferencias explícita:
 
 ```http
 Accept: application/x-norito, application/json
@@ -192,12 +191,12 @@ Los códecs específicos para streaming y los perfiles de entropía están separ
 - Trata la descoordinación del esquema como un problema de versión o artefacto de prueba, no como un fallo transitorio de la red.
 - Archivar `.nrt`, `.norito` y los artefactos de manifiesto técnico en el paquete de lanzamiento o incidente que los produjo.
 - Use Norito como la fuente de verdad para datos firmados, con hash o persistidos. Use proyecciones JSON para tableros y revisión manual.
-- Al agregar un nuevo endpoint tipeado Torii API, documente si acepta JSON, Norito o ambos, y exponga los tipos de contenido soportados en `/openapi.json`.
+- Al agregar un nuevo endpoint tipeado Torii, documente si acepta JSON, Norito o ambos, y exponga los tipos de contenido soportados en `/openapi.json`.
 - Antes de habilitar un acelerador, ejecute pruebas de paridad contra la salida escalar. Si un acelerador falla, utilice la alternativa escalar determinista. La semántica de la carga útil debe permanecer sin cambios.
 
 ## Páginas relacionadas {#related-pages}
 
-- [Torii API puntos finales](/es/reference/torii-endpoints.md)
+- [Torii puntos finales](/es/reference/torii-endpoints.md)
 - [referencia de génesis de blockchain](/es/reference/genesis.md)
 - [Esquema del modelo de datos](/es/reference/data-model-schema.md)
 - [JavaScript / TypeScript SDK](/es/guide/tutorials/javascript.md)
@@ -206,5 +205,5 @@ Los códecs específicos para streaming y los perfiles de entropía están separ
 
 ## Referencias ascendentes {#upstream-references}
 
-- [Norito especificación de formato](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/norito.md)
-- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/norito/README.md)
+- [Norito especificación de formato](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/norito.md)
+- [Norito crate README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/norito/README.md)

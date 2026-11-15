@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # İctimai Açar Kriptoqrafiyası {#public-key-cryptography}
 
 İctimai açar kriptoqrafiyası əlaqəli ictimai açar və şəxsi açardan istifadə edir. İctimai açar paylaşa bilər. Şəxsi açar səlahiyyət sahibi tərəfindən idarə olunmalıdır. Təhlükəsizlik dəstəklənən alqoritmdən istifadə etməyə, açarları etibarlı təsadüfi üsulla yaratmağa və şəxsi açarı qorumağa bağlıdır.

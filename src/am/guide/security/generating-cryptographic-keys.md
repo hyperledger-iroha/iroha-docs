@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/security/generating-cryptographic-keys.md
-translation_source_hash: f3d08a8e7fe7569ef783b93bccdc900ca74b85179a749b48b96c32028c749233
+translation_source_hash: bb1044edb9d34264e36848ee773d4d313bfbfd91b45da2eeb831f7ef8920e9b4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ምስጠራ ቁልፎችን በማመንጨት ላይ {#generating-cryptographic-keys}
 
 ለ`kagami keys` ደንበኛ፣ የአውታረ መረብ አቻ እና አረጋጋጭ ቁልፍ ቁሳቁስ ለማመንጨት Iroha 3 ይጠቀሙ።
@@ -18,7 +17,7 @@ translation_engine: bing-translator-llm
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-የወላጅ ማውጫው አስቀድሞ መኖር አለበት። ዒላማው አዲስ ወይም ቀድሞውኑ አሁን ባለው ተጠቃሚ ባለቤትነት የተያዘ፣ ሁነታ `0700`፣ ከምሳሌያዊ ማገናኛዎች የጸዳ እና ባዶ መሆን አለበት። `kagami` `public.key` እና `private.key` በሞድ `0600` ይጽፋል እና ቁልፍ ቁሳቁሶችን አያትምም። በ`--pop`፣ እንዲሁም `pop.hex` ይጽፋል።
+ወላጅ ማውጫው አስቀድሞ መኖር አለበት። የታለመው ማውጫ መኖር የለበትም፤ Kagami አስቀድሞ ያለ ባዶ ማውጫንም ይከለክላል። ለባለቤቱ ብቻ መዳረሻ የሚሰጡ የፋይል ስርዓት ፍተሻዎችን እያደረገ ዒላማውን በ`0700` ሁነታ ይፈጥራል፣ ተምሳሌታዊ አገናኞችንም ይከለክላል። `kagami`፣ `public.key` እና `private.key`ን በ`0600` ሁነታ ይጽፋል እንጂ የቁልፍ ቁሳቁሶችን አያትምም። ከ`--pop` ጋር `pop.hex`ንም ይጽፋል።
 
 `--out-dir` Kagami እነዚህን የባለቤት-ብቻ የፋይል ስርዓት ህጎች ማስፈጸም በማይችሉባቸው መድረኮች ላይ በአስተማማኝ ሁኔታ ውድቅ ይሆናል። የግል-ቁልፍ ፋይሉ ያልተመሰጠረ ወደ ውጭ መላክ እንጂ ሀ ሃርድዌር ወይም ወደ ውጭ መላክ የማይችል የምርት ምስጠራ ፈራሚ። በተፈቀደው የጥበቃ ወሰን ውስጥ ያስገቡት እና በማሰማራቱ ሂደት መሰረት ወደ ውጭ መላክ ያስወግዱት።
 
@@ -57,7 +56,7 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
   --out-dir ./validator-key
 ```
 
-`--pop` የሚሰራው በ `bls_normal` ብቻ ነው። `pop.hex`ን ወደ ጥበቃ ማውጫው ያክላል። የተፈረመ የብሎክቼይን ጀነሲስ ለእያንዳንዱ የድምጽ መስጫ አረጋጋጭ ተዛማጅ PoP ያስፈልገዋል። በኔትወርክ አቻ ውቅር ውስጥ፣ ባዶ ያልሆነ `trusted_peers_pop` ካርታ የማረጋገጫ ንዑስ ስብስብን ይመርጣል። ከዚያ ባዶ ካልሆነ ካርታ የተተዉ የታመኑ የአውታረ መረብ እኩዮች ታዛቢዎች ናቸው። ካርታው ባዶ ከሆነ፣ ሁሉም BLS-መደበኛ የታመኑ የአውታረ መረብ እኩዮች ወደ ቡት ማሰሪያ እጩ ስብስብ ውስጥ ይገባሉ፣ መራጭ PoPs አሁንም በተፈረመው blockchain ጀነሲስ ቀርቧል።
+`--pop` የሚሰራው በ `bls_normal` ብቻ ነው፤ `pop.hex`ን ወደ ጥበቃ ማውጫው ያክላል። የተፈረመ የብሎክቼይን ጀነሲስ ለእያንዳንዱ የድምጽ መስጫ አረጋጋጭ ተዛማጅ PoP ያስፈልገዋል። በአውታረ መረብ አቻ ውቅር ውስጥ የእያንዳንዱን አረጋጋጭ PoP በ`trusted_peers_pop` ውስጥ ይዘርዝሩ፦ ትክክለኛ PoP የሌላቸው የታመኑ አቻዎች ከጋራ ስምምነት ዝርዝሩ ይገለላሉ፣ ባዶ ካርታ ደግሞ ምንም አረጋጋጭ አይሰጥም፤ ስለዚህ ካርታው የጀነሲስ አረጋጋጮችን የሚተው ኖድ ለመጀመር እምቢ ይላል። ማመሳሰል ብቻ የሚያደርግ ኖድን በ`[sumeragi] role = "observer"` ያሂዱ።
 
 ## የማሳደጊያ መረጃ {#custody-output}
 

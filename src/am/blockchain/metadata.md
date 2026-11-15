@@ -5,7 +5,6 @@ translation_source_hash: 20e78492bf757147f2c9afed2d3b51639bc79913d3d8e4351193b60
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # ሜዳዳታ {#metadata}
 
 ሜታዳታ ከብሎክቼይን መዝገብ ነገሮች ጋር የተያያዘ የተፈተሸ የቁልፍ እሴት ካርታ ነው። ቁልፎች `Name` እሴቶች እና እሴቶች JSON (`Json`) ጭነቶች ናቸው።

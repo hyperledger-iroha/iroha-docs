@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # Desenvolvimento de Aplicativos {#application-development}
 
 Iroha as aplicações devem tornar o comportamento de transação explícito, manter o estado de assinatura contido e usar consultas e eventos de maneiras que sejam fáceis de observar em produção.
@@ -34,7 +33,7 @@ Para a mecânica da transação, veja [Transações](/pt/blockchain/transactions
 - Use consultas para o estado atual e fluxos de eventos para notificações de mudança. Evite substituir o tratamento de eventos por consultas amplas repetidas.
 - Paginar consultas iteráveis amplas, como listagens de contas, ativos e blocos.
 - Prefira filtros estreitos para assinaturas e gatilhos. Filtros amplos são úteis para diagnóstico, mas podem adicionar execução desnecessária e processamento no lado do cliente.
-- Mantenha as verificações rápidas somente leitura separadas dos testes de transações assinadas para facilitar o diagnóstico da disponibilidade do endpoint da API.
+- Mantenha as verificações rápidas somente de leitura separadas dos testes de transações assinadas para facilitar o diagnóstico da disponibilidade do endpoint.
 
 Veja [Consultas](/pt/blockchain/queries.md), [Eventos](/pt/blockchain/events.md) e [Filtros](/pt/blockchain/filters.md).
 
@@ -45,7 +44,7 @@ Veja [Consultas](/pt/blockchain/queries.md), [Eventos](/pt/blockchain/events.md)
 - Não cole chaves privadas, material de recuperação de conta, tokens API ou cabeçalhos de autenticação encaminhados nos prompts.
 - Exigir um plano de transação antes que qualquer agente envie uma transação de teste ao vivo na testnet. O plano deve nomear a rede, o principal de autorização, as instruções, o ativo de taxa, as leituras prévias, o resultado esperado e o comportamento de nova tentativa.
 
-Para o fluxo de trabalho Taira MCP, veja [Construir em SORA 3: Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Para o fluxo de trabalho do Taira MCP, consulte [Desenvolver sobre SORA Nexus: Taira e Minamoto](/pt/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK Higiene {#sdk-hygiene}
 

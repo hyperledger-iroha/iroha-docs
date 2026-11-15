@@ -5,7 +5,6 @@ translation_source_hash: 5928eaf7e65023ad1867ca8d125efa61da6d8fe505b91e71b2c2121
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # مصفوفة التوافق {#compatibility-matrix}
 
 تُظهر مصفوفة التوافق التبادل المتقاطع SDK تغطية السيناريو للحالي Iroha 3 تم إعداد المستندات. بشكل افتراضي، تقوم الصفحة بتحميل عرض بيانات نقطة زمنية المدمج الذي تم إنشاؤه من المثبت [`hyperledger-iroha/iroha`](https://github.com/hyperledger-iroha/iroha) مراجعة.

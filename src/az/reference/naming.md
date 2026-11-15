@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Adlandırma Qaydaları {#naming-conventions}
 
 Hesabları, domenləri və ya aktivləri adlandırarkən, Iroha -də istifadə olunan aşağıdakı qaydaları nəzərə almalısınız:
@@ -16,10 +15,9 @@ Hesabları, domenləri və ya aktivləri adlandırarkən, Iroha -də istifadə o
    - `#` aktiv təyini ləqəbləri və aktiv balansı literaları üçün ayrılıb
    - `::` müqavilə ləqəbləri üçün ayrılıb
    - `.` domen və məlumat sahəsi təsdiqi üçün ayrılmışdır
-   - `$` tetik-şöbəli mətn formalari üçün ayrılmışdır
-   - `%` təsdiqçi-əsaslı mətn formaları üçün ayrılmışdır
+   - `$` `name$domain.dataspace` kimi NFT identifikatorları üçün ayrılmışdır
 
-2. Bir adın ala biləcəyi maksimum simvol sayı (UTF-8 simvollar daxil olmaqla) iki amil ilə məhdudlaşdırılır: `[0, u32::MAX]` və hazırda ayrılmış stack sahəsi.
+2. Ad boş olmamalı, Unicode NFC formasında olmalı, uzunluğu ən çoxu 255 UTF-8 bayt olmalı və boşluq, idarəetmə və ikiistiqamətli idarəetmə simvollarından azad olmalıdır.
 
 ## Bu iş axınını Taira üzərində işə sal {#try-it-on-taira}
 

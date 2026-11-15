@@ -1,11 +1,10 @@
 ---
 translation_locale: he
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Iroha הוראות מיוחדות {#iroha-special-instructions}
 
 כשדיברנו על [איך? Iroha פועלת](/he/blockchain/iroha-explained), אמרנו את זה Iroha הוראות מיוחדות הן הדרך היחידה לשנות את מצב העולם. איזה סוג של הוראות מיוחדות יש לנו? אם קראתם את המדריכים ספציפיים לשפה אתה כבר ראית כמה הוראות: `Register<Account>` ו `Mint<Numeric>`.
@@ -15,15 +14,15 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 |הוראות |תיאור |
 | --------------------------------------------------------- | ------------------------------------------------ |
 | [רשום/לא רשום ](#un-register) |תן ID לישות חדשה ב-blockchain. |
-| [הנפקה/ברן ](#mint-burn) |נכסים מספריים הנפקה/שרוף או מפעילים חוזרים. |
+| [Mint/Burn](#mint-burn) | הנפקה או שרפה של נכסים מספריים, או הוספה או גריעה של חזרות טריגר. |
 | [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |עדכון מטא-נתונים של אובייקטים בלשנה. |
 | [SetParameter](#setparameter) |להגדיר פרמטר רחב שרשרת. |
-| [הענקה / ביטול](#grant-revoke) |להעניק או להסיר הרשאות ותפקידים. |
+| [Grant/Revoke](#grant-revoke) |להעניק או להסיר הרשאות ותפקידים. |
 | [העברת ](#transfer) |העברה בעלות או ערך נכס. |
 | [אבטחה מקומית ומנעול נכסים ](#native-escrow-and-asset-locks) |סגור נכסים מספרים בפיקוח פרוטוקול. |
 | [סליקה פרטית אטומית](#atomic-private-settlement) | מנהלת מאגרים חסויים וחבילות אטומיות. |
 | [ExecuteTrigger](#executetrigger) |הפעלת טריגרים.|
-| [רישום / מנהל / שיפור ](#other-instructions) |רשום, להרחיב או לשפר את ההתנהגות של זמן ההפעלה. |
+| [Log/Custom/Upgrade](#other-instructions) |רשום, להרחיב או לשפר את ההתנהגות של זמן ההפעלה. |
 
 בואו נתחיל עם סיכום של Iroha הוראות מיוחדות; אילו אובייקטים כל הוראה יכולה להתקשר אליהם ומה הוראות זמינות עבור כל אובייקט.
 
@@ -35,17 +34,17 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 
 |הוראות |אובייקטים |יעד |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |דומיין רגיל, נקודת כינוי של חלל נתונים, ונקודת כינוי חשבון |                      |
+| [EnsureAlias](#ensurealias) | הגדרה רגילה של דומיינים, כינויים של מרחבי נתונים וכינויים של חשבונות | |
 | [רשום/לא רשום ](#un-register) |חשבונות, הגדרות נכסים, NFTs, תפקידים, גורמים להפעיל, צמתים; הסרת תחום |                      |
-| [הנפקה/ברן ](#mint-burn) |נכסים מספריים, פעולות חוזרות.|חשבונות או גורמים .|
+| [Mint/Burn](#mint-burn) | נכסים מספריים, חזרות טריגר | חשבונות או טריגרים |
 | [SetKeyValue/RemoveKeyValue ](#setkeyvalue-removekeyvalue) |אובייקטים שיש להם [מטא נתונים](./metadata.md): תחומים, חשבונות, הגדרות נכסים, NFTs, RWAs, גורמים |                      |
 | [SetParameter](#setparameter) |פרמטרים של שרשרת |                      |
-| [הענקה / ביטול](#grant-revoke) | [תפקידים, סימני רשיון ](/he/blockchain/permissions.md) |חשבונות או תפקידים |
+| [Grant/Revoke](#grant-revoke) | [תפקידים ואסימוני הרשאה](/he/blockchain/permissions.md) | חשבונות או תפקידים |
 | [העברת ](#transfer) |תחומים, הגדרות נכסים, נכסי מספרים, NFTs |חשבונות |
-| [נאמנות מובנית ונעילות נכסים](#native-escrow-and-asset-locks) |נאמנויות של נכסים מספריים, נעילות נכסים והתחייבויות נאמנות אנונימיות |קונים, יעדים או חלוקת מחלוקת|
+| [נאמנות מובנית ונעילות נכסים](#native-escrow-and-asset-locks) |נאמנויות של נכסים מספריים, נעילות נכסים ונאמנויות מותנות |קונים, יעדים או חלוקת מחלוקת|
 | [סליקה פרטית אטומית](#atomic-private-settlement) | מאגרים חסויים לפי מסלול, סבבי מדיניות, חבילות שהושלמו וסמני ביטול | |
 | [ExecuteTrigger](#executetrigger) |טריגרים.|                      |
-| [יומן / מותאם / שדרוג](#other-instructions) |יומנים, מטעני JSON ייעודיים למבצע ושדרוגי מבצע |                      |
+| [Log/Custom/Upgrade](#other-instructions) | יומנים, מטענים ייעודיים למבצע, שדרוגי המבצע | |
 
 יש גם דרך אחרת להסתכל על ISI, במונחים של אובייקט הספר הגדול שהם נוגעים בו:
 
@@ -69,7 +68,7 @@ translation_engine: nllb-200-ct2+codex-semantic-review
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-אם אינסטלתם את `iroha` בינארי, השתמשו במקום `iroha --config ./defaults/client.toml`. תחליפו את בעלי המקומות למטה עם ערכים מהרשת שלכם:
+אם התקנתם את הבינרי `iroha`, השתמשו במקום זאת ב־`iroha --config ./defaults/client.toml`. לפקודות ששולחות עסקה מוסיפים גם `--fee-payer authority`, המחייב את החשבון החותם; ה־CLI מציג את העמלה המדויקת לפני החתימה. החליפו את מצייני המקום שלהלן בערכים מהרשת שלכם:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-כאשר מכוונים לציבור Taira רשת מבחן, להשתמש ב Taira קונפיגירציה של הלקוח. לפני הפעלת דוגמאות בתשלום, שמור את עוזר faucet [קבל Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כמו `taira_faucet_claim.py`, לאחר מכן תביעה טסטנט XOR מהפצצה:
+כאשר עובדים מול רשת הניסוי הציבורית Taira, השתמשו בתצורת לקוח של Taira ומַמנו את החשבון שלה באמצעות התהליך המוכן שב־[קבלת XOR לניסוי ב־Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira). בדקו שיתרת נכס העמלות גלויה לפני הרצת דוגמאות הכרוכות בעמלה:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-לאחר שנכס העמלה שמומן בידי שירות המימון מופיע, צרפו את מטא־נתוני נכס הגז הנדרשים לעסקאות כתיבה:
+פעולות כתיבה ב־Taira משתמשות באותה בחירה `--fee-payer authority`, וה־CLI מציג את העמלה בנכס העמלות של Taira. אל תצרפו מפתחות עמלה כגון `gas_asset_id` כמטא־נתונים של העסקה; הלקוח דוחה אותם:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` הוא הנתיב הרגיל של שחרור ראשוני ליצירת דומיינים SNS זה מחייב באופן הצהיר את מרחב הנתונים המדויק, הבעלים, תקופת השכירות, וביטחון התמחור, ואז יוצר או תיקון את כל המצב הנדרש באופן אטומי. `POST /v1/aliases/setup/plan` נקודת סוף או התאמה CLI זרימת עבודה:
+`EnsureAlias` הוא המסלול הרגיל במהדורה הראשונה ליצירת דומיינים וחכירות SNS שלהם. הוא קושר באופן הצהרתי את מרחב הנתונים המדויק, הבעלים, תקופת החכירה ותנאי ההגנה של הצעת המחיר, ואז יוצר או מתקן באופן אטומי את כל המצב הדרוש. השתמשו בנקודת הקצה המאומתת `POST /v1/aliases/setup/plan` או בתהליך ה־CLI התואם:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -147,7 +144,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 :::
 
-השתמשו בהנחיות ספציפיות לשפה כדי לרשום אובייקטים ב-blockchain:
+השתמשו במדריך הייעודי לכל שפה כדי לרשום אובייקטים בבלוקצ׳יין:
 
 |שפה |מדריך |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
@@ -165,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 חשבונות רשומים או לא רשומים:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 הגדרות נכסים רשומות ולא רשומות:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +198,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 תפקידים להירשם וללא לרשום:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 רשמו טריגרים והסירו אותם מרישום. רישום טריגר דורש bytecode של IVM או רשימת הוראות מסורתית. דוגמה זו בונה הוראת `Log` באמצעות ה־CLI ומעבירה אותה לרישום הטריגר:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 רשום או לא רשום צמתים. ליצור את המפתח BLS ו PoP עם `kagami` אם עדיין אין לך אותם:
@@ -241,10 +239,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +268,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 הנפיקו ושרפו נכסים מספריים:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 הנפיקו ושרפו חזרות של טריגר:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## העברה {#transfer}
@@ -302,7 +300,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 העברת נכסים מספרים:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,31 +311,31 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 תחום העברה, הגדרה של נכס וחיינות NFT:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## נאמנות מובנית ונעילות נכסים {#native-escrow-and-asset-locks}
 
-הוראות נאמנות מובנית נועלות נכסים מספריים במשמורת פרוטוקול שמנוהלת בידי ספר החשבונות. הן משמשות להסדרים בסגנון שוק, לנעילות נכסים כלליות ולתהליכי נאמנות אנונימית מוגנת.
+הוראות נאמנות מובנית נועלות נכסים מספריים במשמורת פרוטוקול שמנוהלת בידי ספר החשבונות. הן משמשות להסדרים בסגנון שוק, לנעילות נכסים כלליות ולנאמנויות מותנות הכפופות לגורם מאשר.
 
-נאמנות של זירת מסחר משתמשת ב־`OpenAssetEscrow`, ‏`AcceptAssetEscrow`, ‏`MarkEscrowPaymentSent`, ‏`ReleaseAssetEscrow`, ‏`CancelAssetEscrow`, ‏`OpenEscrowDispute` ו־`ResolveEscrowDispute`. נעילות נכסים כלליות משתמשות ב־`OpenAssetLock`, ‏`DrawdownAssetLock`, ‏`CancelAssetLock` ו־`ExpireAssetLock`. נאמנות אנונימית משקפת את מחזור החיים של זירת המסחר באמצעות `OpenAnonymousAssetEscrow`, ‏`AcceptAnonymousAssetEscrow`, ‏`MarkAnonymousEscrowPaymentSent`, ‏`ReleaseAnonymousAssetEscrow`, ‏`CancelAnonymousAssetEscrow`, ‏`OpenAnonymousEscrowDispute` ו־`ResolveAnonymousEscrowDispute`.
+נאמנות של זירת מסחר משתמשת ב־`OpenAssetEscrow`, ‏`AcceptAssetEscrow`, ‏`MarkEscrowPaymentSent`, ‏`ReleaseAssetEscrow`, ‏`CancelAssetEscrow`, ‏`OpenEscrowDispute` ו־`ResolveEscrowDispute`. נעילות נכסים כלליות משתמשות ב־`OpenAssetLock`, ‏`DrawdownAssetLock`, ‏`CancelAssetLock` ו־`ExpireAssetLock`. נאמנות מותנית משתמשת ב־`OpenConditionalEscrow`, ‏`AttestEscrowCondition` ו־`ExpireConditionalEscrow`.
 
 ל-ISIs אלה אין כרגע פקודות CLI ייעודיות. השתמשו בבוני SDK בעלי טיפוסים או במטעני הוראות מסודרים, וראו [escrow מובנה לנכסים](/he/blockchain/escrow.md) לפרטי מחזור החיים, הרשאות, שאילתות, אירועים ודוגמאות ב-Rust.
 
 ## סליקה פרטית אטומית {#atomic-private-settlement}
 
-הוראות הסליקה הפרטית האטומית הכפופות לממשל נפרדות מ-Native AMX השקוף. `ActivatePrivateSettlementPoolV1` יוצר `pool` חסוי אחד למסלול מדויק, מתוך היטל ממשל מצונזר והתחייבויות מקור קנוניות. `FinalizeAtomicPrivateSettlementV1` מחיל באופן אטומי חבילה מלאה שאושרה בידי כל הוועדות המשתתפות. `AbortAtomicPrivateSettlementV1` מפרסם רק את סמן הסיום הציבורי שאישר נותן החסות.
+משפחת ההוראות לסליקה פרטית אטומית הכפופה לממשל נפרדת מ־Native AMX השקוף. `ActivatePrivateSettlementPoolV1` מקים מאגר חסוי אחד, המוגבל למסלול מסוים, מתוך היטל ממשל מושחר והתחייבויות מקור קנוניות. `FinalizeAtomicPrivateSettlementV1` מחיל באופן אטומי חבילה מלאה שאושרה בידי ועדה, ואילו `AbortAtomicPrivateSettlementV1` מפרסם רק את סמן הסיום הציבורי שאישר נותן החסות.
 
-רק ממשל הפרטיות רשאי לבצע `RotatePrivateSettlementPoolPolicyV1`. ההוראה דורשת התאמה מדויקת לתמצית הממשל הנוכחית; היא משמרת את המסלול, ה-`pool`, התחייבות קישור הנכס, גבול המצב, קבוצות מניעת השמעה חוזרת וקבלות שהושלמו, מגדילה את הגרסה הציבורית באחת ומשתמשת בתקופה חדשה יותר של מפתח מבקר. הסבב מופעל בגובה ההכללה, ואסור להשלים באותו גובה קבלה של אותו מסלול ואותו `pool`. שושלת הגרסאות הציבורית משאירה קבלות שהושלמו לפני הסבב תקפות לאחר אתחול, וחזרה זהה עליהן היא אידמפוטנטית. חבילות בתהליך תחת המדיניות הישנה נכשלות באופן סגור לפני שינוי מצב. על המפעילים לשמור מפתחות פענוח ישנים, או לנהל ולבדוק עטיפה מחדש של הקפסולות לפני השמדת המפתחות.
+`RotatePrivateSettlementPoolPolicyV1` מוגבל לממשל הפרטיות. הוא דורש את תקציר הממשל הנוכחי המדויק, משמר את המסלול, המאגר, התחייבות קישור הנכס, גבול המצב, קבוצות ההגנה מפני ביצוע חוזר והקבלות הסופיות, מקדם את הגרסה הציבורית באחת ומשתמש בתקופה חדשה יותר של מפתח המבקר. ההחלפה נכנסת לתוקף בגובה שבו נכללה, ולא ניתן לכלול באותו גובה קבלה עבור אותו צמד של מסלול ומאגר. רצף הגרסאות הציבורי שומר על תוקף הקבלות שהפכו לסופיות לפני ההחלפה גם לאחר אתחול, ועל אידמפוטנטיות של ביצוע חוזר מדויק; חבילות שעדיין בתהליך לפי המדיניות הישנה נדחות באופן סגור. על המפעילים לשמור מפתחות פענוח ישנים עבור קפסולות מאוחסנות, או להסדיר באמצעות ממשל ולבדוק עטיפה מחדש של הקפסולות לפני השמדת המפתחות.
 
-הנתיב מושבת כברירת מחדל ואינו מוסמך לשימוש בייצור. ראו [הפעלת סליקה פרטית אטומית בין מרחבי נתונים](/get-started/atomic-private-settlement) לדרישות תצורה, סמכות, ביקורת, התאוששות ושחרור.
+המסלול נותר מושבת כברירת מחדל ואינו מוכשר לייצור. ראו [ביצוע סליקה פרטית אטומית בין מרחבי נתונים](/he/get-started/atomic-private-settlement) לדרישות התצורה, הסמכות, הביקורת, השחזור והשחרור.
 
 ## הענקה / ביטול {#grant-revoke}
 
@@ -348,34 +346,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 להעניק או לבטל תפקיד בחשבון:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 סימני אישור וביטול. פקודות אישור קוראים אובייקט אישור מהכניסה סטנדרטית:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 להעניק או לבטל רשיונות על תפקיד:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +385,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +396,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -421,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 להגדיר פרמטר על ידי העברת אובייקט פרמטר אחד JSON בהכנסת סטנדרטית:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 הוראה זו משמשת להפעלת [טריגרים](./triggers.md).
 
-ה־CLI יכול לרשום טריגרים ולהירשם ישירות לאירועי ביצוע טריגר. הוא אינו מספק פקודת `execute trigger` ייעודית, ולכן יש לשלוח ידנית הוראת `ExecuteTrigger`: צרו `InstructionBox` מסוריאל באמצעות כלי SDK או executor והעבירו את מערך ה־JSON המתקבל דרך `ledger transaction stdin`:
+ה־CLI שולח הוראת `ExecuteTrigger` ידנית עבור טריגר שנרשם עם מסנן ברירת המחדל `execute`, עם ארגומנטים ב־JSON לפי הצורך, ויכול להירשם לאירועי ביצוע של הטריגר:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## הוראות אחרות {#other-instructions}
@@ -452,21 +449,21 @@ Iroha חושף גם הוראות רמה נמוכה יותר עבור אינטג�
 להגיש הוראה `Log` עם עוזר הפינג:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 הגיש הוראה אישית למפעיל כתיבת סדרתית `InstructionBox`. צורה של המטען נתונים היא ספציפית למפעיל, אז ליצור את ההוראה עם התאמה SDK או כלי המפעיל:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 העדכון של המפעיל מתוך קבוצה של קוד בייט IVM מסומנת:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

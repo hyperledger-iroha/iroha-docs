@@ -1,19 +1,18 @@
 ---
 translation_locale: ur
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha بائنریوں کے ساتھ کام کرنا {#working-with-iroha-binaries}
 
 Iroha 3 آپریٹر ورک فلو چار بنیادی بائنریوں کے گرد گھومتا ہے:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ایک نیٹ ورک نوڈ ڈیمون چلانے کے لئے
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) ایک نیٹ ورک نوڈ ڈیمون چلانے کے لئے
 - `iroha3d_taira` کے لئے canonical Taira تصدیق کنندہ لانچر
-- CLI اور operator commands کے لیے [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli)
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) چابیاں، پیدائش، لوکل نیٹ ورک اور پروفائلز کے لئے
+- CLI اور operator commands کے لیے [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli)
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) چابیاں، پیدائش، لوکل نیٹ ورک اور پروفائلز کے لئے
 
 ## ماخذ سے تعمیر کریں {#build-from-source}
 
@@ -50,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker تصویر {#docker-image}
 
-اپ اسٹریم کام کی جگہ استعمال کرتا ہے `kagami localnet` اور `kagami docker` پیدا کرنے کے لئے Docker Compose فائلیں جو چیک آؤٹ کوڈ سے ملتی ہیں. `hyperledger/iroha:dev` ان فائلوں کے ساتھ تصویر کا استعمال کیا جا سکتا ہے.
-
-CLI کو ایک کنٹینر میں چلائیں:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-ایک کنٹینر میں Kagami چلائیں:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-پیئر اسٹارٹ اپ کے لئے، ایک مقامی نیٹ ورک پیدا کریں اور سب سے پہلے فائل کو مرتب کریں:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+ایک ہی نظرثانی سے بنی بائنری فائلوں کے ساتھ Docker میں چار توثیقی نوڈ بنانے اور چلانے کے لیے [لانچ Iroha 3](/ur/get-started/launch-iroha.md) کی ہدایات پر عمل کریں۔
 
 ## مجھے کون سا بائنری استعمال کرنا چاہئے؟ {#which-binary-should-i-use}
 

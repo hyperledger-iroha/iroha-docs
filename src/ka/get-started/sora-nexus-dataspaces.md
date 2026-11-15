@@ -1,16 +1,15 @@
 ---
 translation_locale: ka
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
+# SORA Nexus-ზე შემუშავება Taira-სა და Minamoto-ს გამოყენებით {#build-on-sora-3-taira-and-minamoto}
 
-# SORA 3: Taira და Minamoto {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus მუშაობს Iroha 3-ის ბაზაზე. აპლიკაცია ჯერ Taira-ზე შეიმუშავეთ და გამოსცადეთ. იმავე კლიენტის კონფიგურაცია Minamoto-ზე გადაიტანეთ მხოლოდ მას შემდეგ, რაც გექნებათ მთავარი ქსელისთვის ცალკე გასაღებები, საკომისიოსთვის ნამდვილი XOR და საწარმოო გარემოში მუშაობის ნებართვა.
 
-SORA 3 არის აპლიკაციების მიმართულებით შექმნილი საჯარო განთავსების გზა Iroha 3 და SORA Nexus. ააშენეთ და რეპეტირდით Taira ჯერ, შემდეგ გადაიტანეთ იგივე კლიენტის ფორმაში Minamoto მხოლოდ მაშინ, როდესაც თქვენ გაქვთ ცალკე ძირითადი ქსელი გასაღები, ნამდვილი XOR გადასახადებისა და წარმოების დამტკიცებისათვის.
-
-აღნიშნული სახელმძღვანელო აჩვენებს, თუ როგორ უნდა კონფიგურდეს Iroha კლიენტი საზოგადოებისთვის SORA 3 ქსელი:
+ეს სახელმძღვანელო აღწერს Iroha კლიენტის გამართვას SORA Nexus-ის ორი საჯარო ქსელისთვის.
 
 - Taira საგამოცდო ქსელი `https://taira.sora.org`
 - Minamoto ძირითადი ქსელი: `https://minamoto.sora.org`
@@ -24,15 +23,15 @@ SORA 3 არის აპლიკაციების მიმართუ�
 
 |ნაბიჯი |Taira ტესტის ქსელი |Minamoto მაინეთ |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|დაიწყეთ წაკითხვა ქსელის მდგომარეობა |მოთხოვნა `/status` გარეშე გასაღები |მოთხოვნა `/status` გარეშე გასაღები |
-|აირჩიეთ მონაცემთა სივრცე |გამოიყენეთ საჯარო `universal` თუ თქვენს აპლიკაციას არ სჭირდება მართული აღსრულების ზოლი |გამოიყენეთ იგივე მონაცემთა სივრცე მხოლოდ მას შემდეგ, რაც მთავარმა ქსელმა დაამტკიცა|
+|დაიწყეთ წაკითხვა ქსელის მდგომარეობა |მოთხოვნა `/status` გარეშე გასაღები | ჯერ გადაამოწმეთ სერვისის მისამართი და მისი TLS სერტიფიკატი |
+|აირჩიეთ მონაცემთა სივრცე |გამოიყენეთ საჯარო `universal`, თუ თქვენს აპლიკაციას საკუთარი მართვადი მონაცემთა სივრცე არ სჭირდება |გამოიყენეთ იგივე მონაცემთა სივრცე მხოლოდ მთავარი ქსელის დამტკიცების შემდეგ |
 |მიიღეთ საფასური აქტივი.|გამოიყენეთ საჯარო Taira სატესტო ქსელი-ის დაფინანსების სერვისი |მიიღეთ XOR დაფინანსებული Minamoto ანგარიშიდან ან დამტკიცებული სახაზინო ნაკადისგან |
 |ტესტი წერს |გამოყენება ტესტის ქსელის მიერ დაფინანსებული ტესტი XOR |არ გამოიყენოთ ტესტი ინსტრუმენტები; წერა ხარჯავს რეალური XOR |
 |გააქტიურეთ |კვლავ შეეცადეთ ლოგიკა, მონიტორინგი და კრიპტოგრაფიული ხელმოწერა |გამოიყენეთ ცალკე გასაღები, დაფინანსება და გათავისუფლების კონტროლი |
 
 პრაქტიკული ნაკადი არის:
 
-1. შექმნათ კლიენტი Taira-ის წინააღმდეგ და გამოიყენეთ საჯარო `universal` მონაცემთა სივრცე.
+1. შექმენით კლიენტი Taira-სთვის და გამოიყენეთ საჯარო `universal` მონაცემთა სივრცე.
 2. დამატება კრიპტოგრაფიული ხელმოწერა და მისი დაფინანსება Taira ტესტური მონეტების გამცემით.
 3. გამოიყენეთ თქვენი აპლიკაციის ლოგიკა Taira -ის წინააღმდეგ, სანამ შეცდომები მოსაწყენი და საყურადღებოა.
 4. შეიქმნას ცალკე Minamoto კრიპტოგრაფიული ხელმოწერა, დააფინანსოს იგი რეალური XOR და გადაიყვანოს მხოლოდ იგივე დამტკიცებული ოპერაციები ძირითადი ქსელი.
@@ -53,24 +52,22 @@ SORA 3 არის აპლიკაციების მიმართუ�
 
 ## 1. გაიგე, თუ რას აპირებ {#_1-understand-what-you-are-setting-up}
 
-SORA Nexus-ში, მონაცემთა სივრცე შედის ქსელის შესრულების ბილიკისა და მარშრუტის კატალოგის ნაწილად. კლიენტი არ ქმნის ახალ საჯარო მონაცემთა სიფერს მხოლოდ იმით, რომ შეცვლის `client.toml`. კლიენტის კონფიგურაცია აკეთებს ორ რამეს:
+SORA Nexus-ში მონაცემთა სივრცეების კატალოგი მონაცემთა სივრცეებს განსაზღვრავს. არხების კატალოგი არხებს ცალკე განსაზღვრავს: თითოეული არხი ერთ მონაცემთა სივრცეს უთითებს და ერთ მონაცემთა სივრცეს რამდენიმე არხი შეიძლება ჰქონდეს. კლიენტი მხოლოდ `client.toml`-ის შეცვლით ახალ საჯარო მონაცემთა სივრცეს არ ქმნის. კლიენტის გამართვა ორ რამეს აკეთებს:
 
-1. მიუთითებს კლიენტს მარჯვენა Torii API ბოლო წერტილში.
-2. აირჩევს დომენის და მონაცემთა სივრცის მარშრუტის კონტექსტს მისი კანონიკური ანგარიშისთვის
+1. კლიენტს სწორ Torii ბოლო წერტილზე მიმართავს
+2. თავისი კანონიკური ანგარიშისთვის ირჩევს ქსელის კონტექსტსა და ხელმოწერის გასაღებს
 
-`AccountId` ყოველთვის არის კანონიკური და დომენების გარეშე. `[account].domain` მნიშვნელობა `client.toml` უზრუნველყოფს მარშრუტის კონტექსტს და საგნელს; ის არ ხდება ანგარიშის იდენტობის ნაწილი. უმეტეს აპლიკაციებში, დაიწყეთ საჯარო `universal` მონაცემთა სივრცით. დომენის კონტექსტი იყენებს ფორმას `domain.dataspace`, მაგალითად:
+`AccountId` ყოველთვის კანონიკურია და დომენს არ შეიცავს; `client.toml`-საც დომენის პარამეტრი არ აქვს: `[account].profile` მხოლოდ ქსელის I105 პრეფიქსს ირჩევს. დომენის კონტექსტი ფსევდონიმებსა და დომენის კუთვნილ ობიექტებს ეკუთვნის. აპლიკაციების უმეტესობისთვის დაიწყეთ საჯარო `universal` მონაცემთა სივრცით. დომენის კონტექსტი იყენებს `domain.dataspace` ფორმას, მაგალითად:
 
 ```text
 wonderland.universal
 ```
 
-თუ თქვენ გჭირდებათ ახალი საორგანიზაციო მონაცემთა სივრცე, შეადგინეთ კატალოგი და მარშრუტის წინადადება ჩვეულებრივი კლიენტის ანგარიშით რეგისტრაციის ნაცვლად. იხილეთ [ახალი მონაცემთა სივრცის უზრუნველყოფა](#_8-provision-a-new-dataspace) ქვემოთ.
+თუ ორგანიზაციისთვის ახალი მონაცემთა სივრცე გჭირდებათ, ჩვეულებრივი კლიენტის ანგარიშით რეგისტრაციის მცდელობის ნაცვლად მოამზადეთ კატალოგისა და მარშრუტიზაციის წინადადება. ქვემოთ იხილეთ [ახალი მონაცემთა სივრცის მომზადება](#_8-provision-a-new-dataspace).
 
-## 2. შეამოწმეთ საჯარო Torii API საბოლოო წერტილი {#_2-check-the-public-torii-endpoint}
+## 2. საჯარო Torii ბოლო წერტილის შემოწმება {#_2-check-the-public-torii-endpoint}
 
-შეამოწმეთ, რომ მიზნობრივი API საბოლოო წერტილი ცოცხალია კრიპტოგრაფიული ხელმოწერის კონფიგურაციამდე.
-
-Taira:
+`curl`-ისა და `jq`-ის გამოყენებით შეამოწმეთ Taira-ს სატესტო ქსელის მდგომარეობა. ამისთვის არც გასაღებები გჭირდებათ და არც ლოკალური კვანძი.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -78,15 +75,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Minamoto:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-შეამოწმეთ მონაცემთა სივრცე და განხორციელების ბილიკის ხედი, რომელიც აღმოაჩინეს კვანძით:
+შეამოწმეთ კვანძის მიერ წარმოდგენილი მონაცემთა სივრცეებისა და არხების ხედი:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-გამოიყენეთ იგივე ბრძანება `https://minamoto.sora.org/status` ძირითადი ქსელისათვის.
+Minamoto-ს გამოყენებამდე ოპერატორთან დააზუსტეთ ძირითადი ქსელის სერვისის მისამართი და შეამოწმეთ, რომ TLS სერტიფიკატი ჰოსტის სახელს შეესაბამება.
 
 ## Taira MCP აგენტებისთვის {#taira-mcp-for-agents}
 
@@ -102,17 +91,21 @@ Taira ასევე გამოხატავს Torii-მდევრულ
 
 |დაყენება |ღირებულება |
 | --- | --- |
-|MCP API ბოლო პუნქტი |`https://taira.sora.org/v1/mcp` |
+| MCP ბოლო წერტილი | `https://taira.sora.org/v1/mcp` |
 |ქსელის ფესვი |`https://taira.sora.org` |
 |განზრახ გამოყენება |Taira სატესტო ქსელი წაკითხვა და სატესტო ქსელი-ფინანსირებული წერა რეპეტიციები |
-|წარმოების ეკვივალენტი |არ მიუთითოთ ეს მითითება Minamoto, თუ ძირითადი ქსელის MCP API საბოლოო წერტილი და გამონაბოლქვის კონტროლები ოდნავ არ არის დამტკიცებული.|
+| საწარმოო ეკვივალენტი | ეს ჩანაწერი Minamoto-ზე არ მიმართოთ, თუ ძირითადი ქსელის MCP ბოლო წერტილი და გამოშვების კონტროლები აშკარად დამტკიცებული არ არის |
 
-შეამოწმეთ ხიდის მეტამონაცემები ხელმოწერის მასალის დამატებამდე:
+ხიდი მხოლოდ მდგომარეობის არშემნახველ JSON-RPC `POST` მოთხოვნებს იღებს. ხელმოწერის მასალის დამატებამდე შეამოწმეთ მისი აღმოჩენის მეტამონაცემები:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 კონფიგურირება URL როგორც მომხმარებლის ადგილობრივი MCP სერვერი აგენტის შესრულების გარემოში. არ შეინახოთ საწყისი კონტროლში აგენტის MCP კონფიგურა, API ტოქნები, გადამისამართებული ავტთაღელვები, `authority`, ან `private_key` ღირებულებები ამ დოკუმენტების რეპოში ან აპლიკაციის რეპოში.
@@ -133,7 +126,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 
 1. სთხოვეთ აგენტს, შეამოწმოს შესაბამისი დოკუმენტები, SDK კოდი, CLI ბრძანება ან MCP ინსტრუმენტის სქემა სანამ კოდის დაწერა.
 2. ეწვიეთ აგენტს დაწეროს ყველაზე პატარა კლიენტის გზა ჯერ: სტატუსის შემოწმება, ანგარიშის ძებნა, ანალოგიური რეზოლუცია, ან ბალანსი ძებნა.
-3. დამატება ტრანზაქციების შექმნის კოდი მხოლოდ მას შემდეგ, რაც API მხოლოდ წაკითხვის მოთხოვნა მუშაობს Taira წინააღმდეგ.
+3. ტრანზაქციის აგების კოდი დაამატეთ მხოლოდ მას შემდეგ, რაც Taira-ზე მხოლოდ წაკითხვის გამოძახებები იმუშავებს.
 4. ცოცხალ ქსელზე ტესტები მხოლოდ აშკარა ჩართვით გაუშვით, მაგალითად `TAIRA_LIVE=1`-ის დაყენებისას, რათა ჩვეულებრივი ერთეულის ტესტის გაშვებამ სატესტო ქსელის სახსრები არასოდეს დახარჯოს და ქსელის ხელმისაწვდომობაზე არ იყოს დამოკიდებული.
 5. მოითხოვეთ აგენტს, შეატყობინოს ქსელის ფესვი, ჯაჭვი, ავტორიზაციის ძირითადი ანგარიში, ინსტრუქციის შეჯამება, საფასურის აქტივი და მოსალოდნელი მდგომარეობის ცვლილება ნებისმიერი ტრანზაქციის წარდგენის წინ.
 6. შეამოწმეთ გენერირებული კოდი საიდუმლო მოხმარების, განმეორებითი მცდელობის ქცევის, idempotency- ის და უარყოფის მოხმარებისათვის, სანამ იგი CI ან ძირითადი ქსელის სამუშაო პროცესებში გადაიყვანთ.
@@ -171,7 +164,7 @@ MCP ხიდს შეუძლია წარადგინოს ხელ�
 - ტერმინალის სტატუსი, როგორიცაა `Committed`, `Applied`, `Rejected` ან `Expired`
 - ბლოკის ან ექსპლუატორის დეტალები, როდესაც ხელმისაწვდომია
 - შემოწმების შედეგები
-- უარყოფის შეტყობინება და გამოიყურება თუ არა ჩავარდნა ნებართვებთან, საფასურებთან, ვალიდაციასთან, მოძველებულ მდგომარეობაში ან API-ის საბოლოო წერტილის ხელმისაწვდომობასთან.
+- უარის შეტყობინება და უკავშირდება თუ არა წარუმატებლობა ნებართვებს, საკომისიოს, ვალიდაციას, მოძველებულ მდგომარეობას ან ბოლო წერტილის ხელმისაწვდომობას
 
 მაგალითი დაცული მოწოდება:
 
@@ -197,36 +190,15 @@ Taira MCP საჯარო ტესტნეტის მართვის �
 
 ## სათამაშოების მაგალითები, რომელთა გამოცდა შეგიძლიათ ახლა {#toy-examples-you-can-try-now}
 
-ეს მაგალითები არის მხოლოდ წაკითხვა, თუ არ აღინიშნება. ისინი მუშაობენ სანამ თქვენ გენერირებთ გასაღებს და უსაფრთხოა ორივე საჯარო ქსელის წინააღმდეგ.
+ამ მაგალითებში Taira-ს მონაცემებს ანგარიშის გასაღებების გარეშე კითხულობთ.
 
-შედარება Taira სატესტო ქსელისა და Minamoto ძირითადი ქსელის ჯანმრთელობის შესახებ:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
-
-ჩამოთვალეთ საჯარო მონაცემთა სივრცის განხორციელების ზოლები, რომლებიც Taira -ის მიერ არის გამოფენილი:
+ჩამოთვალეთ Taira-ს ყველა არხი მისი მონაცემთა სივრცითა და ხილვადობით:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-განახორციელეთ იგივე ბრძანება Minamoto -ის წინააღმდეგ, როდესაც საჭიროა ძირითადი ქსელის ხედი:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -270,10 +234,11 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+# The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -284,12 +249,12 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-უმაღლესი დონე `chain` არის ზუსტი Taira ტრანზაქციის ჯაჭვის ID. `[account].profile = "taira"` პარამეტრი დამოუკიდებლად ირჩევს ჯაჭვური დისკრიმინანტი Taira I105. ჯაჭვიანი ID არ ირჩევს ანგარიშის პროფილს.
+ზედა დონის `chain` არის Taira ტრანზაქციის ჯაჭვის ზუსტი ID, ხოლო `network_id` — ზუსტი ქსელური იდენტობა, რომელსაც ყოველი ხელმოწერა ებმის. დააკონფიგურირეთ ზუსტად ერთი: `network_id` ან `network_id_file`. `[account].profile = "taira"` დამოუკიდებლად ირჩევს Taira I105 ჯაჭვის განმასხვავებელს. ჯაჭვის ID ანგარიშის პროფილს არ ირჩევს.
 
 შეამოწმეთ მხოლოდ წაკითხვისთვის:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 ჩატარდეს საჯარო Taira დიაგნოსტიკა, სანამ წერილობითი ტესტები:
@@ -298,28 +263,24 @@ iroha --config ./taira.client.toml --output-format text ops sumeragi status
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-საკომისიოს გადამხდელი ჩაწერის ოპერაციების გაშვებამდე Taira-ს ანგარიში გამცემის მეშვეობით დააფინანსეთ. გამცემის პირდაპირი ნაკადი აღწერილია სექციაში [Taira-ზე სატესტო XOR-ის მიღება](#_4-get-testnet-xor-on-taira).
+საკომისიოს მქონე ჩაწერების შესრულებამდე Taira ანგარიში სატესტო ტოკენების გამცემი სერვისით დააფინანსეთ. მომზადების ეტაპიანი პროცესი აღწერილია გვერდზე [სატესტო XOR-ის მიღება Taira-ზე](#_4-get-testnet-xor-on-taira).
 
-მას შემდეგ, რაც ტესტური მონეტების გამცემის მოთხოვნა მიიღება და ანგარიში დაფინანსდება, Taira კანარი არის სავალდებულო წერითი სიგარეტის გამოცდა:
+ანგარიშის დაფინანსების შემდეგ ხელმოწერილი ჟურნალის ინსტრუქცია ჩაწერის არასავალდებულო საწყისი ტესტია. ყოველი გაგზავნილი ტრანზაქცია საკომისიოს გადამხდელს უთითებს და CLI ხელმოწერამდე ზუსტ საკომისიოს ითვლის:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-კანარი წარადგენს ხელმოწერილი პინგს, ელოდება დადასტურებას და წერს შესრულების გარემოს კრიპტოგრაფიული ხელმომწერის კონფიგურაციას, როდესაც `--write-config` მოწოდებულია. Taira არის საჯარო ტესტის ქსელი, ასე რომ რიგის გაჯერება შეიძლება გამოიწვიოს ხელმოწერილი პინგის წარუმატებლობა მაშინაც კი, როდესაც თვითონ მუშაობს ტესტური მონეტების გამცემი. თუ `taira doctor` იუწყება გაჯერებულ რიგს ან კანარი უბრუნებს `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` , დაელოდეთ და კიდევ ერთხელ სცადეთ, სანამ ამას კლიენტის კონფიგურაციის შეცდომად მიექცევით.
+ბრძანება დადასტურებას ელოდება. Taira საჯარო სატესტო ქსელია, ამიტომ სავსე რიგმა შეიძლება ping-ის წარუმატებლობა გამოიწვიოს მაშინაც, როცა ტოკენების გამცემი სერვისი მუშაობს. თუ `taira doctor` სავსე რიგს იტყობინება ან ping აბრუნებს `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`-ს, კლიენტის კონფიგურაციის შეცდომად ჩათვლამდე მოიცადეთ და ხელახლა სცადეთ.
 
-უპატრონოდ მოწევის გამოცდებისათვის, კანარის შეფუთვისას საზღვრული საცდელი წრეში მოათავსეთ:
+უყურადღებოდ გაშვებული საწყისი ტესტებისთვის ping შეზღუდულ გამეორების ციკლში მოათავსეთ:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -331,7 +292,7 @@ test "$ok" = true
 
 ## შეიქმნას SORA Nexus ანგარიშის ID {#generate-a-sora-nexus-account-id}
 
-SORA Nexus ანგარიშის ID არის კანონიკური I105 მისამართი, რომელიც გამომდინარეობს ანგარიშის საჯარო გასაღებიდან და სამიზნე ქსელის პრეფიქსიდან. ეს არ არის `[account].domain` ღირებულება კლიენტში TOML. ერთი და იგივე საჯარო გასაღები კოდირებს სხვადასხვა ID-ებს Taira და Minamoto, ხოლო წარმოების მომხმარებლებმა უნდა შექმნან ცალკე გასაღები წყვილი Minamoto.
+SORA Nexus ანგარიშის ID არის კანონიკური I105 მისამართი, რომელიც ანგარიშის საჯარო გასაღებიდან და სამიზნე ქსელის პრეფიქსიდან მიიღება. ერთი და იგივე საჯარო გასაღები Taira-სა და Minamoto-ზე სხვადასხვა ID-დ კოდირდება; საწარმოო მომხმარებლებმა Minamoto-სთვის ცალკე გასაღების წყვილი უნდა შექმნან.
 
 გენერირება ან დატვირთვა Ed25519 საკვანძო წყვილი, რომელიც მართავს ანგარიში:
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-გამოიყენეთ მიღებული ანგარიშის ID, სადაც Nexus API ან CLI ბრძანება მოითხოვს კანონიკური ანგარიშის იდენტიფიკაციას, მაგალითად, ტესტური მონეტების გამცემი Taira `account_id`, ბალანსი მოთხოვნები, მკაცრი ანგარიშის ველები ან ალიასი ვალდებულებები. შეინახეთ შესაბამისი კერძო გასაღები კლიენტის კონფიგურაციაში და აირჩიეთ იგივე საჯარო ქსელი `[account].profile = "taira"` ან `[account].profile = "minamoto"`.
+მიღებული ანგარიშის ID გამოიყენეთ ყველგან, სადაც SORA Nexus API ან CLI ბრძანება კანონიკურ ანგარიშის ID-ს მოითხოვს, მაგალითად ბალანსის მოთხოვნებში, მკაცრ ანგარიშის ველებში ან ფსევდონიმის ბმულებში. შესაბამისი კერძო გასაღები კლიენტის კონფიგურაციაში შეინახეთ და იგივე საჯარო ქსელი `[account].profile = "taira"` ან `[account].profile = "minamoto"`-ით აირჩიეთ.
 
 ID-ის გენერირება თავისთავად არ ქმნის ფინანსურ ქსელზე ანგარიშს. Taira -ზე, სატესტო ქსელი-ის დაფინანსების სამსახურს შეუძლია შექმნას და დაფინანსოს ანგარიში სატესტო ქსელი წერისათვის. Minamoto -ზე, გამოიყენეთ დამტკიცებული ძირითადი ქსელი-ის ჩართვა ან საგანგებო ნაკადი.
 
@@ -372,188 +333,72 @@ ID-ის გენერირება თავისთავად არ �
 
 ## 4. მიიღეთ ტესტნეტი XOR Taira {#_4-get-testnet-xor-on-taira}
 
-გამოიყენეთ პირდაპირ საჯარო ტესტური მონეტების გამცემი. ნაკადი:
+სატესტო XOR მიიღეთ CLI-ის მომზადების ეტაპიანი ტოკენების გამცემი პროცესით. სერვისი აფინანსებს `taira.client.toml`-ში კონფიგურირებულ ანგარიშს და თუ იგი ჯერ არ არსებობს, წინასწარ არეგისტრირებს. პროცესი ასეთია:
 
-1. გენერირება ან დატვირთვა კრიპტოგრაფიული ხელმომწერის და გამოითვალოს მისი კანონიკური Taira ანგარიშის ID.
-2. მიიღეთ ტესტური მონეტების გამცემის მიმდინარე თავსატეხი.
-3. დარეგულირება, თუ `difficulty_bits` აღემატება `0`.
-4. წარადგინეთ ტესტური მონეტების გამცემის მოთხოვნა.
-5. დაველოდოთ ანგარიშის ან აქტივების ბალანსის ხილვას, სანამ გადასახადის გადახდის წერილებს გაგზავნით.
+1. წაიკითხეთ ტოკენების გამცემი სერვისის საჯარო პოლიტიკა: გამცემის უფლებამოსილი სუბიექტი, საკომისიო აქტივი და თანხა.
+2. მოამზადეთ მიღების მოთხოვნა. CLI ასრულებს სამუშაოს მტკიცებულების გამოთვლას, ამოწმებს Torii-ის მიერ მომზადებულ და ხელმოწერილ ზუსტ ტრანზაქციას და მას გაგზავნის გარეშე კერძო ჟურნალის დირექტორიაში ინახავს.
+3. შენახული ტრანზაქცია ერთხელ გაგზავნეთ.
+4. საკომისიოს მქონე ჩაწერების გაგზავნამდე დაელოდეთ აქტივის ბალანსის გამოჩენას.
 
-კონვერტირება საჯარო გასაღები Taira I105 ანგარიშის ID-ში, რომელიც მოსალოდნელია ტესტური მონეტების გამცემის მიერ:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-მიიღეთ თავსატეხი:
+წაიკითხეთ პოლიტიკა:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-სატესტო ქსელი-ის დაფინანსების სერვისი არის საჯარო სატესტო ქსელი-ის სერვისი. თუ თავსატეხი ან პრეტენზია API საბოლოო წერტილი ბრუნდება `502`, დროგამოშვება ან სხვა გეტვეის დონეზე შეცდომა, დაელოდეთ და კიდევ ერთხელ სცადეთ სანამ შეცვლით თქვენს გასაღებს ან კლიენტის კონფიგურაციას .
 
 პასუხს აქვს შემდეგი ფორმა:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-როდესაც `difficulty_bits` არის `0`, წარადგინეთ მხოლოდ ანგარიშის ID:
+პოლიტიკა ხელმოუწერელი აღმოჩენის მონაცემია. ავტომატიზაციამ ყოველი პასუხის ნდობის ნაცვლად მოსალოდნელი უფლებამოსილი სუბიექტი, აქტივის განსაზღვრება და თანხა უნდა დააფიქსიროს. `prepare` უარყოფს მომზადებულ ტრანზაქციას, რომელიც გადაცემული მნიშვნელობებისგან განსხვავდება.
+
+მოამზადეთ და გაგზავნეთ მიღების მოთხოვნა:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-როდესაც `difficulty_bits` აღემატება `0`-ს, მოაგვარეთ თავსატეხი და შეიყვანეთ ანკერის სიმაღლე პლუს კრიპტოგრაფიული ნონსის მნიშვნელობა:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-აალგორითმაა:
-
-1. გამოწვევის შექმნა როგორც SHA-256:
-   - `iroha:accounts:faucet:pow:v2` ბაიტების
-   - ანგარიშის ID UTF-8
-   - `anchor_height` როგორც დიდი-endian `u64`
-   - `anchor_block_hash_hex` დეკოდირებულია ბაიტებად
-   - `challenge_salt_hex` დეკოდირებულია ბაიტებად, როდესაც არსებობს
-2. სცადეთ `u64` ნონსები, რომლებიც დიდბოლოიან 8-ბაიტიან მნიშვნელობებად არის კოდირებული.
-3. თითოეული კრიპტოგრაფიული nonce ღირებულებისათვის, გაუშვით scrypt შემდეგით:
-   - პაროლი: 8-ბაიტიანი კრიპტოგრაფიული ნონსის მნიშვნელობა
-   - მარილი: 32-ბაიტიანი გამოწვევა
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - გამოშვების სიგრძე: 32 ბაიტი
-4. გამარჯვებული კრიპტოგრაფიული ნონცის ღირებულება არის პირველი კრიპტგრაფიული დიჟესტის ღირებულება, რომელსაც მინიმუმ `difficulty_bits` უპირატესობა აქვს ნულოვანი ბიტების.
-
-გამცემის პასუხი შეიცავს დაფინანსებულ აქტივსა და რიგში ჩასმული ტრანზაქციის ჰეშს:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-რეაგირება ამჟამად აღინიშნება HTTP `202 Accepted`. მისი `asset_definition_id` არის მიმდინარე საფასური აქტივი Taira, რომელიც ფინანსდება საჯარო ტესტური მონეტების გამცემით; შეამოწმეთ პასუხი, ნაცვლად იმისა, რომ ასახელოთ მაგალითის ID. ტესტური მონეტების გამცემმა მიიღო მოთხოვნა, როდესაც ის დაბრუნებს `tx_hash_hex` და `status: "QUEUED"`.
+`prepare` ჟურნალის დირექტორიას კერძო წვდომით ქმნის და არსებულის ჩანაცვლებას უარყოფს, ამიტომ ყოველი მოთხოვნისთვის ახალი დირექტორია გამოიყენეთ. ტოკენების გამცემი საჯარო სატესტო ქსელის სერვისია. თუ `submit` იტყობინება `Pending`-ს, ლოდინის ვადა ამოიწურა ან მიიღო `502`, სხვა მოთხოვნის მომზადების ნაცვლად იმავე კონფიგურაციითა და ჟურნალით გაუშვით `taira account faucet resume`. სამუშაოს მტკიცებულების მოძველებული საყრდენი `prepare`-ს წარუმატებლობას იწვევს; ხელახლა მოამზადეთ ახალ ჟურნალის დირექტორიაში.
 
 შემდეგ გამოკითხეთ დაფინანსებული აქტივი, სანამ წარადგინებთ საკუთარ საფასურის გადახდის ოპერაციებს:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-თუ სატესტო ქსელი-ის დაფინანსების სერვისის მოთხოვნა მიიღეს, მაგრამ ანგარიში ან აქტივი ჯერ კიდევ არ არის ხილული, ტრანზაქცია კვლავ საჯარო სატესტო ქსელი რიგის დამუშავების მიღმაა. ელოდეთ და შეეცადეთ წაკითხვა, სანამ გაგზავნით წერას.
-
-მზა პირდაპირი API შემოწმებისათვის, შეინახეთ ეს როგორც `taira_faucet_claim.py` და გადაიტანეთ Taira I105 ანგარიშის ID:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+თუ მიღების მოთხოვნა შესრულდა, მაგრამ აქტივი ჯერ არ ჩანს, ჩაწერების გაგზავნამდე მოიცადეთ და წაკითხვა გაიმეორეთ.
 
 გამცემი მხოლოდ Taira-ს სატესტო ქსელის სახსრებისთვისაა განკუთვნილი. Minamoto-ს ნაკადებში არ გამოიყენოთ სატესტო ქსელის XOR, გამცემის ანგარიშები ან Taira-ს საკონტროლო ხელმომწერები.
 
 ## 5. შექმნათ Minamoto კლიენტის კონფიგურაცია. {#_5-create-a-minamoto-client-config}
+
+Minamoto-ს გამოყენებამდე ოპერატორთან დააზუსტეთ ძირითადი ქსელის სერვისის მისამართი და შეამოწმეთ, რომ TLS სერტიფიკატი ჰოსტის სახელს შეესაბამება.
 
 გამოიყენეთ ცალკე საკვანძო წყვილი Minamoto. არ გამოვიყენოთ Taira საკვები ძირითადი ქსელისათვის.
 
@@ -561,10 +406,11 @@ with urllib.request.urlopen(request) as res:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -575,7 +421,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-ზედა დონის `chain` არის Nexus-ის მიმდინარე ძირითადი ქსელის ჯაჭვის ID. `[account].profile = "minamoto"` ირჩევს Minamoto I105-ის ჯაჭვის დისკრიმინანტს; API-ის საბოლოო წერტილის ჰოსტის სახელი და ჯაჭვის ID მას ავტომატურად არ ირჩევს.
+ზედა დონის `chain` არის მიმდინარე SORA Nexus ძირითადი ქსელის ჯაჭვის ID, ხოლო `network_id` — Minamoto-ს ზუსტი ქსელური იდენტობა; პირველი ხელმოწერილი ოპერაციის წინ ის შესაძლებლობების მარშრუტიდან წაიკითხეთ. `[account].profile = "minamoto"` ირჩევს Minamoto I105 ჯაჭვის განმასხვავებელს; ბოლო წერტილის ჰოსტი და ჯაჭვის ID მას ფარულად არ ირჩევს.
 
 კონვერტირება Minamoto საჯარო გასაღები მისი ერთიანი პროტოკოლური სტანდარტის I105 ანგარიშის ID- ში ძირითადი ქსელის პრეფექსით:
 
@@ -586,10 +432,10 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 განახორციელეთ მხოლოდ წაკითხული გვერდითი შემოწმებები, სანამ ანგარიში არ იქნება უზრუნველყოფილი და დაფინანსებული მთავარ ქსელში ჩართვის ან მმართველობის ნაკადის მეშვეობით:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
-არ გამოიყენოთ Taira ტესტური მონეტების გამცემი ან წერის კანარიური დამხმარე საშუალება Minamoto-ზე.
+Minamoto-ზე Taira-ს ტოკენების გამცემი ან საწყისი ტესტის ბრძანებები არ გაუშვათ.
 
 ## 6. დაფინანსება Minamoto ანგარიშზე XOR {#_6-fund-a-minamoto-account-with-xor}
 
@@ -599,9 +445,9 @@ Minamoto საფასურები გადაიხადება წა
 
 Taira XOR არ შეუძლია გადაიხადოს Minamoto საფასურები. სატესტო ქსელი-ის ბალანსი და სატესტო ქსელი-ის ფინანსური მომსახურების მოთხოვნები არ გადაეცემა Minamoto.
 
-## 7. მუშაობა არსებული მონაცემთა სივრცეში {#_7-work-inside-an-existing-dataspace}
+## 7. არსებულ მონაცემთა სივრცეში მუშაობა {#_7-work-inside-an-existing-dataspace}
 
-გამოიყენეთ სრულად კვალიფიცირებული დომენის სახელები ბლოკჩეინის რეესტრის ობიექტებისთვის, რომლებიც ცხოვრობენ მონაცემთა სივრცეში. მაგალითად, საჯარო მონაცემთა სიბანეში პროექტის დომენმა უნდა გამოიყენოს:
+მონაცემთა სივრცეში არსებულ რეესტრის ობიექტებს სრულად დაზუსტებული დომენის სახელები გამოუყენეთ. მაგალითად, საჯარო მონაცემთა სივრცეში პროექტის დომენმა უნდა გამოიყენოს:
 
 ```text
 apps.universal
@@ -615,8 +461,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -628,11 +473,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-ანგარიშის ალიასები იყენებენ იმავე მონაცემთა სივრცის ზედმეტს:
+ანგარიშის ფსევდონიმები იგივე მონაცემთა სივრცის სუფიქსს იყენებს:
 
 ```text
 alice@apps.universal
@@ -641,9 +486,9 @@ alice@universal
 
 მკაცრი ანგარიშის ველები კვლავ კანონიკურ I105 ანგარიშის ID-ებს იყენებს. ალიასები აღიქვით ადამიანის მიერ წაკითხვად ბმებად, რომლებიც კანონიკურ ანგარიშის ID-ებად ამოიხსნება.
 
-## 8. ახალი მონაცემთა სივრცის შექმნა {#_8-provision-a-new-dataspace}
+## 8. ახალი მონაცემთა სივრცის მომზადება {#_8-provision-a-new-dataspace}
 
-ახალი მონაცემთა სივრცე არის ოპერატორის და მმართველობის ცვლილება. საჯარო Torii API საბოლოო წერტილს შეუძლია ავტოტრანსპორტის მიმართულება კონფიგურირებულ მონაცემთა სიბაზეებზე, მაგრამ იგი უარყოფს უცნობი მონაცემთა სიის ალიასებს.
+ახალი მონაცემთა სივრცე ოპერატორისა და მართვის ცვლილებაა. საჯარო Torii ბოლო წერტილს ტრაფიკის კონფიგურირებულ მონაცემთა სივრცეებში მარშრუტიზაცია შეუძლია, მაგრამ უცნობი მონაცემთა სივრცის ფსევდონიმებს უარყოფს.
 
 სანამ შეცვლას მოამზადებთ, დაიჭირეთ მიმდინარე ცოცხალი კატალოგი:
 
@@ -659,15 +504,15 @@ curl -fsS https://taira.sora.org/status \
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-არ გაავრცელოთ ახალი ალიასი, თუ განხორციელების ზოლის ID, მონაცემთა სივრცის ID, ვალიდატორის კომპლექტი, ხარვეზების ტოლერანტობა, ტექნიკური მანიფესტი, მარშრუტის წესები და ოპერატიული მფლობელი ერთად არ გადამოწმებულა. ჩვეულებრივ მომხმარებელ ანგარიშს საჭირო ნებართვებით შეუძლია შეიძინოს დომენი და მისი SNS გაქირავება არსებული მონაცემთა სივრცეში ალიასი-დამგეგმავი-ის მეშვეობით; მას არ შეუძლია უსაფრთხოდ დაამატოს ახალი საჯარო მონაცემები სივრცე.
+ახალი ფსევდონიმი არ დანერგოთ, სანამ ერთად არ შემოწმდება არხის ID, მონაცემთა სივრცის ID, ვალიდატორთა ნაკრები, ხარვეზისადმი გამძლეობა, მანიფესტი, მარშრუტიზაციის წესები და ოპერაციული პასუხისმგებელი. საჭირო ნებართვების მქონე ჩვეულებრივ მომხმარებლის ანგარიშს ფსევდონიმის დამგეგმავით არსებულ მონაცემთა სივრცეში დომენისა და მისი SNS იჯარის მიღება შეუძლია; ახალ საჯარო მონაცემთა სივრცეს უსაფრთხოდ ვერ დაამატებს.
 
-კერძო ან ორგანიზაციული მონაცემთა სივრცისათვის, შეადგინეთ კატალოგიური ცვლილება:
+კერძო ან ორგანიზაციული მონაცემთა სივრცისთვის მოამზადეთ კატალოგის ცვლილება შემდეგით:
 
-- მონაცემთა სივრცის უნიკალური ალიასი და ციფრული `id`
+- უნიკალური მონაცემთა სივრცის ფსევდონიმი და რიცხვითი `id`
 - შესაბამისი შესრულების ზოლის შესვლა ან არსებული შესრულების ზოლის დავალება
-- მონაცემთა სივრცე `fault_tolerance`
+- მონაცემთა სივრცის `fault_tolerance`
 - ინსტრუქციების ან ანგარიშის ფარგლებში მარშრუტის წესები, რომლებიც იქ უნდა ჩამოვარდეს
-- სივრცის კატალოგის მანიფესტი ან დანერგვის ეკვივალენტური მტკიცებულება, როდესაც მონაცემთა სივრცე UAID შესაძლებლობებს ამჟღავნებს
+- სივრცეების კატალოგის მანიფესტი ან ეკვივალენტური განთავსების მტკიცებულება, თუ მონაცემთა სივრცე UAID შესაძლებლობებს გთავაზობთ
 - მმართველობის დამტკიცება ვალიდატორისთვის, შესაბამისობა, ფინანსური ოპერაციების ანგარიშსწორება და მონიტორინგის პოლიტიკა
 
 კონფიგურაციის შესამოწმებადი ფრაგმენტი გამოიყურება ასე:
@@ -684,23 +529,23 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments data space"
 ```
 
 ოპერატორის მიღება უნდა მოიცავდეს შემდეგ კარიბჭეებს:
 
-- `iroha3d --sora --config <config.toml> --trace-config` გადადის გადაწყვეტილი კვანძის კონფიგურაცია
+- `iroha3d --sora --config <config.toml> --check-config` გადადის გადაწყვეტილი კვანძის კონფიგურაცია
 - გენერირებული ან გადამოწმებული ტექნიკური მანიფესტი არქივდება კრიპტოგრაფიული ჰეშებითა და ხელმოწერებით.
 - სიგარეტის ტესტირება Taira გაიმართება ნებისმიერი Minamoto აქციის წინ.
-- ცვლილების შემდეგ `/status` კატალოგში მოცემულია განზრახ შესრულების ზოლი და მონაცემთა სივრცე.
+- ცვლილების შემდგომი `/status` კატალოგი აჩვენებს განზრახულ არხსა და მონაცემთა სივრცეს
 - `iroha app nexus lane-report --summary` არ ირიცხავს საჭირო ტექნიკური მანიფესტების დაკარგვის შესახებ
 
 ```bash
@@ -709,12 +554,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-ამავე მონაცემთა სივრცის Minamoto განახლება მხოლოდ Taira დანერგვის შემდეგ. სიგარეტის ტესტები, მონიტორინგი, და მმართველობის მტკიცებულებები მთლიანია.
+იგივე მონაცემთა სივრცე Minamoto-ზე გადაიტანეთ მხოლოდ Taira განთავსების, საწყისი ტესტების, მონიტორინგისა და მართვის მტკიცებულებების დასრულების შემდეგ.
 
 ## დაკავშირებული გვერდები {#related-pages}
 
 - [დამონტაჟება Iroha 3](/ka/get-started/install-iroha.md)
 - [ოპერირება Iroha 3 მეშვეობით CLI](/ka/get-started/operate-iroha-via-cli.md)
-- [კერძო მონაცემთა სივრცეზე მხარდამჭერების გადასახადები](/ka/get-started/private-dataspace-fee-sponsor.md)
-- [Torii API საბოლოო ნიშნები](/ka/reference/torii-endpoints.md)
+- [კერძო მონაცემთა სივრცის საკომისიოს სპონსორობა](/ka/get-started/private-dataspace-fee-sponsor.md)
+- [Torii ბოლო წერტილები](/ka/reference/torii-endpoints.md)
 - [ბლოკჩეინის გენეზისი რეფერენცია](/ka/reference/genesis.md)

@@ -286,48 +286,57 @@ describe('content policy validation', () => {
     const root = await mkdtemp(path.join(os.tmpdir(), 'iroha-docs-policy-'))
     const routeDirectory = path.join(root, 'src', 'fr', 'blockchain')
     await mkdir(routeDirectory, { recursive: true })
-    await writeFile(
-      path.join(routeDirectory, 'sora-nexus-services.md'),
-      [
-        'fc56984b-2be7-431d-840e-21514d1883f0',
-        '369',
-        'hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94',
-        'https://taira.sora.org',
-        'https://taira-validator-1.sora.org',
-        'https://taira-validator-2.sora.org',
-        'https://taira-validator-3.sora.org',
-        'https://taira-validator-4.sora.org',
-        'torii_gateway chunk_range_fetch potr_mldsa',
-        'https://{cid}.sorafs.taira.sora.org/{path}',
-        '[sorafs.storage]\nenabled = false',
-        'max_capacity_bytes = 13743895347',
-        '[sorafs.discovery]\ndiscovery_enabled = true',
-        '[sorafs.discovery.admission]\nenvelopes_dir = "configs/soranexus/taira/sorafs_admission"',
-        'trusted_council_keys = ["REPLACE_WITH_TAIRA_SORAFS_COUNCIL_PUBLIC_KEY"]',
-        'signature_threshold = "REPLACE_WITH_TAIRA_SORAFS_COUNCIL_SIGNATURE_THRESHOLD"',
-        '[sorafs.gateway]\nrequire_manifest_envelope = true',
-        'enforce_admission = true',
-        'enforce_capabilities = true',
-        '[sorafs.gateway.untrusted_hosting]\nenabled = true',
-        'path_gateway_redirect = true',
-        'redirect_html_only = true',
-        '[sorafs.gateway.untrusted_hosting.cid_host_suffixes]',
-        'live = "sorafs.sora.org"',
-        'taira = "sorafs.taira.sora.org"',
-        '[sorafs.repair]\nenabled = false',
-        'claim_ttl_secs = 900',
-        'heartbeat_interval_secs = 60',
-        'max_attempts = 3',
-        'worker_concurrency = 4',
-        '[sorafs.gc]\nenabled = false',
-        'interval_secs = 900',
-        'max_deletions_per_run = 500',
-        'retention_grace_secs = 86400',
-        '[gov.sorafs_pin_policy]\nrequire_council_signatures = false',
-      ].join('\n'),
-    )
+    const profile = [
+      'fc56984b-2be7-431d-840e-21514d1883f0',
+      '369',
+      'hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774',
+      'https://taira.sora.org',
+      'https://taira-validator-1.sora.org',
+      'https://taira-validator-2.sora.org',
+      'https://taira-validator-3.sora.org',
+      'https://taira-validator-4.sora.org',
+      'torii_gateway chunk_range_fetch potr_mldsa',
+      'https://{cid}.sorafs.taira.sora.org/{path}',
+      '[sorafs.storage]\nenabled = false',
+      'max_capacity_bytes = 2684354560',
+      '[sorafs.discovery]\ndiscovery_enabled = true',
+      '[sorafs.discovery.admission]\nenabled = true',
+      '[sorafs.gateway]\nrequire_manifest_envelope = true',
+      'enforce_admission = true',
+      'enforce_capabilities = true',
+      '[sorafs.gateway.untrusted_hosting]\nenabled = true',
+      'path_gateway_redirect = true',
+      'redirect_html_only = true',
+      '[sorafs.gateway.untrusted_hosting.cid_host_suffixes]',
+      'live = "sorafs.sora.org"',
+      'taira = "sorafs.taira.sora.org"',
+      '[sorafs.repair]\nenabled = false',
+      'claim_ttl_secs = 900',
+      'heartbeat_interval_secs = 60',
+      'max_attempts = 3',
+      'worker_concurrency = 4',
+      '[sorafs.gc]\nenabled = false',
+      'interval_secs = 900',
+      'max_deletions_per_run = 500',
+      'retention_grace_secs = 86400',
+      '[gov.sorafs_pin_policy]\nrequire_council_signatures = false',
+    ].join('\n')
+    await writeFile(path.join(routeDirectory, 'sora-nexus-services.md'), profile)
 
     expect(await validateContentPolicy(root)).toEqual([])
+
+    for (const setting of ['envelopes_dir = "admission"', 'trusted_council_keys = []', 'signature_threshold = 1']) {
+      await writeFile(
+        path.join(routeDirectory, 'sora-nexus-services.md'),
+        profile.replace(
+          '[sorafs.discovery.admission]\nenabled = true',
+          `[sorafs.discovery.admission]\nenabled = true\n${setting}`,
+        ),
+      )
+      expect(await validateContentPolicy(root)).toEqual([
+        `src/fr/blockchain/sora-nexus-services.md: retired local SoraFS admission authority setting ${setting.split(' ')[0]}`,
+      ])
+    }
 
     await writeFile(path.join(routeDirectory, 'sora-nexus-services.md'), 'https://{cid}.sorafs.sora.org/{path}\n')
     const errors = await validateContentPolicy(root)

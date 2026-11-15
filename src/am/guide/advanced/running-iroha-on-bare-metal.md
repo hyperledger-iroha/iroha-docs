@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # በባዶ ብረት ላይ Iroha መሮጥ {#running-iroha-on-bare-metal}
 
 በ Docker Compose ሳይሆን የአውታረ መረብ እኩዮችን በቀጥታ በአስተናጋጆች ላይ ማስኬድ ሲፈልጉ ይህንን የስራ ሂደት ይጠቀሙ። የአሁኑ የምንጭ ዛፍ ተዛማጅ የብሎክቼይን ጀነሲስ፣ የአውታረ መረብ አቻ ውቅረቶች፣ የደንበኛ ውቅር እና የጅምር/ማቆሚያ ስክሪፕቶችን የሚጽፉ Kagami ጀነሬተሮችን ያቀርባል።
@@ -32,10 +31,10 @@ cargo build --release \
 ባለአራት አቻ Iroha 3 localnet ይፍጠሩ
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-የውጤት ማውጫው የመነጨውን `genesis.json`፣ `genesis.signed.nrt`፣ የአውታረ መረብ አቻ `config.toml` ፋይሎች፣ `client.toml`፣ አጋዥ ስክሪፕቶች እና የመነጨ `README.md` ለዚያ ጥቅል ትክክለኛ ትዕዛዞችን ይዟል።
+የውጤት ማውጫው የመነጨውን `genesis.json`፣ `genesis.signed.nrt`፣ `genesis.expected_hash`፣ ለእያንዳንዱ አረጋጋጭ አንድ `peerN.toml`፣ `client.toml`፣ የ`start.sh` እና `stop.sh` ስክሪፕቶች እና ለዚያ ጥቅል ትክክለኛ ትዕዛዞችን የያዘ የመነጨ `README.md` ይዟል።
 
 ## 3. የአውታረ መረብ እኩዮችን ይጀምሩ {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-እያንዳንዱን የአውታረ መረብ አቻ እንደ systemd ወዳለው የሂደት አስተዳዳሪ ማገናኘት ከፈለጉ ለእያንዳንዱ የአውታረ መረብ አቻ በ`./localnet/README.md` የተመዘገበውን የማስጀመሪያ ትዕዛዝ ይጠቀሙ። የእያንዳንዱን የአውታረ መረብ አቻ `config.toml`፣ የግል ቁልፍ፣ የማከማቻ ማውጫ እና ወደቦች ይለያዩ።
+እያንዳንዱን የአውታረ መረብ አቻ እንደ systemd ወዳለው የሂደት አስተዳዳሪ ማገናኘት ከፈለጉ በ`./localnet/start.sh` ውስጥ ያለውን የእያንዳንዱን አቻ ትዕዛዝ ይከተሉ፦ `iroha3d --config <bundle>/peerN.toml`ን ከ`<bundle>/state/peerN` ያሂዱ፣ `--sumeragi-assert-fresh-key`ን ደግሞ በዚያ አቻ የመጀመሪያ ጅምር ላይ ብቻ ያስተላልፉ። የእያንዳንዱን የአውታረ መረብ አቻ `peerN.toml`፣ የግል ቁልፍ፣ የማከማቻ ማውጫ እና ወደቦች ይለያዩ።
 
 ## 4. አውታረ መረቡን ያሂዱ {#_4-operate-the-network}
 
 የተፈጠረውን የደንበኛ ውቅር ይጠቀሙ -
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

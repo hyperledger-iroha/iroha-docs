@@ -5,7 +5,6 @@ translation_source_hash: 9443b139623544fd3c54b324e54b7e06f57820c70ffd0856f05aaca
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # ٹرگرز {#triggers}
 
 ٹرگرز ایک ایونٹ فلٹر کو ایک قابل عمل کارروائی سے منسلک کرتے ہیں۔ جب کوئی واقعہ ٹرگر کے فلٹر سے مماثل ہوتا ہے تو ، Iroha بلاک کے نفاذ کے حصے کے طور پر ٹرگر کارروائی کا اندازہ کرتا ہے۔

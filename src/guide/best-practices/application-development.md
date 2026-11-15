@@ -67,7 +67,7 @@ See [Queries](/blockchain/queries.md), [Events](/blockchain/events.md), and
   fee asset, preflight reads, expected result, and retry behavior.
 
 For the Taira MCP workflow, see
-[Build on SORA 3: Taira and Minamoto](/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+[Build on SORA Nexus: Taira and Minamoto](/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
 
 ## SDK Hygiene
 

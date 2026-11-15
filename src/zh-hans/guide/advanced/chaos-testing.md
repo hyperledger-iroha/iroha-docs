@@ -5,7 +5,6 @@ translation_source_hash: 5ceee448217a42e4f8bbae9595486b79019e7a880dfd0f2c71bf580
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 混沌测试与Izanami {#chaos-testing-with-izanami}
 
 Izanami是上游 Iroha 工作空间中的混沌网管.它启动一次性本地 Iroha 集群,提交可配置的工作负载,并将故障注入选定的对等节点中,以便运营商可以检查网络是否在受控故障下继续取得进展.

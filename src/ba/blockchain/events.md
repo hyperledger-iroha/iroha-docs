@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Ваҡиғалар {#events}
 
 Ваҡиғалар блокчейн эсендә билдәле бер ваҡиғалар булғанда ебәрелә, мәҫәлән, яңы иҫәп яҙмаһы булдырыла йәки блоктар ҡуйыла.
@@ -17,7 +16,7 @@ translation_engine: nllb-200-ct2
 
 ## Төҙөүсе pipelineлар {#pipeline-events}
 
-Төҙөүсе pipeline ваҡиғалары бер блокҡа тапшырылған, башҡарылған йәки commit ителгән транзакцияларҙа сыға. Pipeline ваҡиғаһы түбәндәге мәғлүмәтте үҙ эсенә ала: ваҡиғаға сәбәпсе булған субъекттың төрө (транзакция йәки блок), уның хәш һәм статусы. Статусы булыуы мөмкин `Validating` (тәүгерешле раҫлау), `Rejected`, йәки `Committed`. Әгәр предприятиены кире ҡаҡһалар, уны кире ҡағыу сәбәбе күрһәтелә.
+Транзакциялар һәм блоктар эшкәртеү конвейеры буйлап хәрәкәт иткәндә конвейер ваҡиғалары сығарыла. Транзакция ваҡиғаһы транзакция хешын, блок бейеклеген, һыҙат һәм мәғлүмәт киңлеге идентификаторҙарын һәм статусты йөрөтә: `Queued`, `Expired`, `Approved` йәки кире ҡағыу сәбәбе менән `Rejected`. Блок ваҡиғаһы блок башлығын һәм статусты йөрөтә: `Created`, `Approved`, сәбәбе менән `Rejected`, `Committed` йәки `Applied`.
 
 ### Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 
@@ -31,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 Stream-ды асыҡ тотмайынса тикшереп була торған snapshot өсөн recent explorer transactions-ты уҡығыҙ:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 SSE маршрутын терминалда асығыҙ, әгәр һеҙгә тура ваҡиғалар кәрәк:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## Мәғлүмәт ваҡиғалары {#data-events}
 
-Мәғлүмәт ваҡиғалары бухгалтер мәғлүмәттәренә бәйле үҙгәрештәр булғанда сығарыла, мәҫәлән, пирҙар, домендар, иҫәптәр, активтар, актив билдәләмәләре, NFTs, триггерҙар, ролдәр, селтәрҙәге конфигурация, башҡарыусы дәүләте, иҫбатламалар, йәшерен активтар, күперҙәр, йәки SORA/Nexus-белгесле объекттар. Был төр ваҡиғалар [ мәғлүмәт ваҡиғалары фильтрҙарында ҡулланыла](./filters.md#data-event-filters).
+Мәғлүмәт ваҡиғалары реестр мәғлүмәттәре үҙгәргәндә сығарыла: селтәр төйөндәре, домендар, иҫәптәр, активтар, актив билдәләмәләре, NFTs, триггерҙар, ролдәр, сылбырҙағы көйләүҙәр, башҡарыусы торошо, дәлилдәр, йәшерен активтар, күперҙәр йәки SORA Nexus өсөн махсус объекттар. Бындай ваҡиғалар [мәғлүмәт ваҡиғалары фильтрҙарында](./filters.md#data-event-filters) ҡулланыла.
 
 ## Ваҡытлы ваҡиғалар {#time-events}
 

@@ -1,20 +1,21 @@
 ---
 translation_locale: ja
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Iroha 3 をインストールする {#install-iroha-3}
 
 このページでは、上流の`hyperledger-iroha/iroha`ワークスペースを使用した Iroha 3 ツールチェーンとバイナリの現在のインストールワークフローについて説明します。
+
+ホストに直接インストールする場合は、このページの Rust の手順に従ってください。Docker でバリデータを 4 台起動する場合は、[Iroha 3 を起動する](/ja/get-started/launch-iroha.md)から始めてください。
 
 ## 1. 前提条件 {#_1-prerequisites}
 
 まずこれらをインストールしてください：
 
-- [rustup](https://www.rust-lang.org/tools/install)、そのため固定された`rust-toolchain.toml`ツールチェーン(`1.93.1`)が自動的にインストールされます
+- [rustup](https://www.rust-lang.org/tools/install)、そのため固定された`rust-toolchain.toml`ツールチェーン(`1.99.1`)が自動的にインストールされます
 - `git`
 - 任意で、ローカルマルチピアクイックスタート用の Docker と Docker Compose
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 現在のソースバック付きローカルネットフローは Kagami によって生成されます。これはネットワークピアの設定、ブロックチェーンのジェネシスアーティファクト、クライアント設定、ヘルパースクリプト、およびチェックアウトされたコードに一致するオプションのComposeファイルを書き込みます:
 
-- `kagami localnet` ネイティブのローカルネットワークピアスクリプト用
+- `kagami localnet up`: Kagami が起動して監視する、管理されたローカルネットワーク用
+- `kagami localnet generate`: ネイティブのローカルピアを実行するスクリプトの生成用
 - Docker Compose のための `kagami docker` がローカルネットディレクトリから生成されました
 
 [Iroha 3 を起動](/ja/get-started/launch-iroha.md)を続けてください。

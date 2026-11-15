@@ -50,10 +50,7 @@ async function fixture(): Promise<string> {
     COOKBOOK_ROUTES.map((route) => {
       let source = route === 'index.md' ? '# Cookbook\n' : VALID_RECIPE
       if (route === 'query-ledger-state.md') {
-        source = source.replace(
-          'iroha --help',
-          `DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'`,
-        )
+        source = source.replace('iroha --help', `DOMAIN_FILTER='id = "universal.universal"'`)
       }
       return writeFile(path.join(cookbook, route), source)
     }),
@@ -150,10 +147,26 @@ const filter = { Pipeline: { Transaction: { status: 'Committed' } } }`,
     await writeFile(target, source)
 
     const issues = await validateCookbook(root)
-    expect(issues).toContain(
-      'stream-events.md: Taira SSE examples must use the current FilterExpr transaction-status form',
-    )
+    expect(issues).toContain('stream-events.md: Taira SSE examples must use the text-filter transaction-status form')
     expect(issues).toContain('stream-events.md: contains the retired typed event-filter shape')
+  })
+
+  test('sends the SSE filter in the text grammar', async () => {
+    const root = await fixture()
+    const target = path.join(root, 'src', 'cookbook', 'stream-events.md')
+    const source = (await readFile(target, 'utf8')).replace(
+      'iroha --help',
+      `curl -H 'Accept: text/event-stream, application/json' https://taira.sora.org/v1/events/sse
+const filter = 'tx_status = "Approved"'
+url.searchParams.set('filter', JSON.stringify(filter))`,
+    )
+    await writeFile(target, source)
+
+    const issues = await validateCookbook(root)
+    expect(issues).toContain("stream-events.md: Taira SSE filters use Torii's text grammar, not JSON")
+    expect(issues).not.toContain(
+      'stream-events.md: Taira SSE examples must use the text-filter transaction-status form',
+    )
   })
 
   test('keeps SSE reconciliation behind an open replacement stream and bounded', async () => {
@@ -161,7 +174,7 @@ const filter = { Pipeline: { Transaction: { status: 'Committed' } } }`,
     const target = path.join(root, 'src', 'cookbook', 'stream-events.md')
     const source = (await readFile(target, 'utf8')).replace(
       'iroha --help',
-      `const filter = { op: 'eq', args: ['tx_status', 'Approved'] }
+      `const filter = 'tx_status = "Approved"'
 const url = new URL('/v1/events/sse', baseUrl)
 async function* streamOnce() {
   await reconcile()
@@ -178,21 +191,37 @@ The latest explorer snapshot guarantees complete recovery.`,
     expect(issues).toContain('stream-events.md: bounded reconciliation must not claim complete event recovery')
   })
 
-  test('keeps kotoage examples on call entrypoints', async () => {
+  test('keeps the tuple view sample on view entrypoints', async () => {
     const root = await fixture()
     const target = path.join(root, 'src', 'cookbook', 'smart-contracts.md')
     const source = (await readFile(target, 'utf8')).replace(
       'iroha --help',
       `cp tuple_return_demo.ko ./contract.ko
-iroha contract debug-view --entrypoint compute
-iroha contract view --entrypoint compute`,
+iroha contract debug-call --entrypoint compute
+iroha contract call --simulate --entrypoint compute`,
     )
     await writeFile(target, source)
 
     const issues = await validateCookbook(root)
-    expect(issues).toContain('smart-contracts.md: kotoage examples must execute locally with contract debug-call')
-    expect(issues).toContain('smart-contracts.md: deployed kotoage examples must verify with contract call --simulate')
-    expect(issues).toContain('smart-contracts.md: kotoage examples must not use view-only commands')
+    expect(issues).toContain('smart-contracts.md: tuple view examples must execute locally with contract debug-view')
+    expect(issues).toContain('smart-contracts.md: deployed tuple view examples must verify with contract view')
+    expect(issues).toContain('smart-contracts.md: tuple view examples must not use call commands')
+  })
+
+  test('accepts prose about contract calls beside the tuple view commands', async () => {
+    const root = await fixture()
+    const target = path.join(root, 'src', 'cookbook', 'smart-contracts.md')
+    const source = (await readFile(target, 'utf8')).replace(
+      'iroha --help',
+      `cp tuple_return_demo.ko ./contract.ko
+iroha contract debug-view --entrypoint compute | jq -e '.result == ["3", "5"]'
+iroha contract view --entrypoint compute | jq -e '.result == ["3", "5"]'
+jq -e '.result == ["3", "5"]' address.json
+Deployed contract calls use the same entrypoints.`,
+    )
+    await writeFile(target, source)
+
+    expect((await validateCookbook(root)).filter((issue) => issue.startsWith('smart-contracts.md:'))).toEqual([])
   })
 
   test('locks Kotodama tuple results to their JSON string representation', async () => {
@@ -201,16 +230,16 @@ iroha contract view --entrypoint compute`,
     const source = (await readFile(target, 'utf8')).replace(
       'iroha --help',
       `cp tuple_return_demo.ko ./contract.ko
-iroha contract debug-call --entrypoint compute
-iroha contract call --simulate --entrypoint compute
+iroha contract debug-view --entrypoint compute
+iroha contract view --entrypoint compute
 jq -e '.result == [3, 5]' local.json
-jq -e '.result == [3, 5]' simulation.json
+jq -e '.result == [3, 5]' view.json
 jq -e '.result == [3, 5]' address.json`,
     )
     await writeFile(target, source)
 
     expect(await validateCookbook(root)).toContain(
-      'smart-contracts.md: kotoage tuple assertions must use the JSON string result ["3", "5"]',
+      'smart-contracts.md: tuple view assertions must use the JSON string result ["3", "5"]',
     )
   })
 
@@ -218,13 +247,13 @@ jq -e '.result == [3, 5]' address.json`,
     const root = await fixture()
     const target = path.join(root, 'src', 'cookbook', 'query-ledger-state.md')
     const source = (await readFile(target, 'utf8')).replace(
-      `DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'`,
+      `DOMAIN_FILTER='id = "universal.universal"'`,
       `DOMAIN_PREDICATE='{"Atom":{"Id":{"Atom":{"Equals":"wonderland.universal"}}}}'`,
     )
     await writeFile(target, source)
 
     const issues = await validateCookbook(root)
-    expect(issues).toContain('query-ledger-state.md: domain filtering must use the current lightweight predicate JSON')
+    expect(issues).toContain('query-ledger-state.md: domain filtering must use the collection text filter')
     expect(issues).toContain('query-ledger-state.md: contains the retired nested typed-predicate JSON')
   })
 
@@ -232,14 +261,29 @@ jq -e '.result == [3, 5]' address.json`,
     const root = await fixture()
     const target = path.join(root, 'src', 'cookbook', 'query-ledger-state.md')
     const source = (await readFile(target, 'utf8')).replace(
-      `DOMAIN_PREDICATE='{"equals":[{"field":"id","value":"wonderland.universal"}]}'`,
+      `DOMAIN_FILTER='id = "universal.universal"'`,
       `curl --data '{"Atom":{"Id":{"Atom":{"Equals":"wonderland.universal"}}}}'`,
     )
     await writeFile(target, source)
 
     const issues = await validateCookbook(root)
-    expect(issues).toContain('query-ledger-state.md: domain filtering must use the current lightweight predicate JSON')
+    expect(issues).toContain('query-ledger-state.md: domain filtering must use the collection text filter')
     expect(issues).toContain('query-ledger-state.md: contains the retired nested typed-predicate JSON')
+  })
+
+  test('rejects typed listing predicates beside the text filter', async () => {
+    const root = await fixture()
+    const target = path.join(root, 'src', 'cookbook', 'query-ledger-state.md')
+    const source = (await readFile(target, 'utf8')).replace(
+      `DOMAIN_FILTER='id = "universal.universal"'`,
+      `DOMAIN_FILTER='id = "universal.universal"'
+iroha ledger domain list filter '{"equals":[{"field":"id","value":"universal.universal"}]}'`,
+    )
+    await writeFile(target, source)
+
+    const issues = await validateCookbook(root)
+    expect(issues).toContain('query-ledger-state.md: contains a retired typed listing predicate')
+    expect(issues).not.toContain('query-ledger-state.md: domain filtering must use the collection text filter')
   })
 
   test('requires the canonical policy-derived multisig account', async () => {

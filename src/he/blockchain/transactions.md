@@ -1,14 +1,13 @@
 ---
 translation_locale: he
 translation_source: /blockchain/transactions.md
-translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # עסקאות {#transactions}
 
-עסקה היא בקשה חתומה לביצוע עבודה ב-blockchain. המטען המשולב יכול להיות רצף של הוראות [](./instructions.md), קריאת חוזה, IVM קוד בייט, או ביצוע מוכר IVM . ראו [חוות חכמות](./smart-contracts.md) למודל הנוכחי של ביצוע חוזים.
+**עסקה** היא בקשה חתומה לביצוע עבודה בשרשרת. תוכן הבקשה יכול להיות רצף מסודר של [הוראות](./instructions.md), קריאה לחוזה, קוד בתים של IVM או ביצוע מוכח של IVM. למודל ההפעלה של חוזים ראו [חוזים חכמים](./smart-contracts.md).
 
 עסקים מבצעים עבודות שינויים במצב או ביצועיות. בדיקת קריאה בלבד משתמשת בשאילתות חתומות או נקודות קצה קריאה ציבוריות ולא יוצרת עסקאות.
 
@@ -39,32 +38,30 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-זה עדיין רק קריאה. כדי להגיש עסקאות, נדרש מעטפה Norito חתומה, שרשרת נכונה ID, מטא נתונים על דמי העלות וחשבון Taira הממומן על ידי faucet.
+זו עדיין פעולת קריאה בלבד. שליחת עסקה דורשת מעטפת Norito חתומה, מזהי שרשרת ורשת נכונים, משלם עמלות מפורש וחשבון Taira שמומן משירות חלוקת כספי הניסוי.
 
-לדוגמאות של תשלומים על Taira, להציל את עוזר ה-faucet [קבל Testnet XOR על Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) כמו `taira_faucet_claim.py`, ואז תממן את החותם דרך faucet הציבורית תחילה:
+בדוגמאות הכרוכות בעמלה ב־Taira, מַמנו את החותם באמצעות התהליך המוכן שב־[קבלת XOR לניסוי ב־Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), ואז בדקו את יתרת נכס העמלות:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-אם הפאזל של faucet או מסלול התביעה חוזר `502`, חכו ותנסיו שוב לפני שתתקן את העסקה עצמה.
+אם מסלול של שירות חלוקת כספי הניסוי מחזיר `502`, המתינו ונסו שוב לפני שמתחילים לאבחן את העסקה עצמה.
 
-לאחר מכן לצרף את המטא-נתונים של נכס התשלום Taira בעת הגשת העסקת:
+לאחר מכן בחרו את משלם העמלות בעת שליחת העסקה. עם `--fee-payer authority`, החשבון החותם משלם, וה־CLI מציג את העמלה המדויקת בנכס העמלות של Taira לפני החתימה:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## עסקאות לא מקוונות {#offline-transactions}
@@ -72,34 +69,26 @@ iroha --config ./taira.client.toml \
 Iroha יש שתי זלילי עבודה של עסקאות מקוונת:
 
 - **חתימה לא מקוונת** יוצרת עסקה חתומה רגילה בזמן שמכשיר החתימה מנותק. העסקה אינה מעובדת עד שלקוח מקוון שולח את המעטפה החתומה ל-Torii, ולכן היא עדיין זקוקה ל-chain ID הנכון, לסמכות, להרשאות, לעמלות ולמשך חיי העסקה הנכונים.
-- **מזומן לא מקוון של Kagemusha** טוען את הארנק בזמן שהוא מקוון, תומך במסירות מארנק לארנק ביוזמת המקבל בזמן ששני הארנקים אינם מקוונים, ופודה את מצב השטר שנוצר כאשר המקבל חוזר למצב מקוון.
+- **מזומן לא מקוון של Kagemusha** טוען ערך לארנק רשום הנתמך בחומרה בזמן שהוא מקוון, מאפשר תשלומים בין ארנקים כאשר שניהם לא מקוונים, ופורק את הערך הנותר לחשבון בספר החשבונות כשהארנק חוזר להיות מקוון.
 
-Torii חושף את מחזור החיים של Kagemusha כולו תחת `/v1/offline/*`:
+Torii חושף מסלול שינוי אחד של Kagemusha, ‏`POST /v1/kagemusha/enrollment`. הוא מקבל מסגרות רישום מסוג `application/x-norito` המאומתות באמצעות החשבון, ומחזיר תגובות פרטיות שאסור לשמור במטמון. מסלולי קריאה של ה־SDK החתומים באמצעות החשבון תחת `/v1/kagemusha/{scheme}/wallets/{wallet}/` מחזירים קבלות Load וראיות סופיות; הם אינם מופיעים ב־`/openapi.json`. הצד של ספר החשבונות במחזור החיים משתמש בעסקאות חתומות רגילות הנושאות הוראת `KagemushaWalletLedgerV1`:
 
-|שיטה ונקודת סוף |מטרה.|
+| פעולה | מטרה |
 | --- | --- |
-|`GET /v1/offline/readiness` |להעריך את הכנות של Kagemusha עבור אחד `asset_definition_id` |
-|`POST /v1/offline/receiver-lineage` |לפתור שושלת רישום פעילה עם הוכחה עבור בקשה חתומה של מקבל |
-|`POST /v1/offline/top-up` |להגיש מבצע תוספת חתום מקוון לא מקוונים |
-|`POST /v1/offline/redeem` |להגיש מבצע חידוש מקוונת חתום |
-|`GET /v1/offline/operations/{operation_id}` |קרא את הסטטוס הקנוני של תוספת או פידוי |
-
-בדוק את הכנות של הנכס לפני הקמת פעולת מקוונת:
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-מצב המוכנות קושר את הארנק ל־ABI 21 הפעיל של הגשר ולקבוצת פריטי V4 המאומתת. בקשות lineage, הוספת היתרה והפדיון משתמשות בארכיוני `application/x-norito` בעלי טיפוס. הוספת יתרה ופדיון מחזירים `202 Accepted` עם כותרת `Location` המצביעה אל משאב הפעולה; ה־operation ID המוטמע שאינו אפס מספק את מפתח האידמפוטנטיות.
+| `Activate` | הפעלת ארנק רשום; אימות האתחול הנטיבי הוא חובה |
+| `IssueLoad` | חיוב המשלם ורישום פעולת Load הבאה של הארנק באופן אטומי |
+| `Unload` | תשלום תביעת Unload מלאה לחשבון שאליו היא קשורה, לכל היותר פעם אחת |
+| `ClaimFee` | תשלום תביעת עמלה מלאה למוטב הקבוע שלה |
+| `Abandon` | ביטול רישום שלא נעשה בו שימוש |
 
 זרימת הטיפוסית היא:
 
-1. בצעו שאילתה על מצב המוכנות ועצרו אם `ready` הוא false או אם קיים חוסם כלשהו.
-2. השתמשו בארנק Swift או JVM עם טופס כדי לבנות את הארכיון הקנוני, להגיש אותו ולשמור גם את מצב הערת הכניסה וגם את הפעולה ID עד שהפעולה תגיע למצב של שרשרת סופי.
-3. לפתור את שושלת הרישום של המקבל כאשר זה נדרש, לבנות ולבדוק כל העברת צמתים מקומית, ולהישאר במצב הודעה מוצפן לפני הכרה בהעברה .
-4. כאשר המקבל הוא מקוון, לבנות את הארכיון הגאולה הקנוני, להגיש אותו, וסקר את משאבי הפעלה שלו עד הסוף.
+1. רשמו את הארנק באמצעות `/v1/kagemusha/enrollment` עם ארנק בעל ממשק טיפוסים מוגדר ל־Swift או ל־Android, ואז הפעילו אותו.
+2. שלחו עסקת `IssueLoad`. הביצוע בודק את המספר הסידורי הצפוי של פעולת Load הבאה ואת מזהה הבקשה שאינו אפס, ולכן ניסיון חוזר מיושן או ששונה נכשל. לאחר אובדן תגובה, קראו את קבלת Load המקורית במקום לחתום על פעולת Load נוספת.
+3. החליפו ואמתו תשלומים מקומית בין הארנקים בזמן שהם לא מקוונים, ושמרו את מצב הארנק באופן עמיד לפני אישור כל העברה.
+4. כשהארנק חוזר להיות מקוון, שלחו את תביעת Unload שלו והמתינו לסופיות.
+
+Kagemusha עדיין לא עבר הסמכה לשחרור: ההסמכה המוניטרית בסביבה חיה, וכן רישום טלפונים, הפעלתם ותשלום באמצעותם במכשירים פיזיים, עדיין פתוחים.
 
 הספר הגדול לא יכול לציין העברת מקוונת סותרת עד מצב הערות חוזר במהלך מחזור החיים באינטרנט. מדיניות הארנק והמפעיל יש לפיכך ליישם גבולות ערך, ירידה, משקיעים מוכרים, אחסון מקומי קבוע, וחלונות פיצוי.
 
@@ -107,7 +96,13 @@ curl -fsS --get https://taira.sora.org/v1/offline/readiness \
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # კონფიგურაცია Iroha {#configuring-iroha}
 
 ადგილობრივი ქსელის კვანძების კონფიგურაცია დაყენებულია TOML ფაილები. ეს განსხვავდება ქსელზე კონფიგურაციისაგან, რომელიც შეიცვალა [`SetParameter`](/ka/blockchain/instructions.md#setparameter) ინსტრუქციები. წარმოების ქცევა უნდა იყოს წარმოდგენილი კონფიგურაციაში ფაილი ან ქსელზე პარამეტრი; გარემოს ცვლადი არ არის მახასიათებელი კარიბჭეები.

@@ -1,27 +1,26 @@
 ---
 translation_locale: ru
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Ключи для развертывания сети {#keys-for-network-deployment}
 
-Каждая сеть требует различного ключевого материала для клиентов, сетевых узлов, подписания генезиса блокчейна и, для NPoS или профилей Nexus, идентификаторов валидаторов BLS.
+Каждой сети нужны отдельные ключи для клиентов, подписания генезиса и BLS-normal идентификаторов валидаторов с доказательствами владения ключами.
 
 ## Где используются ключи {#where-keys-are-used}
 
 - Клиентские подписи хранятся в `client.toml` под `[account]`.
 - Ключи идентификации сетевых узлов хранятся в каждом сетевом узле `config.toml` как `public_key` и `private_key`.
 - Обнаружение сетевых узлов использует открытый ключ каждого сетевого узла в `trusted_peers`.
-- BLS доказательства владения валидатора хранятся в `trusted_peers_pop` для профилей NPoS.
+- Доказательства владения ключами BLS для валидаторов хранятся в `trusted_peers_pop` для каждого валидатора независимо от режима консенсуса.
 - Подпись генезиса блокчейна использует `[genesis].public_key` в конфигурации сетевого узла и соответствующий закрытый ключ при подписании технического манифеста.
 
 Для локальных или тестовых развертываний позвольте Kagami сгенерировать все эти файлы вместе:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Для существующей сети или профиля используйте пошаговую инструкцию:

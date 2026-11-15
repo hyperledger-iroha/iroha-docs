@@ -15,6 +15,9 @@ compiles to deterministic IVM bytecode, conventionally stored as a `.to`
 artifact for deployment. Kotodama targets IVM only. It does not target
 RISC-V or WebAssembly.
 
+Each compiler diagnostic has a stable code, explained in the
+[Kotodama diagnostics](/reference/kotodama-diagnostics.md) reference.
+
 The first release supports only ABI version 1. The syscall and pointer-ABI
 policy is one unconditional V1 contract enforced by admission and execution;
 there is no alternate runtime mode.
@@ -51,6 +54,19 @@ affect consensus.
 The proof binds the overlay to the executed bytecode. Depending on pipeline
 policy, validators can verify the proof and replay execution as an
 additional safety check.
+
+## IVM Syscalls
+
+IVM bytecode calls the host through numbered syscalls. The ABI version 1
+syscalls below are generated from the pinned Iroha source.
+
+::: details ABI version 1 syscalls
+
+```generated-reference
+ivm-syscalls
+```
+
+:::
 
 ## Deployed Contract Calls
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # イベント {#events}
 
 型付きイベント通知は、ブロックチェーン内で特定のことが起こったときに発行されます。例えば、新しいアカウントが作成されたときやブロックが確定されたときなどです。イベントにはさまざまな種類があります。
@@ -17,7 +16,7 @@ translation_engine: bing-translator-llm
 
 ## ソフトウェア処理ワークフローイベント {#pipeline-events}
 
-ソフトウェア処理ワークフローイベントは、トランザクションがブロック内で送信、実行、または確定されたときに発行されます。ソフトウェア処理ワークフローイベントには、イベントを引き起こしたエンティティの種類（トランザクションまたはブロック）、その暗号化ハッシュ、およびステータスが含まれます。ステータスは、`Validating`（検証中）、`Rejected`、または`Committed`のいずれかです。エンティティが拒否された場合、拒否の理由が提供されます。
+ソフトウェア処理ワークフローイベントは、トランザクションとブロックが処理パイプラインを進むにつれて発行されます。トランザクションイベントには、トランザクションハッシュ、ブロック高さ、レーン ID とデータスペース ID、およびステータス（`Queued`、`Expired`、`Approved`、または拒否理由付きの `Rejected`）が含まれます。ブロックイベントには、ブロックヘッダーとステータス（`Created`、`Approved`、理由付きの `Rejected`、`Committed`、または `Applied`）が含まれます。
 
 ### Taira でこのワークフローを実行してください {#try-it-on-taira}
 
@@ -31,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 ストリームを開いたままにせずに確認できるデータスナップショットについては、最近のエクスプローラーのトランザクションを読み取ってください:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 ライブイベントが必要なときは、ターミナルで SSE ルートを開いてください:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## データイベント {#data-events}
 
-データイベントは、ネットワークピア、ドメイン、アカウント、資産、資産定義、NFTs、トリガーなど、ブロックチェーン台帳データに関連する変更があったときに発生します。役割、オンチェーンの設定、実行者の状態、証明、機密資産、ブリッジ、または SORA/Nexus 固有のオブジェクト。これらの種類のイベントは[データイベントフィルター](./filters.md#data-event-filters)で使用されます。
+データイベントは、ネットワークピア、ドメイン、アカウント、資産、資産定義、NFTs、トリガーなど、ブロックチェーン台帳データに関連する変更があったときに発生します。役割、オンチェーンの設定、実行者の状態、証明、機密資産、ブリッジ、または SORA Nexus 固有のオブジェクト。これらの種類のイベントは[データイベントフィルター](./filters.md#data-event-filters)で使用されます。
 
 ## 時間ベースのイベント通知 {#time-events}
 

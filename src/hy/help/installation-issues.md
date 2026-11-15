@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # Պարբերականներ տեղադրման համար {#troubleshooting-installation-issues}
 
 Այս բաժնում առաջարկվում են խնդիրների լուծման խորհուրդներ Iroha 3 տեղադրման համար: Եթե խնդիրը, որը դուք ունեք, չի նկարագրված այստեղ, կապվեք մեզ հետ [Telegram](https://t.me/hyperledgeriroha).

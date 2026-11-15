@@ -1,16 +1,15 @@
 ---
 translation_locale: ba
 translation_source: /cookbook/accounts-and-aliases.md
-translation_source_hash: 6d36784afef0ef10113cabc995ddfb45fd8d382d7c32c553d77cf03ba5c1f65f
+translation_source_hash: e500328ac93578b9af21b6ef3d01e13e051b1d9a0f6050293e65650da66fbbbb
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5+reviewed-supplemental-naming-link
 ---
-
 # Иҫәптәр һәм исемдәр {#accounts-and-aliases}
 
 ## Һөҙөмтә {#outcome}
 
-Доменһыҙ Canonical менән хәүефһеҙ эшләй I105 иҫәбенә IDs һәм айырым бәйләнгән кеше уҡый алғы исемдәр, мәҫәлән: `treasury@payments.universal`. Һеҙ тикшерәсәкһегеҙ Taira иҫәбенә, үҙ каноник сығарыу ID, һәм маршрут контексты менән шәхесте бутамайынса ялған исемдәрҙе хәл итеү.
+Доменға бәйләнмәгән каноник I105 иҫәп IDs һәм уларға айырым теркәлгән, кеше уҡый алырлыҡ `treasury@payments.universal` кеүек өҫтәмә исемдәр менән хәүефһеҙ эшләргә өйрәнегеҙ. Һеҙ Taira иҫәптәрен ҡараясаҡһығыҙ, үҙегеҙҙең каноник ID-ны сығарасаҡһығыҙ һәм маршрут контексын иҫәптең кемлегенән айырып, өҫтәмә исем буйынса иҫәпте табасаҡһығыҙ.
 
 ## Шарттар {#prerequisites}
 
@@ -20,17 +19,21 @@ translation_engine: nllb-200-ct2
 
 ## Аҙымдар {#steps}
 
-### 1. Taira буйынса каноник иҫәптәрҙе тикшереү {#_1-inspect-canonical-accounts-on-taira}
+### 1. Taira-ла каноник иҫәп яҙмаларын тикшерегеҙ {#_1-inspect-canonical-accounts-on-taira}
 
-Йәмәғәт иҫәп-хисап исемлегендә һәр саҡ I105 IDs канонкаһы бирелә. Беренсе алфавит фальсификация һәм айырым хәбәр ителә.
+Асыҡ иҫәптәр исемлеге һәр ваҡыт каноник I105 ID-ларын ҡайтара. Төп ҡушамат мотлаҡ түгел; уны күреү өсөн `aliases` яланын һорағыҙ.
 
 ```bash
-curl -fsS -H 'Accept: application/json' \
-  'https://taira.sora.org/v1/accounts?limit=5' \
-  | jq -r '.items[] | [.id, (.primary_alias // "-")] | @tsv'
+curl -fsS -H 'Accept: application/json' --get \
+  https://taira.sora.org/v1/accounts \
+  --data-urlencode 'limit=5' \
+  --data-urlencode 'select=id,aliases' \
+  | jq -r '.items[]
+    | [.id, (first(.aliases[]? | select(.is_primary) | .alias) // "-")]
+    | @tsv'
 ```
 
-ID исемлеге `.id` ҡағиҙәле иҫәп-хисап майҙансыҡтары өсөн файҙаланыла. уға домен ҡушмағыҙ. `.primary_alias` атамаһы ҡулланыусыға ҡараған эҙләү асҡысы, башҡа каноник билдә түгел.
+ID исемлеге `.id` ҡағиҙәле иҫәп-хисап майҙансыҡтары өсөн файҙаланыла. уға домен ҡушмағыҙ. `.aliases[].alias` атамаһы ҡулланыусыға ҡараған эҙләү асҡысы, башҡа каноник билдә түгел.
 
 ### 2. Taira I105 ID {#_2-derive-and-normalize-your-taira-i105-id}
 
@@ -53,14 +56,14 @@ printf '%s\n' "$TAIRA_ACCOUNT_ID" \
   | iroha tools address normalize --profile taira
 ```
 
-Нормальләштерелгән ҡиммәт `TAIRA_ACCOUNT_ID` менән бер тигеҙ булырға тейеш. TOML файлындағы `[account].domain` билдәләмәһе `wonderland.universal` була ала, әммә был ҡиммәт маршрутлау һәм ҡушамат контексына ғына ҡағыла.
+Нормальләштерелгән ҡиммәт `TAIRA_ACCOUNT_ID` менән бер тигеҙ булырға тейеш. `[account].profile` көйләүе I105 селтәр префиксын ғына һайлай; домендар ҡушаматтарға ҡарай, иҫәп ID-һына бер ҡасан да ҡарамай.
 
-### 3. Бухгалтер иҫәбен һәм уның активтарын уҡығыҙ. {#_3-read-the-account-and-its-assets}
+### 3. Иҫәп яҙмаһын һәм уның активтарын ҡарау {#_3-read-the-account-and-its-assets}
 
 Иҫәпкә резерв индерелгәндән һуң, уны туранан-тура һорағыҙ һәм сикләнгән активтар битен исемлеккә килтерегеҙ. URL - уны һуҡмаҡҡа ҡулланыр алдынан I105 ҡиммәтен кодлау.
 
 ```bash
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 ENCODED_ACCOUNT_ID="$(
@@ -69,7 +72,7 @@ ENCODED_ACCOUNT_ID="$(
 )"
 
 curl -fsS -H 'Accept: application/json' \
-  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10" \
+  "https://taira.sora.org/v1/accounts/$ENCODED_ACCOUNT_ID/assets?limit=10&include_total=true" \
   | jq '{total, items}'
 ```
 
@@ -89,7 +92,7 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{account_id, total, items}'
 ```
 
-`total: 0` ғәмәлдә: иҫәпкә ялған исем кәрәкмәй. Ҡатнашыусы булған осраҡта, уның тулыһынса тулы хоҡуҡлы ялған исемен асыҡлағыҙ һәм кире ҡайтарылған иҫәбкә ID ҡарағыҙ:
+`total: 0` — дөрөҫ һөҙөмтә: иҫәптең өҫтәмә исеме булмаҫҡа ла мөмкин. Бәйләнеш теркәлһә, тулы өҫтәмә исем буйынса иҫәпте табығыҙ һәм яуаптағы ID-ны сағыштырығыҙ:
 
 ```bash
 ALIAS_WAS_RESOLVED=false
@@ -111,7 +114,7 @@ fi
 
 ::: warning Рөхсәт сиктәре
 
-Taira faucet дәғүәсе аккаунтын булдыра ала, әммә был дөйөм account-registration йәки alias-management хоҡуғы бирмәй. Икенсе аккаунтты теркәү active validator шарттарында `CanRegisterAccount` талап итә. Account aliases өсөн ғәҙәттә шулай уҡ active SNS lease һәм тейешле alias permissions кәрәк. Governed onboarding/alias planner ҡулланығыҙ йәки теркәүҙе generated local network-та һынап ҡарағыҙ.
+Taira faucet үҙенән һораусы иҫәпте булдыра ала, ләкин был иҫәптәрҙе теркәү йәки ҡушаматтар менән идара итеү буйынса дөйөм вәкәләт бирмәй. Икенсе иҫәпте теркәү өсөн әүҙем башҡарыусы (executor) ҡарамағында `CanRegisterAccount` кәрәк. Иҫәп ҡушаматтары өсөн ғәҙәттә шулай уҡ әүҙем SNS ҡуртымы һәм тейешле ҡушамат рөхсәттәре кәрәк. Идара ителгән ҡушылыу/ҡушамат планлаштырыусыһын ҡулланығыҙ йәки теркәүҙе генерацияланған локаль селтәрҙә һынап ҡарағыҙ.
 
 :::
 
@@ -121,9 +124,9 @@ Taira faucet дәғүәсе аккаунтын булдыра ала, әммә �
 iroha --config ./localnet/client.toml \
   --machine \
   --fee-payer authority \
-  ledger account register --id "$NEW_ACCOUNT_ID"
+  account register --id "$NEW_ACCOUNT_ID"
 
-iroha --config ./localnet/client.toml ledger account get \
+iroha --config ./localnet/client.toml account get \
   --id "$NEW_ACCOUNT_ID"
 ```
 
@@ -158,8 +161,8 @@ fi
 
 ## Сығанаҡ һәм уның менән бәйле документтар {#source-and-related-docs}
 
-- [Ҡатнашылған commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_data_model/src/account/address.rs)-ла Canonical account адресын тормошҡа ашырыу
-- [Хисап һәм псевдонимы һынауҙары Torii ҡуйылған commit-та](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/tests/accounts_endpoints.rs)
+- [Ҡатнашылған commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_data_model/src/account/address.rs)-ла Canonical account адресын тормошҡа ашырыу
+- Ҡуйылған commit-тағы [Torii-ҙың иҫәп API нөктәләре өсөн тиҙ тикшереү һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/tests/accounts_endpoints.rs) һәм [ҡушамат маршруттары һынауҙары](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/tests/lib_tests/part_2.rs)
 - [Иҫәпкә алыуҙар](/ba/blockchain/accounts.md)
 - [Мәғлүмәт моделе исемдәре](/ba/blockchain/data-model.md#aliases)
 - [Исемдәр биреү конвенциялары](/ba/reference/naming.md)

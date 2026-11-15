@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Résolution des problèmes d'intégration {#troubleshooting-integration-issues}
 
 Cette section offre des conseils de dépannage pour l'intégration de Iroha 3. Si le problème que vous rencontrez n'est pas décrit ici, contactez-nous via [Télégramme](https://t.me/hyperledgeriroha).
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 Pour les vérifications CLI, passez explicitement le même fichier :
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Si le pair réseau fonctionne dans Docker ou Kubernetes, utilisez l'adresse de l'hôte ou du service qui est accessible depuis le processus client. `127.0.0.1` à l'intérieur d'un conteneur n'est pas la machine hôte.
@@ -45,12 +44,12 @@ La plupart des échecs de transaction sont causés par une incompatibilité d'id
 - la clé publique du compte dans la configuration du client ne correspond pas à la clé privée utilisée pour la signature
 - le compte n'est pas enregistré dans le génésis de la blockchain ni par une transaction antérieure
 - le compte ne dispose pas du jeton de permission ou du rôle requis par le validateur d'exécution du logiciel
-- un identifiant de domaine manque de sa qualification d’espace de données, comme `domain.dataspace`
+- un ID de domaine ne comporte pas sa qualification d’espace de données, comme dans `domain.dataspace`
 
 Utilisez `--output-format text` lors du débogage des commandes CLI afin que les erreurs soient plus faciles à lire :
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Les requêtes renvoient des résultats vides {#queries-return-empty-results}
@@ -65,7 +64,7 @@ Des résultats de requête vides ne signifient pas toujours que la requête a é
 Pour les vérifications de domaine, commencez par la requête la plus large :
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Les flux d’événements ou de blocs s’arrêtent prématurément {#event-or-block-streams-stop-early}

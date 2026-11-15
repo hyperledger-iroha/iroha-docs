@@ -5,7 +5,6 @@ translation_source_hash: 36c99c1db78e357ea9fe0ca8ab9b79c9e2b20da08d329c563f1f33f
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 过滤器 {#filters}
 
 过滤器可缩小事件流和触发条件的范围。当前的顶层事件过滤器是 `EventFilterBox`，可匹配下列事件系列：

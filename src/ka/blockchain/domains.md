@@ -1,26 +1,25 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # დომენები {#domains}
 
-დომენები არის დასახელებული სახელის სივრცეები რეგისტრირებულია `World`. მიმდინარე Iroha 3 მონაცემთა მოდელში დომენი კვალიფიცირებულია მისი მშობლიური მონაცემთა სივრცით, ასე რომ კანონიკური იდენტიფიკატორია:
+დომენები `World`-ში რეგისტრირებული სახელდებული სივრცეებია. Iroha 3-ის მიმდინარე მონაცემთა მოდელში დომენი მშობელი მონაცემთა სივრცით ზუსტდება, ამიტომ კანონიკური იდენტიფიკატორია:
 
 ```text
 domain.dataspace
 ```
 
-მაგალითად, `payments.universal` დაასახელებს `payments` დომენს `universal` მონაცემთა სივრცეში.
+მაგალითად, `payments.universal` აღნიშნავს `payments` დომენს `universal` მონაცემთა სივრცეში.
 
 ## სტრუქტურა {#structure}
 
 რეგისტრირებული `Domain` შეიცავს:
 
-- `id`: მონაცემთა სივრცე-კვალიფიცირებული `DomainId`
+- `id`: მონაცემთა სივრცით დაზუსტებული `DomainId`
 - `logo`: დომენის ლოგოს ვარიანტი `SoraFS` URI
 - `metadata`: საკვანძო მნიშვნელობის თვითნებური მეტამონაცემები.
 - `owned_by`: ანგარიში, რომელიც ფლობს დომენს, ჩვეულებრივ ის ანგარიში, რომელმაც იგი დაარეგისტრირა
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-განზრახვა იდენტიფიცირებს `payments.universal`, მისი ციფრული მონაცემთა სივრცე, კანონიკური I105 მფლობელი, იჯარის შეძენის ვადები და მიმდინარე პოლიტიკა / გადახდის საფასური-ფასის ვალიდაციის დაცვა. API საბოლოო წერტილი არის `POST /v1/aliases/setup/plan`; მისი დაბრუნებული გეგმა არის დაკავშირებული ჯაჭვის, ტრანზაქციის ნებართვა იდენტობა, ბლოკჩეინის რეესტრი მდგომარეობა და საბოლოო ვადა. დომენის მოხსნა კვლავ იყენებს [`Unregister`](/ka/blockchain/instructions.md#un-register).
+განზრახვა განსაზღვრავს `payments.universal`-ს, მის რიცხვით მონაცემთა სივრცეს, კანონიკურ I105 მფლობელს, იჯარის შეძენის ვადას და მიმდინარე პოლიტიკის/გადახდის ფასის შემოწმების პირობას. დამგეგმავის ბოლო წერტილია `POST /v1/aliases/setup/plan`; დაბრუნებული გეგმა მიბმულია ჯაჭვზე, უფლებამოსილ სუბიექტზე, მდგომარეობასა და ბოლო ვადაზე. დომენის წასაშლელად კვლავ გამოიყენება [`Unregister`](/ka/blockchain/instructions.md#un-register).
 
 დომენის შექმნა ან ამოღება საჭიროებს სათანადო დომენის მართვის ნებართვას აქტიური შესრულების გარემოს ვალიდატორი. დომენის მეტამონაცემები შეიძლება განახლდეს: [`SetKeyValue` და `RemoveKeyValue`](/ka/blockchain/instructions.md#setkeyvalue-removekeyvalue) როდესაც ავტორიზაციის ხელმძღვანელს აქვს ნებართვა შეცვალოს ეს დომენი.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-გადარიცხეთ საჯარო განხორციელების ბილიკის კატალოგი მონაცემთა სივრცის ალიასებზე:
+შეუსაბამეთ საჯარო არხების კატალოგი მონაცემთა სივრცეების ფსევდონიმებს:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-გამოიყენეთ პირველი ბრძანება, როდესაც აპლიკაციამ უნდა შეამოწმოს არსებობს თუ არა დომენი. გამოიყენეთ განხორციელების ზოლის კატალოგი, როდესაც თქვენ უნდა დაადასტუროთ არის თუ არა მონაცემთა სივრცე საჯარო, შეზღუდული ან ჩამორჩენილი ძირითადი შესრულების ზოლზე.
+პირველი ბრძანება გამოიყენეთ, როცა აპლიკაციას დომენის არსებობის შემოწმება სჭირდება. არხების კატალოგით შეამოწმეთ მონაცემთა სივრცესთან დაკავშირებული არხები, მათ შორის თითოეულის საჯარო ან შეზღუდული ხილვადობა და ძირითად არხთან მიმართებით სინქრონიზაციის მდგომარეობა.
 
-დომენის დაყენება არის საფასურის გადახდის წერილი. სანამ შეეცდებით Taira, შეინახეთ ტესტნეტის ფინანსირების სერვისის დამხმარე [ტესტნეტს XOR დაუკავშირდით Taira](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) როგორც `taira_faucet_claim.py`, დააფასეთ კრიპტოგრაფიული ხელმოწერა საჯარო ტესტნეტით დაფინანსების სერვისით და დაამატეთ საფასურის მეტამონაცემები:
+დომენის გამართვა საკომისიოს მქონე ჩაწერაა. Taira-ზე ცდამდე დააფინანსეთ ხელმომწერი გვერდზე [სატესტო XOR-ის მიღება Taira-ზე](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) აღწერილი მომზადების ეტაპიანი პროცესით, შემდეგ გამოიყენეთ გეგმა საკომისიოს გადამხდელის აშკარა მითითებით. CLI ხელმოწერამდე ზუსტ საკომისიოს ითვლის:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

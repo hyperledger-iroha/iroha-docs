@@ -1,11 +1,10 @@
 ---
 translation_locale: kk
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Таза темірде Iroha іске қосу {#running-iroha-on-bare-metal}
 
 Бұл жұмыс үрдісін сіз желілік түйіндерді Docker Compose арқылы емес, тікелей хосттарда іске қосқыңыз келгенде пайдаланыңыз. Ағымдағы қайнар код ағашы сәйкес блокчейн бастамасын, желілік түйін конфигурацияларын, клиент конфигурациясын және бастау/тоқтату скрипттерін жазатын Kagami генераторларын қамтамасыз етеді.
@@ -32,10 +31,10 @@ cargo build --release \
 Төрт түйінді Iroha 3 localnet жасаңыз:
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-Шығыс каталогында жасалған `genesis.json`, `genesis.signed.nrt`, желілік әріптес `config.toml` файлдары, `client.toml`, көмекші скрипттер және сол топтамаға арналған нақты командалары бар жасалған `README.md` бар.
+Шығыс каталогында жасалған `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, әр валидатор үшін бір `peerN.toml`, `client.toml`, `start.sh` және `stop.sh` скрипттері және сол топтамаға арналған нақты командалары бар жасалған `README.md` бар.
 
 ## 3. Желідегі әріптестерді бастау {#_3-start-peers}
 
@@ -45,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-Егер сізге әр желі әріптесін systemd сияқты процесс менеджеріне байлау қажет болса, әр желі әріпшісі үшін `./localnet/README.md`-де жазылған іске қосу командаларын пайдаланыңыз. Әр желі әріпшісінің `config.toml`-ін, жеке кілтін, сақтау каталогын және порттарын бөлек ұстаңыз.
+Егер сізге әр желі әріптесін systemd сияқты процесс менеджеріне байлау қажет болса, `./localnet/start.sh` ішіндегі әр желі әріптесіне арналған командаға сүйеніңіз: `<bundle>/state/peerN` каталогынан `iroha3d --config <bundle>/peerN.toml` іске қосыңыз және `--sumeragi-assert-fresh-key` параметрін тек сол желі әріптесінің алғашқы іске қосылуында беріңіз. Әр желі әріптесінің `peerN.toml` файлын, жеке кілтін, сақтау каталогын және порттарын бөлек ұстаңыз.
 
 ## 4. Желіні басқару {#_4-operate-the-network}
 
 Жасалған клиент конфигурациясын пайдаланыңыз:
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

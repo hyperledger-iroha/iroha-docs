@@ -5,7 +5,6 @@ translation_source_hash: 20139011c663a0bca6f9e486ef81f698370c34f8f02319317805b0d
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Principes de sécurité {#security-principles}
 
 Un registre blockchain Iroha vérifie les instructions signées et applique les permissions. Il ne sécurise pas les clés privées, les hôtes, les applications, les stations de travail des opérateurs ou les procédures de gouvernance. Le déploiement doit protéger ces systèmes.

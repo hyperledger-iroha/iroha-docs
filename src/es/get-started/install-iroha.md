@@ -1,20 +1,21 @@
 ---
 translation_locale: es
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Instalar Iroha 3 {#install-iroha-3}
 
 Esta página cubre el flujo de trabajo de instalación actual para la cadena de herramientas y binarios Iroha 3 utilizando el espacio de trabajo upstream `hyperledger-iroha/iroha`.
+
+Siga las instrucciones de Rust de esta página para una instalación nativa. Para ejecutar cuatro validadores con Docker, empiece por [Iniciar Iroha 3](/es/get-started/launch-iroha.md).
 
 ## 1. Prerrequisitos {#_1-prerequisites}
 
 Instala estos primero:
 
-- [rustup](https://www.rust-lang.org/tools/install), por lo que la cadena de herramientas fijada `rust-toolchain.toml` (`1.93.1`) se instala automáticamente
+- [rustup](https://www.rust-lang.org/tools/install), por lo que la cadena de herramientas fijada `rust-toolchain.toml` (`1.99.1`) se instala automáticamente
 - `git`
 - opcionalmente, Docker y Docker Compose para el inicio rápido multi-par de la localidad
 
@@ -64,7 +65,8 @@ Los cuatro binarios que usualmente usarás son:
 
 El flujo actual de red local respaldado por el origen es generado por Kagami. Escribe configuraciones de pares de red, artefactos de génesis de blockchain, configuración del cliente, scripts auxiliares y un archivo Compose opcional que coincide con el código revisado:
 
-- `kagami localnet` para scripts de pares de red local nativos
+- `kagami localnet up` para una red local gestionada que Kagami inicia y supervisa
+- `kagami localnet generate` para scripts de pares locales nativos
 - `kagami docker` para Docker Compose generado desde un directorio localnet
 
 Continúa con [Lanzar Iroha 3](/es/get-started/launch-iroha.md).

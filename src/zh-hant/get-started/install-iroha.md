@@ -1,20 +1,21 @@
 ---
 translation_locale: zh-hant
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 安裝 Iroha 3 {#install-iroha-3}
 
 本頁面涵蓋了使用上游 `hyperledger-iroha/iroha` 工作空間的 Iroha 3 工具鏈和二進位制器的當前安裝工作流.
+
+若要直接安裝在主機上，請依照下方的 Rust 步驟操作。若要透過 Docker 執行四個驗證節點，請先參閱[啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md)。
 
 ## 1.先決條件 {#_1-prerequisites}
 
 首先安裝這些:
 
-- [rustup](https://www.rust-lang.org/tools/install),因此固定的 `rust-toolchain.toml`工具鏈 (`1.93.1`) 已自動安裝
+- [rustup](https://www.rust-lang.org/tools/install),因此固定的 `rust-toolchain.toml`工具鏈 (`1.99.1`) 已自動安裝
 - `git`
 - 選項: Docker 和 Docker Compose 用於當地的多個對等節點快速啟動
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 目前源支援的本地網路流是由 Kagami 生成的.它編寫了對等節點配置,創世構件,客戶端配置,輔助指令碼以及與檢查出來的程式碼匹配的可選組合檔案:
 
-- `kagami localnet` 用於原生本機對等節點指令碼
+- `kagami localnet up`：建立由 Kagami 啟動並監督的受管理本機網路
+- `kagami localnet generate`：產生原生的本機對等節點指令碼
 - `kagami docker`為 Docker Compose 從區域網目錄中生成
 
 繼續使用 [啟動 Iroha 3](/zh-hant/get-started/launch-iroha.md).

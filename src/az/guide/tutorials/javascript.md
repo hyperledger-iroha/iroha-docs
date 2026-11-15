@@ -1,14 +1,13 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript və TypeScript {#javascript-and-typescript}
 
-Cari JavaScript SDK Iroha mənbə ağacında `@iroha/iroha-js` paketidir. Bu, Torii, Norito qurucular, imzalama, səhifələmə, Connect önizləmələri və Kagemusha əmr daşınması üçün Node.js-ilk SDK-dir.
+Cari JavaScript SDK Iroha mənbə ağacında `@iroha/iroha-js` paketidir. Bu, Torii, Norito qurucular, imzalama, səhifələmə və Connect önizləmələri üçün Node.js-ilk SDK-dir.
 
 ## Mənbədən Qur {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ SDK aşağıdakılara diqqət yetirir:
 - Ed25519 imzalama və açar yaradılması
 - səhifələmə və təkrar köməkçiləri
 - Brauzer başlanğıc köməkçilərini qoşun
-- Kagemusha hazırlığı, doldurma, geri ödəmə və əməliyyat-statusu nəqliyyat köməkçiləri
 
 ## Yuxarı Axın İstinadları {#upstream-references}
 

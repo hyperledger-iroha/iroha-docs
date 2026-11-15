@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # קריפטוגרפיה עם מפתח ציבורי {#public-key-cryptography}
 
 קריפטוגרפיה של מפתח ציבורי משתמשת בזוג קשור של מפתח ציבורי ומפתח פרטי. אפשר לשתף את המפתח הציבורי. המפתח הפרטי חייב להישאר בשליטת הרשות. האבטחה תלויה בשימוש באלגוריתם נתמך, ביצירת מפתחות באקראיות מאובטחת ובהגנה על המפתח הפרטי.

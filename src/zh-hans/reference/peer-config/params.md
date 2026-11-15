@@ -1,9 +1,9 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/peer-config/params.md
-translation_source_hash: 027486a17e7624cc301f939429baf9ea9ed1259564c3b99b8dc63cce17a7b26e
+translation_source_hash: 59147443b612bef0cdd1b7cf2124d168c692a9488d8c38f723187e5ae8d3ba65
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 
 outline: [ 2, 3 ]
 ---
@@ -56,9 +56,9 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-同级密钥:它必须匹配 `public_key`;共识验证器同级必须使用 BLS-正常密钥.
+对等节点的私钥。必须且只能配置 `private_key` 或 `private_key_file` 之一；后者是仅允许所有者访问的密钥文件路径。密钥必须匹配 `public_key`；共识验证者节点使用 BLS-Normal 密钥。
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -139,6 +139,8 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## 创世纪 {#genesis}
+
+首次启动和重启都必须且只能使用一个创世信任根来源：`genesis.expected_hash` 或 `genesis.expected_hash_file`。生成的节点配置采用后者，指向签名区块旁的 `genesis.expected_hash` 文件。复制生成的配置时，应保留此绑定。
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -222,7 +224,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-单条同步消息中可以发送的区块数量。
+区块同步 gossip 的分发上限，适用于对等节点采样和区块同步更新。
 
 <param-table type=number default-value=4 />
 
@@ -430,12 +432,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip 运行时更新
-
-该参数通过 Torii 操作员端点进行运行时配置更新.
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 除 [`logger.level`](#param-logger-level) 外，还可设置更精细的日志过滤器，并按 target 自定义日志详细程度。
@@ -475,12 +471,6 @@ LOG_FILTER=iroha_core=debug,iroha_p2p=debug
 `logger.filter`与 [`logger.level`](#param-logger-level)一起工作,没有一个覆盖另一个.
 
 例如,如果 `logger.level` 设置为 `INFO` 和 `logger.filter` 设置为 `iroha_core=debug`, 产生的过滤器组将是: `info,iroha_core=debug` (也就是说 `info` 对于所有模块, `debug` 对于 `iroha_core`).
-
-:::
-
-::: tip 运行时更新
-
-该参数通过 Torii 操作员端点进行运行时配置更新.
 
 :::
 
@@ -547,7 +537,7 @@ Kura 启动模式. `strict`是正常和默认的模式:它在节点激活之前�
 
 `fast` 是在完整启动审计可能导致停机时用于恢复操作可见性的紧急降级服务模式。它要求存储此前已由 `strict` 初始化，并要求当前一代快照恰好包含五个工件：`snapshot.data`、`snapshot.sha256`、`snapshot.sig`、`snapshot.fast.norito` 和 `snapshot.merkle.json`。采用域分离的操作员签名将声明的载荷摘要与有界清单绑定；清单则绑定载荷长度、链/网络身份、终端高度/哈希、SCCP 策略哈希，以及是否存在引导沿袭。Fast 模式拒绝引导沿袭，并要求持久 Kura 提供完全相同的标记/计数/尖端边界。首发版本节点只接受这五个工件，任何其他工件数量或文件名集合都会被拒绝。
 
-`fast` 会盘点这五个名称，并通过元数据绑定载荷文件和 Merkle 文件，但不会读取、哈希、解析或解码其内容。它根据签名清单构建最小 World/Nexus，将精确的 Kura 哈希前缀映射为只读，并且不打开快照 World、区块哈希数组、交易历史、派生索引或持久恢复日志。Merkle 审计、规范与语义快照审计、历史区块/终局性/SCCP 协调、Sumeragi 活跃高度恢复、合并和查询日志、泳道清单/合规源、Kura 支持的 SoraFS 归档、递归存储计量以及可选服务协调器均继续延后。本地交易准入、提案、投票、规范写入和辅助生产器仍保持禁用。Kura 自身拒绝启动写入器和持久变更；流水线和 FASTPQ 持久化队列会立即拒绝任务，而不会保留或编码。Kura 读取 APIs 也会禁用修复和持久性同步行为：临时辅助记录不会提升，缺失的泳道工件不会发布，进度屏障也不会 fsync。Sumeragi 和交易 gossip 均不启动。Torii 只公开健康、存活、就绪、对等节点和配置操作；API 版本、状态、指标以及所有常规状态/历史路由都不可用。在以 `strict` 重新启动前，节点始终不会就绪。
+Fast 清点这五个名称，并通过元数据绑定载荷文件和 Merkle 文件，但不读取、计算哈希、解析或解码文件内容。它根据已签名清单构建最小化的 World 和 SORA Nexus 状态，以只读方式映射准确的 Kura 哈希前缀，并保持快照 World、区块哈希数组、交易历史、派生索引和持久恢复日志未打开。Merkle 校验、快照规范性与语义审计、历史区块/最终性/SCCP 对账、Sumeragi 活跃高度恢复、合并和查询日志、执行通道清单与合规源、Kura 支撑的 SoraFS 归档、递归存储统计，以及可选服务对账均继续延后。本地交易准入、提议、投票、规范写入和辅助生产者仍被禁用。Kura 自身拒绝启动写入器及持久变更；流水线和 FASTPQ 持久化队列立即拒绝工作，不会保留或编码它。Kura 读取 APIs 也禁用修复及持久性同步：不会提升临时辅助记录，不会发布缺失的执行通道工件，也不会对进度屏障执行 fsync。Sumeragi 和交易传播不会启动。Torii 仅开放健康、存活、就绪、对等节点和配置操作；API 版本、状态、指标以及所有普通状态/历史路由仍不可用。就绪状态会一直不可用，直到以 Strict 模式重启。
 
 仅在事故期间使用 `fast`。服务稳定后，请停止节点、恢复 `strict` 并重新启动，以便在恢复生产之前执行所有延后的检查和索引重建。Fast 模式不要求存在延后的合并日志，也不会创建、修复、截断或导入规范存储；它不会读取或变更未发布的后缀和待处理的辅助恢复阶段，而是忽略它们并留待 Strict 模式恢复。导入的仅哈希快照沿袭仍不可用。缺失或无效的当前快照会立即导致失败；Fast 模式绝不会回退到空 World 或历史重放重建。
 
@@ -557,7 +547,7 @@ Kura 启动模式. `strict`是正常和默认的模式:它在节点激活之前�
 字符串,可能值:
 
 - `strict`:完整验证和正常生产
-- `fast`：有界的紧急启动；在以 `strict` 模式重启之前，生产功能保持隔离
+- `fast`：有界的紧急启动；以 Strict 模式重启之前，生产功能保持隔离
 
 </template>
 </param-table>
@@ -662,30 +652,20 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` 包含节点本地参与、签名密钥保管、安全记录路径，以及文档规定的超时和同步覆盖项。共识模式、委员会规模、法定票数、区块大小和交易限制来自已签名创世配置及已提交状态。故障注入属于确定性模拟器。
 
-仅用于炼的调试开关 Sumeragi 软叉处理路径.将其禁用在控制测试之外;在运行的生产网络上更改可能会导致对等节点对共识行为产生分歧.
+请参阅 [配置](/zh-hans/guide/configure/overview.md) 和固定的 [配置参考](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md) 以了解支持的字段。
 
-<param-table type=bool default-value=false />
+## SORA Nexus 原子私有结算 {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` 配置单个节点的加密辅助记录保管，只包含两个本地存储上限：
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`：保留的加密结算记录最大数量。
+- `sidecar_max_total_bytes`：保留的规范字节最大数量。
 
-:::
+激活、证明配置、支付上限、过期规则和审计者策略来自已提交的隐私策略。节点配置不能激活或改变这些有效性规则。
 
-## Nexus 原子核私人和解 {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` 管理独立的 `AtomicPrivateSettlementV1` 路径。它默认禁用。设置 `enabled = true` 还需要 `activation_height`；除非链上功能、通知期、固定证明配置文件以及池/审计治理均处于活动状态，否则准入仍会采用失败关闭策略。
-
-主要限制是: `max_participants`, `max_expiry_blocks`, `audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`, `max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`, `sidecar_retention_blocks`, `sidecar_max_records`, 和 `sidecar_max_total_bytes`. `capsule_padding_classes_bytes` 必须是一个严格增长的子集 V1 装课. `permitted_policy_versions` 仅接受 V1.
-
-`max_capsule_bytes` 衡量完整 `PrivateSettlementAuditCapsuleV1` 的规范 Norito 字节数，其中包括 AAD、nonce、密文、向量帧和每个审计员的 wrapped-DEK 行；它不是仅针对密文的限制。每个启用的填充类别都必须能容纳至少 `default_min_auditor_approvals` 个审计员的保守完整 capsule envelope。此批准设置也是强制下限：Torii 会拒绝 `min_approvals` 较低的新许可策略，也会拒绝任何超出规范字节上限的实际 capsule。
-
-这些设置没有生产环境变量激活绕行.查看[运行跨数据空间的私密原子结算](/zh-hans/get-started/atomic-private-settlement),了解完整的配置示例和操作要求.直到文档化外部释放门通过,路径不会获得生产资格.
+有关保管配置和运行要求，请参阅[运行跨数据空间的原子私有结算](/zh-hans/get-started/atomic-private-settlement.md)。实现组件并不等于通过生产资格验证。
 
 ## 快照 {#snapshot}
 
@@ -766,26 +746,7 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 
 ## 电测仪 {#telemetry}
 
-远程测量将对等节点诊断输出到外部远程测量的收集器.当对等节点报告给收藏器时,设置`telemetry.name` 和 `telemetry.url`;如果不使用远程测试时,省略该节目.
-
-`name`和 `url`必须配对.
-
-所有 `telemetry` 节目都是可选的.
-
-### `telemetry.name` {#param-telemetry-name}
-
-在远程测量中显示节点的名称.
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+遥测将对等节点诊断信息导出到外部遥测收集器。节点需要上报时，配置 `telemetry.url`；不使用收集器时，省略此节。重试时间也在同一个可选表中配置。
 
 ### `telemetry.url` {#param-telemetry-url}
 

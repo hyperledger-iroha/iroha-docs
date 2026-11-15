@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Musubi Kotodama Paquetes {#musubi-kotodama-packages}
 
 Musubi es el gestor de paquetes de primera versión para paquetes fuente Kotodama. Resuelve un gráfico de dependencias exacto en la cadena y autentica SoraFS archiva las fuentes, compila y prueba el espacio de trabajo seleccionado, construye archivos canónicos CAR y publica versiones inmutables a través de Iroha.
@@ -32,7 +31,7 @@ Los identificadores de lanzamiento exactos agregan una versión:
 namespace/package@version
 ```
 
-No hay un `@` inicial antes de un espacio de nombres. Un espacio de nombres es o bien una raíz de espacio de datos como `universal` o un espacio de datos calificado por dominio como `dex.universal`. El libro mayor de la blockchain vincula ese espacio de nombres estructural a un espacio de datos de hogar estable antes de que se pueda reclamar un paquete.
+No hay un `@` inicial antes de un espacio de nombres. Un espacio de nombres es o bien una raíz de espacio de datos como `universal` o un espacio de nombres calificado por dominio como `dex.universal`. El libro mayor vincula ese espacio de nombres estructural a un espacio de datos de origen estable antes de que se pueda reclamar un paquete.
 
 ## manifiesto técnico y archivo de bloqueo {#manifest-and-lockfile}
 
@@ -68,10 +67,10 @@ Taira es la testnet pública para este flujo de trabajo. Comience desde una conf
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-El catálogo de proveedores suministra identidades de proveedores y puntos finales API anunciados. Obtenga la autorización del operador correspondiente del proveedor elegido. El tiempo de ejecución del software utiliza esa clave para solicitar tokens de flujo acotado; los tokens no son argumentos CLI ni contenido de archivo de bloqueo.
+El catálogo de proveedores suministra identidades de proveedores y puntos finales anunciados. Obtenga la autorización del operador correspondiente del proveedor elegido. El tiempo de ejecución del software utiliza esa clave para solicitar tokens de flujo acotado; los tokens no son argumentos CLI ni contenido de archivo de bloqueo.
 
-No utilice un pin de validador Taira URL como `url`. Los validadores registrados tienen deshabilitado el almacenamiento SoraFS incorporado. Sus puntos de conexión `https://taira-validator-{1,2,3,4}.sora.org` API aceptan el registro de pins, mientras que las lecturas de archivo utilizan el origen HTTPS del proveedor admitido seleccionado.
+No utilice un pin de validador Taira URL como `url`. Los validadores registrados tienen deshabilitado el almacenamiento SoraFS incorporado. Sus puntos de conexión `https://taira-validator-{1,2,3,4}.sora.org` aceptan el registro de pins, mientras que las lecturas de archivo utilizan el origen HTTPS del proveedor admitido seleccionado.
 
 ## Flujo de trabajo local {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi utiliza las instrucciones y consultas de primera versión V1:
 | `FindMusubiArchiveLocationsV1`                       |Lea las ubicaciones de archivo respaldadas por el proveedor finalizadas.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     | Lea el objetivo de alias actual o su historial inmutable.        |
 
-Torii expone la familia de rutas de la aplicación bajo `/v1/musubi/*`. Las herramientas MCP usan los nombres actuales de `iroha.musubi.queries.*` y `iroha.musubi.instructions.*`. Consulte [Torii API puntos finales](/es/reference/torii-endpoints.md) y el [referencia de consulta](/es/reference/queries.md) para el mapa más amplio de API.
+Torii expone la familia de rutas de la aplicación bajo `/v1/musubi/*`. Las herramientas MCP usan los nombres actuales de `iroha.musubi.queries.*` y `iroha.musubi.instructions.*`. Consulte [Torii puntos finales](/es/reference/torii-endpoints.md) y el [referencia de consulta](/es/reference/queries.md) para el mapa más amplio de API.

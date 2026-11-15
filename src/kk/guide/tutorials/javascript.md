@@ -1,14 +1,13 @@
 ---
 translation_locale: kk
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # JavaScript және TypeScript {#javascript-and-typescript}
 
-Қазіргі JavaScript SDK Iroha дереккөз ағашындағы `@iroha/iroha-js` пакеті болып табылады. Бұл Torii, Norito құрастырушылар, қол қою, бет нөмірлеу, Connect алдын ала қараулар және Kagemusha командасын тасымалдау үшін Node.js-бірінші SDK.
+Қазіргі JavaScript SDK Iroha дереккөз ағашындағы `@iroha/iroha-js` пакеті болып табылады. Бұл Torii, Norito құрастырушылар, қол қою, бет нөмірлеу және Connect алдын ала қараулары үшін Node.js-бірінші SDK.
 
 ## Дереккөзден құру {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ SDK назар аударады:
 - Ed25519 қол қою және кілт генерациясы
 - беттілеу және қайтадан көріп шығу көмекшілері
 - Браузерді қосуды бастапқы көмекшілермен қосу
-- Kagemusha дайындық, толықтыру, айырбастау және операциялық күйді тасымалдау көмекшілері
 
 ## Ағыстарға сілтемелер {#upstream-references}
 

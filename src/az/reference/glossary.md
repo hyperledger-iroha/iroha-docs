@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /reference/glossary.md
-translation_source_hash: ab484310e7e0b0662c1d4bb133e7ae337c71b09b5fdc8e678581234d74ee9b29
+translation_source_hash: 4d3a8e3aa88291edbaac5b52039d2aad160d89fb83c085c21030a531c93258f4
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # Lüğət <!-- omit in toc --> {#glossary}
 
 Burada siz bütün Iroha-ilə əlaqəli obyektlərin təriflərini tapa bilərsiniz.
@@ -42,7 +41,7 @@ Orta əsrlərdə mühasibat dəftərləri ictimai baxış və dəqiqlik yoxlamas
 
 ## şəbəkə əlaqəsi {#peer}
 
-Iroha-də bir şəbəkə həmkarı o deməkdir ki, digər Iroha prosesləri və müştəri tətbiqləri qoşula biləcəyi bir Iroha proses nümunəsidir. Bir maşın bir neçə Iroha şəbəkə həmkarına ev sahibliyi edə bilər. Şəbəkə iştirakçıları öz resursları və imkanları baxımından bərabərdirlər, lakin vacib bir istisna var: yalnız şəbəkə iştirakçılarından biri Iroha şəbəkəsinin başlanğıc mərhələsində blockchain başlanğıc blokunu işləyir.
+Qovşaq digər qovşaqlardan və müştəri tətbiqlərindən bağlantıları qəbul edən Iroha qovşaq prosesidir. Bir maşında ayrı konfiqurasiya və yaddaşa malik bir neçə qovşaq işləyə bilər. Boş vəziyyətdən konsensusa başlayan hər qovşaq şəbəkənin imzalanmış başlanğıc blokunun həqiqiliyini yoxlayır və onu tətbiq edir; həqiqiliyi yoxlanmış vəziyyət görüntülərindən bərpa olunan qovşaqlar həmin vəziyyətdən davam edir.
 
 Digər blok zəncirləri eyni anlayışı bir node və ya təsdiqçi kimi istinad edə bilər.
 
@@ -80,7 +79,7 @@ Bir əmlak daha eyni növdən buraxıla bilirsə, o, çap edilə biləndir.
 
 ## Bizans səhv-dözümlülüyü (BFT) {#byzantine-fault-tolerance-bft}
 
-Şəbəkədə müəyyən faizdə zərərli iştirakçılar olsa belə düzgün işləyə bilmə xüsusiyyəti. Iroha bərabərhüquqlu şəbəkəndə 33%-ə qədər zərərli iştirakçı ilə işləyə bilir.
+Şəbəkədə müəyyən faizdə zərərli iştirakçılar olsa belə düzgün işləyə bilmə xüsusiyyəti. Sumeragi komitəsində dəqiq `3f + 1` təsdiqləyici olur və o, komitənin üçdə birindən az olan `f` sayda Bizans təsdiqləyicisinə qədər dözür.
 
 ## Iroha Komponentlər {#iroha-components}
 
@@ -92,7 +91,7 @@ Iroha konsensusdan məsul modul.
 
 ### Torii (Darvaza) {#torii-gate}
 
-[şəbəkə əlaqəsi](#peer) üçün gələn sorğuların işlənməsi məntiqi moduludur. Bu modul gələn təlimatları və HTTP sorğularını qəbul etmək, yönləndirmək və işlətmək, eləcə də işləmə zamanı konfiqurasiya yeniləmələrini həyata keçirmək üçün istifadə olunur.
+[Həmyaşıd qovşağa](#peer) daxil olan sorğuların emalı məntiqini ehtiva edən modul. Daxil olan təlimatları, HTTP sorğularını və operatorun konfiqurasiya yoxlamalarını almaq, qəbul etmək və yönləndirmək üçün istifadə olunur.
 
 ### Kura (Anbar) {#kura-warehouse}
 
@@ -108,7 +107,7 @@ Hər blok hündürlüyündə vəziyyəti yoxlamaq və təsdiqləmək üçün ist
 
 ### Ağıllı müqavilələr {#smart-contracts}
 
-Ağıllı müqavilələr müəyyən bir şərtlər dəsti yerinə yetirildikdə işləyən blokçeyn əsaslı proqramlardır. Iroha-də ağıllı müqavilələr [əsas Iroha təlim əməliyyatları](#core-iroha-special-instructions) istifadə edərək həyata keçirilir.
+Ağıllı müqavilələr müəyyən bir şərtlər dəsti yerinə yetirildikdə işləyən blokçeyn əsaslı proqramlardır. Iroha 3-də ağıllı müqavilələr Kotodama dilində yazılır və IVM bayt koduna (`.to`) kompilyasiya edilir; müqavilə vəziyyəti host çağırışları vasitəsilə [Iroha xüsusi təlimatları](#core-iroha-special-instructions) verməklə dəyişdirir.
 
 ### Səbəblər {#triggers}
 
@@ -116,11 +115,11 @@ Spesifik blokun başa çatdırılmasında, vaxtında (bəzi məhdudiyyətlərlə
 
 ### Versiyalaşdırma {#versioning}
 
-Hər sorğu ona aid olan API versiyası ilə etiketlənir. Bu, Iroha müştəri/şəbəkə həmkarı proqramının fərqli ikili versiyalarının qarşılıqlı işləməsinə imkan verir ki, bu da öz növbəsində Iroha şəbəkəsində proqram təminatının yenilənməsinə imkan yaradır.
+Iroha 3-ün ilk buraxılışı blokların ötürülməsi üçün yalnız bir kanonik format versiyasını dəstəkləyir. Başlanğıc bloku tətbiq edildikdən sonra `/v1/api/version` son nöqtəsi `SignedBlock::WIRE_VERSION` dəyərini bildirir, bundan əvvəl isə əlçatmazlıq cavabı qaytarır. Bu məlumat dəstəklənən ötürmə formatını göstərir; müxtəlif protokol düzülüşləri arasında uyğunluğu razılaşdırmır və şəbəkə yeniləməsinə icazə vermir.
 
 ### Hijiri (şəbəkə həmkarının nüfuz sistemi) {#hijiri-peer-reputation-system}
 
-Iroha-nin reputasiya sistemi. Bu, yaxşı keçmişi olan [şəbəkə əlaqəliləri](#peer) ilə ünsiyyəti prioritetləşdirməyə və zərərli [şəbəkə əlaqəliləri](#peer) tərəfindən yaradıla biləcək zərərləri azaltmağa imkan verir.
+Iroha-nın həmyaşıd qovşaq və hesab reputasiya sistemi. Onun konsensusa məxsus parametrləri Hijiri haqq siyasətini və hesab risk qeydlərini saxlayır, idarə olunan müşahidəçi reyestrləri isə hesabın risk balını tənzimləyən hesab attestasiyaları verir.
 
 ## Iroha Modullar {#iroha-modules}
 
@@ -132,7 +131,7 @@ Iroha ilə təmin edilmiş ağıllı müqavilələr kitabxanası. Bunlar ya əm�
 
 #### Kommunal Iroha Təlimat əməliyyatları {#utility-iroha-special-instructions}
 
-Bu [iş](#iroha-special-instructions-isi) dəsti `If` kimi məntiqi təlimatları, `Notify` kimi giriş/çıxış ilə əlaqəli və `Sequence` kimi tərkibləri ehtiva edir. Onlar əsasən [xüsusi təlimatlar](#custom-iroha-special-instruction) kimi istifadə olunur.
+Bu [isi](#iroha-special-instructions-isi) dəsti `Log`, `ExecuteTrigger`, `SetParameter` və `Upgrade` kimi domenə xas obyekti dəyişdirməyən təlimatları ehtiva edir. Iroha 3-də `If`, `Notify` və ya `Sequence` təlimatları yoxdur.
 
 ### Əsas Iroha Təlim əməliyyatları {#core-iroha-special-instructions}
 
@@ -160,4 +159,4 @@ Cari blokçeyn vəziyyətinin yaddaşdakı təmsil olunması. WSV `World`, yekun
 
 ## Lider {#leader}
 
-Bir Iroha şəbəkəsində, şəbəkə iştirakçısı təsadüfi olaraq seçilir və növbəti bloku yaratmaq üçün xüsusi bir imtiyaz verilir. Bu imtiyaz, [baxış dəyişiklik](#view-change) vasitəsilə [Bizans səhv dözümlülüyü](#byzantine-fault-tolerance-bft)-a çatmış şəbəkələrdə ləğv edilə bilər.
+Hər hündürlük və görünüş üçün Sumeragi təklif edəni komitə, həqiqiliyi yoxlanmış lider toxumu və ötürülmüş liderlərin təsdiqlənmiş tarixçəsi əsasında deterministik şəkildə müəyyən edir. [Görünüş dəyişikliyi](#view-change) eyni [Bizans xətalarına dözümlülük](#byzantine-fault-tolerance-bft) qaydaları ilə növbəni komitənin növbəti uyğun üzvünə keçirir.

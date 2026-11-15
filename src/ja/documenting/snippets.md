@@ -5,7 +5,6 @@ translation_source_hash: 48d6670f100c7c6368fa03f163c9ff9e0322d36e51c22f89562b23b
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # コードスニペット {#code-snippets}
 
 生成されたスニペットは、それらを生成した Iroha リビジョンのコード、設定、およびスキーマに例を結びつけたままにします。

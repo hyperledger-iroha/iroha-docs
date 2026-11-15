@@ -1,11 +1,10 @@
 ---
 translation_locale: ja
 translation_source: /guide/security/storing-cryptographic-keys.md
-translation_source_hash: 168ee24e84f9225e81365658018717155476ae1508fefba5e0234e0bf6feefbd
+translation_source_hash: a95fe07f62d51a813a2f9fb02d67521ae421faf8467648e5f215e069c5d68572
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # 暗号鍵の保存 {#storing-cryptographic-keys}
 
 秘密鍵は、その権限の主体に許可されたすべての操作を認可することができます。秘密鍵を共有しないでください。シード素材、回復秘密、ベアラートークン、およびエクスポートされた鍵ファイルを同じ注意を払って保護してください。
@@ -28,7 +27,7 @@ translation_engine: bing-translator-llm
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-親ディレクトリは存在している必要があります。ターゲットは新規であるか、現在のユーザーが既に所有している必要があり、モード `0700` で、シンボリックリンクがなく、空である必要があります。Kagami 書き込み`public.key` および `private.key` をモード `0600` で設定します；`--pop` は `pop.hex` も書き込みます。コマンドは、Kagami が所有者専用のファイルシステム規則を強制できないプラットフォームでは失敗します。
+親ディレクトリは存在している必要があります。出力先は、空のディレクトリとしても存在してはなりません。Kagami は出力先をモード `0700` で作成し、所有者だけがアクセスできることをファイルシステム上で検査して、シンボリックリンクを拒否します。`public.key` と `private.key` はモード `0600` で書き込み、`--pop` を指定すると `pop.hex` も書き込みます。Kagami が、所有者だけにアクセスを制限するファイルシステムの規則を適用できないプラットフォームでは、このコマンドは失敗します。
 
 秘密鍵ファイルは暗号化されていないエクスポートです。ソース管理、共有フォルダ、ログ、チケット、チャット、ビルド成果物には保存しないでください。運用用の鍵を承認された管理境界にインポートし、その後デプロイ手順に従ってエクスポートを削除してください。開発用キーを本番環境で再利用しないでください。
 

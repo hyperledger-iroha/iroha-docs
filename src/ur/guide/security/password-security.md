@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # پاس ورڈ سیکیورٹی {#password-security}
 
 پاس ورڈ آپریٹر کنسولز ، خفیہ اسٹورز ، بیک اپ اور مقامی کلیدی فائلوں کی حفاظت کرسکتے ہیں۔ ایک پاس ورڈ صرف ایک کنٹرول ہے۔ جب دستیاب ہو تو اسے محفوظ کلید اسٹوریج ، رسائی کنٹرول ، اور کثیر عنصر کی تصدیق کے ساتھ استعمال کریں۔

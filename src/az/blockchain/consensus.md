@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /blockchain/consensus.md
-translation_source_hash: fdc9a35ac2e43acda076104063b5a364feb5060a70473b51cf016b8adb1306d3
+translation_source_hash: ebdf564d607b96f7f186637044d80b2f1bb7c9fbe6080a061d27d02ec6f8cf62
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Razılaşma {#consensus}
 
 Əməliyyatlar Sumeragi onları blokda təklif etməzdən əvvəl növbəyə daxil edilir. Təsdiqləyicilər təklifi müstəqil şəkildə yoxlayır və icra edir, sonra yalnız təkrar edə biləcəkləri vəziyyət dəyişikliklərini imzalayırlar. Bir blok, tələb olunan təsdiqçi kvorumu həmin nəticədə razılaşdıqdan və uyğun yük mövcud olduqdan sonra yekunlaşdırılır.
@@ -18,7 +17,7 @@ Sumeragi Iroha-in Bizans səhv-tövsiyəsinə davamlı konsensus mühərrikidir.
 
 ### Təklif və razılıq yekunlaşdırma yolu {#proposal-and-commit-path}
 
-Sumeragi blokçeyn lövhəsini bir blok hündürlüyü üzrə irəli aparır. Hər hündürlükdə bir valyidator cari baxış üçün təklifçi kimi çıxış edir. Təklifçi növbədəki uyğun əməliyyatları çıxarır, namizəd blok hazırlayır və təklifi aktiv valyidator dəstinə elan edir.
+Sumeragi reyestri hər dəfə bir blok hündürlüyü irəli aparır. Hər hündürlükdə bir təsdiqləyici cari baxış üçün təklifçi rolunu oynayır. Təklifçi uyğun əməliyyatları növbədən götürür, namizəd blok yaradır və təklifi aktiv təsdiqləyicilar dəstinə elan edir. Fəaliyyətsiz zəncirlər boş blok yaratmır.
 
 Hər iki icazəli və Nominated Proof-of-Stake (NPoS) yerləşdirmələrində eyni Sumeragi proqram təminatı işləmə iş prosesi istifadə olunur:
 
@@ -29,11 +28,11 @@ Hər iki icazəli və Nominated Proof-of-Stake (NPoS) yerləşdirmələrində ey
 
 Təsdiq edənlər yalnız yerli olaraq reproduksiya edə biləcəkləri məlumatları imzalayırlar. Səsvermədən əvvəl, təsdiq edən yoxlayır ki, təklif gözlənilən zəncire, hündürlüyə və baxışa aiddir; əməliyyat imzaları və limitlər protokol qaydalarına uyğundur; icra yolunun istiqamətləndirilməsi və icraçı təsdiqi deterministdir; və yükün icra olunmasının gözlənilən vəziyyət keçidini yaratdığını. Əgər yerli nəticə fərqlidirsə, təsdiqçi səs vermək əvəzinə təklifi rədd edir.
 
-Səsvermələr kiçik imzalı konsensus mesajlarıdır. Onlar təklif olunan blok, hündürlük, baxış və təsdiqləyici şəxsiyyətinə istinad edir. Yoxlanılmış imzalar konsensus hazırlığı və yekunlaşdırma sertifikatlarını təşkil edir. Razılaşma yekunlaşdırma sertifikatı, kifayət qədər təstiqçi eyni blok üçün eyni nəticəni müşahidə etdiyini davamlı şəkildə sübut edən sənəddir. Hər bir təstiqçi özünü göndərir Tam komitəyə hazırlıq və yekunlaşdırma mərhələsi səsvermələri; hər hansı bir təsdiqləyici tələb olunan bərabər səsvermələri yığa və nəticədə yaranmış sertifikatı yayımlaya bilər.
+Səsvermələr kiçik imzalı konsensus mesajlarıdır. Onlar təklif olunan bloka, hündürlüyə, baxışa və təsdiqləyicinin kimliyinə istinad edir. Yoxlanılmış imzalar hazırlıq və yekunlaşdırma kvorum sertifikatlarını təşkil edir. Yekunlaşdırma sertifikatı kifayət qədər təsdiqləyicinin eyni blok üçün eyni nəticəni müşahidə etdiyinin davamlı sübutudur. A dəstinin təsdiqləyiciləri adətən Prepare və Commit səslərini raundun proksi quyruğuna göndərir; o, tam olaraq tələb olunan bərabər səsləri birləşdirir və sertifikatı yayımlayır. Sertifikat gecikərsə, B dəstinin təsdiqləyiciləri də proksi quyruğuna səs göndərir; son çarə olaraq hər təsdiqləyici öz səsini yayımlayır və istənilən təsdiqləyici sertifikatı birləşdirə bilər.
 
 ### Kvorum və müşahidəçilər {#quorum-and-observers}
 
-İlk buraxılış protokolu yalnız dəqiq `3f + 1` səsvermə komitəsinə icazə verir, 4-dən 31-ə qədər valyidatorlar üçün. Valideyn ölçüləri buna görə 4, 7, 10 və s., 31-ə qədərdir. `n = 3f + 1` üçün Bizans səhv büdcəsi `f` və protokol sonlaşdırma kvorumu `2f + 1`-dür. Blockchain başlanğıc yaradılması və işə salma təsdiqi hər hansı digər komitə geometriyasını rədd edir.
+İlk buraxılış protokolu yalnız dəqiq `3f + 1` üzvdən ibarət, 4-dən 31-ə qədər təsdiqləyiciu olan səsvermə komitəsinə icazə verir. Buna görə etibarlı ölçülər 4, 7, 10 və bu qayda ilə 31-ə qədərdir. `n = 3f + 1` üçün Bizans nasazlığı həddi `f`, təsdiqləmə kvorumu isə `2f + 1` olur. Genezisin yaradılması və başlanğıc yoxlaması komitənin başqa ölçü quruluşlarını rədd edir. Hər PrepareQC, CommitQC və TimeoutCert dəqiq `q = n - f` bərabər çəkili təsdiqləyici səsi daşıyır; artıq imzalayanları olan dəstlər rədd edilir.
 
 Müşahidəçi şəbəkə üzvləri yekunlaşdırılmış blokları sinxronizasiya edə bilər, lakin onlar təklif vermir, səs vermir və konsensusun yekunlaşdırma kvorumuna daxil edilmir. Yerli sorğu qabiliyyəti, indeksləşdirmə, monitorinq tələb edən yerləşdirmələrdə müşahidəçilərdən istifadə edin, və ya səsvermə səlahiyyətinə malik təsdiqləyicilərin sayını artırmadan regional blok təkrarlanması.
 
@@ -45,12 +44,12 @@ Yükün bərpası sonluq qərarından ayrıdır. Şəbəkə tərəfdaşı tam bl
 
 ### Razılaşma rejimləri {#consensus-modes}
 
-Seçilmiş rejim, doğrulayıcı dəstəsinin necə formalaşdırıldığını və işlədildiyini idarə edir. Bu, imzalanmış blokçeyn başlanğıcında elan edilir. [`consensus_mode`](/az/reference/genesis.md) və hər yüksəklik kontekstinə dondurulmuş. Yerli `[sumeragi]` konfiqurasiya yalnız node rolunu və sonlu blok, sıra, proqram təminatı icra mühiti, yaddaş və açar-siyasət məhdudiyyətlərini seçir; o, rejimi ləğv edə və ya kadenisi blok edə bilməz. Yoxlayıcıların da eyni şeyə ehtiyacı var imzalanmış blokçeyn əsası, topologiya, etibarlı şəbəkə tərəfdaş məlumatları və effektiv Sumeragi parametrlər.
+Seçilmiş rejim təsdiqləyicilar dəstinin necə formalaşdırıldığını və işlədiyini müəyyən edir. Rejim imzalanmış genezisdə [`consensus_mode`](/az/reference/genesis.md) vasitəsilə elan olunur və hər hündürlüyün kontekstində dəyişməz saxlanır. Yerli `[sumeragi]` konfiqurasiyası qovşağın rolunu, imzalama materiallarının mühafizəsini, təhlükəsizlik qeydlərinin yollarını və sənədləşdirilmiş vaxt aşımı və sinxronizasiya əvəzləmələrini seçir. Blok və əməliyyat hədləri, konsensus rejimi və blok ritmi imzalanmış genezisdən və təsdiqlənmiş vəziyyətdən gəlir. Təsdiqləyicilara eyni imzalanmış genezis, topologiya, etibarlı həmyaşıd qovşaq məlumatları və qüvvədə olan Sumeragi parametrləri lazımdır.
 
 |Rejim|Ən uyğun|Təsdiqləyici dəsti|Əməliyyat diqqəti|
 | ------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
 |İcazəli|Şəxsi, konsorsium və operator tərəfindən idarə olunan şəbəkələr|Təsdiqləyicilər yerləşdirmə tərəfindən razılaşdırılmış etibarlı şəbəkə həmkar topologiyasından gəlir|Bütün təsdiqləyiciləri eyni imzalanmış blokçeyn başlanğıcında, etibarlı şəbəkə iştirakçıları, şəbəkə iştirakçı açarları və Sumeragi parametrlərində saxlayın|
-|NPoS|Təsdiqin təyinat və pay siyasətini izlədiyi ictimai və ya Nexus-yönümlü şəbəkələr|Doğrulayıcılar adətən epoxlar ərzində NPoS profili tərəfindən seçilir və BLS açarları ilə yanaşı Sahiblik Sübutları tələb edir|Şəbəkə boyunca pay, zaman nöqtəsi məlumat baxışlarını, imzalanmış epoxu və seçki girişlərini, doğrulayıcı PoPs və dəyişməz blok ritmini qoruyun|
+| NPoS | Validasiyanın namizəd irəli sürmə və pay siyasətinə əsaslandığı açıq və ya SORA Nexus yönümlü şəbəkələr | Təsdiqləyicilar NPoS profili ilə, adətən epoxalar üzrə seçilir və BLS açarları ilə sahiblik sübutları tələb olunur | Pay vəziyyətinin anlıq görüntülərini, imzalanmış epoxa və seçki girişlərini, təsdiqləyici PoPs-larını və dəyişməz blok ritmini bütün şəbəkədə uyğun saxlayın |
 
 ::: tip İcazəli rejim
 
@@ -66,33 +65,28 @@ NPoS rejimindən istifadə edin, əgər yerləşdirmə profili təsdiqçinin iş
 
 ## Çoxzolaqlı razılıq {#multilane-consensus}
 
-Iroha-ın çoxzolaqlı konsensus yolu Nexus icra zolağı və məlumat sahəsi konfiqurasiyası vasitəsilə həyata keçirilir. Hər icra zolağı üçün ayrı bir konsensus nümunəsi başladmır. Sumeragi hələ də bir sifariş edilmiş blok axınını yekunlaşdırır; icra xətləri əməliyyatların necə yönləndirildiyini, cədvəl üzrə planlaşdırıldığını, hesablandığını və həmin axın içində necə saxlanıldığını təsvir edir.
+Məlumat məkanları məlumat, səlahiyyət, siyasət və tətbiqlər üçün mühitlər müəyyən edir. Onların zolaqları yayılma və sertifikatlaşdırma tutumunu artırır. Kataloqlar ayrıdır: `nexus.dataspace_catalog` məlumat məkanlarını, `nexus.lane_catalog` isə hər biri bir məlumat məkanına istinad edən zolaqları müəyyən edir. Bir neçə zolaq eyni məlumat məkanını paylaşa bilər.
 
-Proqram təminatının icra mühiti konfiqurasiyası icra zolağı vəziyyətinin üç hissəsini qurur:
+Açıq qlobal icrada `0` zolağının ardıcıllığını qlobal Sumeragi instansiyası müəyyən edir. Digər hər bir aktiv zolaq nəsli öz sabitlənmiş komitəsi və konsensus parametrləri ilə eyni Sumeragi nüvəsinin ayrıca instansiyasını işlədir. Onun sertifikatlaşdırılmış bloku təsdiqlənmiş qlobal dayaq nöqtəsinə əsasən qəbulu yoxlanmış, sıralı əməliyyat paketini ehtiva edir. Zolağın sertifikatlaşdırılması qlobal State vəziyyətini dəyişmir.
 
-- `nexus.lane_catalog`: hər biri rəqəmlə `LaneId`, ləqəb, məlumat sahəsi, görünürlük, saxlama profili, sübut sxemi və metadata ilə konfiqurasiya edilmiş icra zolaqları.
-- `nexus.dataspace_catalog`: hər biri rəqəmsal `DataSpaceId` və retranslyasiya komitəsinin ölçüləndirilməsi üçün istifadə olunan səhv-tolerans dəyəri ilə qurulmuş məlumat sahələri.
-- `nexus.routing_policy`: hesablar və ya təlimat yolları ilə uyğunlaşa bilən standart zolaq/veri sahəsi cütü və sıralanmış marşrutlaşdırma qaydaları.
+Qlobal zəncir hər zolaqdan növbəti ardıcıl sertifikatlaşdırılmış blokları birləşdirir. Nəticədəki qlobal blokun icrası həmin əməliyyatları kanonik ardıcıllıqla tətbiq edir və qlobal CommitQC bu icranı yekunlaşdırır. Buna görə yalnız zolaq sertifikatı əməliyyatın qlobal State vəziyyətini dəyişdiyini iddia etmək üçün kifayət deyil. Bərpa və icra boyunca zolağın kimliyi, nəsli, dayaq nöqtəsinin aktuallığı, mənbənin mühafizəsi və fasiləsiz birləşmə sərhədləri yoxlanılır.
 
-Bir əməliyyat növbəyə daxil olduqda, icra yolu routeri onu `RoutingDecision { lane_id, dataspace_id }` kimi həll edir. Tək yol rejimində bu hər zaman icra yolu `0` və ümumi məlumat sahəsi olur. Nexus rejimində, konfiqurasiya edilmiş yönləndirici dataspace-ə aid qaydaları, maliyyə əməliyyatlarının hesabat yönləndirilməsini, hesab qaydalarını, açıq yönləndirmə qaydalarını və nəhayət, standart marşrutu tətbiq edir. Həll edilmiş icra xətti və məlumat sahəsi öz kataloqlarında mövcud olmalıdır və icra xətti həll edilmiş məlumat sahəsinə bağlanmalıdır; əks halda, əməliyyat növbəyə qoyulmadan rədd edilir.
+Təsdiqlənmiş `sumeragi_lane_policy` sabit zolaqları, marşrutları, komitələri və avtomatik miqyaslandırmanı idarə edir. Təkcə konfiqurasiya kataloqu konsensus zolağını aktivləşdirmir. Konkret məlumat məkanı hədəfləri qəbul edilmiş uyğun zolağa həll olunmalıdır; əlçatan olmayan özəl marşrut universal iş kimi icra edilmək əvəzinə rədd edilir. Tam idarəetmə müstəvisi paketləri `0` zolağından keçir ki, kataloq və aktivləşmə keçidləri irəliləyə bilsin.
 
-Növbə bu yönləndirmə qərarını əməliyyatın kriptoqrafik xashı ilə saxlayır ki, sonrakı mərhələlər bunu yenidən təxmin etməsinlər. Təklifin hazırlanması daha sonra icra zolağı metadatasını iki şəkildə istifadə edir:
+Müstəqil imzalanmış məlumat məkanı kökü öz State vəziyyətinə və yerli yekunluğuna malik ayrıca icra sərhədidir. Məlumat məkanı kataloqunda qeydin qeydiyyatı həmin kökü yaratmır. Köklərarası atomiklik ayrıca AMX protokolundan istifadə edir. Sabitlənmiş namizəd versiyada bu yolun pul əməliyyatları və bütöv şəbəkə üzrə uyğunluq təsdiqi hələ açıqdır.
 
-- O, əməliyyatları icra zolağı üzrə qarışdırır ki, yalnız əməliyyatları əvvəlcədən sıraya qoyulduğu üçün bir icra zolağı bloka hökm etməsin.
-- Bu hər bir yol vahidi əməliyyat icra bloku (TEU) limitlərinə tətbiq olunur. Bir icra yolunun təyin edilmiş tutumunu aşacaq əməliyyatlar təxirə salınır və yenidən növbəyə qoyulur, lakin bir icra yolunun ilk aşırı çəki əməliyyatı qəbul edilə bilər ki, sağ qalma kilidlənməsinin qarşısı alınsın.
-
-Namizəd hazırlanması zamanı, Sumeragi təklif olunan yükü icra zolağı və məlumat sahəsi üzrə toplayır və zolaq-yerli məlumat-mövcudluğu kimliklərini çıxarır. Qeyd olunan cəmlərə əməliyyat sayı, hissələr, yük baytları və TEU daxildir. Protokolun yekunlaşmasından sonra, həmin ümumilər icra zolağı və məlumat məkanı kriptoqrafik öhdəlik dəyəri vaxt nöqtəsi məlumat baxışlarına çevrilir və təsdiqlənmiş Sumeragi diaqnostikaları vasitəsilə göstərilir. Əgər blok icra xətti maliyyə əməliyyatlarının həll protokolu nəticə qeydlərini ehtiva edirsə, blok emalı həmçinin icra xətti maliyyə əməliyyatlarının həllinin kriptoqrafik öhdəlik dəyərlərini və ötürməni yaradır blok başlığını, konsensus yekunlaşdırma sertifikatını, bağlayıcı dəyərin məlumat-mövcudluğu kriptoqrafik xəşini, maliyyə əməliyyatlarının həll edilməsi sübutunu və icra zolağı yük ölçüsünü birləşdirən məlumat konteynerləri.
+Sabitlənmiş [zolaq tətbiqinə](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_core/src/sumeragi/lanes/mod.rs), [zolaq müqaviləsinə](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi_lanes.md), [müstəqil məlumat məkanı müqaviləsinə](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi.md) və [uyğunluq təsdiqinin vəziyyətinə](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/sumeragi_goals.md) baxın.
 
 ## Məlumatın mövcudluğu və yükün bərpası {#data-availability-and-payload-recovery}
 
-Sumeragi v2 imzalanmış RS16 `PayloadManifest` və `PayloadChunk` mesajları vasitəsilə qlobal yük mövcudluğunu təmin edir. Lider imzalanmış texniki manifesti tam komitəyə göndərir və ilkin olaraq deterministik hissələri Set A-ya paylayır. Təsdiqləyici yalnız tək protokol-standart bədəni bərpa etdikdən, texniki manifesti və hissə kriptoqrafik xəşləri təsdiqlədikdən, bədəni davamlı şəkildə saxladıqdan sonra Səs-verməyə hazırlana bilər. və deterministik təsdiqləməni tamamlamaq. Əgər sürətli yol dayanarsa, bərpa çatdırılmanı Set B-yə genişləndirir. Sertifikatlaşdırılmış bədən bərpası və blok sinxronizasiyası, şəbəkə tərəfi bədəni almadan əvvəl nəticəni öyrəndikdə məhdud bərpa yolunu təmin edir.
+Sumeragi V1 qlobal yükün əlçatanlığını imzalanmış RS16 `PayloadManifest` və `PayloadChunk` mesajları ilə təmin edir. Lider imzalanmış manifesti və hər imzalanmış sətri bütün digər komitə üzvlərinə və növbəti komitəyə qoşulan üzvlərə göndərir. Təsdiqləyici yalnız kanonik gövdəni yenidən qurduqdan, manifesti və parça həşlərini yoxladıqdan, gövdəni davamlı saxladıqdan və deterministik validasiyanı tamamladıqdan sonra Prepare səsi verə bilər. Sətirləri çatışmayan həmyaşıd qovşaq onları `PayloadRequest` ilə sorğulayır. Sertifikatlaşdırılmış gövdənin bərpası və blok sinxronizasiyası, həmyaşıd qovşaq gövdəni almadan əvvəl yekunluğu öyrəndikdə, məhdudlaşdırılmış bərpa yolunu təmin edir.
 
-Çoxzolaqlı icra əlavə olaraq hər icra zolağı subyektinə görə deterministik yük-sahibliyi kriptoqrafik xəş və zolaq-yerli RBC instansiya kriptoqrafik xəş yaradır. Bu şəxsiyyətlər icra xətti təkliflərini və sertifikatları qlobal konteyner əməliyyatına bağlayır; onlar ayrıca bir qlobal konsensus sessiyası deyillər. Bir blok hələ də yalnız şəbəkə iştirakçısının etibarlı konsensus yekunlaşdırma sertifikatına və uyğun yükün yerli olaraq mövcud olduğu zaman yekunlaşır.
+Hər zolaq instansiyası öz autentifikasiya edilmiş əlçatanlıq və sertifikat kontekstindən istifadə edir. Qlobal birləşmə yoxlamaları onun sertifikatlaşdırılmış paketini və ilkin yükünü gözlənilən zolaq nəslinə və dayaq nöqtəsinə bağlayır. Həmyaşıd qovşaq qlobal yekunluğu yalnız uyğun qlobal yük və etibarlı CommitQC yerli olaraq mövcud olduqda tətbiq edir.
 
 Müstəqil RBC API son nöqtəsi yerinə autentifikasiya olunmuş operator səthlərindən istifadə edin:
 
 - `iroha --operator-private-key-file <path> --output-format text ops sumeragi status` səlahiyyətli hündürlüyü, baxışı, mərhələni, sertifikatları və canlılıq vəziyyətini bildirir.
-- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` qeyri-avtoritativ növbə, proqram təminatı emal iş axını, NPoS, icra zolağı və verilənlər məkanı diaqnostikalarını, o cümlədən icra zolağı yükü mülkiyyətini hesabat edir.
-- Prometheus siqnalları kimi `sumeragi_missing_block_requests`, `sumeragi_missing_block_oldest_ms`, `sumeragi_missing_block_fetch_total`, `sumeragi_da_gate_block_total` və `sumeragi_da_gate_satisfied_total` itkin-bədən bərpasını, məlumat-mövcudluq qapılarını və mesajın işlənməsini ayırır; bax [Performans və göstəricilər](/az/guide/advanced/metrics.md).
+- `iroha --operator-private-key-file <path> --output-format text ops sumeragi diagnostics` əməliyyat növbəsinə təzyiq, NPoS seçki vəziyyəti və zolaq idarəetməsi manifestinin statusu üzrə səlahiyyətli vəziyyət mənbəyi sayılmayan diaqnostika verir.
+- `sumeragi_fetch_requests_total` (itkin gövdələr üçün `kind="body"`, geriləməni aradan qaldırmaq üçün `kind="sync"`), `sumeragi_view_changes_total`, `sumeragi_round_stage` və `sumeragi_dropped_total` kimi hər instansiya üzrə Prometheus sıraları `lane` etiketi daşıyır və itkin gövdənin bərpasını, baxış dəyişikliklərini və məhdud növbədən atılmaları ayırır; bax [Performans və göstəricilər](/az/guide/advanced/metrics.md).
 
-Kura yaddaş yerləşimi üçün törədilmiş icra yolu konfiqurasiyasından istifadə edir. Hər icra yolu `blocks/lane_000_core` və `merge_ledger/lane_000_core_merge.log` kimi deterministik yaddaş adları alır; icra yolu həyat dövründəki dəyişikliklər, qlobal blok ardıcıllığını dəyişdirmədən, həmin seqmentləri təmin edə, ləğv edə və ya təkrar adlandıra bilər.
+Zolaq blok anbarları birləşmə və bərpa üçün lazım olan sertifikatlaşdırılmış paketləri və mənbə qeydlərini saxlayır. Onların həyat dövrü təsdiqlənmiş zolaq nəslinə uyğun gedir; saxlama qovluğunun adı yeni zolağa və ya icra kökünə səlahiyyət vermir.

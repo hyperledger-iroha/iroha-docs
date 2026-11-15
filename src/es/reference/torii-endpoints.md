@@ -1,45 +1,44 @@
 ---
 translation_locale: es
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 32f53c1fad49ecd320c46636f707e105db86b2080a4500f6006a3a91e97b9c7f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# Puntos de acceso de Torii {#torii-endpoints}
 
-# Torii API puntos finales {#torii-endpoints}
-
-Torii es la puerta de enlace HTTP, SSE y WebSocket para Iroha 3. Sirve tanto a los endpoints APIs orientados al libro mayor como a los endpoints API del operador.
+Torii es la puerta de enlace HTTP, SSE y WebSocket de Iroha 3. Ofrece tanto APIs orientadas al libro mayor como puntos de acceso del operador.
 
 Las reglas actuales del protocolo son:
 
 - el formato binario canónico es Norito
-- muchos puntos finales API también admiten JSON cuando envías `Accept: application/json`
+- muchos puntos de acceso también admiten JSON cuando se envía `Accept: application/json`
 - las métricas se exponen en formato Prometheus
 
 Para detalles del formato, negociación de contenido, indicadores de diseño, hashes criptográficos del esquema y la guía Norito RPC, consulte el [Norito referencia](/es/reference/norito.md).
 
-## Puntos finales comunes API {#common-endpoints}
+## Puntos de acceso comunes {#common-endpoints}
 
-| API punto final                         |Formato|Propósito|
+| Punto de acceso | Formato | Propósito |
 | -------------------------------- | -------------- | ---------------------------------------------------------------- |
 | `POST /v1/pipeline/transactions` | Norito         |Enviar una transacción firmada|
 | `POST /v1/query`                 | Norito         |Enviar una consulta firmada|
 | `GET /v1/events/ws`              | WebSocket      |Suscribirse a flujos de eventos|
 | `GET /v1/events/sse`             | SSE            |Suscribirse a flujos de eventos en SSE|
 | `GET /v1/blocks/stream`          | WebSocket      |Transmitir bloques comprometidos|
-| `GET /v1/peers`                  | JSON           |lista de pares de red expuesta por Torii|
+| `GET /v1/peers`                  | JSON           |IDs de los pares de red en línea; requiere la firma de solicitud del operador|
 | `GET /livez`                     |Texto|Solo vitalidad del proceso; no implica preparación del protocolo|
-| `GET /readyz`                    | JSON           |Completa la preparación del nodo, incluyendo las verificaciones obligatorias de efectivo fuera de línea|
-| `GET /health`                    | JSON           |Sonda de preparación con la misma invariante de efectivo fuera de línea|
-| `GET /v1/api/version`            |Texto|Versión actual del encabezado de bloque|
+| `GET /readyz` | Texto | Listo cuando la admisión de consenso y la custodia de balizas están disponibles; `503` durante el arranque Fast de emergencia o cuando un puente ISO 20022 configurado no puede conservar los registros de auditoría |
+| `GET /health` | Texto | Actividad de Torii; devuelve `Healthy` |
+| `GET /v1/api/version`            |Texto|Versión canónica del formato de transmisión de bloques firmados; `503` antes del génesis|
 | `GET /status`                    | Norito o JSON |Estado de diagnóstico de alto nivel; solicitud JSON explícitamente|
-| `GET /metrics`                   |Prometeo|Punto de enlace de recopilación de Prometheus API|
+| `GET /metrics` | Prometheus | Punto de acceso de recopilación de métricas de Prometheus |
 | `GET /v1/schema`                 | JSON           |Vista de datos puntuales del esquema del modelo de datos servida por el nodo cuando está habilitada|
-| `GET /openapi.json`              | JSON           | OpenAPI documento para las Torii HTTP rutas activas                |
+| `GET /openapi.json`              | JSON           | Contrato OpenAPI versionado en el repositorio, reducido a las rutas del catálogo de esta compilación |
 | `GET /v1/parameters`             |JSON           |Vista de datos de parámetro de nodo en un punto en el tiempo|
 | `GET /v1/node/capabilities`      | JSON           |Capacidad del nodo y metadatos del modelo de datos|
 | `GET /v1/time/now`               | JSON           |Vista de datos de punto en el tiempo del reloj de pared del nodo|
-| `GET /v1/time/status`            | JSON           |Estado de sincronización de tiempo|
+| `GET /v1/time/status`            | JSON           |Estado de sincronización de tiempo; requiere la firma de solicitud del operador|
 
 Para una solicitud SSE, anuncie la transmisión nativa más una alternativa escrita:
 
@@ -49,7 +48,7 @@ Accept: text/event-stream, application/json
 
 Torii primero negocia una representación JSON o Norito en la capa de solicitud, luego valida la respuesta nativa `text/event-stream`. Enviar solo `text/event-stream` por lo tanto se rechaza con `406`; el [receta de eventos en streaming](/es/cookbook/stream-events.md) utiliza el encabezado completo.
 
-`/openapi.json` es el contrato generado para las rutas representadas en el esquema, no un inventario completo de sondeo operativo. El documento actual omite `/livez` y `/readyz`, y su descripción de `/health` puede retrasar al manejador de disponibilidad. Genera clientes de ruta a partir del documento en vivo, pero valida la vigencia y la disponibilidad directamente contra el nodo en ejecución y los controladores fijados. La superficie exacta todavía depende de la compilación funciones y configuración de ejecución del software. Use el [Torii API consola](/es/reference/torii-api-console.md) para cargar ese documento en vivo, probar rutas JSON, copiar solicitudes curl y generar código cliente a partir del esquema actual.
+`/openapi.json` es el contrato versionado en el repositorio para las rutas del catálogo marcadas para la proyección OpenAPI. Incluye `/livez`, `/health` y `/readyz`. Genere los clientes de las rutas a partir del documento que sirve el nodo de destino y compruebe directamente sus sondas. La superficie exacta depende de las funciones habilitadas en la compilación y de la configuración de ejecución. Utilice la [consola de la API de Torii](/es/reference/torii-api-console.md) para cargar ese documento en vivo, probar rutas JSON, copiar solicitudes curl y generar código cliente a partir del esquema actual.
 
 Cada operación respaldada por catálogo OpenAPI incluye un objeto `x-iroha-route-auth`. Las herramientas respaldadas por catálogo MCP exponen el mismo contrato que `_meta["iroha/routeAuth"]`. Ambas proyecciones llevan `schemaVersion`, `stableRouteId`, `authentication` y `admission`. Trate la versión `1` como un contrato exacto: rechace un `schemaVersion` no compatible en lugar de adivinar cómo deberían interpretarse sus etiquetas de autenticación o admisión. Los metadatos de la ruta describen el límite de la solicitud; no reemplazan las credenciales requeridas por ese límite.
 
@@ -83,19 +82,18 @@ curl -fsS "$TAIRA_ROOT/v1/assets/definitions?limit=5" \
   | jq -r '.items[] | [.id, .name, .total_quantity] | @tsv'
 ```
 
-Si una ruta de testnet pública devuelve `502`, se agota el tiempo de espera o informa de una cola saturada, trátela como un problema de disponibilidad del endpoint API y vuelva a intentarlo más tarde antes de depurar el código de su cliente.
+Si una ruta de la testnet pública devuelve `502`, agota el tiempo de espera o informa de una cola saturada, considérelo un problema de disponibilidad del punto de acceso y vuelva a intentarlo más tarde antes de depurar el código de su cliente.
 
-## Puntos finales de consenso y tiempo de ejecución de software API {#consensus-and-runtime-endpoints}
+## Puntos de acceso de consenso y del entorno de ejecución {#consensus-and-runtime-endpoints}
 
-Cada ruta Sumeragi a continuación requiere la firma de solicitud del operador. Las rutas de estado, diagnóstico, flujo, líder, clave, QC y parámetro también requieren una compilación con telemetría activada.
+Todas las rutas de Sumeragi indicadas a continuación requieren la firma de solicitud del operador. Las rutas de estado, diagnósticos, transmisión, carriles, claves y parámetros también requieren una compilación con telemetría habilitada. Las rutas de actualización del entorno de ejecución, de versión y de contención también requieren la firma de solicitud del operador; `GET /v1/runtime/abi/active` y `GET /v1/runtime/metrics` requieren una firma de solicitud de cuenta canónica, y `GET /v1/runtime/abi/hash` es pública.
 
-| API endpoint                                  |Formato|Propósito|
+| Punto de acceso | Formato | Propósito |
 | ----------------------------------------- | -------------- | ------------------------------------------------------- |
 | `GET /v1/sumeragi/status`                 | Norito o JSON |Estado de consenso autorizado por el reductor|
 | `GET /v1/sumeragi/diagnostics`            | JSON           |Diagnósticos de canal de ejecución, cola y pipeline de procesamiento no autoritativos|
 | `GET /v1/sumeragi/status/sse`             | SSE            |Flujo continuo de estado de consenso autoritario|
-| `GET /v1/sumeragi/leader`                 | JSON           |Información del líder actual|
-| `GET /v1/sumeragi/qc`                     | Norito o JSON | Vistas de datos en el punto en el tiempo del certificado de quórum más alto y bloqueado |
+| `GET /v1/sumeragi/lanes` | Norito o JSON | Carriles confirmados de la cadena global y estado de las instancias de carril de este nodo |
 | `GET /v1/sumeragi/consensus-keys`         | JSON           |Claves de consenso activas|
 | `GET /v1/sumeragi/bls-keys`               | JSON           | Claves de consenso activas BLS |
 | `GET /v1/sumeragi/params`                 | JSON           |Parámetros actuales en cadena Sumeragi|
@@ -105,15 +103,17 @@ Cada ruta Sumeragi a continuación requiere la firma de solicitud del operador. 
 | `GET /v1/runtime/abi/hash`                | JSON           |Tiempo de ejecución de software activo ABI hash criptográfico|
 | `GET /v1/runtime/metrics`                 | JSON           |vista de datos de métricas de tiempo de ejecución de software en un momento específico|
 | `GET /v1/runtime/upgrades`                | JSON           |lista de actualizaciones de tiempo de ejecución de software|
-| `POST /v1/runtime/upgrades/propose`       | JSON           |Proponer una actualización del tiempo de ejecución del software|
-| `POST /v1/runtime/upgrades/activate/{id}` | JSON           |Activar una propuesta de actualización del tiempo de ejecución del software|
-| `POST /v1/runtime/upgrades/cancel/{id}`   | JSON           |Cancelar una actualización propuesta del tiempo de ejecución del software|
+| `POST /v1/runtime/upgrades/propose`       | JSON           |Redactar la propuesta de SORA Parliament que programa un conjunto de cambios del entorno de ejecución|
+| `POST /v1/runtime/upgrades/attest/{id}` | JSON | Firmar la atestación de este nodo para un conjunto de cambios programado |
+| `GET /v1/runtime/release` | JSON | Resumen criptográfico de la versión de este nodo e indicación de si ejecuta las selecciones del entorno de ejecución confirmadas y programadas |
+| `GET /v1/runtime/containments` | JSON | Contenciones de emergencia registradas de definiciones del entorno de ejecución |
+| `POST /v1/runtime/upgrades/cancel/{id}`   | JSON           |Redactar la propuesta de SORA Parliament que retira un conjunto de cambios programado|
 
-## Aplicación y Familias de Rutas SORA {#app-and-sora-route-families}
+## Familias de rutas de aplicaciones y SORA Nexus {#app-and-sora-route-families}
 
-Cuando Torii se construye con el conjunto de funciones orientadas a la aplicación, expone familias adicionales de JSON para exploradores, servicios SORA, flujos de puente, pruebas y almacenamiento. No todas estas familias están habilitadas en cada perfil de red.
+Cuando Torii se compila con las funciones orientadas a aplicaciones, expone familias JSON adicionales para exploradores, servicios de SORA Nexus, flujos de puentes, pruebas y almacenamiento. No todas estas familias están habilitadas en todos los perfiles de red.
 
-`/openapi.json` describe las rutas registradas en el catálogo de la aplicación generada-API; es autoritativo para las entradas que contiene, no para cada ruta montada por el proceso. En particular, las rutas locales públicas SoraFS CID y bien conocidas se montan fuera de ese documento generado y deben ser examinadas directamente.
+`/openapi.json` es autoritativo para las operaciones que contiene, no para todas las rutas que monta el proceso. Las rutas del catálogo expuestas solo a los SDKs generados, o no proyectadas en absoluto, están montadas pero no figuran en él. En la revisión fijada, entre ellas se encuentran las rutas de llamadas de Kaigi, `/v1/app-api/*`, las lecturas de billeteras de KAGEMUSHA bajo `/v1/kagemusha/{scheme}/wallets/*` y las rutas públicas de SoraFS `/sorafs/cid/*` y `/.well-known/sorafs/manifest`. Examine esas rutas directamente.
 
 |Familia de rutas|Propósito|
 | ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
@@ -126,17 +126,17 @@ Cuando Torii se construye con el conjunto de funciones orientadas a la aplicaci�
 | `/v1/multisig/*`, `/v1/controls/*`                                        |Propuestas multisig, aprobaciones y ayudas de control de transferencias|
 | `/v1/bridge/*`, `/v1/ledger/*`, `/v1/proofs/*`                            |Finalidad, prueba de estado, prueba de bloque, retención de prueba y rutas de consulta de prueba|
 | `/v1/da/*`                                                                |Ingesta de disponibilidad de datos, manifiestos técnicos, políticas de prueba, compromisos e intenciones de fijación|
-| `/v1/zk/*`                                                                | ZK raíces, verificación de pruebas, IVM demostración, conteo de votos, claves de verificación, registros de pruebas y archivos adjuntos |
+| `/v1/zk/*` | Raíces ZK, verificación de pruebas, recuento de votos, claves de verificación, registros de pruebas y archivos adjuntos |
 | `/v1/gov/*`, `/v1/ministry/*`                                             |Propuestas de gobernanza, votaciones, estado del consejo, espacios de nombres protegidos, propuestas de agenda, promulgación y finalización|
-| `/v1/nexus/*`, `/v1/sccp/*`                                               | Nexus carril de ejecución, espacio de datos y auxiliares de prueba entre cadenas|
+| `/v1/nexus/*`, `/v1/sccp/*` | Funciones auxiliares de SORA Nexus para espacios de datos, carriles y pruebas entre cadenas |
 | `/v1/musubi/*`                                                            |Musubi lecturas del registro de paquetes y constructores de instrucciones|
 | `/v1/subscriptions/*`                                                     |Planes de suscripción, ciclo de vida de la suscripción, uso y asistentes de cobro|
 | `/v1/sorafs/*`, `/sorafs/*`, `/.well-known/sorafs/*`                      | SoraFS descubrimiento de proveedores, pruebas de capacidad, fijación, recuperación de almacenamiento y servicio de contenido público|
-| `/v1/soracloud/*`, `/v1/soradns/*`, `/soradns/*`, `/api/*`                | SoraCloud ciclo de vida del servicio, flujos privados de cálculo/modelo, descubrimiento público y enrutamiento de aplicaciones alojadas|
+| `/v1/soracloud/*`, `/v1/soradns/*`, `/api/*` | Ciclo de vida de los servicios de SoraCloud, flujos privados de cómputo y modelos, descubrimiento público y enrutamiento de aplicaciones alojadas |
 | `/v1/connect/*`, `/v1/vpn/*`                                              |Iroha Conectar sesiones, WebSocket transporte, VPN sesiones, perfiles y registros de resultados de protocolo|
 | `/v1/app-api/*`, `/v1/api/*`, `/v1/content/*`                             |Vinculaciones de la aplicación API y enrutamiento de contenido respaldado por bundle/CID|
 | `/v1/operator/*`, `/v1/mcp`                                               |Autenticación del operador y puente nativo MCP JSON-RPC|
-| `/v1/offline/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*`   |Preparación sin conexión, acuerdos de repositorio, manifiestos técnicos del espacio de datos y [RAM-LFE ayudantes](/es/blockchain/ram-lfe.md#torii-routes)|
+| `/v1/kagemusha/*`, `/v1/repo/*`, `/v1/space-directory/*`, `/v1/ram-lfe/*` | Registro de KAGEMUSHA y lecturas de finalidad de billeteras, acuerdos de recompra, manifiestos de espacios de datos y [funciones auxiliares de RAM-LFE](/es/blockchain/ram-lfe.md#torii-routes) |
 | `/v1/kaigi/*`, `/v1/webhooks/*`, `/v1/notify/*`, `/v1/telemetry/*`        |Colaboración, webhook, notificación push e integraciones de telemetría en vivo|
 
 ## Autenticación de cuenta, visibilidad y cursores del explorador {#account-authentication-visibility-and-explorer-cursors}
@@ -197,9 +197,9 @@ Las reglas para la ruta, la consulta, el cuerpo, la marca de tiempo y el valor n
 
 La firma exacta de la solicitud es siempre obligatoria. Cuando `[torii.operator_auth].enabled = true`, cada ruta de operador ordinario también requiere un `x-iroha-operator-session` válido; cuando `require_mtls = true`, además requiere `x-forwarded-client-cert` de un ingreso confiable. Ningún factor reemplaza la firma de la solicitud.
 
-WebAuthn la inscripción y el inicio de sesión usan estos cuatro JSON API endpoints:
+El registro y el inicio de sesión de WebAuthn utilizan estos cuatro puntos de acceso JSON:
 
-|Método y endpoint API|Propósito|
+| Método y punto de acceso | Propósito |
 | --------------------------------------------- | ---------------------------------------- |
 | `POST /v1/operator/auth/registration/options` |Comenzar la inscripción de credenciales WebAuthn|
 | `POST /v1/operator/auth/registration/verify`  |Verificar y guardar la credencial|
@@ -212,33 +212,32 @@ ISO 20022 rutas aplican dos verificaciones independientes. La solicitud primero 
 
 ### Visibilidad del libro mayor de blockchain y cursores del explorador {#ledger-visibility-and-explorer-cursors}
 
-Las lecturas del libro mayor de blockchain dirigidas a la aplicación utilizan el límite opcional de cuenta de la aplicación mencionado arriba. Una solicitud no firmada recibe solo los espacios de datos configurados como públicos. Una solicitud firmada válida agrega espacios de datos vinculados al UAID actual del llamador, cada espacio de datos restringido nombrado por un permiso exacto `CanReadRestrictedDataspace { dataspace }`, o todas las rutas cuando la cuenta tiene `CanReadAllLedgerData`.
+Las lecturas del libro mayor orientadas a aplicaciones utilizan el límite opcional de cuentas de aplicación descrito anteriormente. Una solicitud sin firmar solo recibe los espacios de datos configurados como públicos. Una solicitud con firma válida añade los espacios de datos vinculados al UAID actual del solicitante, cada espacio de datos restringido nombrado mediante un permiso exacto `CanReadRestrictedDataspace { dataspace }`, o todas las rutas si la cuenta tiene `CanReadAllLedgerData`.
 
 Utilice la ruta que coincida con el principal de autorización del llamante:
 
-|Método y endpoint API|Autenticación y visibilidad|
+| Método y punto de acceso | Autenticación y visibilidad |
 | ------------------------------------- | --------------------------------------------------------------- |
-| `POST /v1/transactions/visible/query` |Firma de cuenta canónica; aplica la visibilidad del llamador|
-| `POST /v1/transactions/query`         |Firma de solicitud del operador; permite la vista global del operador|
+| `POST /v1/transactions/query` | Firma opcional de cuenta canónica; aplica la visibilidad de espacios de datos del solicitante |
 | `GET /v1/triggers/completed`          |Firma de solicitud del operador; lee los registros de finalización locales del nodo|
 
-El mismo objeto de visibilidad filtra cuenta, dominio, definición de activo, activo, NFT, RWA, titular y lecturas del Explorador. Un objeto ausente y un objeto que está fuera de las rutas visibles del llamante son intencionalmente indistinguibles. El historial de transacciones comprometidas e instrucciones se muestra solo cuando cada tramo de ruta registrado para la transacción es visible. Una transacción de espacio de datos mixto es por lo tanto, oculto cuando incluso un tramo del participante está fuera del alcance del llamador; el contexto de enrutamiento faltante, obsoleto o malformado es visible solo para un lector global.
+El mismo objeto de visibilidad filtra las lecturas de cuentas, dominios, definiciones de activos, activos, NFT, RWA, titulares y Explorer. Un objeto ausente y otro que esté fuera de las rutas visibles del solicitante son intencionadamente indistinguibles. El historial confirmado de transacciones e instrucciones solo se muestra cuando son visibles todos los tramos de ruta registrados para la transacción. Por tanto, una transacción que abarque varios espacios de datos se oculta si incluso un solo tramo participante queda fuera del alcance del solicitante; el contexto de enrutamiento ausente, obsoleto o malformado solo es visible para un lector global.
 
 Las seis colecciones Explorer respaldadas por el mundo usan cursores de conjuntos de claves canónicas base64url opacas. El límite de página predeterminado es 25, el máximo es 100, y una página inspecciona como máximo 512 claves candidatas. Cada cursor está vinculado a su colección, filtros, clave última canónica y al valor de resumen criptográfico del conjunto de rutas visibles del llamador, por lo que no puede reproducirse en otra consulta ni después de que cambie la visibilidad del llamador.
 
 Los cursores de historial de bloque, transacción, última transacción, instrucción y última instrucción además fijan la altura de la vista de datos del punto en el tiempo comprometido y el hash criptográfico del bloque. Las respuestas exponen `pagination.limit`, `pagination.snapshot_height`, `pagination.snapshot_hash`, `pagination.next_cursor` y `pagination.has_more`. Un cursor para otra ruta o conjunto de filtros, un valor de resumen criptográfico de visibilidad cambiado, o una vista de datos en un momento determinado que el nodo ya no puede validar falla de manera cerrada. La exploración del historial permanece dentro del permiso de admisión de consultas de Torii mientras el trabajador bloqueante se ejecuta.
 
-Los flujos de Explorer WebSocket emiten resúmenes filtrados y recalculan la visibilidad a medida que cambian los permisos del libro mayor de la blockchain. La ruta nativa `GET /v1/blocks/stream` es diferente: emite bloques completos firmados, requiere `CanReadAllLedgerData` durante el intercambio de saludos y se cierra si ese permiso se revoca más tarde. No utilice el flujo nativo para un explorador limitado al espacio de datos.
+Los flujos WebSocket de Explorer emiten resúmenes filtrados y recalculan la visibilidad cuando cambian los permisos del libro mayor. La ruta nativa `GET /v1/blocks/stream` es distinta: emite bloques firmados completos, exige `CanReadAllLedgerData` durante la negociación y se cierra si ese permiso se revoca posteriormente. No utilice el flujo nativo para un explorador limitado a espacios de datos.
 
 ## ISO Puente 20022 {#iso-20022-bridge}
 
-Torii expone el puente ISO 20022 bajo `/v1/iso20022/*` cuando la API orientada a la aplicación y el tiempo de ejecución del software del puente están activados. El puente está intencionalmente limitado: no es una pasarela de compensación ISO 20022 de propósito general, sino un subconjunto compatible para convertir mensajes de pago seleccionados en transferencias Iroha firmadas y para rastrear su estado en el libro mayor de la blockchain.
+Torii monta el puente ISO 20022 bajo `/v1/iso20022/*` en todas las compilaciones; solo atiende envíos cuando `torii.iso_bridge.enabled` está activado. El puente está intencionalmente limitado: no es una pasarela de compensación ISO 20022 de propósito general, sino un subconjunto compatible para convertir mensajes de pago seleccionados en transferencias Iroha firmadas y para rastrear su estado en el libro mayor.
 
 Configure un `torii.iso_bridge.store_dir` local duradero antes de aceptar cualquier envío. El campo de configuración es opcional solo para que un nodo pueda iniciarse en modo de solo lectura o de uso diagnóstico: Cada envío autenticado ISO requiere el directorio y devuelve `503 Service Unavailable` que se puede reintentar cuando la persistencia está ausente o falla una escritura de replay-tombstone o rich-record.
 
-### Torii ISO 20022 API puntos finales {#torii-iso-20022-endpoints}
+### Puntos de acceso ISO 20022 de Torii {#torii-iso-20022-endpoints}
 
-|Método y endpoint API|Propósito|
+| Método y punto de acceso | Propósito |
 | -------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `POST /v1/iso20022/pacs008`                  |Envíe una transferencia de crédito al cliente de FI a FI y genere la transferencia de activo coincidente de Iroha|
 | `POST /v1/iso20022/pacs009`                  |Enviar una transferencia de crédito de FI a FI utilizada para PvP o financiación en efectivo relacionada con valores|
@@ -261,7 +260,7 @@ Las presentaciones `pacs.008` deben proporcionar el ID del mensaje, el monto de 
 
 `pacs.009` las presentaciones deben proporcionar el ID del mensaje de negocio, el ID de definición del mensaje, la hora de creación, el monto de la liquidación interbancaria, la moneda, la fecha de liquidación, agente que instruye y agente instruido BICs, y deudor y acreedor IBANs. Si el mensaje incluye `Purp`, el puente actualmente solo acepta financiamiento con fines de valores: `Purp=SECU`.
 
-Los puntos finales de envío `pacs.008` y `pacs.009` API aceptan contenedores de datos XML ISO o el formato de campo plano utilizado por las pruebas del puente. Los campos opcionales `SplmtryData` pueden fijar el libro mayor de la cadena de bloques de destino Iroha, los ID o direcciones de las cuentas de origen y destino, y el ID de definición del activo. La respuesta es `202 Accepted` con `message_id`, `transaction_hash`, `status`, `pacs002_code`, y el contexto resuelto del libro mayor/cuenta/activo.
+Los puntos de acceso de envío de `pacs.008` y `pacs.009` aceptan sobres ISO en XML o el formato de campos planos utilizado por las pruebas del puente. Los campos opcionales `SplmtryData` pueden fijar el libro mayor Iroha de destino, los IDs o las direcciones de las cuentas de origen y destino y el ID de definición del activo. La respuesta es `202 Accepted`, con `message_id`, `transaction_hash`, `status`, `pacs002_code` y el contexto resuelto del libro mayor, las cuentas y el activo.
 
 ### Autorización del Participante y Propiedad del Ciclo de Vida {#participant-authorization-and-lifecycle-ownership}
 
@@ -278,7 +277,7 @@ La autorización del ciclo de vida se deriva de ese registro inmutable en lugar 
 
 El perfil original y la política de firma permanecen fijados durante todo el ciclo de vida, por lo que un llamador no puede seleccionar un perfil más débil para una actualización. Un código `pacs.002` que representa la liquidación (`ACSC`, `ACCP`, `SETT` o `SETTLED`) cambia el registro original a liquidado solo cuando Torii ha presentado evidencia de la transacción.
 
-Cualquiera de las partes originales puede leer su registro de mensajes y los documentos de salida generados. El endpoint de auditoría API devuelve únicamente los registros en los que el participante autenticado es el originador o la contraparte. Un administrador de auditoría configurado por separado recibe una vista de auditoría global de solo lectura y no puede enviar ni cambiar mensajes. Los participantes desconocidos y los identificadores de mensajes no relacionados no se revelan.
+Cualquiera de las partes originales puede leer su registro de mensaje y los documentos generados en la bandeja de salida. El punto de acceso de auditoría solo devuelve registros en los que el participante autenticado es el originador o la contraparte. Un administrador de auditoría configurado por separado recibe una vista global de auditoría de solo lectura y no puede enviar ni modificar mensajes. No se revelan participantes desconocidos ni identificadores de mensajes ajenos.
 
 ### Identidad de Reproducción Duradera y Documentos de Buzón Firmados {#durable-replay-identity-and-signed-outbox-documents}
 
@@ -319,7 +318,7 @@ El ciclo de vida orientado al libro mayor es:
 
 - `CreateKaigi`: crear una llamada bajo un dominio y almacenar su política, calendario, metadatos y manifiesto técnico opcional de retransmisión.
 - `JoinKaigi`: actualizar la lista de llamadas. En el modo `zk-roster-v1`, la vista pública de llamadas muestra los conteos de compromisos y anuladores en lugar de los ID de cuenta de los participantes.
-- `LeaveKaigi`: eliminar a un participante de una llamada transparente. La salida en modo privado es fuera de la cadena en el protocolo de la primera versión.
+- `LeaveKaigi`: eliminar a un participante. En el modo `zk-roster-v1`, el participante demuestra su salida, lo que elimina su compromiso de la lista de participantes y registra un nulificador.
 - `RecordKaigiUsage`: agregar la duración medida y los totales del costo de ejecución de la transacción.
 - `EndKaigi`: cierra la sesión y registra la marca de tiempo final.
 
@@ -328,6 +327,7 @@ Torii expone las siguientes lecturas orientadas a la aplicación:
 |Ruta|Autenticación|Propósito|
 | ----------------------------------- | --------------------------------------- | ------------------------------------------ |
 |`/v1/kaigi/calls/{call_id}`|pública|registro de llamada actual|
+| `/v1/kaigi/calls/{call_id}/participation` |solicitud de cuenta de red exacta canónica|la situación propia del llamante firmado|
 | `/v1/kaigi/calls/{call_id}/signals` |solicitud de cuenta de red exacta canónica|metadatos de señalización comprometidos paginados|
 | `/v1/kaigi/calls/{call_id}/events`  |solicitud de cuenta de red exacta canónica|flujo de ciclo de vida de llamada|
 | `/v1/kaigi/relays`                  |solicitud de operador en lista blanca|resumen del relevo|
@@ -335,11 +335,13 @@ Torii expone las siguientes lecturas orientadas a la aplicación:
 | `/v1/kaigi/relays/health`           |solicitud de operador en lista blanca|salud agregada del relé|
 | `/v1/kaigi/relays/events`           |solicitud de cuenta de red exacta canónica|registro de retransmisión y flujo de eventos de salud|
 
-La aplicación API debe estar habilitada. El resumen del relé y las rutas de salud son superficies de operador aunque sean de solo lectura; una solicitud no firmada `curl` es no es una sonda de disponibilidad válida. El estado de la sesión también se refleja a través de eventos de dominio Kaigi como `KaigiRosterSummary`, `KaigiRelayManifestUpdated`, `KaigiRelayHealthUpdated` y `KaigiUsageSummary`.
+La API de la aplicación debe estar habilitada. Las cuatro rutas de llamadas no están en `/openapi.json`: las rutas de registro de llamada, participación y señales solo se exponen a los SDKs generados, y el flujo de eventos de llamadas no se proyecta.
+
+Las rutas de resumen y de salud de los relés son superficies de operador aunque sean de solo lectura; una solicitud `curl` no firmada no es una sonda de disponibilidad válida. El estado de la sesión también se refleja a través de eventos de dominio Kaigi como `KaigiRosterSummary`, `KaigiRelayManifestUpdated`, `KaigiRelayHealthUpdated` y `KaigiUsageSummary`.
 
 ### CLI Prueba de Humo {#cli-smoke-test}
 
-Comience con el `iroha app kaigi` CLI cuando quiera verificar que un Torii API endpoint acepta transacciones Kaigi antes de conectar un UI. El comando de inicio rápido crea una sala en el endpoint API configurado e imprime su identificador de llamada y metadatos de unión:
+Comience con la CLI `iroha app kaigi` para verificar que un punto de acceso de Torii acepta transacciones Kaigi antes de conectar una UI. El comando de inicio rápido crea una sala mediante el punto de acceso configurado e imprime su identificador de llamada y los metadatos de incorporación:
 
 ```bash
 iroha app kaigi quickstart \
@@ -380,22 +382,22 @@ Use `--room-policy public` para habitaciones que los repetidores pueden exponer 
 
 ### JavaScript Integración {#javascript-integration}
 
-El actual [Iroha JavaScript demostración](https://github.com/soramitsu/iroha-demo-javascript) implementa un perfil de reunión uno a uno transparente y autenticado. No expone el protocolo `zk-roster-v1` flujo de prueba. Su renderizador crea WebRTC ofertas y respuestas, mientras que un puente privilegiado utiliza el local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js) proceder al pago para cotizar, firmar, enviar y esperar la finalización Kaigi transacciones.
+El actual [Iroha JavaScript demostración](https://github.com/soramitsu/iroha-demo-javascript) implementa un perfil de reunión uno a uno transparente y autenticado. No expone el protocolo `zk-roster-v1` flujo de prueba. Su renderizador crea WebRTC ofertas y respuestas, mientras que un puente privilegiado utiliza el local [`@iroha/iroha-js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js) proceder al pago para cotizar, firmar, enviar y esperar la finalización Kaigi transacciones.
 
 Consulte [Incrustar Kaigi en una aplicación JavaScript](/es/guide/tutorials/kaigi.md) para la autenticación exacta de la ruta, el formato de invitación, el límite del puente y los comandos de prueba de demostración actuales.
 
 ## Estado y Métricas {#status-and-metrics}
 
-Los endpoints de estado y métricas API son lo primero que se debe conectar a los tableros:
+Los puntos de acceso de estado y métricas son los primeros que debe conectar a los paneles de supervisión:
 
 - `/status` expone los campos de nivel superior de red, par, bloque, cola y consenso
 - `/metrics` expone contadores, medidores e histogramas de Prometheus
 
-En los nodos habilitados con Nexus, la salida de estado también incluye secciones conscientes del carril de ejecución y del espacio de datos. Cuando `nexus.enabled = false`, esas secciones se omiten.
+El enrutamiento de SORA Nexus es obligatorio. La salida de estado incluye los espacios de datos y carriles configurados; sus catálogos y el estado de enrutamiento confirmado determinan la topología indicada.
 
 ## JSON frente a Norito {#json-vs-norito}
 
-Varios endpoints del operador API devuelven Norito por defecto. Cuando el endpoint API admite JSON, envíe:
+Varios puntos de acceso del operador devuelven Norito de forma predeterminada. Cuando el punto de acceso admita JSON, envíe:
 
 ```http
 Accept: application/json
@@ -404,13 +406,13 @@ Accept: application/json
 Esto es especialmente útil para:
 
 - `/v1/sumeragi/status`
-- `/v1/sumeragi/qc`
+- `/status`
 
-Cuando un endpoint API acepta o devuelve directamente Norito tipados, use `application/x-norito` como el tipo de contenido o el valor preferido de `Accept`. Consulte [Norito](/es/reference/norito.md#torii-and-norito-rpc) para los detalles del transporte.
+Cuando un punto de acceso acepte o devuelva datos Norito tipados directamente, utilice `application/x-norito` como tipo de contenido o valor preferido de `Accept`. Consulte [Norito](/es/reference/norito.md#torii-and-norito-rpc) para conocer los detalles del transporte.
 
 ## Perfiles de telemetría {#telemetry-profiles}
 
-API la visibilidad del endpoint depende de la configuración `telemetry.profile` del nodo. La configuración actual expone cinco niveles de perfil:
+La visibilidad de los puntos de acceso depende del ajuste `telemetry_profile` de nivel raíz del nodo. La configuración actual ofrece cinco niveles de perfil:
 
 |Perfil| `/status` | `/metrics` |Rutas de desarrollador|
 | ----------- | --------- | ---------- | ---------------- |
@@ -422,7 +424,7 @@ API la visibilidad del endpoint depende de la configuración `telemetry.profile`
 
 ## CLI Atajos {#cli-shortcuts}
 
-El `iroha` CLI ya envuelve muchos de estos puntos finales API:
+La CLI `iroha` ya ofrece acceso a muchos de estos puntos de acceso:
 
 ```bash
 export IROHA_OPERATOR_KEY_FILE=/run/secrets/iroha/operator.key
@@ -439,6 +441,6 @@ iroha --config ./localnet/client.toml --operator-private-key-file "$IROHA_OPERAT
 
 ## Referencias ascendentes {#upstream-references}
 
-- [README API y descripción general de la observabilidad](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/README.md)
-- [ISO Implementación del puente 20022](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii/src/iso20022_bridge.rs)
+- [README API y descripción general de la observabilidad](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/README.md)
+- [ISO Implementación del puente 20022](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii/src/iso20022_bridge.rs)
 - [Rendimiento y métricas](/es/guide/advanced/metrics.md)

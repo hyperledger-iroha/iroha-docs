@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # 许可证 {#permissions}
 
 对于区块链上的各种操作,例如钱或烧毁资产,账户需要许可令牌.
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## 许可证验证器 {#permission-validators}
 
-允许存在,因此只有需要的权限符号的帐户才能执行受保护的操作.默认执行器在命令,查询和表达式执行过程中检查权限.
+权限的存在是为了确保只有持有所需权限令牌的账户才能执行受保护的操作。默认执行器会在交易和指令执行以及查询验证期间检查权限。
 
 默认验证器表面按账本区分组合:
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - 资产, NFTs,以及托管
 - 触发器
 - 角色和权限
-- 执行器/运行时,证明,桥梁和 SORA/Nexus 模块
+- 执行器/运行时,证明,桥梁和 SORA Nexus 模块
 
 准确的代币列表在 [Permission Tokens引用](/zh-hans/reference/permissions.md)中得到源支持.
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 允许检查由主动执行器执行.默认执行器提供内置的权限验证器和代币定义,网络可以通过升级使用的执行器来改变政策.
 
-验证者返回验证判决.验证人可以允许操作,理由地拒绝它,或者如果该操作不在验证者的范围之外,跳过它.所选的法官将这些裁决结合在一起来决定指示,查询或表达是否可以继续进行.
+执行器要么允许某项操作，要么以 `ValidationFail` 原因拒绝它。被拒绝的指令会使其所在交易被拒绝，被拒绝的查询则会将错误返回给调用方。
 
 ## 支持的查询 {#supported-queries}
 

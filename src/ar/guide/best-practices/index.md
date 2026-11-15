@@ -5,7 +5,6 @@ translation_source_hash: c463a3ca8fdef5c852746a7fdcfd6a1f7be5f95f88a5cf443c989ec
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # أفضل الممارسات {#best-practices}
 
 يجمع هذا القسم الإرشادات الموجهة للإنتاج لتطبيقات وشبكات Iroha. وهو منظم وفقًا للقرار الذي تحتاج إلى اتخاذه، وليس وفقًا للميزة التي تقوم بتنفيذه.

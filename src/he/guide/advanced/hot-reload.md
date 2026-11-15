@@ -1,14 +1,13 @@
 ---
 translation_locale: he
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # טעינה חמה של Iroha בקונטיינר Docker {#hot-reload-iroha-in-a-docker-container}
 
-השתמשו בטעינה חמה רק לאיתור תקלות מקומי. בפיתוח מקומי רגיל, העדיפו לבנות מחדש את ה־image או להפעיל מחדש את מחסנית Docker Compose שנוצרה מחבילת Kagami חדשה.
+השתמשו בטעינה חמה לצורכי ניפוי שגיאות מקומי בלבד. במדריך [השקה Iroha 3](/he/get-started/launch-iroha.md) מוסבר כיצד לבנות ולהפעיל ארבעה מאמתים ב־Docker באמצעות קבצים בינאריים מאותה גרסת מקור.
 
 ## החלפת הקובץ הבינרי של הצומת {#replace-the-peer-binary}
 
@@ -25,21 +24,12 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-להשתמש ב- `docker ps` כדי לאשר את שם המכולה. בשבילה המיוצרת, המכולות הדוגמנות מוגדרות על ידי `./docker-compose.yml`.
+השתמשו ב־`docker ps` כדי לאתר את המכולה. לפני החלפת תהליך הרקע, בדקו את הנתיב שלו בתמונת המכולה.
 
 ## תחזיר את בראשית לרשת חד פעמית {#recommit-genesis-in-a-disposable-network}
 
-צמתים מבצעים גנזה רק כאשר האחסון שלו ריק. עבור רשת Docker חד פעמית, עצור את המגרר, להסיר את מצב המיוצר, לשחזר או להחליף את חבורת הגנזה חתומה, ולהתחיל מחדש:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-אל תחליפו את ה־genesis ברשת שיש לשמר את מצבה.
+בלוק בראשית חדש מחייב אחסון ריק בצומת. כדי להפעיל מחדש את אותה רשת, הריצו `python3 poc.py down` ואז `python3 poc.py up`. שמרו את `state/` יחד עם ארבעת כרכי האחסון של Docker.
 
 ## השתמשו בהקנה מותאמת {#use-custom-configuration}
 
-תצורת הצומת הנוכחית היא TOML. קשרו כ-bind mount או העתיקו את `config.toml`, את `genesis.signed.nrt` ואת קובצי המפתח הקשורים שנוצרו אל נתיבי המכולה שה-image מצפה להם, ולאחר מכן הפעילו מחדש את הצומת. שמרו את הקבצים שנוצרו יחד; ערבוב קבצים מהרצות Kagami שונות עלול לגרום לכשלי deserialization או consensus.
+תצורת הצומת הנוכחית היא TOML. ‏Kagami כותב קובץ `peerN.toml` אחד לכל מאמת, עם `genesis.signed.nrt`, ‏`genesis.public_key` ו־`genesis.expected_hash`; קובץ ה־Compose שנוצר באמצעות `kagami docker` מעגן אותם לתוך המכולה. צרו אותו מחדש במקום להעתיק קבצים ידנית, ולאחר מכן הפעילו מחדש את הצומת. שמרו את הקבצים שנוצרו יחד; ערבוב קבצים מהרצות Kagami שונות עלול לגרום לכשלי דה־סריאליזציה או לכשלי קונצנזוס.

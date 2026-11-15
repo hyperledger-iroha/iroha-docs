@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Iroha тохируулах {#configuring-iroha}
 
 Орон нутгийн сүлжээний хамтрагчийн тохиргоо нь энд тохируулагдана TOML файлууд. Энэ нь гинж дээрх тохиргоо өөрчлөгдсөнөөс ялгаатай юм [`SetParameter`](/mn/blockchain/instructions.md#setparameter) заавар. Үйлдвэрлэлийн үйлдлийг тохиргоонд илэрхийлэх ёстой файл эсвэл сүлжээнд байгаа параметр; орчны хувьсагчууд нь онцлогийн хаалт биш юм.

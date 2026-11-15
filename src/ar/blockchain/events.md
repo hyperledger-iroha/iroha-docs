@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/events.md
-translation_source_hash: 16b8cacc9bdf156d4b1e1a93b720085adcabb0002a34b9dc564a9926f573de63
+translation_source_hash: 2777cbe4e72a50c4790e50b59c3e695feb5814314cc9afccdfd994f6409c195e
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # الأحداث {#events}
 
 يتم إصدار إشعارات الأحداث المكتوبة عند حدوث أشياء معينة داخل البلوكشين، مثل إنشاء حساب جديد أو اكتمال عملية تثبيت بلوك. هناك أنواع مختلفة من الأحداث:
@@ -17,7 +16,7 @@ translation_engine: bing-translator-llm
 
 ## أحداث سير عمل معالجة البرمجيات {#pipeline-events}
 
-يتم إصدار أحداث سير عمل معالجة البرامج عند تقديم المعاملات أو تنفيذها أو الانتهاء منها في كتلة. يحتوي حدث سير عمل معالجة البرامج على المعلومات التالية: نوع الكيان الذي تسبب في الحدث (معاملة أو كتلة)، وهاش التشفير الخاص به، وحالته. يمكن أن تكون الحالة إما `Validating` (جاري التحقق)، أو `Rejected`، أو `Committed`. إذا تم رفض كيان ما، يتم تقديم سبب الرفض.
+تُصدر أحداث سير عمل معالجة البرمجيات أثناء انتقال المعاملات والكتل عبر سير العمل. يحمل حدث المعاملة تجزئة المعاملة، وارتفاع الكتلة، ومعرّفات مسار التنفيذ ومساحة البيانات، وحالةً هي: `Queued` أو `Expired` أو `Approved` أو `Rejected` مع سبب الرفض. ويحمل حدث الكتلة ترويسة الكتلة وحالةً هي: `Created` أو `Approved` أو `Rejected` مع السبب، أو `Committed` أو `Applied`.
 
 ### شغّل سير العمل هذا على Taira {#try-it-on-taira}
 
@@ -31,8 +30,8 @@ curl -fsSI https://taira.sora.org/v1/events/sse \
 لعرض بيانات لنقطة زمنية محددة يمكنك فحصها دون الحاجة إلى إبقاء تدفق مفتوح، اقرأ المعاملات الأخيرة في المستكشف:
 
 ```bash
-curl -fsS 'https://taira.sora.org/v1/explorer/transactions?page=1&per_page=5' \
-  | jq '{pagination, txs: [.items[] | {hash, block, status, executable}]}'
+curl -fsS 'https://taira.sora.org/v1/explorer/transactions?limit=5' \
+  | jq '{next_cursor, txs: [.items[] | {hash, block, status, executable}]}'
 ```
 
 افتح مسار SSE في الطرفية عندما تحتاج إلى الأحداث الحية:
@@ -45,7 +44,7 @@ curl -fsS -N https://taira.sora.org/v1/events/sse
 
 ## أحداث البيانات {#data-events}
 
-يتم إصدار أحداث البيانات عند حدوث تغيير يتعلق ببيانات دفتر الأستاذ للبلوكتشين مثل نظائر الشبكة، النطاقات، الحسابات، الأصول، تعريفات الأصول، NFTs، المحفزات، الأدوار، تهيئة السلسلة، حالة المنفذ، الأدلة، الأصول السرية، الجسور، أو الكائنات الخاصة بـ SORA/Nexus. تُستخدم هذه الأنواع من الأحداث في [مرشحات أحداث البيانات](./filters.md#data-event-filters).
+يتم إصدار أحداث البيانات عند حدوث تغيير يتعلق ببيانات دفتر الأستاذ للبلوكتشين مثل نظائر الشبكة، النطاقات، الحسابات، الأصول، تعريفات الأصول، NFTs، المحفزات، الأدوار، تهيئة السلسلة، حالة المنفذ، الأدلة، الأصول السرية، الجسور، أو الكائنات الخاصة بـ SORA Nexus. تُستخدم هذه الأنواع من الأحداث في [مرشحات أحداث البيانات](./filters.md#data-event-filters).
 
 ## إشعارات الأحداث المستندة إلى الوقت {#time-events}
 

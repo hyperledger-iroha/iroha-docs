@@ -1,24 +1,22 @@
 ---
 translation_locale: ur
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # مقامی اثاثہ جات کا حصول {#native-asset-escrow}
 
 Native escrow اعداد و شمار کے اثاثوں کے لئے ایک لیجر کے زیر انتظام ذخیرہ کرنے کا طریقہ کار ہے۔ درخواست کے مالک اکاؤنٹ میں اثاثے بھیجنے اور اس اکاؤنٹ کی حفاظت کے ل application درخواست کوڈ پر انحصار کرنے کے بجائے ، ایسکرو ISIs قدر کو ایک تعیناتی پروٹوکول کی نگہداشت کے اکاؤنٹ میں منتقل کریں اور عالمی حالت میں ایسکرو زندگی کا دور ریکارڈ کریں۔
 
-مارکیٹ پلیس تصفیہ کے لئے مقامی ایسکرو کا استعمال کریں ، آٹائی طرز کی آف چین ادائیگی کوآرڈینیشن ، سنگ میل تالے ، اور حفاظتی ایسکرو ورک فلوز جو لیجر کے قابل زندگی سائیکل کی حالت کی ضرورت ہے۔
+مارکیٹ پلیس تصفیہ، Aitai طرز کی آف چین ادائیگی کی ہم آہنگی، سنگِ میل کے تالوں، اور گواہی دہندگان سے بندھی مشروط ریلیز کے لیے مقامی ایسکرو استعمال کریں جنہیں لیجر میں نظر آنے والی لائف سائیکل حالت درکار ہو۔
 
 ## تصورات {#concepts}
 
 |تصور |تفصیل |
 | --- | --- |
-|`EscrowId` |کال کرنے والے کی طرف سے منتخب کردہ شناخت کنندہ ایک ہیش لفافے. یہ شفاف اور گمنام escrow کے درمیان منفرد ہونا ضروری ہے. |
+| `EscrowId` | کال کرنے والے کا منتخب کردہ شناخت کنندہ جو ایک ہیش کو لپیٹتا ہے۔ یہ تمام ایسکرو ریکارڈز میں منفرد ہونا چاہیے۔ |
 |`AssetEscrowRecord` |شفاف عددی اثاثوں کی حراست یا لاک ریکارڈ۔ |
-|`AnonymousAssetEscrowRecord` |گارنٹی شدہ کریڈٹ ریکارڈ، منسوخ کرنے والوں، عہدوں اور ثبوت کے attachments کی طرف سے حمایت. |
 |نگہداشت اکاؤنٹ |ڈیٹرمینسٹ پروٹوکول اکاؤنٹ جو چین ID ، ایسرو ID، اور اثاثہ کی تعریف سے اخذ کیا گیا ہے۔ |
 |شواہد ہیش |ثبوت ہیش بلوں ، فیصلوں ، پیغامات ، اسٹوریج مینی فیسٹ ، یا دیگر غیر زنجیروں کے شواہد کی نشاندہی کرسکتے ہیں۔ ثبوت کا بوجھ خود ایسکرو ریکارڈ میں محفوظ نہیں ہے۔ |
 
@@ -174,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python فی الحال عام قفلوں کے لئے اعلی سطح کے معاونین کو بے نقاب کرتا ہے: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, اور `expire_asset_lock`. مارکیٹ پلیس کے لئے اور گمنام ایسکرو سے Python, استعمال کنونیکل `InstructionBox` JSON کے ذریعے SDK میں ہوں JSON escape hatch، یا ایک کے ذریعے پیش SDK جو پہلی قسم کے ایسکرو بلڈرز کو بے نقاب کرتا ہے۔
+Python فی الحال عام تالوں کے لیے اعلیٰ سطحی معاون فراہم کرتا ہے: `open_asset_lock`، `drawdown_asset_lock`، `cancel_asset_lock` اور `expire_asset_lock`۔ Python سے مارکیٹ پلیس اور مشروط ایسکرو کے لیے SDK کے JSON متبادل راستے کے ذریعے کینونیکل `InstructionBox` JSON استعمال کریں، یا کسی ایسے SDK کے ذریعے جمع کرائیں جو فرسٹ کلاس ایسکرو بلڈرز فراہم کرتا ہو۔
 
 ## تنازعات {#disputes}
 
@@ -226,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## گمنام ایایسکرو {#anonymous-escrow}
+## مشروط ایسکرو {#conditional-escrow}
 
-گمنام ایسکرو ایک ہی مارکیٹ لائف سائیکل کا استعمال کرتا ہے ، لیکن فنڈنگ اور بند ہونے والے اثاثوں کی نقل و حرکت کو محفوظ کیا جاتا ہے۔ عوامی ریکارڈ اب بھی بیچنے والے ، خریدار ، حیثیت ، ثبوت ہیشز ، ٹائم اسٹیمپ ، اور ثبوت سے منسلک تحریک کے ریکارڈز کو ذخیرہ کرتا ہے۔ حفاظتی نوٹوں کے اندر موجود رقم اور وصول کنندگان کی نمائندگی عہدوں، منسوخ کرنے والے اور ثبوت منسلک سے کی جاتی ہے۔
+مشروط ایسکرو کسی مستفید کے لیے ایک عددی اثاثہ مقفل کرتا ہے اور اسے صرف اس وقت جاری کرتا ہے جب ہر شرط ترتیب وار پوری ہو جائے۔ ہر شرط گواہی دہندہ اکاؤنٹ، ایک ایسا پریڈیکیٹ جس کا جائزہ لیجر لیتا ہے (کسی ٹائپ شدہ قدر کے لیے `Equals` یا کسی حد کے لیے `QuantityAtMost`)، اور ایک سے شروع ہونے والا اس کا ترتیبی نمبر بتاتی ہے۔ لیجر کے وقت کی ایک اختیاری مدت تمام گواہیوں کو محدود کرتی ہے۔
 
-|شفاف ISI |گمنام ISI |
-| --- | --- |
-|`OpenAssetEscrow` |`OpenAnonymousAssetEscrow` |
-|`AcceptAssetEscrow` |`AcceptAnonymousAssetEscrow` |
-|`MarkEscrowPaymentSent` |`MarkAnonymousEscrowPaymentSent` |
-|`ReleaseAssetEscrow` |`ReleaseAnonymousAssetEscrow` |
-|`CancelAssetEscrow` |`CancelAnonymousAssetEscrow` |
-|`OpenEscrowDispute` |`OpenAnonymousEscrowDispute` |
-|`ResolveEscrowDispute` |`ResolveAnonymousEscrowDispute` |
-
-بٹوے یا پراور ٹولنگ کو ثبوت منسلک اور عوامی ان پٹ کی تعمیر کرنا چاہئے۔ کھولنے سے ایک ایسرو کا عزم پیدا ہوتا ہے۔ رہائی ، منسوخی ، اور گمنام تنازعہ حل کرنے کے لئے بالکل ایک ایسرو عزم خرچ کرنا ضروری ہے اور کارروائی کے ذریعہ مطلوبہ خریدار ، بیچنے والا ، یا تقسیم شدہ آؤٹ پٹ وعدوں کو تشکیل دینا ہوگا۔
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-بنیادی حفاظتی ٹرانزیکشن ماڈل کے لئے، دیکھیں [گمنام لین دین](/ur/blockchain/anonymous-transactions.md).
+| ISI | کال کنندہ | اثر |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | کھولنے والا | رقم کو ناقابلِ تبدیلی شرائط اور ایک مطلق میعادِ اختتام کے ساتھ پروٹوکول کی تحویل میں مقفل کرتا ہے۔ |
+| `AttestEscrowCondition` | شرط کا گواہی دہندہ | اگلی شرط کے لیے `Bool`، `Text` یا `Quantity` قدر فراہم کرتا ہے۔ آخری شرط پوری ہونے پر ایسکرو مستفید کو جاری ہو جاتا ہے۔ |
+| `ExpireConditionalEscrow` | کوئی بھی اکاؤنٹ | اگر ایسکرو جاری نہ ہوا ہو تو میعاد ختم ہونے کے بعد کھولنے والے کو رقم واپس کرتا ہے۔ |
 
 ## SDK استعمال {#sdk-usage}
 
-ایایسکرو سپورٹ SDKs میں مختلف طور پر بے نقاب ہوتا ہے۔ Rust کے پاس کینونیکل ٹائپڈ ڈیٹا ماڈل ہے۔ Python فی الحال عام اثاثہ لاک ہیلپرز کو بے نقاب کرتا ہے۔ JavaScript اور TypeScript استعمال کرتے ہیں Kotodama ایایسکرو ہوسٹ کالز. Kotlin/JVM اور Swift مارکیٹ پلیس کے لئے ٹائپڈ پے لوڈ بنانے والے اور گمنام ایسکرو فراہم کرتے ہیں.
+ایسکرو کی سہولت SDKs میں مختلف انداز سے فراہم کی گئی ہے۔ Rust کے پاس کینونیکل ٹائپ شدہ ڈیٹا ماڈل ہے۔ Python فی الحال عام اثاثہ لاک کے معاون فراہم کرتا ہے۔ JavaScript اور TypeScript، Kotodama ایسکرو ہوسٹ کالز استعمال کرتے ہیں۔ Kotlin/JVM اور Swift مارکیٹ پلیس ایسکرو کے لیے ٹائپ شدہ پے لوڈ بلڈرز فراہم کرتے ہیں۔
 
 |SDK |اس سطح کا استعمال کریں |دائرہ کار|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow` |marketplace escrow، عمومی locks، anonymous escrow، استفسارات اور events۔ |
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock` ، `TransactionDraft.open_asset_lock`، اور مؤکل `*_and_wait` کے معاون |عام اثاثوں کے تالے۔ مارکیٹ پلیس اور گمنام ایسکرو ہیلپرز ابھی تک فرسٹ کلاس Python طریقے نہیں ہیں۔ |
+| [Rust](#rust-sdk) | `iroha::data_model::isi::escrow` | مارکیٹ پلیس ایسکرو، عمومی تالے، مشروط ایسکرو، استفسارات اور واقعات۔ |
+| [Python](#python-asset-locks) | `Instruction.open_asset_lock`، `TransactionDraft.open_asset_lock` اور کلائنٹ کے `*_and_wait` معاون | عام اثاثوں کے تالے۔ مارکیٹ پلیس اور مشروط ایسکرو کے معاون ابھی تک فرسٹ کلاس Python طریقے نہیں ہیں۔ |
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram` سے `@iroha/iroha-js/kotodama-compiler` |Kotodama معاہدوں کے اندر ایایسکرو میزبان کالز. |
-| [Kotlin / JVM](#kotlin-and-jvm) |`InstructionTemplate` کلاسز میں `org.hyperledger.iroha.sdk.core.model.instructions` |مارکیٹ پلیس اور گمنام کریڈٹ کسٹم ہدایات ٹیمپلیٹس. |
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` اور `IrohaSDK.build*Escrow*` معاون |مارکیٹ پلیس اور گمنام ایسکرو Norito JSON ہدایات کا استعمال کرتے ہوئے. |
+| [Kotlin / JVM](#kotlin-and-jvm) | `org.hyperledger.iroha.sdk.core.model.instructions` میں `InstructionTemplate` کلاسز | مارکیٹ پلیس ایسکرو کے لیے حسبِ ضرورت ہدایات کے سانچے۔ |
+| [Swift / iOS](#swift-and-ios) | `NativeEscrowInstructionBuilders` اور `IrohaSDK.build*Escrow*` معاون | مارکیٹ پلیس ایسکرو کے لیے Norito JSON ہدایات کے پے لوڈز۔ |
 
 مندرجہ ذیل مثالیں ہدایات کی تعمیر پر توجہ مرکوز کرتی ہیں۔ اکاؤنٹ فنڈنگ، دستخط کے انتظام اور ٹرانزیکشن جمع کرانے میں ہر ایک SDK کے لئے معمول کے بہاؤ کا پیچھا کیا جاتا ہے.
 
 ### Rust SDK {#rust-sdk}
 
-استعمال کریں Rust SDK جب آپ کو مکمل مقامی کوریج یا استفسار / واقعہ کی حمایت کی ضرورت ہو۔ مذکورہ بالا مثالوں میں مارکیٹ پلیس ریلیز ، عمومی لاک ڈاؤن ، تنازعات کے حل، اور گمنام escrow کی تعمیر `iroha::data_model::isi::escrow`.
+جب آپ کو مکمل مقامی کوریج یا استفسار/واقعہ کی سہولت درکار ہو تو Rust SDK استعمال کریں۔ اوپر دی گئی مثالیں `iroha::data_model::isi::escrow` کے ساتھ مارکیٹ پلیس ریلیز، عمومی لاک سے رقم نکالنا اور تنازعات کا حل دکھاتی ہیں۔
 
 ```rust
 use iroha::{
@@ -397,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-تنازعات کے لئے، `escrow_open_dispute(offer, evidence)` اور `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` کا استعمال کریں. گمنام ایسکرو میزبان کالز قبول کرتے ہیں Norito پے لوڈ بائٹس کی درخواست کریں، مثال کے طور پر `anonymous_escrow_open_offer(request)`.
+تنازعات کے لیے `escrow_open_dispute(offer, evidence)` اور `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)` استعمال کریں۔
 
 ### Kotlin اور JVM {#kotlin-and-jvm}
 
@@ -431,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-گمنام ٹیمپلیٹس دستیاب ہیں: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, اور `ResolveAnonymousEscrowDisputeInstruction`. Android جاوا کال کرنے والے ملاپ استعمال کر سکتے ہیں `NativeEscrowInstructions.*` تعمیر کاروں سے Android آرٹی فیکٹس.
-
 ### Swift اور iOS {#swift-and-ios}
 
 Swift SDK ایسکرو ہدایات کو Norito JSON پےلوڈ کے طور پر بناتا ہے۔ براہ راست `NativeEscrowInstructionBuilders` کا استعمال کریں ، یا جب آپ کی ایپ میں پہلے ہی `IrohaSDK` مثال موجود ہو تو مساوی `IrohaSDK.build*Escrow*` معاون کو استعمال کریں۔
@@ -463,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-گمنام Swift بلڈرز منسوخی کی فہرستیں ، آؤٹ پٹ مصروفیت کی فہرستوں ، ایک ثبوت لغت اور اختیاری `rootHint` اقدار لیتے ہیں۔ تنازعہ حل کرنے کی اجازت کا ٹوکن `NativeEscrowPermissions.canResolveEscrowDispute` کے طور پر دستیاب ہے۔
+تنازعہ حل کرنے والے کی اجازت کا ٹوکن `NativeEscrowPermissions.canResolveEscrowDispute` کے طور پر دستیاب ہے۔
 
 ## استفسارات اور واقعات {#queries-and-events}
 
@@ -476,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 |`FindAssetEscrowsBySeller` |بیچنے والے یا لاک اوپنر کی طرف سے کھولے گئے ریکارڈ کو درج کریں۔ |
 |`FindAssetEscrowsByBuyer` |خریدار کی طرف سے قبول کردہ مارکیٹ پلیس ایسکرورز یا منزل مقصود کو نشانہ بنانے والے قفلوں کی فہرست بنائیں۔ |
 |`FindAssetEscrowsByStatus` |`AssetEscrowStatus` کی طرف سے ریکارڈ درج کریں. |
-|`FindAnonymousAssetEscrowById` |`EscrowId` کے ذریعے ایک گمنام ضامن پڑھیں۔ |
-|`FindAnonymousAssetEscrows*` |تمام records، seller، buyer یا status کے مطابق anonymous escrows کی فہرست بنائیں۔ |
 
-`EscrowEventFilter`، escrow ID، seller، buyer، status اور event-set mask کے مطابق شفاف native escrow اور lock events کو subscribe کر سکتا ہے۔ event family میں `Opened`، `Accepted`، `PaymentSent`، `Released`، `Cancelled`، `Expired`، `Disputed` اور `Resolved` شامل ہیں۔ anonymous escrow records کا معائنہ anonymous escrow استفسارات کے ذریعے کیا جاتا ہے۔
+`EscrowEventFilter` ایسکرو ID، بیچنے والے، خریدار، حیثیت اور واقعات کے سیٹ کے ماسک کے لحاظ سے شفاف مقامی ایسکرو اور لاک کے واقعات کو سبسکرائب کر سکتا ہے۔ واقعات کے اس خاندان میں `Opened`، `Accepted`، `PaymentSent`، `Released`، `Cancelled`، `Expired`، `Disputed` اور `Resolved` شامل ہیں۔
 
 ## آپریشنل نوٹس {#operational-notes}
 

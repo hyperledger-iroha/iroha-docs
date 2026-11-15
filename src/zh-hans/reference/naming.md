@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/naming.md
-translation_source_hash: d757024fca471ec55f1fe4857e88e01a9a0a18e0d79e8cb4fdb3da0cb250f4be
+translation_source_hash: 15d095e674edf780c5859abe6f4615d53338e3304e8eedfa494017911204d4b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # 命名会议 {#naming-conventions}
 
 当您为账户,域名或资产命名时,请记住 Iroha 中使用的以下规范:
@@ -16,10 +15,9 @@ translation_engine: nllb-200-ct2
    - `#` 专用于资产定义别名和资产余额字面
    - `::` 专用于合同别名
    - `.` 专用于域名和数据空间的资格
-   - `$` 专用于触发器扫描的文本形式
-   - `%` 专用于验证器范围的文本形式
+   - `$` 保留用于 NFT 标识符，例如 `name$domain.dataspace`
 
-2. 一个名称的最大字符数量 (包括 UTF-8 字符) 由两个因素限制:`[0, u32::MAX]`和目前分配的堆空间.
+2. 名称必须非空，采用 Unicode NFC 形式，长度不超过 255 个 UTF-8 字节，并且不得包含空白字符、控制字符和双向控制字符。
 
 ## 在 Taira 试看. {#try-it-on-taira}
 

@@ -5,7 +5,6 @@ translation_source_hash: 4739a0bfe80f14545a51c804abbe6a2dfa5497d546192f76096f938
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # የማጭበርበር ክትትል {#fraud-monitoring}
 
 ለ Iroha ማሰማራት የማጭበርበር ክትትል በብሎክቼይን መዝገብ ክስተቶች፣ ጥያቄዎች፣ ፈቃዶች እና የመተግበሪያ አውድ ዙሪያ የተገነባ የአሠራር ቁጥጥር ነው። Iroha የቀረበውን፣ የተቀበለውን፣ ውድቅ የተደረገውን እና የተጠናቀቀውን ይመዘግባል። የክትትል ስርዓትዎ የትኞቹ ቅጦች ለንግድ ሂደትዎ አጠራጣሪ እንደሆኑ ይወስናል እና እነዚያን ጉዳዮች ወደ ገምጋሚዎች ወይም አውቶሜትድ የምላሽ መቆጣጠሪያዎች ያመራል።

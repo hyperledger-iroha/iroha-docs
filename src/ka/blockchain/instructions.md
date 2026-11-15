@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Iroha ინსტრუქციის ოპერაციები {#iroha-special-instructions}
 
 როდესაც [როგორ მუშაობს Iroha](/ka/blockchain/iroha-explained)-ზე ვისაუბრეთ, ჩვენ ვთქვით, რომ Iroha ინსტრუქციის ოპერაციები ერთადერთი გზაა მსოფლიო მდგომარეობის შეცვლისთვის. თუ წაიკითხეთ ამ სახელმძღვანელოში მოცემული ენის სპეციფიკური სახელმძღვანელოები, თქვენ უკვე ნახეთ რამდენიმე ინსტრუქცია: `Register<Account>` და `Mint<Numeric>`.
@@ -35,14 +34,14 @@ translation_engine: nllb-200-ct2
 
 |ინსტრუქცია |ობიექტები|დანიშნულება |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-|[EnsureAlias](#ensurealias) |ჩვეულებრივი დომენი, მონაცემთა სივრცის ალიასი და ანგარიშის ალიასის აწყობა |                      |
+| [EnsureAlias](#ensurealias) | ჩვეულებრივი დომენის, მონაცემთა სივრცის ფსევდონიმისა და ანგარიშის ფსევდონიმის გამართვა | |
 |[რეგისტრაცია/გადარეგისტრირება](#un-register) |ანგარიშები, აქტივების განსაზღვრება, NFTs, როლები, მატჩები, ქსელის კვანძები; დომენის მოხსნა |                      |
 |[Mint/Burn](#mint-burn) |ციფრული აქტივები, გააქტიურება განმეორებები |ანგარიშები ან ტრიგერები |
 |[SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |ობიექტები, რომლებსაც აქვთ [მეტამონაცემები](./metadata.md): დომენები, ანგარიშები, აქტივების განმარტებები, NFTs, RWAs, ტრიგერი |                      |
 |[SetParameter](#setparameter) |ქსელის პარამეტრები |                      |
 |[Grant/Revoke](#grant-revoke) |[როლები, ნებართვის ნიშნები](/ka/blockchain/permissions.md) |ანგარიშები ან როლები |
 |[გადარიცხვა](#transfer) |დომენები, აქტივების განმარტებები, ციფრული აქტივები, NFTs |ანგარიშები |
-|[ნაციონალური საფინანსო და აქტივების ჩაკეტვა](#native-escrow-and-asset-locks) |ციფრული აქტივების დაფარვის, აქტივების ჩაკეტვის, ანონიმური დაფარების კრიპტოგრაფიული ვალდებულებების ღირებულებები |მყიდველები, მიმართულებები ან სადავო განხეთქილება |
+|[ადგილობრივი ესქრო და აქტივების საკეტები](#native-escrow-and-asset-locks) |რიცხვითი აქტივების ესქროები, აქტივების საკეტები, პირობითი ესქროები |მყიდველები, დანიშნულების ანგარიშები ან დავის დროს თანხის განაწილება |
 |[ატომური კერძო ფინანსური ოპერაციების ანგარიშსწორება](#atomic-private-settlement) |მარშრუტის მასშტაბით კონფიდენციალური პროტოკოლის მონაცემთა ჯგუფები, პოლიტიკის როტაციები, საბოლოო ბუნდები და გაწყვეტის მარკერები |                      |
 |[ExecuteTrigger](#executetrigger) |ტრიგერები |                      |
 |[Log/Custom/Upgrade](#other-instructions) |ჟურნალები, შემსრულებლისთვის სპეციფიკური დატვირთვები, შემსრულებლის განახლებები |                      |
@@ -69,7 +68,7 @@ translation_engine: nllb-200-ct2
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-თუ თქვენ დააინსტალირეთ `iroha` ბინარი, გამოიყენეთ `iroha --config ./defaults/client.toml` ამის ნაცვლად. შეცვალეთ ქვემოთ მოცემული ადგილის მფლობელები თქვენი ქსელის მნიშვნელობებით:
+თუ დაყენებული გაქვთ `iroha` ბინარული ფაილი, მის ნაცვლად გამოიყენეთ `iroha --config ./defaults/client.toml`. ტრანზაქციის გამგზავნი ბრძანებები ასევე გადასცემს `--fee-payer authority`-ს, რაც საკომისიოს ხელმომწერ ანგარიშს აკისრებს; CLI ხელმოწერამდე ზუსტ საკომისიოს ითვლის. ქვემოთ მოცემული შემავსებლები თქვენი ქსელის მნიშვნელობებით შეცვალეთ:
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -79,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-საჯარო Taira ტესტნეტის მიმართვისას გამოიყენეთ Taira კლიენტის კონფიგურაცია. გადასახადის გადახდის მაგალითების ჩატარებამდე, შეინახეთ სატესტო ქსელი-ის დაფინანსების სერვისის დამხმარე [ტესტნეტს XOR დაუკავშირდით Taira](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) როგორც `taira_faucet_claim.py`, შემდეგ კი მოითხოვეთ სატესტო ქსელი XOR ტესტნირს ფინანსირების სერვისიდან:
+საჯარო Taira სატესტო ქსელისთვის გამოიყენეთ Taira კლიენტის კონფიგურაცია და დააფინანსეთ მისი ანგარიში გვერდზე [სატესტო XOR-ის მიღება Taira-ზე](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) აღწერილი მომზადების ეტაპიანი ტოკენების მიღების პროცესით. საკომისიოს მქონე მაგალითების გაშვებამდე შეამოწმეთ, რომ საკომისიო აქტივის ბალანსი ჩანს:
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-ტესტნეტის მიერ დაფინანსებული აქტივის ხილვადობის შემდეგ, ტრანზაქციების აღსრულების ხარჯების მქონე აქტივების საჭირო მეტამონაცემები მიაწერეთ:
+Taira-ზე ჩაწერებიც იმავე `--fee-payer authority` არჩევანს იყენებს და CLI საკომისიოს Taira-ს საკომისიო აქტივში ითვლის. ტრანზაქციის მეტამონაცემებს არ დაურთოთ საკომისიოს გასაღებები, მაგალითად `gas_asset_id`; კლიენტი მათ უარყოფს:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` არის დომენების შექმნის და მათი SNS იჯარის ჩვეულებრივი პირველი გამოშვების გზა. იგი დეკლარაციურად აკავშირებს ზუსტ მონაცემთა სივრცეს, მფლობელს, იჯარის ვადს, და საფასური ფასის ვალიდაციის დაცვა, შემდეგ ქმნის ან აღადგენს ყველა საჭირო მდგომარეობას ატომურად. გამოიყენეთ ავთენტიფიცირებული `POST /v1/aliases/setup/plan` API საბოლოო წერტილი ან შედარებითი CLI სამუშაო პროცესები:
+`EnsureAlias` პირველ გამოშვებაში დომენებისა და მათი SNS იჯარების შექმნის ჩვეულებრივი გზაა. ის დეკლარაციულად აკავშირებს ზუსტ მონაცემთა სივრცეს, მფლობელს, იჯარის ვადასა და ფასის შემოწმების პირობას, შემდეგ კი საჭირო მდგომარეობას ატომურად ქმნის ან ასწორებს. გამოიყენეთ ავთენტიფიცირებული `POST /v1/aliases/setup/plan` ბოლო წერტილი ან შესაბამისი CLI პროცესი:
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -114,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -165,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 რეგისტრირებული ან არარეგისტრირებელი ანგარიშები:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 დარეგისტრირებული და არარეგისტრირებელი აქტივების განსაზღვრები:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -200,37 +198,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 რეგისტრაციის და არარეგისტრირების როლები:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 რეგისტრირება და არარეგისტრირების ტრიგერი. გამოშვების რეგისტრაციისთვის საჭიროა ან შედგენილი IVM ბაიტო კოდი, ან სერიალიზებული ინსტრუქციის სია. ეს მაგალითი აშენებს `Log` ინსტრუქციას CLI-ით და მიჰყავს მას ტრიგერი რეგისტრაციაში.
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 რეგისტრაცია და არარეგისტრირება ქსელის კვანძები. გენერირეთ BLS გასაღები და PoP `kagami`, თუ თქვენ ჯერ კიდევ არ გაქვთ ისინი:
@@ -241,10 +239,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -270,13 +268,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 გაცემა და განადგურება ციფრული აქტივების:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -286,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 გამოშვება და განადგურება საგამოძრავებელი გამეორებები:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## გადარიცხვა {#transfer}
@@ -302,7 +300,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 ციფრული აქტივების გადარიცხვა:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -313,21 +311,21 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 სატრანსფერო დომენი, აქტივების განსაზღვრა და NFT საკუთრება:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## ადგილობრივი ესქრო და აქტივი ჩაკეტვა-ები {#native-escrow-and-asset-locks}
 
-ადგილობრივი ესქრო ინსტრუქციები ჩაკეტოს ციფრული აქტივები მენეჯირებული ბლოკჩეინის რეესტრი პროტოკოლის შენახვა. ისინი გამოიყენება ბაზრის სტილის ფინანსური ტრანზაქციის დაფარვისთვის, ზოგადი აქტივების საკეტები და ანონიმურად დაცული ესქრო ნაკადები.
+ადგილობრივი ესქროს ინსტრუქციები რიცხვით აქტივებს რეესტრის მიერ მართულ პროტოკოლის მეურვეობაში კეტავს. ისინი გამოიყენება მარკეტპლეისის სტილის ანგარიშსწორებისთვის, აქტივების ზოგადი საკეტებისთვის და ატესტატორზე მიბმული პირობითი ესქროებისთვის.
 
-საბაზრო ესქროების გამოყენება `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, და `ResolveEscrowDispute`. ზოგადი აქტივების ჩაკეტვის გამოყენება `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, და `ExpireAssetLock`. ანონიმური ესქრო ასახავს ბაზრის სიცოცხლის ციკლს `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, და `ResolveAnonymousEscrowDispute`.
+მარკეტპლეისის ესქრო იყენებს `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute` და `ResolveEscrowDispute` ინსტრუქციებს. აქტივების ზოგადი საკეტები იყენებს `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock` და `ExpireAssetLock` ინსტრუქციებს. პირობითი ესქრო იყენებს `OpenConditionalEscrow`, `AttestEscrowCondition` და `ExpireConditionalEscrow` ინსტრუქციებს.
 
 ესენი ISIs ამჟამად არ აქვს პირველი კლასის CLI ბრძანებები. გამოიყენეთ ტიპიზებული SDK მშენებლები ან სერიალიზებული ინსტრუქციის დატვირთვები, და იხილეთ [ნაციონალური აქტივების დაფარვა](/ka/blockchain/escrow.md) სიცოცხლის ციკლის დეტალების, ნებართვების, მოთხოვნების, მოვლენებისათვის და Rust მაგალითები.
 
@@ -337,7 +335,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 `RotatePrivateSettlementPoolPolicyV1` შეზღუდულია კონფიდენციალურობის მმართველობაზე. იგი მოითხოვს ზუსტ მიმდინარე მმართველობის კრიპტოგრაფიულ დიჯესტს, ინახავს მარშრუტს, პროტოკოლის მონაცემთა ჯგუფს, აქტივების დამაკავშირებელ კრიპტოგრაფიული ვალდებულების მნიშვნელობას, სახელმწიფო საზღვარს, განმეორებითი კომპლექტებს და საბოლოო პროტოკოლური შედეგების ჩანაწერებს; აწარმოებს საჯარო რევიზიას ერთი მაჩვენებლით და იყენებს უფრო ახალ აუდიტორულ საკვანძო ეპოქას. როტაცია აქტიურდება მისი ჩართვის სიმაღლეზე და ვერ იზიარებს ამ სიმაღლეს იმავე მარშრუტის / პულინის პროტოკოლური შედეგების ჩანაწერთან. საჯარო რევიზიონის ხაზი ინახავს ქვითრებს, რომლებიც დასრულებულია როტაციის განახლების წინ - მოქმედი და ზუსტი გათამაშება idempotent; ფრენის დროს ძველი პოლიტიკის ბუნდები ვერ იხურება. ოპერატორებმა უნდა შეინახონ ძველი დეკრიფციის გასაღები შენახული კაფსულებისთვის ან მართონ და ტესტის კაფსულის გადახვევა მათი განადგურებამდე.
 
-გზა რჩება დეფოლუტურად გამორთული და არ არის წარმოების კვალიფიკაცია. იხილეთ [ატომური კერძო ფინანსური ტრანზაქციების გადახდა მონაცემთა სივრცეში](/ka/get-started/atomic-private-settlement) კონფიგურაციის, ავტორიზაციის პრინციპისა, აუდიტის, აღდგენის და გათავისუფლების მოთხოვნებისათვის.
+ეს გზა ნაგულისხმევად გამორთულია და საწარმოო გამოყენებისთვის კვალიფიკაცია დადასტურებული არ აქვს. კონფიგურაციის, უფლებამოსილების, აუდიტის, აღდგენისა და გამოშვების მოთხოვნებისთვის იხილეთ [მონაცემთა სივრცეებს შორის ატომური კერძო ანგარიშსწორების შესრულება](/ka/get-started/atomic-private-settlement).
 
 ## დაფინანსება/შეღავათი {#grant-revoke}
 
@@ -348,34 +346,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 გაცემა და მოხსნა როლი ანგარიშზე:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 ნებართვების მინიჭება და გაუქმება. ნებართვის ბრძანებები კითხულობს ნებართვების ობიექტს სტანდარტული შეყვანისგან:
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 როლზე ნებართვის მინიჭება და მოხსნა:
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -387,10 +385,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -398,20 +396,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -421,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 პარამეტრის დაყენება ერთი პარამეტრიანი JSON ობიექტის ჩაბარებით სტანდარტულ შესასვლელში:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -430,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 ეს ინსტრუქცია გამოიყენება [ტრიგერი](./triggers.md) შესრულებისათვის.
 
-CLI შეუძლია დაარეგისტრიროს გამოწვევები და გამოიწეროს გამოწვევის შესრულების მოვლენები პირდაპირ. იგი არ უზრუნველყოფს `execute trigger` ბრძანება, ასე რომ წარადგინეთ სახელმძღვანელო `ExecuteTrigger` ინსტრუქცია, წარმოქმნას სერიალიზებული `InstructionBox` SDK ან აღმასრულებელი ინსტრუმენტით და გადასცეს შედეგად მიღებული JSON მასაჟი `ledger transaction stdin`:
+CLI ნაგულისხმევი `execute` ფილტრით რეგისტრირებული ტრიგერისთვის აგზავნის ხელით შესრულების `ExecuteTrigger` ინსტრუქციას, სურვილისამებრ JSON არგუმენტებით, და შეუძლია ტრიგერის შესრულების მოვლენების გამოწერა:
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## სხვა ინსტრუქციები {#other-instructions}
@@ -452,21 +449,21 @@ Iroha ასევე ასახავს შესრულების გ�
 წარადგინეთ ინსტრუქცია `Log` პინგის დამხმარე პირთან:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 წარადგინეთ განკუთვნილი აღმასრულებლის ინსტრუქცია სერიალიზებული `InstructionBox`. დატვირთვის ფორმა არის აღმასრულებელი სპეციფიკური, ასე რომ წარმოქმნას ინსტრუქციას შეესაბამება SDK ან აღმასრულებელ ინსტრუმენტის:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 განახლება აღმასრულებელი კომპილიზებული IVM ბაიტო კოდის ფაილიდან:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

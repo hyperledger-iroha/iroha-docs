@@ -5,7 +5,6 @@ translation_source_hash: 8d64a9a17c93f60306c279e8656e6edde8ce5dd024e742218bfb957
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # الأصول الواقعية {#real-world-assets}
 
 الأصول الواقعية (RWAs) تمثل الأصول خارج السلسلة التي يتم تتبع ملكيتها أو السيطرة عليها على السلسلة. في Iroha، يعتبر RWA دفعة مسجلة في دفتر السجل البلوكشين مع معرف تم إنشاؤه، وحساب مالك، وكمية، وبيانات تجارية، وأصل/سجل المصدر، ووسائط التحكم في دورة الحياة اختيارية.

@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # İnteqrasiya Problemlərinin Həlli {#troubleshooting-integration-issues}
 
 Bu bölmə Iroha 3 inteqrasiyası üçün problem həll etmə məsləhətləri təklif edir. Əgər yaşadığınız problem burada təsvir edilməyibsə, bizə [Telegram](https://t.me/hyperledgeriroha) vasitəsilə müraciət edin.
@@ -21,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI yoxlamaları üçün eyni faylı açıq şəkildə göndərin:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 Əgər şəbəkə tərəfdaşı Docker və ya Kubernetes-də işləyirsə, müştəri prosesindən əlçatan olan host və ya xidmət ünvanından istifadə edin. Konteyner içində `127.0.0.1` host maşın deyil.
@@ -45,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - Müştəri konfiqurasiyasında olan hesabın açıq açarı imzalamaq üçün istifadə olunan şəxsi açarla uyğun gəlmir
 - hesab blockchain genesis-də və ya əvvəlki əməliyyat tərəfindən qeydiyyatdan keçməyib
 - hesabda proqramın icra mühiti doğrulayıcısı tərəfindən tələb olunan icazə tokeni və ya rol yoxdur
-- bir domen ID-si öz məlumatlar sahəsi kvalifikasiyasını itirib, məsələn `domain.dataspace`
+- domen ID-sində `domain.dataspace` kimi məlumat məkanı ilə tam müəyyənləşdirmə çatışmır
 
 Xətaları oxumağı asanlaşdırmaq üçün CLI əmrlərini ayıklayarkən `--output-format text` istifadə edin:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## Sorğular boş nəticələr verir {#queries-return-empty-results}
@@ -65,7 +64,7 @@ Boş sorğu nəticələri həmişə sorğunun uğursuz olduğunu göstərmir. Yo
 Domain yoxlamaları üçün ən geniş sorğu ilə başlayın:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## Hadisə və ya blok axınları erkən dayandırılır {#event-or-block-streams-stop-early}

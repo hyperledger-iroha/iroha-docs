@@ -1,19 +1,18 @@
 ---
 translation_locale: ka
 translation_source: /reference/binaries.md
-translation_source_hash: 3d1cddb466092770376bcb150963d5df29a6ebc5cf6e670baa3a5c277082fdab
+translation_source_hash: 887291d6ef0d9a919b076e4b632ee1cec7a2c289b284b40346ed4b2a0f4a41b3
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # მუშაობა Iroha ბინარებით {#working-with-iroha-binaries}
 
 Iroha 3 ოპერატორის სამუშაო მიმდინარეობა ოთხი ძირითადი ბინარის ირგვლივ ბრუნავს:
 
-- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/irohad) ქსელის კვანძის დემონის გასაშვებად
+- [`iroha3d`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/irohad) ქსელის კვანძის დემონის გასაშვებად
 - `iroha3d_taira` ერთპიროვნული პროტოკოლური სტანდარტის Taira ვალიდატორის გამშვებ აპარატისთვის
-- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli) სამედიცინო CLI და ოპერატორის ბრძანებები
-- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_kagami) საკვანძოების, ბლოკჩეინის წარმოქმნის, ლოკალურ ქსელებისა და პროფილებისთვის
+- [`iroha`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli) სამედიცინო CLI და ოპერატორის ბრძანებები
+- [`kagami`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_kagami) საკვანძოების, ბლოკჩეინის წარმოქმნის, ლოკალურ ქსელებისა და პროფილებისთვის
 
 ## შენება წყაროდან {#build-from-source}
 
@@ -50,27 +49,7 @@ cargo run --bin kagami -- --help
 
 ## Docker ფოტო {#docker-image}
 
-აღმავალი სამუშაო სივრცე იყენებს `kagami localnet` და `kagami docker` წარმოქმნის Docker Compose ფაილები, რომლებიც შეესაბამება ამოწმებულ კოდს. `hyperledger/iroha:dev` გამოსახულება შეიძლება გამოყენებულ იქნას იმ გენერირებული ფაილებთან ერთად.
-
-გაუშვით CLI კონტეინერში:
-
-```bash
-docker run -t hyperledger/iroha:dev iroha --help
-```
-
-გაშვება Kagami კონტეინერში:
-
-```bash
-docker run -t hyperledger/iroha:dev kagami --help
-```
-
-ქსელის კვანძის სტარტაპისთვის, შეიქმნას localnet და შეადგინეთ ფაილი ჯერ:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+Docker-ში ერთი და იმავე რევიზიის ბინარული ფაილებით ოთხი ვალიდატორის ასაწყობად და გასაშვებად მიჰყევით სახელმძღვანელოს [გაშვება Iroha 3](/ka/get-started/launch-iroha.md).
 
 ## რომელი ბინარი უნდა გამოვიყენო? {#which-binary-should-i-use}
 

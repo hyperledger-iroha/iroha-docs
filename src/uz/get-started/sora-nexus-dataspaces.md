@@ -1,16 +1,15 @@
 ---
 translation_locale: uz
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
+# Taira va Minamoto orqali SORA Nexus uchun ilova yaratish {#build-on-sora-3-taira-and-minamoto}
 
-# SORA 3-da qurilgan: Taira va Minamoto {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus Iroha 3 asosida ishlaydi. Ilovangizni avval Taira tarmog‘ida ishlab chiqing va sinab ko‘ring. Asosiy tarmoq uchun alohida kalitlar, komissiya to‘lash uchun haqiqiy XOR va ishlab chiqarish muhitida ishga tushirishga ruxsat olganingizdan keyingina mijozning shu konfiguratsiyasini Minamoto tarmog‘iga ko‘chiring.
 
-SORA 3 - Iroha 3 va SORA Nexus ustida qurilgan dasturga qaraydigan ommaviy ishga tushirish yo'li. Avvalo Taira ustida quring va mashq qiling, so'ngra o'sha xil mijoz shaklini faqat alohida asosiy tarmoq kalitlaringiz bo'lganda, to'lovlar uchun haqiqiy XOR va ishlab chiqarish ruxsatnomasi bo'lganida Minamoto ustiga ko'chiring:
-
-Ushbu qo‘llanma Iroha mijozini ommaviy SORA 3 tarmoqlari uchun qanday sozlashni ko‘rsatadi:
+Ushbu qo‘llanmada SORA Nexus’ning ikkita ochiq tarmog‘i uchun Iroha mijozini sozlash tushuntiriladi.
 
 - Taira sinov tarmog'i `https://taira.sora.org`
 - Minamoto asosiy tarmoq `https://minamoto.sora.org`
@@ -24,15 +23,15 @@ Taira ni integratsiya sinovlari, kran mablag'i bilan ta'minlangan yozish kanarla
 
 |qadam |Taira Testnet |Minamoto Asosiy |
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar |`/status` kalitsiz so'rovlar |
-| Ma’lumotlar makonini tanlash | Ilovangiz boshqariladigan yo‘lakka muhtoj bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
+|Tarmoqning holatini oʻqishni boshlash |`/status` kalitsiz so'rovlar | Avval xizmat manzilini va uning TLS sertifikatini tekshiring |
+| Ma’lumotlar makonini tanlash | Ilovangizga o‘zining boshqariladigan ma’lumotlar makoni kerak bo‘lmasa, ochiq `universal` makonidan foydalaning | Shu ma’lumotlar makonidan faqat asosiy tarmoq tasdiqlaganidan keyin foydalaning |
 |Toʻlov aktivini oling .|Ommaviy Taira krandan foydalanish |XOR mablag ' bilan ta ' minlangan Minamoto hisobidan yoki tasdiqlangan xazina oqimidan oling |
 | Sinov yozuvlari | Sinov uchun ajratilgan XOR mablag‘idan foydalaning | Sinov vositalarini ishlatmang; yozuvlar haqiqiy XOR sarflaydi |
 |Taʼlim berish |Logika, monitoring va imzolashni qayta sinab ko'ring |alohida kalitlar, moliyalashtirish va ozod qilish nazoratlaridan foydalanish |
 
 Amaliy oqim quyidagicha:
 
-1. Mijozni Taira ga qarshi yaratish va ommaviy `universal` ma’lumotlar makonidan foydalanish.
+1. Mijozni Taira tarmog‘iga mos yarating va ochiq `universal` ma’lumotlar makonidan foydalaning.
 2. Imzolovchi qo'shing va Taira kran bilan moliyalashtiring.
 3. Nosozliklar odatiy va kuzatiladigan holga kelguncha ilova mantiqingizni Taira da sinab ko‘ring.
 4. O'ziga xos Minamoto imzochini yaratish, uni haqiqiy XOR bilan moliyalashtirish va faqat o'sha tasdiqlangan operatsiyalarni mainnetga ko'chirish.
@@ -53,24 +52,22 @@ Oziq-ovqat kitobi har bir ish oqimiga e'tibor qaratadi va Taira mablag' yoki SOR
 
 ## 1. Qaysi maqsadlar sari intilayotganingizni tushuning {#_1-understand-what-you-are-setting-up}
 
-SORA Nexus da ma'lumotlar maydonlari tarmoq yo'nalishi va yo'naltirish katalogi tarkibiga kiradi. Mijoz faqat `client.toml` ni o'zgartirgan holda yangi ommaviy ma'lumot maydonini yaratmaydi. Mijozli sozlash ikkita narsani bajaradi:
+SORA Nexus tizimida ma’lumotlar makoni katalogi ma’lumotlar makonlarini belgilaydi. Yo‘lak katalogi yo‘laklarni alohida belgilaydi: har bir yo‘lak bitta ma’lumotlar makoniga havola qiladi, ma’lumotlar makonida esa bir nechta yo‘lak bo‘lishi mumkin. Mijoz faqat `client.toml`ni o‘zgartirib yangi ochiq ma’lumotlar makonini yaratmaydi. Mijozni sozlash ikki ishni bajaradi:
 
 1. mijozni o'ng Torii oxirgi nuqtaga ko'rsatadi
-2. oʻz kanonik hisoboti uchun domen va maʼlumotlar maydonining yoʻnaltirish kontekstini tanlaydi .
+2. kanonik hisobi uchun tarmoq konteksti va imzolash kalitini tanlaydi
 
-`AccountId` har doim kanonik va domensiz. `[account].domain` qiymati `client.toml` yo'nalish va alias kontekstini taqdim etadi; u hisob kimligining bir qismiga aylanmaydi. Aksariyat ilovalar uchun ommaviy `universal` ma’lumotlar makonidan boshlang. Domen kontekstida `domain.dataspace` shakli ishlatiladi, masalan:
+`AccountId` doimo kanonik va domensiz, `client.toml`da esa domen sozlamasi yo‘q: `[account].profile` faqat tarmoqning I105 prefiksini tanlaydi. Domen konteksti taxalluslar va domenga tegishli obyektlarga taalluqli. Ko‘pchilik ilovalar uchun ochiq `universal` ma’lumotlar makonidan boshlang. Domen konteksti `domain.dataspace` shaklidan foydalanadi, masalan:
 
 ```text
 wonderland.universal
 ```
 
-Agar sizga yangi tashkiliy ma'lumotlar maydonchasi kerak bo'lsa, uni oddiy mijoz hisobidan ro'yxatdan o'tkazishga harakat qilishning o'rniga katalog va yo'nalish taklifini tayyorlang. [Yangi ma'lumot maydonchasini ](#_8-provision-a-new-dataspace) taqdim etishni ko'ring quyida.
+Tashkilot uchun yangi ma’lumotlar makoni kerak bo‘lsa, uni oddiy mijoz hisobidan ro‘yxatdan o‘tkazishga urinish o‘rniga katalog va marshrutlash taklifini tayyorlang. Quyidagi [Yangi ma’lumotlar makonini yaratish](#_8-provision-a-new-dataspace) bo‘limiga qarang.
 
 ## 2. Umumiy Torii yakuniy nuqtani tekshiring. {#_2-check-the-public-torii-endpoint}
 
-Foydalanuvchini sozlashdan oldin maqsadli oxirgi nuqta jonliligini tekshiring.
-
-Taira uchun:
+Taira sinov tarmog‘i holatini `curl` va `jq` bilan tekshiring. Buning uchun kalitlar yoki mahalliy tugun kerak emas.
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -78,15 +75,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-Minamoto uchun:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-Bogʻning aniqlangan maʼlumotlar maydonini va yoʻnalish koʻrinishini tekshiring:
+Tugun taqdim etgan ma’lumotlar makoni va yo‘lak ko‘rinishini tekshiring:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-Mainnet uchun `https://minamoto.sora.org/status` bilan bir xil buyruqdan foydalaning.
+Minamoto’dan foydalanishdan oldin asosiy tarmoq xizmatining manzilini operator bilan aniqlashtiring va TLS sertifikati xost nomiga mos kelishini tekshiring.
 
 ## Agentlar uchun Taira MCP {#taira-mcp-for-agents}
 
@@ -107,12 +96,16 @@ Taira shuningdek, agentni ishga tushirish vaqtlari uchun Torii-native Model Cont
 |Maqsadli foydalanish |Taira testnet o'qish va kran mablag'i bilan ta'minlangan yozish repetitsiyalari |
 |Ishlab chiqarish ekvivalenti |Ushbu yozuvni Minamoto raqamiga koʻrsatmang , agar asosiy tarmoqning MCP oxirgi nuqtasi va chiqarib tashlash nazoratlari aniq tasdiqlanmagan boʻlsa |
 
-Imzolash materialini qo'shishdan oldin ko'prikning metadatalarini tekshiring:
+Ko‘prik faqat holatsiz JSON-RPC `POST` so‘rovlarini qabul qiladi. Imzolash materialini qo‘shishdan oldin uning topish metadatasini tekshiring:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 URL serverini agent ishga tushirish paytida foydalanuvchiga o'xshagan MCP server sifatida konfiguratsiya qiling. Agentning MCP konfiguratsiyasi, API tokenlari, yuborilgan autentifikatsiya sarlavhalari, `authority` yoki `private_key` qiymatlarini ushbu hujjat repo yoki dastur repo-ga qo'shmang.
@@ -149,7 +142,7 @@ say "submit this transaction".
 
 ### Agentlar orqali operatsiya ish oqimi {#transaction-workflow-through-agents}
 
-MCP ko'prigi imzolangan Iroha yo'riqnomasini yuborishi mumkin, ammo bu odatiy tranzaksiya talablarini chetlab o'tmaydi. Tranzaksiyaga baribir to'g'ri vakolat, ruxsatlar, to'lov mablag'lari, `chain` ID, metadata va imzo kerak.
+MCP ko‘prigi imzolangan Iroha tranzaksiyasini yubora oladi, lekin odatiy tranzaksiya talablarini bekor qilmaydi. Tranzaksiyaga baribir to‘g‘ri vakolat, ruxsatlar, komissiya mablag‘i, zanjir ID si, metadata va imzo kerak.
 
 Xom Iroha tranzaksiyalari uchun avval tranzaksiya zarfini SDK yoki CLI bilan tuzish va imzolash, so'ngra agentga faqat kanonik imzolangan tranzaksiya bytlari `body_base64` sifatida kodlangan. Agent xotiraga `iroha.transactions.submit_and_wait` yoki `iroha.transactions.submit` va so'rovnoma bilan `iroha.transactions.wait` murojaat qilishi mumkin.
 
@@ -197,36 +190,15 @@ Taira MCP-ni test tarmog'ini boshqarishning ommaviy yuzi sifatida ko'rib chiqish
 
 ## Endi sinab ko'rishingiz mumkin bo'lgan o'yinchoq misollari {#toy-examples-you-can-try-now}
 
-Ushbu namunalar faqat o'qiladi, agar qayd etilmagan bo'lsa. Ular kalitlarni ishlab chiqarishdan oldin ishlaydi va ikkala ommaviy tarmoqga ham qarshi ishlash xavfsizdir.
+Bu misollar hisob kalitlarisiz Taira’dan ma’lumot o‘qiydi.
 
-Taira sinov tarmog'i va Minamoto asosiy tarmog'ining salomatligini taqqoslang:
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
-
-Taira tomonidan aniqlangan ommaviy ma’lumotlar makoni yo'nalishlarining ro'yxatini ko'rsatish:
+Taira’ning har bir yo‘lagini uning ma’lumotlar makoni va ko‘rinuvchanligi bilan birga sanab chiqing:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-Mainnet ko'rinishi kerak bo'lganda Minamoto ga nisbatan bir xil buyruqni bajaring:
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +207,16 @@ Dashboard, bot yoki ishga tushirish tekshiruvi uchun kichik Node.js holatni teks
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -270,10 +234,11 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+# The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -284,12 +249,12 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Yuqori darajadagi `chain` — Taira tranzaksiyalari uchun to'g'ri zanjir ID-si. `[account].profile = "taira"` sozlamasi Taira I105 zanjir diskriminatorini mustaqil tanlaydi; zanjir ID-si hisob profilini tanlamaydi.
+Yuqori darajadagi `chain` — Taira tranzaksiyalarining aniq zanjir ID si, `network_id` esa har bir imzo bog‘lanadigan aniq tarmoq identifikatori. `network_id` yoki `network_id_file`dan aniq bittasini sozlang. `[account].profile = "taira"` sozlamasi Taira I105 zanjir diskriminantini mustaqil tanlaydi. Zanjir ID si hisob profilini tanlamaydi.
 
 Faqat oʻqish uchun tekshiruvni bajaring:
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 Yozish testlaridan oldin ommaviy Taira diagnostikani o'tkazing:
@@ -298,28 +263,24 @@ Yozish testlaridan oldin ommaviy Taira diagnostikani o'tkazing:
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-Taira hisobini pul to'lashdan oldin kran orqali mablag' bilan ta'minlang. To'g'ridan-to'g'ri kran oqimi [Testnetni XOR Taira](#_4-get-testnet-xor-on-taira).
+Komissiyali yozish amallaridan oldin Taira hisobini faucet orqali moliyalashtiring. Oldindan tayyorlashga asoslangan faucet jarayoni [Taira tarmog‘ida testnet XOR oling](#_4-get-testnet-xor-on-taira)da keltirilgan.
 
-Kasana talabnomasi qabul qilinganidan va hisobvaraq moliyalashtirilganidan so'ng, Taira kanari o'z navbatida yozish tutun sinovidir:
+Hisob moliyalashtirilgach, imzolangan log ko‘rsatmasi ixtiyoriy dastlabki yozish tekshiruvi bo‘la oladi. Har bir yuboriladigan tranzaksiya komissiya to‘lovchisini ko‘rsatadi, CLI esa imzolashdan oldin aniq komissiyani hisoblatadi:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-Kanari imzolangan pingni taqdim etadi, tasdiqlanishini kutadi va `--write-config` taqdim etilganda ishga tushirish vaqtini imzolash konfiguratsiyasini yozadi. Taira ommaviy testnet hisoblanadi, agar `taira doctor` to'ylangan navbatni xabar qilsa yoki kanari qaytarib beradi `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`, uni mijoz konfiguratsiyasi xatosi sifatida ko'rib chiqishdan oldin kuting va yana sinab ko'ring.
+Buyruq tasdiqni kutadi. Taira ochiq testnet, shuning uchun faucet ishlasa ham navbat to‘lishi pingni muvaffaqiyatsiz qilishi mumkin. `taira doctor` navbat to‘lganini bildirsa yoki ping `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` qaytarsa, buni mijoz sozlamasi xatosi deb hisoblashdan oldin kuting va qayta urining.
 
-Qo'riqlanmagan tutun sinovlari uchun kanaryani cheklangan qayta sinab ko'rish to'plamida o'rab oling:
+Nazorat qilinmaydigan dastlabki sinovlarda pingni cheklangan qayta urinish sikliga o‘rang:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -331,7 +292,7 @@ Agar `iroha taira doctor` qat'iy xatolarni ko'rsatadi. navbatning to'ldirilishi 
 
 ## SORA Nexus hisobini yaratish ID {#generate-a-sora-nexus-account-id}
 
-A SORA Nexus hisob ID kanonik hisoblanadi I105 hisobning ommaviy kalitidan va maqsadli tarmoq prefiksidan olingan manzil. Bu `[account].domain` mijozdagi qiymat TOML. Bir xil ommaviy kalitning turli xil kodlash IDs bilan Taira va Minamoto, va ishlab chiqarish foydalanuvchilari uchun alohida kalitlar juftligi yaratish kerak Minamoto.
+SORA Nexus hisob ID si — hisob ochiq kaliti va maqsad tarmoq prefiksidan hosil qilingan kanonik I105 manzili. Ayni ochiq kalit Taira va Minamoto tarmoqlarida turli ID larga kodlanadi, ishlab chiqarish foydalanuvchilari esa Minamoto uchun alohida kalit juftini yaratishi kerak.
 
 Hisobotni boshqaradigan Ed25519 tugmalarini yaratish yoki yuklash:
 
@@ -351,7 +312,7 @@ Minamoto ommaviy kalitni "mainnet" prefiksi bilan almashtirish:
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-Nexus API yoki CLI buyruqida kanonik hisob ID so'ragan har qanday joyda hosil bo'lgan hisobdan ID foydalaning, masalan, Taira kranidan `account_id`; balans so'rovlari, qat'iy hisob maydonlari yoki alias bog'lashlar. O'xshash xususiy kalitni mijoz konfiguratsiyasida saqlang va `[account].profile = "taira"` yoki `[account].profile = "minamoto"` bilan bir xil ommaviy tarmoqni tanlang.
+SORA Nexus API yoki CLI buyrug‘i kanonik hisob ID sini so‘ragan har joyda, masalan balans so‘rovlari, qat’iy hisob maydonlari yoki taxallus bog‘lanishlarida, hosil bo‘lgan hisob ID sidan foydalaning. Mos maxfiy kalitni mijoz sozlamasida saqlang va `[account].profile = "taira"` yoki `[account].profile = "minamoto"` bilan ayni ochiq tarmoqni tanlang.
 
 ID ishlab chiqarish o'zidan-o'zi moliyalashtirilgan zanjirdagi hisobni yaratmaydi. Taira da kran testnet yozish uchun hisobni yarata oladi va mablag' bilan ta'minlaydi. Minamoto da, tasdiqlangan asosiy tarmoqlarni o'rnatish yoki xazina oqimidan foydalaning.
 
@@ -372,188 +333,72 @@ Ko'proq batafsil ma'lumot olish uchun [Kriptografik kalitlarni saqlash](/uz/guid
 
 ## 4. Taira-da test XOR oling {#_4-get-testnet-xor-on-taira}
 
-To'g'ridan-to'g'ri ommaviy krandan foydalaning.
+CLI ning oldindan tayyorlashga asoslangan faucet jarayoni bilan testnet XOR talab qiling. Faucet `taira.client.toml`da sozlangan hisobni moliyalashtiradi va u mavjud bo‘lmasa, avval ro‘yxatdan o‘tkazadi. Jarayon:
 
-1. Imzolovchini yaratish yoki yuklash va uning kanonik Taira hisobini hisoblash ID.
-2. Hozirgi kran puzzlini olib keling.
-3. Agar `difficulty_bits` `0` dan katta bo'lsa, puzzlingni hal qiling.
-4. Kova uchun talabnoma bering.
-5. Hisobvaraq yoki aktivlar balansining ko'rinishini kutib, to'lovlarni to'lash uchun yozma xabar yuborishdan oldin.
+1. Faucetning ochiq siyosatini o‘qing: faucet vakolati, komissiya aktivi va miqdor.
+2. Talabni tayyorlang. CLI ish isbotini yechadi, Torii tayyorlab imzolagan aniq tranzaksiyani tekshiradi va uni yubormasdan maxfiy jurnal katalogiga saqlaydi.
+3. Saqlangan tranzaksiyani bir marta yuboring.
+4. Komissiyali yozishlarni yuborishdan oldin aktiv balansi ko‘rinishini kuting.
 
-Umumiy kalitni Taira I105 hisob raqamiga ID o'zgartirish:
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-Puzzle olib keling:
+Siyosatni o‘qing:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-Faucet - bu ommaviy testnet xizmati. Agar bulma-bulma yoki talab bitik nuqtasi `502`, vaqt o'tishi yoki boshqa darvoza darajasi xatosi qaytarsa, kalitlaringizni yoki mijoz konfiguratsiyasini o'zgartirishdan oldin kuting va yana sinab ko'ring.
 
 Javob quyidagi shaklga ega:
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-Agar `difficulty_bits` `0` bo'lsa, faqat ID hisobini taqdim eting:
+Siyosat imzolanmagan topish ma’lumotidir. Avtomatlashtirish har bir javobga ishonish o‘rniga kutilgan vakolat, aktiv ta’rifi va miqdorni mahkamlashi kerak. `prepare` siz bergan qiymatlardan farq qiladigan tayyorlangan tranzaksiyani rad etadi.
+
+Talabni tayyorlang va yuboring:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-`difficulty_bits` `0` dan katta bo'lganda, bulutni hal qiling va ankor balandligi qo'shimcha nonce kiritilsin:
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-Puzzle algoritmi quyidagicha:
-
-1. Tushkunlikni SHA-256 sifatida ko'rsatish:
-   - `iroha:accounts:faucet:pow:v2` byetlari
-   - UTF-8 hisob raqami ID
-   - `anchor_height` sifatida katta-endyan `u64`
-   - `anchor_block_hash_hex` baytlar sifatida kodlangan
-   - `challenge_salt_hex` mavjud bo'lganda baytlar sifatida kodlangan
-2. `u64` nonces ko'p-endian 8-bayt qiymatlari sifatida kodlangan harakat qiling.
-3. Har bir nonce uchun skriptni quyidagicha ishlating:
-   - maxfiy soʻz: 8-baytli nonce
-   - tuz: 32 baytli qiyinchilik
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - Ishlab chiqarish uzunligi: 32 byt
-4. G'alaba qozonadigan nonce kamida `difficulty_bits` ning nol bitlarga yetakchi bo'lgan birinchi digest.
-
-Fauxet javobida moliyalashtirilgan aktiv va navbatdagi tranzaksiya hashlari o'rnatiladi:
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-Javob hozirda HTTP `202 Accepted` bilan qaytarilmoqda. Uning `asset_definition_id` - bu ommaviy kran tomonidan moliyalashtiriladigan joriy Taira to'lov aktividir; uni javobdan nusxa olishning o'rniga ID namunasidan olib tashlang. Faxt `tx_hash_hex` va `status: "QUEUED"` qaytarib berganda so'rovni qabul qildi.
+`prepare` jurnal katalogini maxfiy yaratadi va mavjudini almashtirishni rad etadi, shuning uchun har bir talab uchun yangi katalogdan foydalaning. Faucet — ochiq testnet xizmati. `submit` `Pending` bildirsa, vaqt tugasa yoki `502` olsa, yana bir talab tayyorlash o‘rniga ayni sozlama va jurnal bilan `taira account faucet resume`ni bajaring. Eskirgan ish isboti tayanchi `prepare`ni muvaffaqiyatsiz qiladi; yangi jurnal katalogida qayta tayyorlang.
 
 Soʻngra oʻzingizning toʻlovlarni toʻlash boʻyicha operatsiyalaringizni taqdim etishdan oldin moliyalashtirilgan aktivni soʻrab oling:
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-Agar faucet uchun talabnoma qabul qilingan bo'lsa, ammo hisob yoki aktiv hali ko'rinmasa, Transaksiya hali ham testnet navbatini qayta ishlashda davom etmoqda. Yozuvlarni yuborishdan oldin o'qishni qayta sinab ko'ring.
-
-Ishga tayyor bo'lgan to'g'ridan-to'g'ri API tekshiruvi uchun buni `taira_faucet_claim.py` sifatida saqlang va Taira I105 hisob raqamiga ID o'ting:
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+Talab qo‘llangan, lekin aktiv hali ko‘rinmayotgan bo‘lsa, yozish yuborishdan oldin kuting va o‘qishni takrorlang.
 
 Fauxet faqat Taira testnet mablag'lari uchun ishlatiladi. XOR testnetdan, fauxet hisoblaridan yoki Taira kanary imzolaridan foydalanmang Minamoto oqimlarida.
 
 ## 5. Minamoto mijoz konfigini yaratish {#_5-create-a-minamoto-client-config}
+
+Minamoto’dan foydalanishdan oldin asosiy tarmoq xizmatining manzilini operator bilan aniqlashtiring va TLS sertifikati xost nomiga mos kelishini tekshiring.
 
 &amp; amp; uchun alohida tugmalar birikmasidan foydalanish Minamoto. Qayta ishlatmang . Taira asosiy tarmog'i kalitlari.
 
@@ -561,10 +406,11 @@ Fauxet faqat Taira testnet mablag'lari uchun ishlatiladi. XOR testnetdan, fauxet
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -575,7 +421,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-Eng yuqori darajadagi `chain` joriy bo ' lsa Nexus asosiy tarmoq zanjirlari ID. `[account].profile = "minamoto"` tanlaydi Minamoto I105 zanjirni farqlovchi; oxirgi nuqta o'rinbosari nomi va zanjir ID uni yonma-yon tanlamang.
+Yuqori darajadagi `chain` — joriy SORA Nexus mainnet zanjir ID si, `network_id` esa Minamoto tarmog‘ining aniq identifikatori; uni birinchi imzolangan amaldan oldin imkoniyatlar marshrutidan o‘qing. `[account].profile = "minamoto"` Minamoto I105 zanjir diskriminantini tanlaydi; endpoint host nomi va zanjir ID si uni yashirin tarzda tanlamaydi.
 
 Minamoto ommaviy kalitini uning kanonik I105 hisob raqamiga ID mainnet prefiksi bilan o'zgartiring:
 
@@ -586,10 +432,10 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 Hisobvaraqni o'qish-o'qish bilan ta'minlash va moliyalashtirish uchun asosiy tarmoqga kirish yoki boshqaruv oqimi orqali mablag' ajratilmaguncha faqat o'qib chiqish tomonini tekshirish:
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
-Taira kranini yoki yozish yordamchisini Minamoto ga qarshi ishlatmang.
+Taira faucet yoki dastlabki yozish sinovi buyruqlarini Minamoto tarmog‘iga qarshi ishlatmang.
 
 ## 6. Minamoto hisobvarag'ini XOR bilan ta'minlash {#_6-fund-a-minamoto-account-with-xor}
 
@@ -601,7 +447,7 @@ Taira XOR Minamoto to'lovlarini to'lay olmaydi. Testnet saldi va kran talablari 
 
 ## 7. Mavjud ma’lumotlar makonida ishlash {#_7-work-inside-an-existing-dataspace}
 
-Ma’lumotlar makonida yashovchi katta daftar ob'ektlari uchun to'liq malakali domen nomlaridan foydalaning. Masalan, ommaviy ma’lumotlar makonidagi loyiha domenidan foydalanish kerak:
+Ma’lumotlar makonidagi reyestr obyektlari uchun to‘liq aniqlashtirilgan domen nomlarini ishlating. Masalan, ochiq ma’lumotlar makonidagi loyiha domeni quyidagicha bo‘lishi kerak:
 
 ```text
 apps.universal
@@ -615,8 +461,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -628,11 +473,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-Hisobvaraq aliaslari bir xil ma’lumotlar makonining suffixidan foydalanadi:
+Hisob taxalluslari ayni ma’lumotlar makoni suffiksini ishlatadi:
 
 ```text
 alice@apps.universal
@@ -643,7 +488,7 @@ Katta hisob maydonlari hali ham kanonikdan foydalanadi I105 hisob IDs. Aliaslarn
 
 ## 8. Yangi ma’lumotlar makonini yaratish {#_8-provision-a-new-dataspace}
 
-Yangi ma’lumotlar makoni operator va boshqaruv o'zgarishidir. Umumiy Torii oxirgi nuqtasi trafikni konfiguratsiyalangan ma'lumot maydonlariga yo'naltirish mumkin, ammo u noma'lum ma'lumot maydonlari aliaslarini rad etadi.
+Yangi ma’lumotlar makoni operator va boshqaruv darajasidagi o‘zgarishdir. Ochiq Torii endpointi trafikni sozlangan ma’lumotlar makonlariga yo‘naltira oladi, lekin noma’lum ma’lumotlar makoni taxalluslarini rad etadi.
 
 O'zgarishlarni tayyorlashdan oldin, amaldagi jonli katalogni o'qing:
 
@@ -659,15 +504,15 @@ Operator hisobini ko'rsatish uchun yo'l manifesti holatini ham tekshiring:
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-Yo'nalish ID, ma’lumotlar makoni ID, tasdiqlovchi moslama, xato tolerantligi, manifest, yo'naltirish qoidalari va operatsion egasi birgalikda ko'rib chiqilmagan bo'lsa, yangi aliasni targ'ib qilmang. Kerakli ruxsatnomalarga ega bo'lgan odatiy foydalanuvchi hisobi mavjud ma’lumotlar makonida domen sotib olish va SNS ijaraga olish mumkin; u yangi ommaviy ma'lumotni xavfsiz qo'sholmaydi.
+Yo‘lak ID si, ma’lumotlar makoni ID si, validatorlar to‘plami, xatoga chidamlilik, manifest, marshrutlash qoidalari va amaliy mas’ul birgalikda ko‘rib chiqilmaguncha yangi taxallusni ishga kiritmang. Kerakli ruxsatlarga ega oddiy foydalanuvchi hisobi taxallus rejalashtiruvchisi orqali mavjud ma’lumotlar makoni ichida domen va uning SNS ijarasini olishi mumkin; u xavfsiz tarzda yangi ochiq ma’lumotlar makonini qo‘sha olmaydi.
 
-Xususiy yoki tashkiliy ma'lumotlar maydonchasi uchun katalog o'zgartirishni quyidagilar bilan tayyorlang:
+Xususiy yoki tashkilot ma’lumotlar makoni uchun quyidagilarni o‘z ichiga olgan katalog o‘zgarishini tayyorlang:
 
-- yagona ma’lumotlar makonining aliasi va raqamli `id`
+- noyob ma’lumotlar makoni taxallusi va raqamli `id`
 - to'g'ri yo'nalishdagi kirish yoki mavjud yo'nalishda berilgan vazifa
-- ma’lumotlar makoni `fault_tolerance`
+- ma’lumotlar makonining `fault_tolerance` qiymati
 - yo'naltirish qoidalari u yerga tushishi kerak bo'lgan ko'rsatmalar yoki hisob maydonlari uchun
-- ma’lumotlar makoni UAID imkoniyatlarini taqdim etsa, Makon katalogi manifesti yoki ishga tushirilganini tasdiqlovchi teng kuchli dalil
+- ma’lumotlar makoni UAID imkoniyatlarini taqdim etsa, makonlar katalogi manifesti yoki unga teng joriy qilish dalillari
 - validatorlar, muvofiqlik, hisob-kitob va kuzatuv siyosati uchun boshqaruv tasdig‘i
 
 Tekshirilishi mumkin boʻlgan konfig fragment quyidagicha koʻrinadi:
@@ -684,23 +529,23 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments data space"
 ```
 
 Operatorning qabul qilishida quyidagi darvozalar bo'lishi kerak:
 
-- `iroha3d --sora --config <config.toml> --trace-config` hal qilingan nod konfiguratsiyasini o'tkazadi
+- `iroha3d --sora --config <config.toml> --check-config` hal qilingan nod konfiguratsiyasini o'tkazadi
 - hosil qilingan yoki ko'rib chiqilgan manifest hash va imzolar bilan arxivlanadi.
 - tutun sinovlari oʻtadi Taira har qanday Minamoto rag'batlantirish
-- o'zgarishdan keyingi `/status` katalogida belgilangan yo'nalish va ma’lumotlar makoni ko'rsatilgan;
+- o‘zgarishdan keyingi `/status` katalogi ko‘zlangan yo‘lak va ma’lumotlar makonini ko‘rsatishi
 - `iroha app nexus lane-report --summary` talab qilingan manifestlar yo'qolganligini bildirmaydi
 
 ```bash
@@ -709,12 +554,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-Xuddi shu ma’lumotlar makonini Minamoto ga faqat Taira ishga tushirilishi, tutun sinovlari, monitoring va boshqaruv dalillari to'liq bo'lganidan so'ng targ'ib qilish.
+Ayni ma’lumotlar makonini Minamoto tarmog‘iga faqat Taira joylashtirishi, dastlabki sinovlar, monitoring va boshqaruvga oid dalillar to‘liq bo‘lgach o‘tkazing.
 
 ## Bogʻliq sahifalar {#related-pages}
 
 - [Iroha 3](/uz/get-started/install-iroha.md) o'rnatish
 - [Iroha 3 orqali CLI](/uz/get-started/operate-iroha-via-cli.md) orqali harakatlaning
-- [Xususiy ma’lumotlar makoni uchun sponsorlik to'lovlari](/uz/get-started/private-dataspace-fee-sponsor.md)
+- [Xususiy ma’lumotlar makoni komissiyalariga homiylik qilish](/uz/get-started/private-dataspace-fee-sponsor.md)
 - [Torii oxirgi nuqtalari](/uz/reference/torii-endpoints.md)
 - [Ibtido ko'rsatkichi](/uz/reference/genesis.md)

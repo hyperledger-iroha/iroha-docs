@@ -5,7 +5,6 @@ translation_source_hash: b538b2cad11d4fd3b2b7d201a20882389049d3e4453f11baa6f8548
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # البيانات الوصفية وخيارات تخزين سجل البلوكشين {#metadata-and-ledger-storage-choices}
 
 نموذج البيانات Iroha 3 ليس لديه نوع أصل منفصل `Store` للبيانات ذات القيمة المفتاحية العشوائية. استخدم خيارات التخزين التالية.

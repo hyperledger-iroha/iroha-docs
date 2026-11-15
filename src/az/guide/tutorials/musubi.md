@@ -1,11 +1,10 @@
 ---
 translation_locale: az
 translation_source: /guide/tutorials/musubi.md
-translation_source_hash: 621d1795fd1c3cc62462a9a91af68fe684c0ff5293f5e77801420dc8318bac38
+translation_source_hash: 89d0874ca7ffe82099a1443d48713efccfbf3ec8042c2dde2ec8ae81717fb25b
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Musubi Kotodama Paketlər {#musubi-kotodama-packages}
 
 Musubi Kotodama mənbə paketləri üçün ilk buraxılış paket meneceridir. O, dəqiq zəncirdəki asılılıq qrafını həll edir, SoraFS mənbəni autentifikasiya edir seçilmiş iş sahəsini arxivləşdirir, tərtib edir və sınaqdan keçirir, tək protokol-standart CAR arxivlərini qurur və dəyişməz versiyaları Iroha vasitəsilə yayımlayır.
@@ -32,7 +31,7 @@ Dəqiq buraxılış identifikatorları versiyanı əlavə edir:
 namespace/package@version
 ```
 
-Bir ad sahəsinin əvvəlində heç bir `@` yoxdur. Bir ad sahəsi ya `universal` kimi bir məlumat sahəsi kökü, ya da `dex.universal` kimi domen-təyin olunmuş məlumat sahəsidir. Blokçeyn dəftəri bu struktur ad sahəsini paketi iddia etmədən əvvəl bir sabit ev məlumat sahəsinə bağlayır.
+Bir ad sahəsinin əvvəlində heç bir `@` yoxdur. Bir ad sahəsi ya `universal` kimi bir məlumat sahəsi kökü, ya da `dex.universal` kimi domenlə dəqiqləşdirilmiş ad sahəsidir. Blokçeyn dəftəri bu struktur ad sahəsini paketi iddia etmədən əvvəl bir sabit ev məlumat sahəsinə bağlayır.
 
 ## texniki manifest və Lockfile {#manifest-and-lockfile}
 
@@ -68,10 +67,10 @@ Taira bu iş axını üçün ictimai test şəbəkəsidir. Yoxlanılmış zənci
 ```toml
 torii_url = "https://taira.sora.org/"
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 
 [musubi.fetch]
-network_id = "hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94"
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 client_id = "musubi-taira"
 request_timeout_ms = 30000
 
@@ -89,9 +88,9 @@ export TAIRA_ROOT=https://taira.sora.org
 curl -fsS "$TAIRA_ROOT/v1/sorafs/providers?limit=20" | jq '.providers'
 ```
 
-Təchizatçı kataloqu təchizatçı kimliklərini və elan edilmiş API son nöqtələrini təqdim edir. Seçilmiş təchizatçıdan uyğun operator icazəsini əldə edin. Proqramın icra mühiti həmin açardan bağlı axın tokenlərini tələb etmək üçün istifadə edir; tokenlər həm CLI arqumentləri, həm də kilidləmə faylı məzmunu deyildir.
+Təchizatçı kataloqu təchizatçı kimliklərini və elan edilmiş son nöqtələrini təqdim edir. Seçilmiş təchizatçıdan uyğun operator icazəsini əldə edin. Proqramın icra mühiti həmin açardan bağlı axın tokenlərini tələb etmək üçün istifadə edir; tokenlər həm CLI arqumentləri, həm də kilidləmə faylı məzmunu deyildir.
 
-İstifadə etməyin Taira doğrulayıcı pin URL kimi `url`. Qeydiyyatdan keçmiş təsdiqləyicilər daxil edilib SoraFS yaddaş deaktiv edilib. Onların `https://taira-validator-{1,2,3,4}.sora.org` API son nöqtələr pin qeydiyyatını qəbul edir, arxiv oxumaları isə seçilmiş təsdiqlənmiş provayderdən istifadə edir HTTPS mənbə
+İstifadə etməyin Taira doğrulayıcı pin URL kimi `url`. Qeydiyyatdan keçmiş təsdiqləyicilər daxil edilib SoraFS yaddaş deaktiv edilib. Onların `https://taira-validator-{1,2,3,4}.sora.org` son nöqtələr pin qeydiyyatını qəbul edir, arxiv oxumaları isə seçilmiş təsdiqlənmiş provayderdən istifadə edir HTTPS mənbə
 
 ## Yerli İş Axını {#local-workflow}
 
@@ -209,4 +208,4 @@ Musubi ilk buraxılış V1 təlimatları və sorğularından istifadə edir:
 | `FindMusubiArchiveLocationsV1`                       |Təklif olunmuş təminatçı tərəfindən dəstəklənən arxiv yerlərini oxuyun.|
 | `FindMusubiAliasV1` / `FindMusubiAliasHistoryV1`     |Cari alias hədəfini və ya onun dəyişməz tarixçəsini oxuyun.|
 
-Torii tətbiq marşrutu ailəsini `/v1/musubi/*` altında göstərir. MCP alətləri mövcud `iroha.musubi.queries.*` və `iroha.musubi.instructions.*` adlarından istifadə edir. Daha geniş API xəritəsi üçün [Torii API son nöqtələr](/az/reference/torii-endpoints.md) və [sorğu istinadı](/az/reference/queries.md) baxın.
+Torii tətbiq marşrutu ailəsini `/v1/musubi/*` altında göstərir. MCP alətləri mövcud `iroha.musubi.queries.*` və `iroha.musubi.instructions.*` adlarından istifadə edir. Daha geniş API xəritəsi üçün [Torii son nöqtələr](/az/reference/torii-endpoints.md) və [sorğu istinadı](/az/reference/queries.md) baxın.

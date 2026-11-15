@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # الأذونات {#permissions}
 
 تحتاج الحسابات إلى رموز إذن للقيام بإجراءات مختلفة على البلوكشين، مثل إصدار أو حرق الأصول.
@@ -73,14 +72,20 @@ let register_role = Register::role(role);
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## متحققو الأذونات {#permission-validators}
 
-توجد الأذونات بحيث يمكن للحسابات التي تحتوي على رمز الإذن المطلوب فقط تنفيذ إجراء محمي. يقوم المنفذ الافتراضي بفحص الأذونات أثناء تنفيذ التعليمات والاستعلامات والتعبيرات.
+توجد الأذونات بحيث يمكن للحسابات التي تحتوي على رمز الإذن المطلوب فقط تنفيذ إجراء محمي. يفحص المنفذ الافتراضي الأذونات أثناء تنفيذ المعاملات والتعليمات وأثناء التحقق من الاستعلامات.
 
 يتم تجميع واجهة المدقق الافتراضية حسب منطقة دفتر الأستاذ الخاص بالبلوكتشين:
 
@@ -89,7 +94,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 - الأصول، NFTs، والحسابات الضمان
 - المحفزات
 - الأدوار والأذونات
-- المنفذ/وقت التشغيل، الإثباتات، الجسور، ووحدات SORA/Nexus
+- المنفذ/وقت التشغيل، الإثباتات، الجسور، ووحدات SORA Nexus
 
 قائمة الرموز الدقيقة مدعومة بالمصدر في [مرجع رموز الإذن](/ar/reference/permissions.md).
 
@@ -97,7 +102,7 @@ let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
 
 تتم فرض فحوصات الأذونات بواسطة المنفذ النشط. يوفر المنفذ الافتراضي أدوات التحقق من الأذونات المدمجة وتعريفات الرموز، ويمكن للشبكة تغيير السياسة من خلال ترقية المنفذ الذي تستخدمه.
 
-يعيد المحققون حكم التحقق. يمكن للمحقق أن يسمح بعملية ما، أو يرفضها مع تقديم سبب، أو يتجاوزها إذا كانت العملية خارج نطاق ذلك المحقق. يجمع القاضي المختار تلك الأحكام ليقرر ما إذا كان يمكن للتعليمات أو الاستعلام أو التعبير أن يستمر.
+إما أن يسمح المنفذ بالعملية أو يرفضها مع سبب `ValidationFail`. تؤدي التعليمة المرفوضة إلى رفض معاملتها، ويعيد الاستعلام المرفوض الخطأ إلى المستدعي.
 
 ## الاستفسارات المدعومة {#supported-queries}
 

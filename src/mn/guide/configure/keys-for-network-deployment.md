@@ -1,27 +1,26 @@
 ---
 translation_locale: mn
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: nllb-200-ct2+codex-semantic-review
+translation_engine: nllb-200-ct2+codex-semantic-review+reviewed-delta
 ---
-
 # Сүлжээ байршуулалтын түлхүүрүүд {#keys-for-network-deployment}
 
-Бүх сүлжээнд клиент, зангилаа, genesis-ийн гарын үсэг зурагч болон NPoS эсвэл Nexus профайлын BLS баталгаажуулагчийг таних түлхүүрийн материал шаардлагатай.
+Сүлжээ бүрд клиент, genesis-ийн гарын үсэг болон эзэмшлийн нотолгоотой (Proofs-of-Possession) BLS-normal баталгаажуулагчийн таних тэмдгүүдэд зориулсан тусдаа түлхүүрийн материал хэрэгтэй.
 
 ## Хэрэглэгдэх түлхүүр {#where-keys-are-used}
 
 - Клиентийн гарын үсгийн түлхүүрийг `client.toml` файлын `[account]` хэсэгт хадгална.
 - Зангилааны таних түлхүүрийг зангилаа бүрийн `config.toml` файлд `public_key` болон `private_key` болгон хадгална.
 - Зангилаа илрүүлэлт нь `trusted_peers` дэх зангилаа бүрийн нийтийн түлхүүрийг ашиглана.
-- NPoS профайлын BLS баталгаажуулагчийн эзэмшлийн нотолгоог `trusted_peers_pop`-д хадгална.
+- Баталгаажуулагчийн BLS эзэмшлийн нотолгоог (Proofs-of-Possession) зөвшилцлийн горимоос үл хамааран баталгаажуулагч бүрт `trusted_peers_pop`-д хадгална.
 - Genesis-д гарын үсэг зурахдаа зангилааны тохиргооны `[genesis].public_key` болон манифестад гарын үсэг зурах тохирох хувийн түлхүүрийг ашиглана.
 
 Орон нутгийн болон туршилтын хэрэглээний хувьд Kagami нь эдгээр файлуудыг нэгтгэн бүтээх болно:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Орчин үеийн сүлжээ эсвэл хувилбарын хувьд заасан урсгалыг ашиглах:

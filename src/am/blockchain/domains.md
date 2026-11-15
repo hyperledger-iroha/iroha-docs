@@ -1,29 +1,28 @@
 ---
 translation_locale: am
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # ጎራዎች {#domains}
 
-ጎራዎች በ`World` ውስጥ የተመዘገቡ የስም ቦታዎች ተብለው ይሰየማሉ። አሁን ባለው Iroha 3 የውሂብ ሞዴል፣ አንድ ጎራ በወላጅ ዳታ ቦታ ብቁ ነው፣ ስለዚህ ነጠላ ፕሮቶኮል-ስታንዳርድ መለያ የሚከተለው ነው -
+ጎራዎች በ`World` ውስጥ የተመዘገቡ ስም ያላቸው የስም ቦታዎች ናቸው። በአሁኑ Iroha 3 የውሂብ ሞዴል ጎራ በወላጁ የውሂብ ቦታ ይለያል፤ ስለዚህ ቀኖናዊው መለያ እንዲህ ነው:
 
 ```text
 domain.dataspace
 ```
 
-ለምሳሌ፣ `payments.universal` በ`universal` የውሂብ ቦታ ውስጥ ያለውን `payments` ጎራ ይሰይማል።
+ለምሳሌ `payments.universal` በ`universal` የውሂብ ቦታ ውስጥ ያለውን `payments` ጎራ ይሰይማል።
 
 ## መዋቅር {#structure}
 
 የተመዘገበ `Domain` የሚከተሉትን ያጠቃልላል -
 
-- `id` የውሂብ ቦታ ብቁ `DomainId`
+- `id`፦ በውሂብ ቦታ የተለየው `DomainId`
 - `logo` አማራጭ `SoraFS` URI ለጎራ አርማ
 - `metadata` የዘፈቀደ ቁልፍ-እሴት ሜታዳታ
-- `owned_by` የጎራው ባለቤት የሆነው መለያ፣ አብዛኛውን ጊዜ የተመዘገበው መለያ
+- `owned_by`፦ የጎራው ባለቤት የሆነው መለያ፣ አብዛኛውን ጊዜ ጎራውን ያስመዘገበው መለያ
 
 ጎራን እውን ለማድረግ የሚያገለግለው የማስነሻ ጭነት `NewDomain` ነው። `id`፣ አማራጭ `logo` እና የመጀመሪያ `metadata` ይይዛል። የሶፍትዌር ማስፈጸሚያ አካባቢ `owned_by` ከፈቃድ ባለቤት ይሞላል። ተራ ደንበኞች ይህንን ጭነት በቀጥታ አያቀርቡም።
 
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-ዓላማው `payments.universal`ን፣ የቁጥር የመረጃ ቦታውን፣ ካኖኒካል I105 ባለቤቱን፣ የሊዝ ማግኛ ጊዜውን እና የአሁኑን የፖሊሲ/ክፍያ ግምት መከላከያ ይለያል። የእቅድ አውጪው መጨረሻ ነጥብ `POST /v1/aliases/setup/plan` ነው፤ የሚመልሰው እቅድ ከሰንሰለቱ፣ ከባለሥልጣኑ፣ ከሁኔታው እና ከጊዜ ገደቡ ጋር የታሰረ ነው። ጎራን ለማስወገድ አሁንም [`Unregister`](/am/blockchain/instructions.md#un-register) ይጠቀሙ።
+የታቀደው ክዋኔ `payments.universal`፣ ቁጥራዊ የውሂብ ቦታውን፣ ቀኖናዊ I105 ባለቤቱን፣ የኪራይ ግዥ ጊዜውን እና የአሁኑን የፖሊሲ/የክፍያ ግምት መከላከያ ሁኔታ ይለያል። የዕቅድ አውጪው መገናኛ ነጥብ `POST /v1/aliases/setup/plan` ነው፤ የሚመልሰው ዕቅድ ከሰንሰለት፣ ከፈቃድ ሰጪ፣ ከሁኔታ እና ከማብቂያ ጊዜ ጋር የተሳሰረ ነው። ጎራን ማስወገድ አሁንም [`Unregister`](/am/blockchain/instructions.md#un-register) ይጠቀማል።
 
 ጎራን ለመፍጠር ወይም ለማስወገድ በንቁ የአፈጻጸም አካባቢ አረጋጋጭ ሥር ተገቢው የጎራ አስተዳደር ፈቃድ ያስፈልጋል። ባለሥልጣኑ ያንን ጎራ የማሻሻል ፈቃድ ሲኖረው፣ የጎራውን ሜታዳታ በ [`SetKeyValue` እና `RemoveKeyValue`](/am/blockchain/instructions.md#setkeyvalue-removekeyvalue) ማዘመን ይቻላል።
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-የህዝብ ማስፈጸሚያ መስመር ካታሎግ ወደ ዳታ ቦታ ተለዋጭ ስሞች ይመለሱ -
+ክፍቱን የመስመር ካታሎግ ከውሂብ ቦታ ተለዋጭ ስሞች ጋር ያዛምዱ:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-አንድ መተግበሪያ ጎራ መኖሩን ማረጋገጥ ሲፈልግ የመጀመሪያውን ትዕዛዝ ይጠቀሙ። የውሂብ ቦታ ይፋዊ፣ የተገደበ ወይም ከዋናው የማስፈጸሚያ መስመር ጀርባ የዘገየ መሆኑን ማረጋገጥ ሲፈልጉ የማስፈጸሚያ መስመር ካታሎግ ይጠቀሙ።
+መተግበሪያ ጎራ መኖሩን ለማረጋገጥ ሲፈልግ የመጀመሪያውን ትዕዛዝ ይጠቀሙ። ከውሂብ ቦታ ጋር የተያያዙ መስመሮችን፣ የእያንዳንዱን ክፍት ወይም የተገደበ ታይነት እና ከዋናው መስመር አንጻር ያላቸውን የማመሳሰል ሁኔታ ለማየት የመስመር ካታሎጉን ይጠቀሙ።
 
-የጎራ ማዋቀር ክፍያ የሚጠይቅ የመጻፍ ክዋኔ ነው። በ Taira ላይ ከመሞከርዎ በፊት የቴስትኔት ገንዘብ ድጋፍ አጋዡን ከ [በ Taira የሙከራ መረብ XOR ያግኙ](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ወስደው `taira_faucet_claim.py` በሚል ስም ያስቀምጡ፣ ፈራሚውን በሕዝብ የገንዘብ ድጋፍ አገልግሎት በኩል ይሙሉ እና የክፍያ ሜታዳታን ያያይዙ፦
+ጎራ ማዋቀር ክፍያ የሚፈልግ ሁኔታን የሚቀይር ክዋኔ ነው። በTaira ላይ ከመሞከርዎ በፊት በ[በTaira ላይ የሙከራ አውታረ መረብ XOR ማግኘት](/am/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ያለውን ቀድሞ የማዘጋጀት ፋውሴት ሂደት ተጠቅመው ፈራሚውን ይሙሉ፣ ከዚያ ከፋዩን በግልጽ ጠቅሰው ዕቅዱን ይተግብሩ። CLI ከመፈረም በፊት ትክክለኛውን ክፍያ ያስላል:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

@@ -1,9 +1,9 @@
 ---
 translation_locale: he
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # תוכנית מודל נתונים {#data-model-schema}
 
@@ -16,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-אל תייצרו bindings מקטע התיעוד שנשמר במאגר כל עוד מצב המקור שלו ממתין. תגובת הצומת החי היא המקור המוסמך למודל הנתונים שקוּמפל בצומת זה; קבעו אותה לצד גרסת הבנייה של הצומת שבה משתמש השילוב שלכם.
+צרו קישורי קוד מהתשובה הזאת במקום מעותק שפורסם עבור בנייה אחרת. תשובת הצומת החי היא המקור הסמכותי למודל הנתונים שקוּמפל בצומת הזה; שמרו אותה מקובעת לצד בניית הצומת ששילובכם משתמש בה.

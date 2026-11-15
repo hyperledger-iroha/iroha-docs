@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE 代表随机访问机器性函数评估. 在 Iroha 中,它是公共政策在链上的程序的通用隐藏函数层,但其评价者逻辑,秘密或原始输入不应该被写给世界状态.它被 SORA Nexus 识别器流,如私人电话或电子邮件搜索所使用,并且也可以作为一个通用的 Torii 程序执行辅助器,当节点配置文件启用应用面向路径时.
@@ -764,6 +763,5 @@ Torii 的进程中运行时 RAM-LFE 设置在 `torii.ram_lfe.programs[*]`下,按
 
 ## 相关主题 {#related-topics}
 
-- [个人数据空间的赞助费用](/zh-hans/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
 - [Torii 端点](/zh-hans/reference/torii-endpoints.md#app-and-sora-route-families)
 - [无名交易](/zh-hans/blockchain/anonymous-transactions.md)

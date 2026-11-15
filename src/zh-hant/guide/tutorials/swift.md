@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hant
 translation_source: /guide/tutorials/swift.md
-translation_source_hash: a218239d9f4e14a513b895267b9b20b21a5fba021b0b97c013dab7e5be50a97f
+translation_source_hash: 753ce1b5e0de4eae56b38e77962566b23fee56d4662a432a7bbe6ea807261422
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Swift 和iOS {#swift-and-ios}
 
 上游工作空間提供的 Swift SDK 是 `IrohaSwift/` 下的 `IrohaSwift` Swift 套件。其套件 manifest 定義三個函式庫產品：`IrohaSwift`、`IrohaSwiftMobileTransports` 和 `IrohaSwiftTransferUI`，並以 Swift 5.9 工具支援 iOS 15+ 與 macOS 12+。
@@ -30,20 +29,16 @@ targets: [
 ]
 ```
 
-調整應用程式的路徑.不要複製當前的 `examples/ios/ConnectMinimalApp`路徑,該形式將 `../../IrohaSwift` 分解為 `examples/IrohaSwift`.
+請依您的應用程式調整路徑。`examples/ios/ConnectMinimalApp/Package.swift` 以相對路徑 `../../../IrohaSwift` 示範了相同的相依項目。
 
-在解決包之前,請確保橋樑存在於工作空間根點:
+在解析套件之前，請先建置目前的原生橋接程式庫。若用於本機開發與測試，請在工作區根目錄執行：
 
 ```bash
 cd /path/to/iroha
-make bridge-xcframework
+python3.12 scripts/test_swift_local.py
 ```
 
-這產生`dist/NoritoBridge.xcframework`; `IrohaSwift/Package.swift`將其稱為`../dist/NoritoBridge.xcframework`.
-
-## CocoaPods {#cocoapods}
-
-該程式碼庫還包含 `IrohaSwift/IrohaSwift.podspec`. 宣告: `IrohaSwift` 子, Swift 5,9和iOS 15. Swift 來自主儲存庫中的來源;原始橋樑仍然必須存在並用於交易編碼,非Ed25519簽名和Connect加密.
+發布建置透過 `make bridge-xcframework` 產生 `dist/NoritoBridge.xcframework`，該命令需要 `SOURCE_DATE_EPOCH`、`NORITO_BRIDGE_OUT_DIR`、`NORITO_BRIDGE_BUILD_DIR`、`NORITO_BRIDGE_ARCHIVE_OUTPUT` 和 `MOBILE_SDK_CARGO_LOCKFILE`。`IrohaSwift/Package.swift` 以 `../dist/NoritoBridge.xcframework` 參照該橋接程式庫。
 
 ## 快速開始 {#quickstart}
 
@@ -52,13 +47,13 @@ import Foundation
 import IrohaSwift
 
 let torii = ToriiClient(baseURL: URL(string: "http://127.0.0.1:8080")!)
-let sdk = IrohaSDK(toriiClient: torii)
+let sdk = IrohaSDK(baseURL: torii.baseURL)
 
 let keypair = try Keypair.generate()
 let accountId = try keypair.accountId()
 
 if #available(iOS 15.0, macOS 12.0, *) {
-    let balances = try await torii.getAssets(accountId: accountId)
+    let balances = try await torii.accountAssets(of: accountId).page()
     print("balances:", balances)
 }
 ```
@@ -89,7 +84,7 @@ if #available(iOS 15.0, macOS 12.0, *) {
 
 ```swift
 let transfer = TransferRequest(
-    chainId: "00000000-0000-0000-0000-000000000000",
+    networkId: try NetworkId(literal: "<exact-network-id>"),
     authority: accountId,
     assetDefinitionId: "66owaQmAQMuHxPzxUN3bqZ6FJfDa",
     quantity: "1",
@@ -103,15 +98,15 @@ if #available(iOS 15.0, macOS 12.0, *) {
         transfer: transfer,
         keypair: keypair
     )
-    print(status.content.status.kind)
+    print(status.status.kind)
 }
 ```
 
-`TransferRequest`、`MintRequest`、`BurnRequest`、`ShieldRequest` 和 `UnshieldRequest` 會在簽署前驗證規範帳戶 IDs 和規範且無前置詞的 Base58 資產定義 IDs。
+`TransferRequest`、`MintRequest` 和 `BurnRequest` 會在簽署前驗證規範帳戶 IDs 和規範且無前置詞的 Base58 資產定義 IDs。
 
 ## 產業保險 {#native-escrow}
 
-Swift 透過 `NativeEscrowInstructionBuilders` 或等效的 `IrohaSDK.build*Escrow*` 輔助程式，將市場和匿名託管指令建置為 Norito JSON 負載。有關範例、匿名證明欄位和爭議解決者許可權權杖，請參閱[原生資產託管](/zh-hant/blockchain/escrow.md#swift-and-ios)。
+Swift 透過 `NativeEscrowInstructionBuilders` 或等效的 `IrohaSDK.build*Escrow*` 輔助程式，將市場託管指令建置為 Norito JSON 負載。有關範例和爭議解決者權限權杖，請參閱[原生資產託管](/zh-hant/blockchain/escrow.md#swift-and-ios)。
 
 ## 簽字 {#signing}
 
@@ -144,8 +139,14 @@ let request = try ConnectClient.makeWebSocketRequest(
 let client = ConnectClient(request: request)
 await client.start()
 
-let session = ConnectSession(sessionID: sessionID, client: client)
 let keyPair = try ConnectCrypto.generateKeyPair()
+let session = try ConnectSession(
+    networkID: try NetworkId(literal: "<exact-network-id>"),
+    appPublicKey: keyPair.publicKey,
+    nonce: nonce,
+    relayToken: "<token>",
+    client: client
+)
 ```
 
 `ConnectSession`處理開啟和關閉控制,加密封裝閱讀,方向鍵,流量控制,事件流,餘額流和診斷日誌.
@@ -155,13 +156,13 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 目前 Swift 來源包括:
 
 - `ToriiClient` HTTP 對帳戶,資產,別名,探索者頁面, RWA,合同,多簽證,管理,訂閱,資料可用性,機密資產,節點/執行階段狀態,健康,指標和 SSE 流的輔助員
-- `IrohaSDK`交易構建者和提交/投票助手轉移、鑄造、銷毀,盾牌,無盾牌,ZK 轉移, ZK 資產登記,後設資料,識別索賠,多簽名登記以及管理說明
+- `IrohaSDK` 的交易建構器與提交/輪詢輔助函式，適用於轉帳、鑄造、銷毀、ZK 資產註冊、中繼資料、識別碼申領、多重簽章註冊、合約部署與治理投票
 - 透過 `PendingTransactionQueue`和 `FilePendingTransactionQueue`等待的交易佇列支援
 - 透過 `AccountAddress`和 `AccountId`的帳戶地址和 I105 助手.
 - Ed25519, secp256k1, ML-DSA, BLS,GOST 和 SM2 的簽字表面,在需要時具有原生橋樑支
 - 用於市場型和匿名託管的原生託管指令承載資料建構器
 - 連線 WebSocket,框架,加密,會議,排隊,重播和診斷輔助器
-- 卡蓋穆沙準備,打字補充和贖回,運營狀態,筆記,對等節點捆綁,收據和 QR 流模型
+- KAGEMUSHA V1 傳輸格式輔助工具，以及供原生錢包 Advance 提供者、註冊、復原與已准入交換呼叫使用的 iPhone 平台介面
 - SoraFS,資料可用性和驗證附件輔助器
 
 ## API 舉例 {#api-examples}
@@ -171,7 +172,6 @@ let keyPair = try ConnectCrypto.generateKeyPair()
 ## 來源引用 {#source-references}
 
 - `IrohaSwift/Package.swift`
-- `IrohaSwift/IrohaSwift.podspec`
 - `IrohaSwift/Sources/IrohaSwift/ToriiClient.swift`
 - `IrohaSwift/Sources/IrohaSwift/TxBuilder.swift`
 - `IrohaSwift/Sources/IrohaSwift/TransactionEncoder.swift`

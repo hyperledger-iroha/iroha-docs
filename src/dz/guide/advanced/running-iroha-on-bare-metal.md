@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /guide/advanced/running-iroha-on-bare-metal.md
-translation_source_hash: 648e69f2a572a0bb3e88919831774d21c1a17438b8bde742224a1457880539c1
+translation_source_hash: 886da937d92563cea49355fdccd411fc74d397fea28b521711e9089c8b047280
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # སྒྲིག་ཆས་རྐྱང་པ་གུ་ Iroha ལག་ལེན་འཐབ་ནི་ {#running-iroha-on-bare-metal}
 
@@ -31,10 +31,10 @@ cargo build --release \
 ཌའི་ལོག་གི་ས་སྒོ་ནང་ Iroha 3 བཞི་ལྡེ་མིག་ཅིག་བཟོ་ནི།
 
 ```bash
-target/release/kagami localnet --peers 4 --out-dir ./localnet
+target/release/kagami localnet generate --peers 4 --out-dir ./localnet
 ```
 
-ཐོན་འབྲས་སྣོད་ཐོ་ནང་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `genesis.json`, `genesis.signed.nrt`, མཉམ་རོགས་ `config.toml` ཡིག་སྣོད་ `client.toml`, གྲོགས་རམ་ཡིག་ཆ་ཚུ་ དེ་ལས་ བཱན་ཌལ་བརྡ་བཀོད་དེ་གི་དོན་ལུ་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `README.md` ཚུ་ཡོདཔ་ཨིན།
+ཐོན་འབྲས་སྣོད་ཐོ་ནང་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `genesis.json`, `genesis.signed.nrt`, `genesis.expected_hash`, བདེན་དཔྱད་འབད་མི་རེ་རེའི་དོན་ལུ་ `peerN.toml` གཅིག་, `client.toml`, `start.sh` དང་ `stop.sh` ཡིག་ཆ་ཚུ་ དེ་ལས་ བཱན་ཌལ་དེ་གི་དོན་ལུ་ བརྡ་བཀོད་ཏག་ཏག་ཡོད་པའི་ བཟོ་བཏོན་འབད་ཡོད་པའི་ `README.md` ཚུ་ཡོདཔ་ཨིན།
 
 ## ༣. དོ་འགྲན་འབད་མི་འགོ་ཚུགས། {#_3-start-peers}
 
@@ -44,14 +44,14 @@ target/release/kagami localnet --peers 4 --out-dir ./localnet
 ./localnet/start.sh
 ```
 
-ཁྱོད་ཀྱིས་ མཉམ་རོགས་རེ་རེ་བཞིན་དུ་ systemd བཟུམ་གྱི་བྱ་རིམ་འཛིན་སྐྱོང་པ་ཅིག་ནང་ ཝའིར་འབད་དགོ་པ་ཅིན་ མཉམ་རོགས་རེ་རེ་གི་དོན་ལུ་ `./localnet/README.md` ནང་ཐོ་བཀོད་འབད་ཡོད་པའི་ འགོ་བཙུགས་བརྡ་བཀོད་འདི་ལག་ལེན་འཐབ། མཉམ་རོགས་རེ་རེ་གི་ `config.toml` དང་ སྒེར་གྱི་ལྡེ་མིག་ གསོག་འཇོག་སྣོད་ཐོ་ དེ་ལས་ འདྲེན་ལམ་ཚུ་སོ་སོ་སྦེ་བཞག།
+ཁྱོད་ཀྱིས་ མཉམ་རོགས་རེ་རེ་ systemd བཟུམ་གྱི་བྱ་རིམ་འཛིན་སྐྱོང་པ་ཅིག་ནང་ མཐུད་དགོ་པ་ཅིན་ `./localnet/start.sh` ནང་གི་ མཉམ་རོགས་རེ་རེའི་བརྡ་བཀོད་འདི་ རྗེས་སུ་འབྲང་: `<bundle>/state/peerN` ལས་ `iroha3d --config <bundle>/peerN.toml` གཡོག་བཀོལ་ཞིནམ་ལས་ `--sumeragi-assert-fresh-key` འདི་ མཉམ་རོགས་དེ་གི་ འགོ་བཙུགས་ཐེངས་དང་པ་ལུ་རྐྱངམ་ཅིག་ སྤྲོད། མཉམ་རོགས་རེ་རེ་གི་ `peerN.toml` དང་ སྒེར་གྱི་ལྡེ་མིག་ གསོག་འཇོག་སྣོད་ཐོ་ དེ་ལས་ འདྲེན་ལམ་ཚུ་སོ་སོ་སྦེ་བཞག།
 
 ## 4.དྲ་རྒྱ་འདི་ལག་ལེན་འཐབ་དགོ། {#_4-operate-the-network}
 
 བཟོ་བཏོན་འབད་ཡོད་པའི་ མཁོ་སྤྲོད་རིམ་སྒྲིག་ལག་ལེན་འཐབ།
 
 ```bash
-target/release/iroha --config ./localnet/client.toml ledger domain list all
+target/release/iroha --config ./localnet/client.toml ledger domain list --all
 target/release/iroha --config ./localnet/client.toml --output-format text ops sumeragi status
 ```
 

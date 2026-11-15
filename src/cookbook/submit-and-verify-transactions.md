@@ -8,8 +8,10 @@ hash.
 
 ## Prerequisites
 
-- A funded `taira.client.toml`, `taira.tx-metadata.json`, and
+- A funded `taira.client.toml`, `taira-faucet-policy.json`, and
   `TAIRA_ACCOUNT_ID` produced by [Connect to Taira](./connect-to-taira.md).
+  Writes use `--fee-payer authority`; the CLI quotes the exact fee, in
+  Taira's fee asset, before signing.
 - The current `iroha` CLI and `jq`.
 - A disposable Taira signer. Do not reuse its key or these write commands
   on Minamoto.
@@ -19,16 +21,16 @@ hash.
 ### 1. Preflight the endpoint, authority, and fee balance
 
 Read the queue snapshot first, then prove that the authority's fee balance
-is visible. Read the Base58 asset-definition ID from the metadata generated
+is visible. Read the Base58 asset-definition ID from the faucet policy saved
 by the connection recipe.
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -50,8 +52,7 @@ together.
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -64,13 +65,13 @@ before it writes a successful receipt.
 ### 3. Wait for terminal pipeline state
 
 Use the typed status helper instead of inferring success from HTTP
-acceptance or queue admission. With `--wait`, the safe routing scope is
-selected automatically and the default target is Applied finality.
+acceptance or queue admission. With `--wait`, the CLI polls exact global
+status and succeeds only on state-resolved `Applied` finality.
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -90,7 +91,7 @@ verifies that the admitted transaction is stored under the same hash.
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -113,15 +114,17 @@ include those post-state reads.
 ## Verify
 
 Check that all three records agree on the same hash and that the explorer
-no longer reports a pending state:
+reports `Committed` rather than `Rejected`:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 Keep the submission receipt and final status as test evidence. They contain
@@ -135,8 +138,9 @@ public transaction material, not the signing key.
   building another transaction. Blind resubmission creates a new quoted and
   signed payload.
 - A fee quote can be rejected before signing. Check
-  `--fee-payer authority`, `gas_asset_id`, the authority's balance, and the
-  network chain ID.
+  `--fee-payer authority`, the authority's balance, the configured `chain`
+  and `network_id`, and that `--metadata` carries no fee key such as
+  `gas_asset_id`.
 - `Rejected` usually indicates instruction validation, permissions, fees,
   or stale state. It is committed evidence of a failed execution and should
   not be reclassified as a transport retry.
@@ -148,8 +152,8 @@ public transaction material, not the signing key.
 
 ## Source and related docs
 
-- [Transaction submission and fee-quote implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Transaction confirmation implementation and tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [Transaction submission and fee-quote implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [Transaction confirmation implementation and tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [Transactions](/blockchain/transactions.md)
 - [CLI guide](/get-started/operate-iroha-via-cli.md)
 - [Torii endpoints](/reference/torii-endpoints.md)

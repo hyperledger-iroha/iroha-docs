@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /reference/instructions.md
-translation_source_hash: 9999816502505026fb35d2ddaf4033f54768be697ca5b03550e1cf5949ada36c
+translation_source_hash: bbd8f9544aa863cd273d1b2089f39aff3d484ee0378fa5bcc7b565795a0671c6
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # Iroha ཁྱད་ཆོས་ཀྱི་བསླབ་བྱ་ཚུ་ {#iroha-special-instructions}
 
@@ -27,7 +27,6 @@ translation_engine: human-reviewed
 | [`CustomInstruction`](/dz/blockchain/instructions.md#other-instructions) |ལག་བསྟར་སྤྱོད་འབད་མི་ལུ་ ཁྱད་དུ་འཕགས་པའི་ JSON ནང་དོན་གནད་སྡུད་གྱི་འགན་ཁུར་ |
 | [རང་བཞིན་གྱི་རྒྱུ་དངོས་གི་གཏའ་མ་ ](/dz/blockchain/escrow.md) | `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, `ResolveEscrowDispute` |
 | [སྤྱིར་བཏང་གི་ རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ཚུ་ ](/dz/blockchain/escrow.md#generic-asset-locks) |`OpenAssetLock`,`DrawdownAssetLock`, `CancelAssetLock`, `ExpireAssetLock` |
-| [དངུལ་རྐྱང་གི་མིང་མ་ཤེསཔ་](/dz/blockchain/escrow.md#anonymous-escrow) | `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, `ResolveAnonymousEscrowDispute` |
 | [རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་](/dz/blockchain/instructions.md#atomic-private-settlement) | `ActivatePrivateSettlementPoolV1`, `RotatePrivateSettlementPoolPolicyV1`, `FinalizeAtomicPrivateSettlementV1`, `AbortAtomicPrivateSettlementV1` |
 
 Iroha 3 ཚད་གཞིའི་ཆ་ཤས་གཞན་ཚུ་གིས་ བརྡ་བཀོད་ཡིག་ཚང་ནང་ལུ་ མངའ་ཁོངས་དམིགས་བསལ བཀོད་རྒྱ དབྱེ་བ ཐོ་བཀོད་འབད་ཚུགས། མཐུད་མཚམས གིས་བྱིན་མི་ གཞི་བཀོད དང་ དེ་ཉར་ཚགས་འབད་ནིའི་ བཀའ་རྒྱ གི་དོན་ལུ་ [གནས་སྡུད་དཔེ་རྣམ་སྒྲོམ་གཞི](./data-model-schema.md) ལུ་བལྟ་དགོ།
@@ -84,7 +83,7 @@ class MetadataBoxes {
 class NativeEscrowInstructions {
     OpenAssetEscrow
     OpenAssetLock
-    OpenAnonymousAssetEscrow
+    OpenConditionalEscrow
     ResolveEscrowDispute
 }
 

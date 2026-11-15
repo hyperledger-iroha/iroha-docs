@@ -1,27 +1,26 @@
 ---
 translation_locale: az
 translation_source: /guide/configure/keys-for-network-deployment.md
-translation_source_hash: 9c9d3bcf68364768385cf1049d4595d6305d0556c2be2ec651dd30c04424da15
+translation_source_hash: c42adbe41e322c93509279f1f558d4450431de90c596f37eb3999754d4387f78
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Şəbəkə Yerləşdirilməsi üçün Açarlar {#keys-for-network-deployment}
 
-Hər bir şəbəkə müştərilər, şəbəkə həmkarları, blokçeyn başlanğıc imzası və NPoS və ya Nexus profilləri üçün BLS təsdiqləyici kimlikləri üçün ayrı açar materialına ehtiyac duyur.
+Hər şəbəkəyə müştərilər, genezisin imzalanması və sahiblik sübutları olan BLS-normal təsdiqləyici kimlikləri üçün ayrı açar materialları lazımdır.
 
 ## Açarların istifadə olunduğu yerlər {#where-keys-are-used}
 
 - Müştəri imza açarları `[account]` altında `client.toml` yerləşdirilir.
 - şəbəkə həmrəylik kimlik açarları hər bir şəbəkə həmrəyində `config.toml` olaraq `public_key` və `private_key` şəklində saxlanılır.
 - şəbəkə həmkarının aşkarlanması hər bir şəbəkə həmkarının açıq açarından `trusted_peers` istifadə edir.
-- BLS təsdiqedici Mülkiyyətin Sübutları NPoS profilləri üçün `trusted_peers_pop` daxilində saxlanılır.
+- BLS təsdiqləyici sahiblik sübutları konsensus rejimindən asılı olmayaraq hər təsdiqləyici üçün `trusted_peers_pop` daxilində saxlanılır.
 - Blockchain başlanğıc imzalama texniki manifest imzalanarkən şəbəkə həmkarı konfiqurasiyasında `[genesis].public_key` və uyğun şəxsi açardan istifadə edir.
 
 Yerli və ya test yerləşdirmələri üçün, bütün bu faylları birlikdə yaratmaq üçün Kagami-ə icazə verin:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 Mövcud şəbəkə və ya profil üçün istiqamətləndirilmiş prosesi istifadə edin:

@@ -1,11 +1,10 @@
 ---
 translation_locale: ka
 translation_source: /reference/permissions.md
-translation_source_hash: f02e76369a5d9c3a9da3ccd4f17d0515932c7af105b9f30a457b70bdf277b3e7
+translation_source_hash: aedb5b658cde78dc7b169877c315cfb2ed860257dedb5b3b0bcfff8cc4f472a1
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ნებართვის ტოკენები {#permission-tokens}
 
 ამ გვერდზე მოცემულია განსაზღვრული ნებართვის ნიშნის ტიპები, რომლებიც გამოქვეყნებულია მიმდინარე Iroha აღმასრულებლის მონაცემთა მოდელის მიერ. როლებისა და ნებართვების კონცეფციური სახელმძღვანელოსთვის იხილეთ [ნებართვები](/ka/blockchain/permissions.md).
@@ -17,7 +16,6 @@ translation_engine: nllb-200-ct2
 |ნებართვის ნიშანი|კატეგორია |ოპერაცია |
 | --- | --- | --- |
 |`CanManagePeers` |ქსელის კვანძი |რეგისტრაცია, არარეგისტრირება ან სხვაგვარად მართვა ქსელის კვანძები. |
-|`CanManageLaneRelayEmergency` |ქსელის კვანძი |მენეჯმენტი საგანგებო ზოლი-რელე კონტროლი. |
 |`CanRegisterDomain` |დომენი |დომენის რეგისტრაცია. |
 |`CanUnregisterDomain` |დომენი |დომენის დარეგისტრირება. |
 |`CanModifyDomainMetadata` |დომენი |შეცვალეთ დომენის მეტამონაცემები. |
@@ -29,7 +27,7 @@ translation_engine: nllb-200-ct2
 |`CanMintAssetWithDefinition` |აქტივები |გამოშვების აქტივები კონკრეტული განსაზღვრისთვის. |
 |`CanBurnAssetWithDefinition` |აქტივები |გაანადგუროს აქტივები კონკრეტული განსაზღვრისთვის. |
 |`CanTransferAssetWithDefinition` |აქტივები |აქტივების გადარიცხვა კონკრეტული განსაზღვრისთვის. |
-|`CanMintAsset` |აქტივები |გამოშვება კონკრეტული აქტივების ბალანსის. |
+|`CanMintAssetToAccount` |აქტივები |გამოშვება კონკრეტული აქტივების ბალანსის. |
 |`CanBurnAsset` |აქტივები |განადგურებს კონკრეტულ აქტივების ბალანსს. |
 |`CanTransferAsset` |აქტივები |გადარიცხა კონკრეტული აქტივების ბალანსი. |
 |`CanRegisterNft` |NFT |დარეგისტრირება NFT. |
@@ -44,8 +42,9 @@ translation_engine: nllb-200-ct2
 |`CanModifyTrigger` |ტრიგერი |ოპერატორის კონფიგურაცია შეცვალეთ. |
 |`CanModifyTriggerMetadata` |ტრიგერი |ტრიგერის მეტამონაცემების შეცვლა.|
 |`CanUpgradeExecutor` |აღმასრულებელი |განახლება შესრულების გარემოს აღმასრულებელი. |
-|`CanRegisterSmartContractCode` |ჭკვიანი კონტრაქტი |ჭკვიანი კონტრაქტის კოდის რეგისტრაცია. |
-|`CanUseFeeSponsor` |Nexus |Nexus გადასახადების დარიცხვა განსაზღვრული სპონსორის ანგარიშზე. |
+|`CanManageSmartContractCode` |ჭკვიანი კონტრაქტი |კოდის იმ არტეფაქტების წაშლა, რომლებზეც მითითება არ არსებობს, და კონტრაქტის შესასვლელი წერტილების დელეგირება. რეგისტრირებულ ანგარიშებს შემოწმებული არტეფაქტების შექმნა მის გარეშეც შეუძლიათ. |
+| `CanManageFeeSponsorProgram` | SORA Nexus | ზუსტი სპონსორის ანგარიშის კუთვნილი პროგრამების მართვა. |
+| `CanEnrollFeeSponsorProgram` | SORA Nexus | ერთი ზუსტი სპონსორის პროგრამის ბენეფიციარების მართვა. |
 
 ## საკუთრება {#ownership}
 

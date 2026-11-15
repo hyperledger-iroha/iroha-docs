@@ -1,20 +1,21 @@
 ---
 translation_locale: mn
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Суурилуулна уу Iroha 3 {#install-iroha-3}
 
 Энэ хуудас нь `hyperledger-iroha/iroha` ажлын орчныг ашиглан Iroha 3 хэрэгслийн багц ба бинаруудыг одоогийн суулгах ажлын урсгалыг хамардаг.
+
+Хост дээр шууд суулгах бол доорх Rust зааврыг дагана. Docker ашиглан дөрвөн баталгаажуулагч ажиллуулах бол [Iroha 3-ыг эхлүүлэх](/mn/get-started/launch-iroha.md) заавраас эхэлнэ.
 
 ## 1. Урьдач нөхцөл {#_1-prerequisites}
 
 Эдгээрийг эхлээд суулгана уу:
 
-- [rustup](https://www.rust-lang.org/tools/install), тэгэхээр холбоотой `rust-toolchain.toml` хэрэгслийн сүлжээ (`1.93.1`) автоматаар суурилагдсан байна
+- [rustup](https://www.rust-lang.org/tools/install), тэгэхээр холбоотой `rust-toolchain.toml` хэрэгслийн сүлжээ (`1.99.1`) автоматаар суурилагдсан байна
 - `git`
 - сонголтоор, орон нутгийн олон түншийн хурдан эхлүүлэхэд Docker болон Docker Compose
 
@@ -57,14 +58,15 @@ cargo run --bin kagami -- --help
 
 - `iroha3d` стандарт сүлжээний хамтрагч дэвлийн хувьд
 - `iroha3d_taira` ганц протокол-стандарт Taira баталгаажуулагч эхлүүлэгчийн хувьд
-- `iroha` нь Torii болон оператор API төгсгөлийн цэгүүдэд CLI нэвтрэх эрхтэй
+- Torii болон операторын төгсгөлийн цэгт CLI-ээр хандахад `iroha`
 - `kagami` түлхүүрүүд, блокчэйн үүсгэл техникийн нотолгоо, болон локалнет профайлд зориулсан
 
 ## 5. Сонголтоор Localnet ба Docker Зам {#_5-optional-localnet-and-docker-path}
 
 Одоогийн эх сурвалжаар дэмжигдсэн локалнет урсгалыг Kagami үүсгэж байна. Энэ нь сүлжээний түншийн тохиргоонууд, блокчейн генерацын бүтээлүүд, клиент тохиргоо, туслах скриптүүд, болон шалгасан кодтой таарах үүрэгтэй Compose файлыг бичдэг:
 
-- `kagami localnet` нутгийн орон нутгийн сүлжээний түнш скриптүүдэд
+- Kagami өөрөө эхлүүлж, хянадаг удирдлагатай дотоод сүлжээнд `kagami localnet up`
+- дотоод зангилааг шууд ажиллуулах скриптүүдэд `kagami localnet generate`
 - `kagami docker` нь Docker Compose -аас localnet директороос үүсгээгдсэн
 
 [Эхлүүлэх Iroha 3](/mn/get-started/launch-iroha.md) хэсгийг үргэлжлүүлнэ үү.

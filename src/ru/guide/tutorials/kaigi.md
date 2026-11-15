@@ -1,11 +1,10 @@
 ---
 translation_locale: ru
 translation_source: /guide/tutorials/kaigi.md
-translation_source_hash: 7a9f03e45a17ecbc4a2d7182d4c9aff88d5f6f0b77e0ecfde86bed56d0ddebba
+translation_source_hash: b42e035ea1056c07dd9c8e2f651e362c7f4b759a345508d2f099ad1507e42e45
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Встроить Kaigi в приложение JavaScript {#embed-kaigi-in-a-javascript-app}
 
 Kaigi записывает жизненный цикл встречи на Iroha, в то время как браузер передает аудио и видео через WebRTC. Распределенный реестр блокчейна хранит звонок, изменения в списке участников, зашифрованные сигнальные метаданные и окончательный статус; он не является медиапосредником.
@@ -48,7 +47,7 @@ npm install
 npm run dev
 ```
 
-Чистый SDK пакет не содержит рабочее пространство Cargo, требуемое для `npm run build:native`, так что перестрой это в Iroha рабочая копия исходного кода после SDK изменения. Документированные SDK источник закреплён на [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js).
+Чистый SDK пакет не содержит рабочее пространство Cargo, требуемое для `npm run build:native`, так что перестрой это в Iroha рабочая копия исходного кода после SDK изменения. Документированные SDK источник закреплён на [`javascript/iroha_js`](https://github.com/hyperledger-iroha/iroha/tree/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js).
 
 ## Проверьте конечную точку API {#check-the-endpoint}
 

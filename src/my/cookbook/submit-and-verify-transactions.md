@@ -1,11 +1,10 @@
 ---
 translation_locale: my
 translation_source: /cookbook/submit-and-verify-transactions.md
-translation_source_hash: 98e5c7e9db1ba8468cfd5409409b0e8d02251311dc85492f7b71675e983dc4fd
+translation_source_hash: de608ef52ad3a999c0e253e6683e454f8f66f399a690dce4c2185c79d02334cd
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+claude-opus-5-5
 ---
-
 # ငွေပေးချေမှုများကို တင်ပြခြင်း၊ စစ်ဆေးခြင်း {#submit-and-verify-transactions}
 
 ## ရလဒ် {#outcome}
@@ -14,23 +13,23 @@ Taira ငွေပေးချေမှုကို ကြိုတင်စစ�
 
 ## လိုအပ်ချက်များ {#prerequisites}
 
-- ငွေကြေးထောက်ပံ့မှု `taira.client.toml`, `taira.tx-metadata.json`, နှင့် `TAIRA_ACCOUNT_ID` ထုတ်ကုန်များ [ချိတ်ဆက် Taira](./connect-to-taira.md).
+- [Taira သို့ ချိတ်ဆက်ပါ](./connect-to-taira.md) က ထုတ်ပေးသော ငွေထည့်ထားသည့် `taira.client.toml`၊ `taira-faucet-policy.json` နှင့် `TAIRA_ACCOUNT_ID`။ ရေးသွင်းမှုများသည် `--fee-payer authority` ကို အသုံးပြုပြီး CLI သည် လက်မှတ်မထိုးမီ Taira ၏ အခွန်အရင်းအမြစ်ဖြင့် တိကျသော အခွန်ကို ခန့်မှန်းတွက်ချက်ပြသသည်။
 - current `iroha` CLI နှင့် `jq`
-- တစ်ကြိမ်သုံးနိုင်တဲ့ Taira cryptographic signer တစ်ခုပါ။ ၎င်းရဲ့ key ကို (သို့) ဒီ command တွေကို Minamoto မှာ ပြန်မသုံးပါနဲ့။
+- တစ်ခါသုံး Taira လက်မှတ်ထိုးသူ။ ၎င်း၏ ကီး သို့မဟုတ် ဤရေးသားမှု command များကို Minamoto တွင် ပြန်မသုံးပါနှင့်။
 
 ## ခြေလှမ်း {#steps}
 
 ### (၁) API အဆုံးသတ်မှတ်ချက်၊ ခွင့်ပြုမှု မူလငွေနှင့် အခွန်စာရင်းကို ကြိုတင်စစ်ဆေးပါ။ {#_1-preflight-the-endpoint-authority-and-fee-balance}
 
-ပထမဦးစွာ queue point-in-time data view ကိုဖတ်ပြီး ခွင့်ပြုချက် မူဝါဒရှင်၏ အခွန်စာရင်းက မြင်နိုင်သည်ကို သက်သေပြပါ။ ဆက်သွယ်မှုနည်းလမ်းဖြင့် ထုတ်လုပ်သော metadata မှ Base58 အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆို ID ကိုဖတ်ပါ။
+ပထမဦးစွာ queue snapshot ကို ဖတ်ပြီးနောက် authority ၏ အခွန်လက်ကျန်ကို မြင်နိုင်ကြောင်း သက်သေပြပါ။ ချိတ်ဆက်ခြင်းလမ်းညွှန်က သိမ်းဆည်းထားသော faucet မူဝါဒမှ Base58 အရင်းအမြစ်အဓိပ္ပါယ်ဖွင့်ဆိုချက် ID ကို ဖတ်ပါ။
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, queue_size, txs_approved, txs_rejected}'
 
-TAIRA_FEE_ASSET="$(jq -er '.gas_asset_id' taira.tx-metadata.json)"
+TAIRA_FEE_ASSET="$(jq -er '.asset_definition_id' taira-faucet-policy.json)"
 
-iroha --config ./taira.client.toml ledger account get \
+iroha --config ./taira.client.toml account get \
   --id "$TAIRA_ACCOUNT_ID"
 
 iroha --config ./taira.client.toml ledger asset get \
@@ -40,7 +39,7 @@ iroha --config ./taira.client.toml ledger asset get \
 
 အကောင့် (သို့) အခွန်စာရင်းကလွဲရင် ရပ်ပါ။ ခွင့်ပြုချက်ရသူဦးစီးဌာနမှ ပေးချေနိုင်ခြင်းမရှိတဲ့အခါ သက်ဆိုင်ရာ ညွှန်ကြားချက်တစ်ခုက အခွန်လက်မှတ်ကို မလွှဲပြောင်းနိုင်ပါ။
 
-### (၂) ကိုးကား၊ လက်မှတ်ရေးထိုးပြီး တစ်ကြိမ် တင်ပြပါ။ {#_2-quote-sign-and-submit-once}
+### 2. Quote ရယူ၍ လက်မှတ်ထိုးပြီး တစ်ကြိမ်သာ တင်သွင်းပါ {#_2-quote-sign-and-submit-once}
 
 CLI သည် အခွန်စျေးနှုန်းခန့်မှန်းချက်အတွက် လက်မှတ်မထိုးသေးတဲ့ အသုံးဝင်ဝန်ဆောင်မှု အတိအကျကိုပို့ပေးပြီး လက်မှတ်ရေးထိုးထားသော ငွေပေးချေမှုရည်ရွယ်ချက်ကို ငွေလဲလှယ်မှုထဲ ချိတ်ဆက်၊ လက်မှတ်ရေးဆွဲပြီး တင်သွင်းသည်။ JSON mode က ငွေလဲလှေခြင်းရဲ့ cryptographic hash, လက်မှတ်ရေးသားထားတဲ့ ငွေလဲလှလှယ်မှုနှင့် လက်ခံ quote ကို အတူတကွပြန်လည်ပို့ပေးတယ်။
 
@@ -48,8 +47,7 @@ CLI သည် အခွန်စျေးနှုန်းခန့်မှန
 iroha --config ./taira.client.toml \
   --machine \
   --fee-payer authority \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg 'cookbook-submit-verify' \
+  tx ping --msg 'cookbook-submit-verify' \
   > taira-submission.json
 
 jq '{hash, fee_quote}' taira-submission.json
@@ -60,12 +58,12 @@ TAIRA_TX_HASH="$(jq -er '.hash' taira-submission.json)"
 
 ### (၃) terminal software processing workflow status ကို စောင့်ပါ။ {#_3-wait-for-terminal-pipeline-state}
 
-HTTP လက်ခံခြင်း (သို့) အတန်းဝင်ခြင်းမှ အောင်မြင်မှုချမှတ်ခြင်းအစား Typed Status Helper ကိုအသုံးပြုပါ။ `--wait` ဖြင့် Safe Routing Scope ကို အလိုအလျောက်ရွေးချယ်ပြီး Default Target သည် Applied Finality ဖြစ်သည်။
+HTTP လက်ခံခြင်း သို့မဟုတ် queue ဝင်ခွင့်ရခြင်းမှ အောင်မြင်မှုကို ကောက်ချက်ချမည့်အစား typed status helper ကို အသုံးပြုပါ။ `--wait` ဖြင့် CLI သည် တိကျသော global status ကို poll လုပ်ပြီး state အရ ဖြေရှင်းပြီးသော `Applied` finality တွင်သာ အောင်မြင်သည်။
 
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction status \
+  tx status \
   --hash "$TAIRA_TX_HASH" \
   --wait \
   --timeout-ms 60000 \
@@ -83,7 +81,7 @@ jq . taira-final-status.json
 ```bash
 iroha --config ./taira.client.toml \
   --machine \
-  ledger transaction get --hash "$TAIRA_TX_HASH" \
+  tx get --hash "$TAIRA_TX_HASH" \
   > taira-transaction.json
 
 jq . taira-transaction.json
@@ -97,19 +95,21 @@ curl -fsS -H 'Accept: application/json' \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-အခြေအနေပြောင်းတဲ့ ညွှန်ကြားချက်အတွက် အပြောင်းအလဲဖြစ်ခဲ့တဲ့ အရာဝတ္ထုကို မေးမြန်းပြီး ပြီးအောင်လုပ်ပါ။ နိုင်ငံတကာ [မီတာဒေတာ](./metadata.md), [ငွေကြေးအထောက်အပံ့များ](./fungible-assets.md), နှင့် [NFTs](./nfts.md) ချက်ပြုတ်ချက်တွေမှာ ပြည်နယ်အပြီး ဖတ်စာတွေ ပါဝင်ပါတယ်။
+အခြေအနေပြောင်းလဲသော ညွှန်ကြားချက်အတွက် ပြောင်းလဲခံရသော အရာကို query လုပ်ခြင်းဖြင့် အဆုံးသတ်ပါ။ [Metadata](./metadata.md)၊ [အစားထိုးလဲလှယ်နိုင်သော ပိုင်ဆိုင်မှုများ](./fungible-assets.md) နှင့် [NFTs](./nfts.md) နမူနာလမ်းညွှန်များတွင် ထိုလုပ်ဆောင်ပြီးနောက် အခြေအနေဖတ်ရှုမှုများ ပါဝင်သည်။
 
 ## စစ်ဆေးပါ {#verify}
 
-မှတ်တမ်းသုံးခုစလုံးဟာ cryptographic hash တစ်ခုတည်းကို သဘောတူပြီး explorer ကတော့ စောင့်ဆိုင်းနေတဲ့ အခြေအနေတစ်ခုကို မတင်ပြဘူးဆိုတာ စစ်ဆေးပါ။
+မှတ်တမ်းသုံးခုစလုံးသည် တူညီသော hash တွင် သဘောတူကြောင်းနှင့် explorer က `Rejected` မဟုတ်ဘဲ `Committed` ကို ဖော်ပြကြောင်း စစ်ဆေးပါ:
 
 ```bash
-test "$(jq -r '.hash' taira-submission.json)" = "$TAIRA_TX_HASH"
+jq -e --arg hash "$TAIRA_TX_HASH" \
+  '.hash == $hash and .terminal_kind == "Applied"' taira-final-status.json
 
 curl -fsS -H 'Accept: application/json' \
   "https://taira.sora.org/v1/explorer/transactions/$TAIRA_TX_HASH" \
   | jq -e --arg hash "$TAIRA_TX_HASH" \
-    '.hash == $hash and .status == "Committed"'
+    '(.hash | ascii_downcase | ltrimstr("hash:") | split("#")[0]) == $hash
+      and .status == "Committed"'
 ```
 
 တင်ပြမှု ပရိုတိုကောရဲ့ ရလဒ် မှတ်တမ်းနဲ့ နောက်ဆုံးအခြေအနေကို စမ်းသပ်မှု အထောက်အထားအဖြစ် သိမ်းထားပါ။ ၎င်းတို့မှာ လက်မှတ်ရေးထိုးတဲ့ သော့မဟုတ်ဘဲ အများပိုင် ငွေပေးချေမှု ပစ္စည်းတွေ ပါပါတယ်။
@@ -117,16 +117,16 @@ curl -fsS -H 'Accept: application/json' \
 ## ပြဿနာဖြေရှင်းခြင်း {#troubleshooting}
 
 - HTTP `202` သို့မဟုတ် တန်းစီထားသော အခြေအနေသည် လက်ခံမှုသာသက်သေပြုသည်။ Applied, Rejected, Expired သို့မဟုတ် သတ်မှတ်ထားတဲ့ အချိန်ကာလအထိ ရိုက်ထည့်ထားသော အခြေအနေကို မဲဆွယ်မှုကို ဆက်လုပ်ပါ။
-- စာဝှက် hash ကိုပြန်ပို့ပြီးနောက် တင်သွင်းမှု အချိန်ကုန်သွားပါက နောက်ထပ် ငွေချေးမှု တည်ဆောက်မတိုင်ခင် အဲဒီစာဝှက် hashကို မေးမြန်းပါ။ မျက်မမြင် ပြန်တင်ခြင်းအားဖြင့် ကိုးကားထားပြီး လက်မှတ်ထိုးထားတဲ့ အသုံးဝင်ဝန်ဆောင်မှု အသစ်တစ်ခု ဖန်တီးပါတယ်။
-- လက်မှတ်မထိုးခင် အခွန်ဈေးနှုန်း ခန့်မှန်းချက်ကို ပယ်ချနိုင်သည်။ `--fee-payer authority`, `gas_asset_id`၊ ခွင့်ပြုချက်ပေးသူ၏ ငွေကြေးကျန်မာမှုနှင့် ကွန်ရက်ကွင်း ID ကို စစ်ဆေးပါ။
+- တင်သွင်းမှုက ဟက်ရှ်တစ်ခု ပြန်ပေးပြီးနောက် အချိန်ကုန်သွားပါက နောက် transaction မတည်ဆောက်မီ ထိုဟက်ရှ်ကို query လုပ်ပါ။ မစစ်ဆေးဘဲ ပြန်တင်သွင်းခြင်းက quote အသစ်ရယူပြီး လက်မှတ်ထိုးထားသော payload အသစ်ကို ဖန်တီးသည်။
+- အခကြေးငွေ ကြိုတင်တွက်ချက်မှုကို လက်မှတ်မထိုးမီ ပယ်ချနိုင်သည်။ `--fee-payer authority`၊ authority အကောင့်၏ လက်ကျန်၊ သတ်မှတ်ထားသော `chain` နှင့် `network_id` တို့ကို စစ်ဆေးပါ။ `--metadata` တွင် `gas_asset_id` ကဲ့သို့ အခကြေးငွေကီး မပါကြောင်းကိုလည်း စစ်ဆေးပါ။
 - `Rejected` သည် ပုံမှန်အားဖြင့် ညွှန်ကြားချက် အတည်ပြုမှု၊ ခွင့်ပြုချက်များ၊ အခွန်များ (သို့) သက်တမ်းမပြည့်မီသော အခြေအနေကို ဖော်ပြသည်။ ၎င်းသည် ကျရှုံးခဲ့သည့် အကောင်အထည်ဖော်မှု၏ နောက်ဆုံးသတ်မှတ်ထားသောအသက်သေဖြစ်ပြီး သယ်ယူပို့ဆောင်မှု ထပ်မံကြိုးပမ်းခြင်းအဖြစ် ပြန်လည်ခွဲခြားရန် မလိုပါ။
 - Applied နောက်ပိုင်းတွင် explorer `404` သည် indexing lag လုပ်နိုင်သည်။ ပြန်လည်ဖတ်ရန်ကြိုးစားပါ၊ ငွေပေးချေမှုကို ထပ်မံမတင်ပါနဲ့။
-- အခွင့်ထူးခံ ညွှန်ကြားချက်တစ်ခုက generated localnet တွင်အလုပ်လုပ်ပေမဲ့ Taira က ငြင်းပယ်ရင် တိကျတဲ့ Taira ခွင့်ပြုချက် (သို့) အုပ်ချုပ်သော နာမ်ဇိုင်း assignment ကိုရရှိပါ။ ဒေသတွင်းရလဒ်သည် အများပိုင် blockchain ကွန်ရက် ခွင့်ပြုမှု မူဝါဒကိုမပေးဘူး။
+- အထူးခွင့်ပြုချက်လိုသော ညွှန်ကြားချက်သည် ထုတ်လုပ်ထားသော localnet တွင် အလုပ်လုပ်သော်လည်း Taira က ငြင်းပယ်လျှင် လိုအပ်သော Taira ခွင့်ပြုချက်အတိအကျ သို့မဟုတ် အုပ်ချုပ်မှုအရ namespace တာဝန်ခွဲပေးမှုကို ရယူပါ။ စက်တွင်းရလဒ်က အများသုံးကွန်ရက်ပေါ် လုပ်ပိုင်ခွင့် မပေးပါ။
 
 ## အရင်းအမြစ်နှင့် ဆက်စပ်သော စာတမ်းများ {#source-and-related-docs}
 
-- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ်ကို ပြန်လည်ပြင်ဆင်ခြင်းတွင် ငွေပေးချေမှု တင်သွင်းခြင်းနှင့် အခွန်တင်နှုန်း အကောင်အထည်ဖော်ခြင်း၊](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/src/main_shared.rs)
-- [Transaction confirmation အကောင်အထည်ဖော်ခြင်းနှင့် test များကို pinned source-code revision တွင်ပြုလုပ်ခြင်း](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha/src/client.rs)
+- [ပိတ်ထားတဲ့ အရင်းအမြစ်ကုဒ်ကို ပြန်လည်ပြင်ဆင်ခြင်းတွင် ငွေပေးချေမှု တင်သွင်းခြင်းနှင့် အခွန်တင်နှုန်း အကောင်အထည်ဖော်ခြင်း၊](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/src/main_shared.rs)
+- [ပုံသေသတ်မှတ်ထားသော commit ရှိ transaction အတည်ပြုမှု အကောင်အထည်ဖော်ချက်နှင့် စမ်းသပ်ချက်များ](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha/src/client.rs)
 - [ငွေပေးချေမှု](/my/blockchain/transactions.md)
 - [CLI လမ်းညွှန်](/my/get-started/operate-iroha-via-cli.md)
 - [Torii API အဆုံးသတ်မှတ်ချက်များ](/my/reference/torii-endpoints.md)

@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /blockchain/instructions.md
-translation_source_hash: ade5ba2b693de7e798490be0947099d0306d9565b88550e201dccd181810fb18
+translation_source_hash: 86d253317376ad8d7a8c0e30689c7e0c0cd786af83299dd5ac1a904c653192f5
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # Iroha ཁྱད་ཆོས་ཀྱི་བསླབ་བྱ་ཚུ་ {#iroha-special-instructions}
 
@@ -34,14 +34,14 @@ Iroha དམིགས་བསལ་བསླབ་བྱ་ཚུ་གི་�
 
 |བརྡ་སྟོན་ |གནད་དོན་ཚུ་ |འགྲོ་འགྲུལ་འབད་སའི་ས་གནས་ |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- |
-| [EnsureAlias](#ensurealias) |སྤྱིར་བཏང མངའ་ཁོངས, གནད་སྡུད་ས་སྟོང-མིང་གཞན དང་ རྩིས་ཐོའི་མིང་གཞན གཞི་སྒྲིག |                      |
+| [EnsureAlias](#ensurealias) | སྤྱིར་བཏང་མངའ་ཁོངས་ གནད་སྡུད་ས་སྟོང་མིང་གཞན་ དང་རྩིས་ཐོའི་མིང་གཞན་གཞི་སྒྲིག | |
 | [ཐོ་བཀོད་/རྩིས་མེད་འབད་ ](#un-register) |རྩིས་ཐོ་, རྒྱུ་དངོས་གི་འགྲེལ་བཤད་, NFTs, འགན་འཁྲི་, སྐུལ་རྟེན, མཉམ་རོགས་ཚུ; ཌོ་མེ་ནེཊ་བཏོན་ཐོ།|                      |
 | [Mint/Burn](#mint-burn) |ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་ཚུ་ བརྒྱུད་འཕྲིན་ལོག་བཤད་པ་ |རྩིས་ཐོ་ ཡང་ན་ སྐུལ་རྟེན |
 | [SetKeyValue/RemoveKeyValue](#setkeyvalue-removekeyvalue) |[ ཟུར་གནས་གནད་སྡུད](./metadata.md) ཡོད་པའི་དངོས་པོ་: ས་ཁོངས་,རྩིས་ཐོ་, རྒྱུ་དངོས་གི་འགྲེལ་བཤད་, NFTs, RWAs, སྐུལ་རྟེན ཚུ་|                      |
 | [SetParameter](#setparameter) |ལྕགས་ཐག་གི་བརྡ་དོན་ཚུ་ |                      |
 | [Grant/Revoke](#grant-revoke) | [འགན་འཁྲི་ཚུ་དང་ ངོས་ལེན་གྱི་རྟགས་མཚན་](/dz/blockchain/permissions.md) |རྩིས་ཐོ་དང་ འགན་ཁུར་ཚུ་ |
 | [བསྒྱུར་བཅོས་](#transfer) |ས་ཁོངས་, རྒྱུ་དངོས་གི་འགྲེལ་བཤད་, ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་, NFTs |རྩིས་ཐོ་ |
-| [རང་ལུགས་ཀྱི་གཏའ་མ་དང་ རྒྱུ་དངོས་གི་བཀག་སྡོམ་ཚུ་ ](#native-escrow-and-asset-locks) |ཨང་གྲངས་ཀྱི་ རྒྱུ་དངོས་གི་བཅའ་ཁྲལ་དང་ རྒྱུ་དངོས་ཚུ་གི་བཅའ་ཁྲལ། ངོ་མ་ཤེས་པའི་བཅའ་ཁྲལཔ་ཚུ་ |ཚོང་ཉོ་མི་ཚུ་དང་ འགྲོ་འགྲུལ་འབད་སའི་ ས་ཁོངས་ཚུ་ ཡང་ན་ རྩོད་གཞི་ནང་ བཅའ་མར་གཏོགས་ནི་ |
+| [རང་ལུགས་ཀྱི་བར་གཏོགས་བདག་ཉར་དང་ རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ཚུ་](#native-escrow-and-asset-locks) |ཨང་གྲངས་རྒྱུ་དངོས་ཀྱི་བར་གཏོགས་བདག་ཉར་དང་ རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་ཚུ་ |ཉོ་མི་ཚུ་དང་ འགྲོ་ཡུལ་ཚུ་ ཡང་ན་ རྩོད་གཞིའི་བགོ་བཤའ་ཚུ་ |
 | [རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་](#atomic-private-settlement) | རྒྱུན་ལམ ལུ་བཀག་པའི་གསང་བའི་ གསོག་ཚོགས ཚུ་ སྲིད་བྱུས བསྐོར་བརྗེ ཚུ་ མཇུག་བསྡུ་ཡོད་པའི་ ཆ་ཚན ཚུ་དང་ བཀག མཚོན་རྟགས ཚུ་ | |
 | [ExecuteTrigger](#executetrigger) |སྐུལ་རྟེན |                      |
 | [Log/Custom/Upgrade](#other-instructions) |ཐོ་བཀོད་ཐོ་ཡིག་, ལག་ལེན་པ་ལུ་དམིགས་ཏེ་ ནང་དོན་གནད་སྡུད་གྱི་ཐོ་བཀོད་ཚུ་, ལག་ལེན་པའི་གནས་གོང་བཟོ། |                      |
@@ -68,7 +68,7 @@ Iroha དམིགས་བསལ་བསླབ་བྱ་ཚུ་གི་�
 cargo run --bin iroha -- --config ./defaults/client.toml <command>
 ```
 
-ཁྱོད་ཀྱིས་ `iroha` གཉིས་ལྡན་གཞི་བཙུགས་འབད་བ་ཅིན་ དེ་གི་ཚབ་ལུ་ `iroha --config ./defaults/client.toml` ལག་ལེན་འཐབ། ཁྱོད་རའི་ཡོངས་འབྲེལ་ནང་ལས་ གནས་གོང་ཚུ་དང་གཅིག་ཁར་ འོག་གི་ས་གནས་འཛིན་མི་ཚུ་ཚབ་བཙུགས།
+ཁྱོད་ཀྱིས་ `iroha` གློག་རིམ་བཙུགས་ཡོད་ན་ དེའི་ཚབ་ལུ་ `iroha --config ./defaults/client.toml` ལག་ལེན་འཐབ། ཚོང་འབྲེལ་ཕུལ་མི་བརྡ་བཀོད་ཚུ་ནང་ `--fee-payer authority` ཡང་བཙུགསཔ་ཨིན། འདི་གིས་མིང་རྟགས་བཀོད་པའི་རྩིས་ཐོ་ལས་གླ་ཡོན་བསྡུཝ་ཨིནམ་དང་ CLI གིས་མིང་རྟགས་མ་བཀོད་པའི་ཧེ་མ་གླ་ཡོན་ཏག་ཏག་སྟོནམ་ཨིན། འོག་གི་གནས་འཛིན་ཚུ་ཁྱོད་ཀྱི་དྲ་ལམ་ལས་ཐོབ་པའི་གནས་གོང་གིས་ཚབ་བཙུགས།
 
 ```bash
 export ALICE="<ALICE_ACCOUNT_I105>"
@@ -78,34 +78,32 @@ export PEER_KEY="<BLS_PUBLIC_KEY_MULTIHASH>"
 export PEER_POP="<PROOF_OF_POSSESSION_HEX>"
 ```
 
-མི་མང་གི་ Taira བརྟག་དཔྱད་དྲ་རྒྱ ལུ་དམིགས་གཏད་འབད་བའི་སྐབས་ Taira ཞབས་ཏོག་ལེན་མི གི་རིམ་སྒྲིག་ལག་ལེན་འཐབ། འཐུས་སྤྲོད་པའི་དཔེ་ཚུ་གཡོག་མ་བཀོལ་བའི་ཧེ་མ་ [Taira ལས བརྟག་དཔྱད་དྲ་རྒྱ XOR ལེན།](/dz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ནང་གི བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག རོགས་རམ་འདི་ `taira_faucet_claim.py` སྦེ་སྲུང་བཞག་འབད་ཞིནམ་ལས་ བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག ལས་ བརྟག་དཔྱད་དྲ་རྒྱ XOR ལེན།
+མི་མང་ Taira བརྟག་དཔྱད་དྲ་ལམ་ལུ་དམིགས་པའི་སྐབས་ Taira གི་མཁོ་མངགས་པའི་རིམ་སྒྲིག་ལག་ལེན་འཐབ་སྟེ་ [Taira གུ་བརྟག་དཔྱད་དྲ་ལམ་གྱི་ XOR ལེན་ནི](/dz/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) ནང་གི་གྲ་སྒྲིག་འབད་པའི་བརྟག་དཔྱད་དངུལ་བྱིན་པའི་ལས་རིམ་ཐོག་ལས་རྩིས་ཐོ་ལུ་མ་དངུལ་བཙུགས། གླ་ཡོན་སྤྲོད་དགོ་པའི་དཔེ་ཚུ་གཡོག་མ་བཀོལ་བའི་ཧེ་མ་ གླ་ཡོན་རྒྱུ་དངོས་ཀྱི་ལྷག་ལུས་མཐོང་ཚུགསཔ་ཞིབ་དཔྱད་འབད།
 
 ```bash
 export TAIRA_ACCOUNT_ID="<TAIRA_I105_ACCOUNT_ID>"
-export TAIRA_FEE_ASSET="6TEAJqbb8oEPmLncoNiMRbLEK6tw"
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-བརྟག་དཔྱད་ཊོ་ཀེན་ཞབས་ཏོག་གྱིས་མ་དངུལ་བཏང་ཡོད་པའི་རྒྱུ་དངོས་འདི་མཐོང་པའི་ཤུལ་ལས་ ཚོང་འབྲེལ་ཚུ་འབྲི་ནི་ལུ་དགོ་པའི་རླངས་རླུང་རྒྱུ་དངོས་མེ་ཊ་ཌེ་ཊ་འདི་མཉམ་སྦྲགས་འབད།
+Taira འབྲི་བཀོད་ཚུ་གིས་ `--fee-payer authority` གདམ་ཁ་གཅིག་ར་ལག་ལེན་འཐབཔ་ཨིནམ་དང་ CLI གིས་ Taira གི་གླ་ཡོན་རྒྱུ་དངོས་ནང་གླ་ཡོན་སྟོནམ་ཨིན། `gas_asset_id` བཟུམ་གྱི་གླ་ཡོན་ལྡེ་མིག་ཚུ་ཚོང་འབྲེལ་མེ་ཊ་གནད་སྡུད་སྦེ་མ་བཙུགས། མཁོ་མངགས་པ་གིས་དེ་ཚུ་ངོས་ལེན་མི་འབད།
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 cargo run --bin iroha -- \
   --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+  --fee-payer authority \
   <command>
 ```
 
 ## EnsureAlias {#ensurealias}
 
-`EnsureAlias` འདི་ མངའ་ཁོངས དང་ SNS གླ་སྤྱོད བཟོ་ནིའི་དོན་ལུ་འགོ་ཐོག་ཐོན་རིམ་གྱི་སྤྱིར་བཏང་ལམ་ཨིན། འདི་གིས་ གནད་སྡུད་ས་སྟོང ཏག་ཏག་ ཇོ་བདག་ གླ་སྤྱོད གི་དུས་ཡུན་དང་ གླ་ཡོན་གོང་ཚད སྲུང་སྐྱོབ ཚུ་གསལ་བཀོད་ཐོག་ལས་མཉམ་སྦྲེལ་འབད་དེ་ དགོ་པའི་གནས་སྟངས་ག་ར་ དུས་གཅིག་ལག་བསྟར ཐོག་ལས་བཟོཝ་ཡང་ན་ཉམས་བཅོས་འབདཝ་ཨིན། ངོ་སྤྲོད་ཅན་གྱི་ `POST /v1/aliases/setup/plan` མཐའ་མཚམས ཡང་ན་དེ་དང་མཐུན་པའི་ CLI ལས་རིམ་ལག་ལེན་འཐབ།
+`EnsureAlias` འདི་ མངའ་ཁོངས་དང་དེ་ཚུའི་ SNS གླ་སྤྱོད་བཟོ་ནིའི་འགོ་ཐོག་ཐོན་རིམ་གྱི་སྤྱིར་བཏང་ལམ་ཨིན། འདི་གིས་ གནད་སྡུད་ས་སྟོང་ཏག་ཏག་ ཇོ་བདག་ གླ་སྤྱོད་དུས་ཡུན་ དང་གོང་ཚད་སྲུང་སྐྱོབ་ཚུ་གསལ་བཀོད་ཐོག་ལས་བཅིངས་ཏེ་ དགོ་པའི་གནས་སྟངས་ག་ར་ཆ་ཚང་ཡང་ན་ག་ནི་ཡང་མེད་པའི་ལག་བསྟར་གཅིག་ནང་བཟོ་ནི་ཡང་ན་ཉམས་བཅོས་འབདཝ་ཨིན། ངོ་སྤྲོད་ཅན་གྱི་ `POST /v1/aliases/setup/plan` མཐའ་མཚམས་ཡང་ན་དེ་དང་མཐུན་པའི་ CLI ལས་རིམ་ལག་ལེན་འཐབ།
 
 ```bash
 cargo run --bin iroha -- --config ./defaults/client.toml \
@@ -113,7 +111,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./domain.intent.json \
   --plan-file ./domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./domain.plan.json
 ```
 
@@ -164,34 +162,35 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain unregister --id docs.universal
 ```
 
 རྩིས་ཐོ་ཐོ་བཀོད་དང་ཐོ་བཀོད་མེདཔ་བཟོ་ནི།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account register --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account register --id "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account unregister --id "$BOB"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account unregister --id "$BOB"
 ```
 
 ཐོ་བཀོད་དང་ཐོ་བཀོད་མེད་པའི་རྒྱུ་དངོས་ངེས་ཚིག།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition register \
+  --domain docs.universal \
   --id "$ASSET_DEF" \
   --name docs_token \
   --alias docs_token#docs.universal \
   --scale 0
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition unregister --id "$ASSET_DEF"
 ```
 
@@ -199,37 +198,37 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"kind":"badge","level":"intro"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft register --id 'badge$docs.universal'
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft unregister --id 'badge$docs.universal'
 ```
 
 ཐོ་བཀོད་དང་ཐོ་བཀོད་མེད་པའི་འགན་ཁུར་ཚུ་:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role register --id operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role unregister --id operators
 ```
 
 ཐོ་བཀོད་དང་ ཐོ་བཀད་མ་བཏུབ་པའི་ གློག་ཐག་ར་བ་འདི་ ཐོ་བཀོད་ཀྱི་དོན་ལུ་ IVM བཱའིཊི་ཨང་རྟགས ཡང་ན་ བརྡ་བཀོད་གི་ཐོ་ཡིག་ཅིག་ དགོཔ་ཨིན། དཔེ་འདི་ནང་ལུ་ `Log` སྒྲིག་གཞི་འདི་ CLI དང་གཅིག་ཁར་ བཟོ་ཞིནམ་ལས་ ཐོ་བཀོད་པ་ནང་བཙུགས་འབདཝ་ཨིན།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml -o \
-  ledger transaction ping --log-level INFO --msg "hourly cleanup" |
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger register --id hourly_cleanup \
+cargo run --bin iroha -- --config ./defaults/client.toml --emit-instructions \
+  tx ping --log-level INFO --msg "hourly cleanup" |
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger register --id hourly_cleanup \
   --instructions-stdin \
   --filter time \
   --time-start 5m \
   --time-period-ms 3600000
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger unregister --id hourly_cleanup
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger unregister --id hourly_cleanup
 ```
 
 མཉམ་རོགས་ ཐོ་བཀོད་དང་ ཐོ་བཀོད་མེདཔ་བཟོ་ནི། ཁྱོད་ལུ་ཧེ་མ་ལས་མེད་པ་ཅིན་ `kagami` དང་ཅིག་ཁར་ BLS ལྡེ་མིག་དང་ PoP འདི་བཟོ་བཏོན་འབད།
@@ -240,10 +239,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 PEER_KEY=$(tr -d '\n' < ./peer-key/public.key)
 PEER_POP=$(tr -d '\n' < ./peer-key/pop.hex)
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer register --key "$PEER_KEY" --pop "$PEER_POP"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger peer unregister --key "$PEER_KEY"
 ```
 
@@ -269,13 +268,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 དངུལ་བཏོན་ཏེ་ ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་ཚུ་ མེ་བཏང་།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset mint \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
   --quantity 100
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset burn \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -285,11 +284,11 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 མིན་ཊི་དང་མེ་འབར་གྱི་འབྱུང་ཁུངས་བསྐྱར་ལོག:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger mint --id hourly_cleanup --repetitions 5
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger mint --id hourly_cleanup --repetitions 5
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger burn --id hourly_cleanup --repetitions 1
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger burn --id hourly_cleanup --repetitions 1
 ```
 
 ## བསྒྱུར་བཅོས་ {#transfer}
@@ -301,7 +300,7 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 ཨང་གྲངས་རྒྱུ་དངོས་སྤོ་བཤུད་འབད།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset transfer \
   --definition "$ASSET_DEF" \
   --account "$ALICE" \
@@ -312,31 +311,31 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 གནས་སྤོ་བཤུད་ མངའ་ཁོངས, རྒྱུ་དངོས ངེས་ཚིག, དང་ བདག་དབང NFT:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain transfer --id docs.universal --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition transfer --id "$ASSET_DEF" --from "$ALICE" --to "$BOB"
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft transfer --id 'badge$docs.universal' --from "$ALICE" --to "$BOB"
 ```
 
 ## རང་ལུགས་ཀྱི་དངུལ་ཁང་དང་ རྒྱུ་དངོས་ཚུ་གི་བཀག་སྡོམ་ཚུ་ {#native-escrow-and-asset-locks}
 
-ནང་སྐྱེས བར་གཏོགས་བདག་ཉར བཀོད་རྒྱ་ཚུ གིས་ ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་ཚུ་ རྩིས་དེབ- འཛིན་སྐྱོང་འབད་ཡོད་མི་ གནས་སྤོ་ལམ་ལུགས བདག་ཉར ནང་ བཀག་སྡོམ འབདཝ་ཨིན། ཁོང་ ཚོང་ར བཟོ་རྣམ རྩིས་རྒྱག, སྤྱིར་བཏང རྒྱུ་དངོས བཀག་སྡོམ་ཚུ དང་ མིང་མེད ཉེན་སྲུང་ཅན བར་གཏོགས་བདག་ཉར བྱ་རིམ་ཚུ གི་དོན་ལུ་ལག་ལེན་འཐབ་ཨིན།
+ནང་སྐྱེས བར་གཏོགས་བདག་ཉར བཀོད་རྒྱ་ཚུ གིས་ ཨང་གྲངས་ཀྱི་རྒྱུ་དངོས་ཚུ་ རྩིས་དེབ་ཀྱིས་འཛིན་སྐྱོང་འབད་མི་ བྱ་རིམ་བདག་ཉར་ནང་ བཀག་སྡོམ འབདཝ་ཨིན། དེ་ཚུ་ ཚོང་ར་བཟོ་རྣམ་གྱི་རྩིས་རྒྱག་དང་ སྤྱིར་བཏང་རྒྱུ་དངོས་བཀག་སྡོམ་ཚུ་ དེ་ལས་ ངོས་སྦྱོར་འབད་མི་དང་འབྲེལ་བའི་ ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་ཚུ་གི་དོན་ལུ་ ལག་ལེན་འཐབ་ཨིན།
 
-ཚོང་འབྲེལ་གྱི་ས་ཁོངས་ནང་ གཏན་འཁེལ་གྱི་ལག་ལེན་ཚུ་ `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, དང་ `ResolveEscrowDispute`. སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ལག་ལེན་འཐབ་ནི་ `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, དང་ `ExpireAssetLock`. མིང་མེད བར་གཏོགས་བདག་ཉར གིས་ཚོང་ཁྲོམ་གྱི་ཚེ་རིང་ཚུ་ནང་ལུ་ `OpenAnonymousAssetEscrow`, `AcceptAnonymousAssetEscrow`, `MarkAnonymousEscrowPaymentSent`, `ReleaseAnonymousAssetEscrow`, `CancelAnonymousAssetEscrow`, `OpenAnonymousEscrowDispute`, དང་ `ResolveAnonymousEscrowDispute`.
+ཚོང་འབྲེལ་གྱི་ས་ཁོངས་ཀྱི་བར་གཏོགས་བདག་ཉར་གྱིས་ `OpenAssetEscrow`, `AcceptAssetEscrow`, `MarkEscrowPaymentSent`, `ReleaseAssetEscrow`, `CancelAssetEscrow`, `OpenEscrowDispute`, དང་ `ResolveEscrowDispute` ལག་ལེན་འཐབ་ཨིན། སྤྱིར་བཏང་རྒྱུ་དངོས་ཀྱི་བཀག་སྡོམ་ཚུ་གིས་ `OpenAssetLock`, `DrawdownAssetLock`, `CancelAssetLock`, དང་ `ExpireAssetLock` ལག་ལེན་འཐབ་ཨིན། ཆ་རྐྱེན་ཅན་གྱི་བར་གཏོགས་བདག་ཉར་གྱིས་ `OpenConditionalEscrow`, `AttestEscrowCondition`, དང་ `ExpireConditionalEscrow` ལག་ལེན་འཐབ་ཨིན།
 
 འ་ནི་ ISIs འདི་ནང་ ད་རེས་ དབྱེ་རིམ་༡ པའི་ CLI བཀའ་རྒྱ་ཚུ་མེད་ཨིན། ཁྱོད་ཀྱིས་ SDK བཟོ་སྐྲུན་འབད་མི་ཚུ་དང་ ཡང་ན་ གྲལ་སྒྲིག་ཅན་གྱི་བསླབ་བྱ་གི་ནང་དོན་གནད་སྡུད་འབག་མི་ཚུ་ལག་ལེན་འཐབ་སྟེ་བལྟ་ཞིནམ་ལས་ [རང་སའི་རྒྱུ་དངོས་བཅོལ་ཉར](/dz/blockchain/escrow.md) འཚོལ་བའི་ཚེ་ཚད་ཀྱི་ཐོ་ཡིག་དང་ ངོས་ལེན་དང་དྲི་བཀོད་དང་བྱུང་རྐྱེན་ དེ་ལས་ Rust དཔེ་ཚུགས།
 
 ## རང་རྐྱང་གི་བར་ནའི་མཐུན་རྐྱེན་ཚུ་ {#atomic-private-settlement}
 
-ཚད་འཛིན་ཅན་གྱི་ རང་བཞིན་གྱི་གཞི་སྒྲིག་གི་བསླབ་བྱ་ཚུ་ དྭངས་འཕྲོས་འཕྲོས་སྦེ་ཡོད་མི་ ཨེ་མ་ལས་སོ་སོ་ཨིན། AMX. `ActivatePrivateSettlementPoolV1` གཅིག་ གསང་བའི་བཟོ་སྐྲུན་ `pool` གཞུང་སྐྱོང་གི་ཐོ་ཡིག་དང་ རྫོང་ཁའི་འབྱུང་ཁུངས་ཀྱི་ ཁས་བླངས་ཚུ་ནང་ལས་ ཕྲང་ལམ་ཅིག་བཏོན་ནིའི་དོན་ལུ་ཨིན། `FinalizeAtomicPrivateSettlementV1` གྲོས་འཛོམས་ནང་ བཅའ་མར་གཏོགས་མི་སྡེ་ཚན་ག་ར་གིས་ འཛིན་སྐྱོང་འཐབ་མི་སྡེ་ཚན་ཆ་མཉམ་ཅིག་གིས་ ཆ་འཇོག་འབད་ཡོད་པའི་ ཐོ་བཀོད་ལག་ལེན་དེ་ ལག་ལེན་འཐབ་ཨིན། `AbortAtomicPrivateSettlementV1` ཞབས་ཏོག་བྱིན་མི་གིས་ ངོས་འཛིན་འབད་མི་ མི་མང་གི་མཐའ་མཚམས་རྟགས་འདི་རྐྱངམ་གཅིག་ དཔར་བསྐྲུན་འབདཝ་ཨིན།
+གཞུང་སྐྱོང་འོག་གི་ཆ་ཚང་སྒེར་གྱི་རྩིས་རྒྱག་བཀོད་རྒྱའི་རིགས་འདི་ དྭངས་གསལ་རང་བྱུང་ AMX ལས་སོ་སོ་ཨིན། `ActivatePrivateSettlementPoolV1` གིས་ གསང་བའི་ཆ་ཤས་བཏོན་པའི་གཞུང་སྐྱོང་མཐོང་རྣམ་དང་ཚད་ལྡན་འབྱུང་ཁུངས་ཀྱི་ཁས་ལེན་རྟགས་ལས་ ལམ་ཅིག་གི་ཁྱབ་ཁོངས་ནང་གསང་བའི་བསྡུ་མཛོད་གཅིག་གཞི་བཙུགས་འབདཝ་ཨིན། `FinalizeAtomicPrivateSettlementV1` གིས་ ཚོགས་ཆུང་གིས་བདེན་དཔང་འབད་པའི་ཚན་པ་ཆ་ཚང་གཅིག་ ཆ་ཚང་ཡང་ན་ག་ནི་ཡང་མེད་པའི་ལག་བསྟར་ཐོག་ལས་སྦྱོརཝ་ཨིན། `AbortAtomicPrivateSettlementV1` གིས་ རྒྱབ་སྐྱོར་པ་གིས་གནང་བ་བྱིན་པའི་མི་མང་མཇུག་མཚམས་རྟགས་རྐྱངམ་ཅིག་ཁྱབ་བསྒྲགས་འབདཝ་ཨིན།
 
 `RotatePrivateSettlementPoolPolicyV1` འདི་ སྒེར་གསང་གཞུང་སྐྱོང་ལུ་ བཀག་ཆ་འབད་ཡོདཔ་ཨིན། འདི་ལུ་ ད་ལྟོའི་གཞུང་སྐྱོང་གྱི་ བཅུད་བསྡུ་དགོཔ་དང་ ལམ་ལུགས་ ཆུ་རྫིང་ རྒྱུ་དངོས་བཀག་སྡོམ་གྱི་ཁས་བླངས་ མངའ་སྡེའི་ས་མཚམས་ བསྐྱར་རྩེད་ཆ་ཚན་ དེ་ལས་ མཐའ་དཔྱད་ཀྱི་ འོང་འབབ་ཚུ་ མི་མང་བསྐྱར་ཞིབ་འདི་ གཅིག་གིས་ གོང་འཕེལ་བཏང་དགོཔ་མ་ཚད་ རྩིས་ཞིབ་པ་གཙོ་བོ་གི་དུས་སྐབས་གསརཔ་འདི་ ལག་ལེན་འཐབ་དགོཔ་ཨིན། བསྒྱིར་ནི་འདི་གིས་ དེ་གི་གྲངས་སུ་བཙུགས་པའི་མཐོ་ཚད་ལུ་ཤུགས་ལྡན་བཟོཝ་ཨིནམ་དང་ མཐོ་ཚད་དེ་ འགྲུལ་ལམ་/ཆུ་རྫིང་གཅིག་པའི་དོན་ལུ་ འབྱོར་རྟགས་དང་གཅིག་ཁར་ བརྗེ་སོར་འབད་མི་ཚུགས། མི་མང་བསྐྱར་ཞིབ་རིགས་བརྒྱུད་འདི་གིས་ བསྒྱིར་ཚད་ལོག་འགོ་བཙུགས་པའི་ཧེ་མ་ འོང་འབབ་ཚུ་ མཐའ་དཔྱད་འབད་དེ་བཞགཔ་ཨིན། ལས་རིམ་ནང་ཡོད་པ སྲིད་བྱུས་རྙིངམ་གི་བང་རིམ་ཚུ་ འཐུས་ཤོར་ཁ་བསྡམ་ཡོདཔ། བཀོལ་སྤྱོད་པ་ཚུ་གིས་ གསོག་འཇོག་འབད་ཡོད་པའི་ ཀེབ་སུལ་ཚུ་གི་དོན་ལུ་ གསང་བཟོའི་ལྡེ་མིག་རྙིངམ་ཚུ་ བཞག་དགོཔ་ཨིན་ ཡང་ན་ དེ་ཚུ་མེདཔ་མ་བཏང་པའི་ཧེ་མ་ ཀེབ་སུལ་ཚུ་ ལོག་སྟེ་བཀབ་ནི་འདི་ གཞུང་སྐྱོང་དང་བརྟག་དཔྱད་འབད་དགོ།
 
-ཐབས་ལམ་འདི་ སྔོན་སྒྲིག་ཐོག་ལས་ བཀག་ཆ་འབད་ཡོདཔ་ལས་ བཟོ་སྐྲུན་ལུ་ ཁྱད་ཚད་མེདཔ་ཨིན། སྒྲིག་གཞི་བཟོ་ནི་དང་ དབང་ཚད་སྤྲོད་ནི་ དེ་ལས་ བརྟག་ཞིབ་འབད་ནི་དང་ ལོག་སྤྱོད་འབད་ནི་ དེ་ལས་ ཕྱིར་བཏོན་འབད་ནི་གི་ དགོས་མཁོ་ཚུ་གི་དོན་ལུ་ [དུས་གཅིག་ལག་བསྟར སྒེར ཕན་ཚུན ལཱ་འབད་-གནད་སྡུད-ས་སྟོང རྩིས་རྒྱག](/get-started/atomic-private-settlement) ལུ་བལྟ་དགོ།
+ལམ་འདི་སྔོན་སྒྲིག་སྦེ་ལག་ལེན་བཀག་ཡོདཔ་དང་ དངོས་སྤྱོད་ཀྱི་འོས་འབབ་བདེན་དཔྱད་མ་འབད་བས། རིམ་སྒྲིག་ དབང་ཚད་ རྩིས་ཞིབ་ སླར་གསོ་དང་ཐོན་རིམ་གྱི་དགོས་མཁོ་ཚུའི་དོན་ལུ་ [གནད་སྡུད་ས་སྟོང་སོ་སོའི་བར་སྒེར་གྱི་ཆ་ཚང་རྩིས་རྒྱག་ལག་བསྟར](/dz/get-started/atomic-private-settlement) ལུ་བལྟ།
 
 ## གྲོགས་རམ་/ཕྱིར་འབུད་ {#grant-revoke}
 
@@ -347,34 +346,34 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 རྩིས་ཐོ་ཅིག་གུ་འགན་ཁུར་བྱིན་ནི་དང་ ཆ་མེད་གཏང་ནི།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role grant --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role grant --id "$BOB" --role operators
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account role revoke --id "$BOB" --role operators
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account role revoke --id "$BOB" --role operators
 ```
 
 ངོས་ལེན་རྟགས་ཚུ་བྱིན་ནི་དང་ ཆ་མེད་གཏང་། ངོས་ལེན་གྱི་བཀའ་རྒྱ་ཚུ་གིས་ ངོས་ལེན་གི་འབྱུང་ཁུངས་འདི་ རང་བཞིན་གྱི་ནང་ཐོ་བཀོད་ནང་ལས་ བསྐྱར་ཞིབ་འབདཝ་ཨིན།
 
 ```bash
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission grant --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission grant --id "$BOB"
 
 printf '{"name":"CanSetParameters","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account permission revoke --id "$BOB"
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account permission revoke --id "$BOB"
 ```
 
 འགན་ཁུར་ཅིག་གུ་གནང་བ་བྱིན་ནི་དང་ ཆ་མེད་གཏང་ནི།
 
 ```bash
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission grant --id operators
 
 printf '{"name":"CanRegisterDomain","payload":null}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger role permission revoke --id operators
 ```
 
@@ -386,10 +385,10 @@ printf '{"name":"CanRegisterDomain","payload":null}\n' |
 
 ```bash
 printf '"production"\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta set --id docs.universal --key environment
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger domain meta remove --id docs.universal --key environment
 ```
 
@@ -397,20 +396,20 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
 
 ```bash
 printf '{"display_name":"Alice"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger account meta set --id "$ALICE" --key profile
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  account meta set --id "$ALICE" --key profile
 
 printf '{"issuer":"docs"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger asset definition meta set --id "$ASSET_DEF" --key issuer
 
 printf '{"color":"blue"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger nft meta set --id 'badge$docs.universal' --key traits
 
 printf '{"owner":"ops"}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger trigger meta set --id hourly_cleanup --key owner
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger meta set --id hourly_cleanup --key owner
 ```
 
 ## `SetParameter` {#setparameter}
@@ -420,8 +419,8 @@ printf '{"owner":"ops"}\n' |
 གནས་ཚད་ཅིག་ གཞི་སྒྲིག་འབད་ཞིནམ་ལས་ གནས་ཚད་གཅིག་ཨིན་པའི་ JSON འདྲ་ཕབ་འདི་ ཐོ་བཀོད་ལམ་ལུགས་ནང་ བཏོན་ཐོག་ལས་:
 
 ```bash
-printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
+printf '{"Sumeragi":{"MaxClockDriftMs":1000}}\n' |
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ledger parameter set
 ```
 
@@ -429,15 +428,14 @@ printf '{"Sumeragi":{"BlockTimeMs":1000}}\n' |
 
 བརྡ་བཀོད་འདི་ [ སྐུལ་རྟེན](./triggers.md)ཚུ་ལག་ལེན་འཐབ་ནིའི་དོན་ལུ་ཨིན།
 
-CLI གིས་ སྐུལ་རྟེན ཐོ་བཀོད་འབད་ཚུགས་ནི་ དེ་ལས་ སྐུལ་རྟེན ལག་བསྟར བྱུང་ལས་ཚུ ལུ་ ཐད་ཀར་དུ་ ཐོ་འགོད འབད་ཚུགས། འདི་ནང་ལུ་ དབྱེ་བ་གསལ་བཀོད་ཅན་གྱི་ `execute trigger` བཀའ་རྒྱ སྟོན་མི་མེད་ དེ་འབདཝ་ལས་ ལག་ལེན་ལག་ཁྱེར་ `ExecuteTrigger` གི་བཀོད་རྒྱ་ཚུ་བཙུགས་དགོཔ་ཨིན། ཁྱོད་ཀྱིས་ SDK ཡང་ན་ ལག་ལེན་འཕྲུལ་ཆས་ལག་ལེན་འཐབ་ཐོག་ལས་ རིམ་སྒྲིག་ཨང་སྒྱུར `InstructionBox` བཟོ་ཞིནམ་ལས་ ཐོན་སྐྱེད་འབད་མི་ JSON ཨེ་རེའདི་ `ledger transaction stdin` གི་ནང་འཁོད་ལུ་སྤར་གཏང་དགོ།
+CLI གིས་ སྔོན་སྒྲིག་ `execute` ཚགས་མ་དང་མཉམ་དུ་ཐོ་བཀོད་འབད་པའི་འགོ་སློང་དོན་ལུ་ ལག་ཐོག་གི་ `ExecuteTrigger` བཀོད་རྒྱ་ཕུལཝ་ཨིན། གདམ་ཁ་ཅན་གྱི་ JSON སྒྲུབ་རྟགས་ཚུ་ཡང་བཙུགས་ཚུགས་ནི་དང་ འགོ་སློང་ལག་བསྟར་བྱུང་ལས་ཚུ་ལུ་མངགས་བཞག་འབད་ཚུགས།
 
 ```bash
-printf '["<BASE64_EXECUTE_TRIGGER_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  trigger execute docs_on_call --args-json '{"reason":"manual run"}'
 
 cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger events trigger-execute --timeout 30s
+  ledger events --timeout 30s trigger-execute
 ```
 
 ## ལམ་སྟོན་གཞན་ཚུ་ {#other-instructions}
@@ -451,21 +449,21 @@ Iroha འདི་ཡང་ ལག་བསྟར་མཉེན་ཆས དང
 པིང་གྲོགས་རམ་དང་གཅིག་ཁར་ `Log` བཀོད་རྒྱ་ཅིག་བཙུགས།
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction ping --log-level INFO --msg "hello from docs"
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx ping --log-level INFO --msg "hello from docs"
 ```
 
 རང་ལུགས་ལག་བསྟར་སྤྱོད་འབད་ནིའི་བསླབ་བྱ་ཚུ་ གྲལ་སྒྲིག་སྦེ་བཙུགས་ནི། `InstructionBox`. ནང་དོན་གནད་སྡུད་གྱི་ཁེ་རྒུད་ཀྱི་བཟོ་རྣམ་འདི་ ལག་ལེན་པ་ལུ་དམིགས་ཏེ་ཡོདཔ་ལས་ སྒྲིག་གཞི་ཚུ་ བཀྲམ་སྤེལ་འབད་ནི་དང་བསྟུན་འབད་ SDK ཡང་ན་ ལག་ལེན་འཕྲུལ་ཆས་ཚུ་:
 
 ```bash
 printf '["<BASE64_CUSTOM_INSTRUCTION_BOX>"]\n' |
-  cargo run --bin iroha -- --config ./defaults/client.toml \
-  ledger transaction stdin
+  cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
+  tx stdin
 ```
 
 ལག་བསྟར་སྤྱོད་འབད་མི་འདི་ བསྡུ་སྒྲིག་འབད་མི་ IVM བཱའིཊི་ཨང་རྟགས ཌའི་ལོག་ནང་ལས་ ཡར་དྲག་གཏང་:
 
 ```bash
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   ops executor upgrade --path ./target/ivm/executor.ivm
 ```

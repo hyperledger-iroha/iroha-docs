@@ -1,24 +1,22 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/escrow.md
-translation_source_hash: c42f54fbbde05e6302d9966de2c77cad8677a92b30c25a6fa54b42e217bc6ac9
+translation_source_hash: f3c943ba5d18278382876db7bd7b3b116522811353d4318aafe1023d4b04ce03
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # 产业资产保证 {#native-asset-escrow}
 
 本地保证是对数值资产进行账本管理的保管机制.而不是将资产发送到应用程序拥有的帐户,并依赖应用程序代码来保护该帐户,托管 ISIs 将价值转移到确定性协议保管账户中,并记录托管的生命周期在世界状态.
 
-使用本地托管用于市场结算,Aitai式的链外支付协调,里程碑锁和需要账本可见生命周期状态的保护托管工作流.
+原生托管适用于市场结算、Aitai 式链下支付协调、里程碑锁定，以及需要账本可见生命周期状态、与证明方绑定的条件释放。
 
 ## 概念 {#concepts}
 
 |概念|描述|
 | --- | --- |
-|`EscrowId`|被调用者选择的标识符包裹一个哈希. 在透明和匿名的保证券中,它必须是独特的. |
+|`EscrowId`|由调用方选择、封装一个哈希的标识符。它在所有托管记录中必须唯一。|
 |`AssetEscrowRecord`|透明的数值资产保证或锁定记录.|
-|`AnonymousAssetEscrowRecord`|通过无效证书,承诺和证明附件支持的保证记录.|
 |托管账户|来自链 ID,保证券 ID 和资产定义的确定性协议账户. |
 |证据的.|证据哈希可以识别账单,判决,消息,存储表或其他离链的证据.证据的有效载荷本身没有存储在保险记录中. |
 
@@ -174,7 +172,7 @@ fn drawdown_and_close_asset_locks(
 }
 ```
 
-Python 目前暴露了一般锁的高级辅助器: `open_asset_lock`, `drawdown_asset_lock`, `cancel_asset_lock`, 和 `expire_asset_lock`. 对于市场和匿名的托管 Python, 使用规范 `InstructionBox` JSON 通过 SDK 现在, JSON 逃离门,或通过一个 SDK 这揭示了一流的托管制造商.
+Python 目前为通用锁提供了高级辅助函数：`open_asset_lock`、`drawdown_asset_lock`、`cancel_asset_lock` 和 `expire_asset_lock`。如需在 Python 中使用市场托管和条件托管，请通过该 SDK 的 JSON 逃生通道使用规范的 `InstructionBox` JSON，或通过提供一等托管构建器的 SDK 提交。
 
 ## 争议 {#disputes}
 
@@ -226,82 +224,33 @@ fn resolve_disputed_escrow(
 }
 ```
 
-## 匿名的托管 {#anonymous-escrow}
+## 条件托管 {#conditional-escrow}
 
-匿名保证券使用相同的市场生命周期,但资金和关闭资产的流动都受到保护.公开记录仍然存储卖方,买家,状态,证明哈希,时刻印章和与证据链接的移动记录.屏蔽票据中的数额和收件人以承诺,废除符和证明附件表示.
+条件托管为受益人锁定数值资产，并且只有在所有条件依次通过后才会释放。每个条件都会指定证明方账户、由账本求值的谓词（`Equals` 某个类型化值，或 `QuantityAtMost` 某个上限），以及从 1 开始的序号。可选的账本时间窗口会限定所有证明的时间范围。
 
-|透明 ISI |匿名 ISI|
-| --- | --- |
-|`OpenAssetEscrow`|`OpenAnonymousAssetEscrow`|
-|`AcceptAssetEscrow`|`AcceptAnonymousAssetEscrow`|
-|`MarkEscrowPaymentSent`|`MarkAnonymousEscrowPaymentSent`|
-|`ReleaseAssetEscrow`|`ReleaseAnonymousAssetEscrow`|
-|`CancelAssetEscrow`|`CancelAnonymousAssetEscrow`|
-|`OpenEscrowDispute`|`OpenAnonymousEscrowDispute`|
-|`ResolveEscrowDispute`|`ResolveAnonymousEscrowDispute`|
-
-钱包或证明工具必须构建证明附件和公共输入.开放创造了一个保险承诺.释放,取消和匿名纠纷解决必须花费一个保险承诺并创建该行动所需的买方,卖方或分产承诺.
-
-```rust
-use iroha::{
-    client::Client,
-    data_model::{
-        isi::escrow::{
-            AcceptAnonymousAssetEscrow, MarkAnonymousEscrowPaymentSent,
-            OpenAnonymousAssetEscrow,
-        },
-        prelude::*,
-        proof::ProofAttachment,
-    },
-};
-use iroha_crypto::Hash;
-
-fn open_anonymous_escrow(
-    seller_client: &Client,
-    buyer_client: &Client,
-    escrow_id: EscrowId,
-    asset_definition_id: AssetDefinitionId,
-    funding_nullifiers: Vec<[u8; 32]>,
-    escrow_commitment: [u8; 32],
-    proof: ProofAttachment,
-    root_hint: Option<[u8; 32]>,
-) -> eyre::Result<()> {
-    seller_client.submit_blocking(OpenAnonymousAssetEscrow::with_evidence_hashes(
-        escrow_id,
-        asset_definition_id,
-        funding_nullifiers,
-        escrow_commitment,
-        proof,
-        root_hint,
-        vec![Hash::new("shielded-invoice")],
-    ))?;
-
-    buyer_client.submit_blocking(AcceptAnonymousAssetEscrow::new(escrow_id))?;
-    buyer_client.submit_blocking(MarkAnonymousEscrowPaymentSent::new(escrow_id))?;
-
-    Ok(())
-}
-```
-
-对于底层的屏蔽交易模式,见 [匿名交易](/zh-hans/blockchain/anonymous-transactions.md).
+| ISI | 调用方 | 效果 |
+| --- | --- | --- |
+| `OpenConditionalEscrow` | 开立方 | 以不可变条件和绝对到期时间将该金额锁定在协议托管中。 |
+| `AttestEscrowCondition` | 该条件的证明方 | 为下一个条件提供 `Bool`、`Text` 或 `Quantity` 值。最后一个条件通过时，托管资产释放给受益人。 |
+| `ExpireConditionalEscrow` | 任意账户 | 若托管尚未释放，则在到期后退款给开立方。 |
 
 ## SDK 使用 {#sdk-usage}
 
-在 SDKs 中,托管支持的曝光方式不同. Rust 具有标准类型的数据模型. Python 目前暴露了通用资产锁定辅助器.JavaScript 和 TypeScript 使用 Kotodama 托管主机调用. Kotlin/JVM 和 Swift 为市场和匿名托管提供类型的有效载荷构建者.
+各个 SDKs 以不同方式提供托管支持。Rust 具有规范的类型化数据模型。Python 目前提供通用资产锁辅助函数。JavaScript 和 TypeScript 使用 Kotodama 托管主机调用。Kotlin/JVM 和 Swift 为市场托管提供类型化载荷构建器。
 
 |SDK|使用这个表面.|范围|
 | --- | --- | --- |
-| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow`|商场托管,通用锁,匿名托管,查询和活动.|
-| [Python](#python-asset-locks) |`Instruction.open_asset_lock`,`TransactionDraft.open_asset_lock`,和客户 `*_and_wait`的助手 |市场和匿名托管还不是一流的 Python 方法. |
+| [Rust](#rust-sdk) |`iroha::data_model::isi::escrow`|市场托管、通用锁、条件托管、查询和事件。|
+| [Python](#python-asset-locks) |`Instruction.open_asset_lock`、`TransactionDraft.open_asset_lock` 以及客户端 `*_and_wait` 辅助函数|通用资产锁。市场托管和条件托管的辅助函数目前还不是 Python 的一等方法。|
 | [JavaScript / TypeScript](#javascript-and-typescript-kotodama) |`compileKotodamaProgram`从 `@iroha/iroha-js/kotodama-compiler` |Kotodama 合约中的托管主机调用。 |
-| [Kotlin / JVM](#kotlin-and-jvm) |在 `org.hyperledger.iroha.sdk.core.model.instructions` 中的`InstructionTemplate`类|市场和匿名的托管定制说明模板. |
-| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders`和`IrohaSDK.build*Escrow*`的助手 |市场和匿名托管 Norito JSON 指令有效载荷. |
+| [Kotlin / JVM](#kotlin-and-jvm) |`org.hyperledger.iroha.sdk.core.model.instructions` 中的 `InstructionTemplate` 类|市场托管的自定义指令模板。|
+| [Swift / iOS](#swift-and-ios) |`NativeEscrowInstructionBuilders` 和 `IrohaSDK.build*Escrow*` 辅助函数|市场托管的 Norito JSON 指令载荷。|
 
 下面的例子侧重于指令构建. 账户融资,签名管理和交易提交遵循每个 SDK 的正常流量.
 
 ### Rust SDK {#rust-sdk}
 
-当您需要完整的本地覆盖或查询/事件支持时使用 Rust SDK. 上面的例子显示了市场发布,通用锁定拉,争端解决和匿名保证构建与 `iroha::data_model::isi::escrow`.
+当您需要完整的原生覆盖或查询/事件支持时，请使用 Rust SDK。上面的示例展示了如何使用 `iroha::data_model::isi::escrow` 完成市场托管释放、通用锁提取和争议解决。
 
 ```rust
 use iroha::{
@@ -397,7 +346,7 @@ if (compiled.diagnostics.length > 0) {
 }
 ```
 
-在争端中,使用 `escrow_open_dispute(offer, evidence)` 和 `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`.匿名托管主机调用接受 Norito 请求有效载荷字节,例如 `anonymous_escrow_open_offer(request)`.
+处理争议时，请使用 `escrow_open_dispute(offer, evidence)` 和 `escrow_resolve_dispute(offer, buyer_amount, seller_amount, evidence)`。
 
 ### Kotlin 和 JVM {#kotlin-and-jvm}
 
@@ -431,8 +380,6 @@ println(open.arguments)
 println(NativeEscrowPermissions.CAN_RESOLVE_ESCROW_DISPUTE)
 ```
 
-匿名模板可提供: `OpenAnonymousAssetEscrowInstruction`, `AcceptAnonymousAssetEscrowInstruction`, `MarkAnonymousEscrowPaymentSentInstruction`, `ReleaseAnonymousAssetEscrowInstruction`, `CancelAnonymousAssetEscrowInstruction`, `OpenAnonymousEscrowDisputeInstruction`, 和 `ResolveAnonymousEscrowDisputeInstruction`. Android Java调用者可以使用匹配 `NativeEscrowInstructions.*` 建筑师从 Android 艺术品.
-
 ### Swift 和iOS {#swift-and-ios}
 
 Swift SDK 将保证说明构建为 Norito JSON 的有效载荷. 直接使用 `NativeEscrowInstructionBuilders`,或者在您的应用程序已经拥有一个 `IrohaSDK`实例时,拨打对等式的 `IrohaSDK.build*Escrow*`辅助器.
@@ -463,7 +410,7 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 )
 ```
 
-匿名的 Swift 构建者采用无效列表,输出承诺列表,证明词典和可选的 `rootHint`值.争端解决权限代币是`NativeEscrowPermissions.canResolveEscrowDispute`.
+争议解决者权限令牌可通过 `NativeEscrowPermissions.canResolveEscrowDispute` 获取。
 
 ## 查询和事件 {#queries-and-events}
 
@@ -476,10 +423,8 @@ let resolve = try NativeEscrowInstructionBuilders.resolveEscrowDispute(
 |`FindAssetEscrowsBySeller`|列出卖家或锁开户打开的记录. |
 |`FindAssetEscrowsByBuyer`|列出买方接受的市场保证券或针对目的地锁定. |
 |`FindAssetEscrowsByStatus`|在 `AssetEscrowStatus`之前列出记录. |
-|`FindAnonymousAssetEscrowById`|通过 `EscrowId`阅读一个匿名的托管.|
-|`FindAnonymousAssetEscrows*`|按所有记录,卖家,买家或身份列出匿名托管.|
 
-`EscrowEventFilter` 可以订阅透明的本地托管和按托管锁定活动 ID, 销售者,买家,状态和事件设置面具. `Opened`, `Accepted`, `PaymentSent`, `Released`, `Cancelled`, `Expired`, `Disputed`, 和 `Resolved`. 通过匿名的托管查询来检查匿名托管记录.
+`EscrowEventFilter` 可以按托管 ID、卖方、买方、状态和事件集掩码订阅透明的原生托管及锁事件。该事件族包括 `Opened`、`Accepted`、`PaymentSent`、`Released`、`Cancelled`、`Expired`、`Disputed` 和 `Resolved`。
 
 ## 运营说明 {#operational-notes}
 

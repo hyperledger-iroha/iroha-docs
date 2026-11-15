@@ -1,11 +1,10 @@
 ---
 translation_locale: am
 translation_source: /guide/best-practices/release-readiness.md
-translation_source_hash: 984957526424a4e0ec9f29a6da1bb64699245bb135e8157bbe684bc3d87de4cc
+translation_source_hash: 75fccfa00f1582a8081df3e00331eee7ab21c108c8727a9d73129738cc4940cb
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-source-title-amendment
 ---
-
 # የመልቀቂያ ዝግጁነት {#release-readiness}
 
 የ Iroha መተግበሪያን ወይም የአውታረ መረብ ለውጥን ከማስተዋወቅዎ በፊት ተገቢውን አደጋ ሊያጋልጥ በሚችል ትንሽ አካባቢ ያለውን ባህሪ ያረጋግጡ እና ከዚያ ሆን ብለው በጋራ ቴስትኔት እና የምርት በሮች ውስጥ ይሂዱ።
@@ -21,12 +20,12 @@ translation_engine: bing-translator-llm
 
 ## የተጋራ የቴስትኔት በር {#shared-testnet-gate}
 
-- ለ API የመጨረሻ ነጥብ ባህሪ፣ ክፍያዎች፣ የመለያ የገንዘብ ድጋፍ፣ መዘግየት እና የአሠራር ልምምዶች Taira ወይም ሌላ የጋራ የሙከራ መረብ ይጠቀሙ።
+- ለ የመጨረሻ ነጥብ ባህሪ፣ ክፍያዎች፣ የመለያ የገንዘብ ድጋፍ፣ መዘግየት እና የአሠራር ልምምዶች Taira ወይም ሌላ የጋራ የሙከራ መረብ ይጠቀሙ።
 - ተራ የሙከራ ሩጫዎች በአውታረ መረብ ተገኝነት ላይ የተመሰረቱ እንዳይሆኑ ወይም የቴስትኔት ገንዘቦችን እንዳያወጡ የቀጥታ ቴስትኔት መርጦ መግባትን ይቀጥሉ።
 - እያንዳንዱን የቀጥታ ሙከራ ግብይት ከማስገባትዎ በፊት የምስጠራ ፈራሚ የገንዘብ ድጋፍ፣ የክፍያ ንብረት ሜታዳታ፣ የፍቃድ ዋና ፈቃዶች እና የሚጠበቀውን ሁኔታ ያረጋግጡ።
 - የተርሚናል ሁኔታን ይጠብቁ፣ ከዚያ የተገኘውን ሁኔታ በተነባቢ-ብቻ መጠይቅ ያረጋግጡ።
 
-[በ SORA 3 Taira እና Minamoto ላይ ይገንቡ](/am/get-started/sora-nexus-dataspaces.md) ተመልከት።
+[በ SORA Nexus ላይ ይገንቡ፦ Taira እና Minamoto](/am/get-started/sora-nexus-dataspaces.md) ይመልከቱ።
 
 ## ዋና መረብ ወይም ፕሮዳክሽን በር {#mainnet-or-production-gate}
 
@@ -46,7 +45,7 @@ translation_engine: bing-translator-llm
 
 - ውቅሩ ለየአካባቢው የተለየ ነው፣ ለሙከራ ብቻ የሚያገለግሉ ሚስጥሮችንም አይዝም።
 - የግብይት ድጋሚ ሙከራ ባህሪ idempotent ወይም በግልጽ የታሰረ ነው።
-- አፕሊኬሽኑ ውድቅ፣ ጊዜው የሚያበቃ፣ የጊዜ ማብቂያ እና API የመጨረሻ ነጥብ ተገኝነት አለመሳካቶችን መለየት ይችላል።
+- መተግበሪያው ውድቅ መደረግን፣ የተፈቀደው የቆይታ ጊዜ ማብቃትን፣ የምላሽ መጠበቂያ ጊዜ ገደብ ማለፍን እና የመጨረሻ ነጥቡ ተደራሽ አለመሆንን መለየት ይችላል።
 - ክትትል የመተላለፊያ ችሎታን፣ መዘግየትን፣ የወረፋ ጥልቀትን፣ ውድቀትን፣ ለውጦችን እና ተዛማጅ የንግድ ክስተቶችን ይሸፍናል።
 - ኦፕሬተሮች ለሚጠበቁ የውድቀት ሁነታዎች አሂድ ደብተሮች አሏቸው።
 - የደህንነት ግምገማ ቁልፍ ጥበቃን፣ ፈቃዶችን፣ የአውታረ መረብ መጋለጥን እና አውቶሜሽን የፈቃድ ባለቤትን ይሸፍናል።

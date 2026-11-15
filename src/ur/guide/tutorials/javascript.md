@@ -1,14 +1,13 @@
 ---
 translation_locale: ur
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # JavaScript اور TypeScript {#javascript-and-typescript}
 
-موجودہ JavaScript SDK Iroha ماخذ درخت میں `@iroha/iroha-js` پیکیج ہے۔ یہ Node.js-پہلا SDK ہے Torii ، Norito بلڈرز ، دستخط ، صفحہ بندی ، کنیکٹ پیش نظارہ ، اور کگیموشا کمانڈ ٹرانسپورٹ کے لئے۔
+موجودہ JavaScript SDK، Iroha کے ماخذ درخت میں `@iroha/iroha-js` پیکیج ہے۔ یہ Node.js کو اولیت دینے والا SDK ہے جو Torii، Norito بلڈرز، دستخط، صفحہ بندی اور Connect پیش نظاروں کے لیے ہے۔
 
 ## ماخذ سے تعمیر کریں {#build-from-source}
 
@@ -32,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -99,7 +99,6 @@ SDK پر توجہ مرکوز کرتا ہے:
 - Ed25519 دستخط اور کلیدی نسل
 - صفحہ بندی اور دوبارہ کوشش کرنے والے مددگار
 - براؤزر بوٹسٹریپ ہیلپرز کو مربوط کریں
-- کاگیموشا کی تیاری، بھرتی، واپسی اور آپریشن کے مقام پر ٹرانسپورٹ معاون
 
 ## اوور اسٹریم ریفرنسز {#upstream-references}
 

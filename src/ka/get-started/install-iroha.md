@@ -1,20 +1,21 @@
 ---
 translation_locale: ka
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # დამონტაჟება Iroha 3 {#install-iroha-3}
 
 აღნიშნული გვერდი მოიცავს Iroha 3 ინსტრუმენტების ჯაჭვისა და ბინარების ამჟამინდელი დამონტაჟების სამუშაო პროცესს, რომლებიც იყენებენ `hyperledger-iroha/iroha` სამუშაო სივრცეს ზემოთ.
+
+პირდაპირ ჰოსტზე დასაყენებლად მიჰყევით ქვემოთ მოცემულ Rust-ის ინსტრუქციას. Docker-ის საშუალებით ოთხი ვალიდატორის გასაშვებად დაიწყეთ სახელმძღვანელოთი [Iroha 3-ის გაშვება](/ka/get-started/launch-iroha.md).
 
 ## 1. წინასწარი პირობები {#_1-prerequisites}
 
 ჯერ დააინსტალირეთ ეს:
 
-- [rustup](https://www.rust-lang.org/tools/install), ასე რომ ჩაკეტილი `rust-toolchain.toml` ინსტრუმენტის ჯაჭვი (`1.93.1`) დამონტაჟებულია ავტომატურად.
+- [rustup](https://www.rust-lang.org/tools/install), ასე რომ ჩაკეტილი `rust-toolchain.toml` ინსტრუმენტის ჯაჭვი (`1.99.1`) დამონტაჟებულია ავტომატურად.
 - `git`
 - სასურველია Docker და Docker Compose ადგილობრივი მრავალმხრივი სწრაფი გაშვებისათვის.
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 მიმდინარე წყაროზე მხარდაჭერილი ადგილობრივი ქსელის ნაკადი გენერირებულია Kagami. იგი წერს ქსელის კვანძების კონფიგურაციას, ბლოკჩეინის წარმოქმნის არტეფაქტებს, კლიენტის კონფიგურს, დამხმარე სკრიპტებს და ვარიანტულ ფაილს Compose, რომელიც შეესაბამება ამოწმებულ კოდს:
 
-- `kagami localnet` ადგილობრივი ლოკალური ქსელის კვანძული სკრიპტებისათვის
+- `kagami localnet up` — მართვადი ლოკალური ქსელისთვის, რომელსაც Kagami უშვებს და ზედამხედველობს
+- `kagami localnet generate` — ნატიური ლოკალური კვანძების სკრიპტებისთვის
 - `kagami docker` Docker Compose-ისთვის, რომელიც წარმოიქმნა ლოკალურ ქსელის დირექტორიდან
 
 გაგრძელება [გაშვება Iroha 3](/ka/get-started/launch-iroha.md).

@@ -1,11 +1,10 @@
 ---
 translation_locale: hy
 translation_source: /guide/best-practices/application-development.md
-translation_source_hash: f95261b0416abfcd87881135ceb9b604a1cdde2dd1afc79fecf9c113a256a8c7
+translation_source_hash: 045e2819368106c5da6ee47610c59a3500db312f4901108c0d9e36a027a50a95
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-source-title-amendment
 ---
-
 # Ծրագրերի զարգացում {#application-development}
 
 Iroha ծրագրերը պետք է բացահայտեն գործարքի վարքագիծը, պահպանեն ստորագրման վիճակը եւ օգտագործեն հարցումները եւ իրադարձությունները այնպես, որ հեշտությամբ դիտարկվեն արտադրության ընթացքում:
@@ -45,10 +44,10 @@ Iroha ծրագրերը պետք է բացահայտեն գործարքի վար�
 - Մի տեղադրեք անձնական բանալիներ, հաշիվների վերականգնման նյութեր, API տոկեններ կամ փոխանցված նույնականացման վերնագրերը հրահանգների մեջ:
 - Պահանջեք գործարքի պլան, նախքան ցանկացած գործակալ ներկայացնի կենդանի փորձարկման ցանցի գործարք: Ծրագիրը պետք է նշել ցանցը, լիազոր հաշիվը, հրահանգները, վճարային ակտիվը, թռիչքից առաջ կարդալը, ակնկալվող արդյունքը եւ կրկին փորձել վարքը:
 
-Taira MCP աշխատանքային հոսքի համար տես [Կառուցեք SORA 3 վրա: Taira եւ Minamoto](/hy/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents).
+Taira MCP-ի աշխատանքային ընթացակարգի համար տես [Կառուցել SORA Nexus-ի վրա․ Taira և Minamoto](/hy/get-started/sora-nexus-dataspaces.md#taira-mcp-for-agents)։
 
 ## SDK Մաքրություն {#sdk-hygiene}
 
-- Pin SDK եւ բինար տարբերակները միասին՝ օգտագործելով համատեղելիության մատրիկան [](/hy/reference/compatibility-matrix.md).
+- Ամրագրեք SDK-ի և գործարկվող ֆայլերի տարբերակները միասին՝ ըստ [համատեղելիության աղյուսակի](/hy/reference/compatibility-matrix.md)։
 - Պահպանեք առաջադրված հաճախորդի կոդը, հատվածները եւ օրինակները համաժամեցված վերածննդային աշխատանքային տարածքի թարմացման հետ:
 - Ավելացրեք գործարքների կառուցման կոդի եւ ինտեգրման փորձարկումների համար միավորների թեստերը ՝ ձեր ծրագիրը կախված է ամենափոքր ընթերցման եւ գրելու ուղիների համար.

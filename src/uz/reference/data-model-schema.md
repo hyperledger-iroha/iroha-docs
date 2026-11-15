@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /reference/data-model-schema.md
-translation_source_hash: cf27b1f313a695b648ae450564a51120af0e3e39641ed140a187d128b930da97
+translation_source_hash: c4f0305c73f9470d1652b70e6787b59de2553a08b6c96603a9369512efbdb1af
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Ma'lumotlar Moduli Skemasi {#data-model-schema}
 
 Integratsiyangiz nishonlaydigan aniq tugundan sxemani so‘rang. Torii ushbu yuzaki yoqilganda `GET /v1/schema` da faol ma’lumot modeli sxemasini taqdim etadi:
@@ -17,4 +16,4 @@ curl -fsS -H 'Accept: application/json' "$TORII_URL/v1/schema" \
   > iroha-data-model-schema.json
 ```
 
-Manba holati kutish rejimida bo'lgan hujjat parchasidan bog‘lamlarni yaratmang. Jonli tugun javobi ushbu tugunning kompilyatsiya qilingan ma'lumot modeliga oid rasmiy manbadir; uni integratsiyangiz tomonidan ishlatilgan tugun qurilishi bilan birga saqlang.
+Bog‘lanishlarni boshqa yig‘ilma uchun e’lon qilingan nusxadan emas, ayni javobdan yarating. Ishlayotgan tugunning javobi shu tugunning kompilyatsiya qilingan ma’lumotlar modeli uchun ishonchli manbadir; uni integratsiyangiz ishlatadigan tugun yig‘ilmasi bilan birga mahkamlang.

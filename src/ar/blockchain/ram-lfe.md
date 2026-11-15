@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE يرمز إلى تقييم دالة لكونية على آلة الوصول العشوائي. في Iroha، هي طبقة الدالة المخفية العامة للبرامج التي تكون فيها السياسة العامة على السلسلة ولكن منطق المقيم أو السر أو المدخلات الأولية لا يجب كتابتها في حالة العالم. يُستخدم من قبل تدفقات معرف SORA Nexus، مثل البحث عن الهاتف أو البريد الإلكتروني الخاص، ويمكن أيضًا عرضه كمساعد تنفيذ برنامج عام Torii عندما يُمكن لملف تعريف العقدة المسارات الموجهة للتطبيق.
@@ -764,6 +763,5 @@ Torii قيد المعالجة RAM-LFE يتم تكوين بيئة تنفيذ ال
 
 ## مواضيع ذات صلة {#related-topics}
 
-- [رسوم الراعي لمساحة بيانات خاصة](/ar/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
 - [Torii API نقاط النهاية](/ar/reference/torii-endpoints.md#app-and-sora-route-families)
 - [المعاملات المجهولة](/ar/blockchain/anonymous-transactions.md)

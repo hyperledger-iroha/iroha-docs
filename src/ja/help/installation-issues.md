@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # インストールの問題のトラブルシューティング {#troubleshooting-installation-issues}
 
 このセクションでは、Iroha 3 のインストールに関するトラブルシューティングのヒントを提供します。ここに記載されていない問題が発生した場合は、[テレグラム](https://t.me/hyperledgeriroha) を通じてお問い合わせください。

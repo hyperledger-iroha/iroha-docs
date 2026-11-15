@@ -1,13 +1,13 @@
 ---
 translation_locale: dz
 translation_source: /guide/tutorials/javascript.md
-translation_source_hash: d12c715de68623a7dd671e4f2f91b93dbe9fdee42ed51e3a25fbad2a9b69ca8e
+translation_source_hash: 471dc7c82f371e1bbdcf216d5a50b1263612b7d29fffb1ef36b708a6beb931b6
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # JavaScript དང་ TypeScript {#javascript-and-typescript}
 
-ད་ལྟོའི་ JavaScript SDK འདི་ `@iroha/iroha-js` ཆ་ཚན་འདི་ཨིན། Iroha གཞི་རྟེན་ཤིང་ནང་ཡོདཔ་ཨིན། འདི་གིས་ Node.js དང་པ་ SDK འབད་ནི་འདི་གིས་ Torii, Norito སྒྲིག་བཟོ་མི་ཚུ་གི་དོན་ལུ་ཨིན་ ཨེབ་གཏང་འབད་ཐངས་, ཤོག་ལེབ, མཐུད་སྦྲེལ སྔོན་བལྟ་ཐངས་དང་ Kagemusha བཀའ་ཤོག་སྐྱེལ་འདྲེན་ཚུ་ཨིན།
+ད་ལྟོའི་ JavaScript SDK འདི་ Iroha འབྱུང་ཁུངས་ཀྱི་ཤིང་ནང་ཡོད་པའི་ `@iroha/iroha-js` ཆ་ཚན་འདི་ཨིན། འདི་ Torii, Norito བཟོ་བྱེད་ མིང་རྟགས་བཀོད་ནི་ ཤོག་ལེབ་བགོ་ནི་ དེ་ལས་ Connect སྔོན་བལྟ་ཚུ་གི་དོན་ལུ་ Node.js དང་པ་སྦེ་བཟོ་ཡོད་པའི་ SDK ཨིན།
 
 ## གཞི་རྟེན་ནང་ལས་ བཟོ་སྐྲུན་འབད་ {#build-from-source}
 
@@ -31,6 +31,7 @@ import { generateKeyPair } from "@iroha/iroha-js/crypto";
 
 const torii = new ToriiClient("http://127.0.0.1:8080", {
   authToken: "dev-token",
+  allowInsecure: true, // local development only
 });
 
 const keys = generateKeyPair();
@@ -98,7 +99,6 @@ SDK གིས་གཙོ་བོར་བཏོན་ཡོད།
 - Ed25519 མིང་རྟགས་དང་ལྡེ་མིག་བཟོ་སྐྲུན།
 - ཤོག་ལེབ་བཟོ་ནི་དང་ ལོག་འབད་ནིའི་གྲོགས་རམ་འབད་མི་ཚུ།
 - བརྡ་འཚོལ་བུཊི་སི་ཊརཔ་གྲོགས་རམ་འབད་མི་ཚུ་མཐུད།
-- ཀ་གེ་མུ་ཤ་གྲ་སྒྲིག་དང་ ཁ་སྐོང་ བསྐྱར་གསོ་ དེ་ལས་ ལག་ལེན་གནས་ཚད་སྐྱེལ་འདྲེན་གྱི་གྲོགས་རམ་འབད་མི་ཚུ་
 
 ## གཙོ་རིམ་གོང་མའི་ཁ་བྱང་ཚུ་ {#upstream-references}
 

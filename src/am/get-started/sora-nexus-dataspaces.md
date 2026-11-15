@@ -1,16 +1,15 @@
 ---
 translation_locale: am
 translation_source: /get-started/sora-nexus-dataspaces.md
-translation_source_hash: f766c604b0220fc03cacd7c0b9cbb5f94f415c5ec61eba89de7a5e310a1dfe79
+translation_source_hash: 96ca67b9bbf9d743de2f640e09487176f62a8a31052e4f1e15e15a771e985c48
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
+# በTaira እና Minamoto በመጠቀም በSORA Nexus ላይ መገንባት {#build-on-sora-3-taira-and-minamoto}
 
-# በ SORA 3 Taira እና Minamoto ላይ ይገንቡ {#build-on-sora-3-taira-and-minamoto}
+SORA Nexus በIroha 3 ላይ ይሠራል። መተግበሪያዎን መጀመሪያ በTaira ላይ ይገንቡ እና ይፈትሹ። ለዋናው አውታረ መረብ የተለዩ ቁልፎች፣ ለክፍያ የሚሆን እውነተኛ XOR እና በምርት አካባቢ የመሥራት ፈቃድ ሲኖርዎት ብቻ ተመሳሳዩን የደንበኛ ውቅር ወደ Minamoto ያዛውሩ።
 
-SORA 3 በ Iroha 3 እና SORA Nexus ላይ የተገነባው መተግበሪያን የሚመለከት የህዝብ ማሰማራት ትራክ ነው። መጀመሪያ በ Taira ላይ ይገንቡ እና ይለማመዱ፣ ከዚያ ተመሳሳዩን የደንበኛ ቅርፅ ወደ Minamoto ያንቀሳቅሱት የተለየ የዋና መረብ ቁልፎች፣ እውነተኛ XOR ለክፍያ እና ለምርት ማጽደቅ ሲኖርዎት ብቻ ነው።
-
-ይህ አጋዥ ስልጠና የ Iroha ደንበኛን ለህዝብ SORA 3 አውታረ መረቦች እንዴት ማዋቀር እንደሚቻል ያሳያል -
+ይህ መመሪያ ለሁለቱ የ SORA Nexus ይፋዊ አውታረ መረቦች የIroha ደንበኛን እንዴት ማዋቀር እንደሚቻል ያሳያል።
 
 - Taira የሙከራ መረብ በ `https://taira.sora.org`
 - Minamoto ዋና መረብ በ `https://minamoto.sora.org`
@@ -24,15 +23,15 @@ SORA 3 በ Iroha 3 እና SORA Nexus ላይ የተገነባው መተግበሪ�
 
 |ደረጃ|Taira የሙከራ መረብ|Minamoto ዋና መረብ|
 | --------------------------- | ------------------------------------------------------------ | -------------------------------------------------- |
-|የአውታረ መረብ ሁኔታን ማንበብ ይጀምሩ|መጠይቅ `/status` ያለ ቁልፎች|መጠይቅ `/status` ያለ ቁልፎች|
-|የውሂብ ቦታ ይምረጡ|መተግበሪያዎ የሚተዳደር የማስፈጸሚያ መስመር ካልፈለገ በስተቀር ይፋዊ `universal` ይጠቀሙ|ተመሳሳዩን የውሂብ ቦታ ይጠቀሙ ከዋና ኔት ፈቃድ በኋላ ብቻ|
+|የአውታረ መረብ ሁኔታን ማንበብ ይጀምሩ|መጠይቅ `/status` ያለ ቁልፎች| በመጀመሪያ የአገልግሎቱን አድራሻና የTLS ምስክር ወረቀት ያረጋግጡ |
+|የውሂብ ቦታ ይምረጡ|መተግበሪያዎ የራሱ የሚተዳደር የውሂብ ቦታ ካልፈለገ በስተቀር ይፋዊ `universal` ይጠቀሙ|ተመሳሳዩን የውሂብ ቦታ ከዋና ኔት ፈቃድ በኋላ ብቻ ይጠቀሙ|
 |የክፍያ ንብረት ያግኙ|የህዝብ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎትን ይጠቀሙ|XOR በገንዘብ ከተደገፈ Minamoto ሂሳብ ወይም ከተፈቀደ የግምጃ ቤት ፍሰት ይቀበሉ|
 | የሙከራ ክዋኔዎች | በገንዘብ አገልግሎቱ የተሞላ የሙከራ XOR ይጠቀሙ | የሙከራ መሣሪያ አይጠቀሙ፤ ክዋኔዎቹ እውነተኛ XOR ያወጣሉ |
 |ያስተዋውቁ|አመክንዮ፣ ክትትል እና ምስጠራ ፈራሚ አያያዝን እንደገና ይሞክሩ|የተለዩ ቁልፎችን፣ የገንዘብ ድጋፍን እና የመልቀቂያ መቆጣጠሪያዎችን ይጠቀሙ|
 
 ተግባራዊ ፍሰት የሚከተለው ነው-
 
-1. ደንበኛውን በ Taira ላይ ይገንቡ እና ይፋዊውን `universal` የውሂብ ቦታ ይጠቀሙ።
+1. ደንበኛውን ለTaira ይገንቡ፣ ክፍቱን `universal` የውሂብ ቦታ ይጠቀሙ።
 2. ምስጠራ ፈራሚ ያክሉ እና በ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ይደግፉት።
 3. ውድቀቶች አሰልቺ እና ሊታዩ የሚችሉ እስኪሆኑ ድረስ የመተግበሪያዎን አመክንዮ በ Taira ላይ ይለማመዱ።
 4. የተለየ Minamoto ምስጠራ ፈራሚ ይፍጠሩ፣ በእውነተኛው XOR የገንዘብ ድጋፍ ያድርጉት እና ተመሳሳይ የተረጋገጡ ስራዎችን ብቻ ወደ mainnet ያንቀሳቅሱት።
@@ -53,24 +52,22 @@ SORA 3 በ Iroha 3 እና SORA Nexus ላይ የተገነባው መተግበሪ�
 
 ## 1. ምን እያዘጋጁ እንደሆነ ይረዱ {#_1-understand-what-you-are-setting-up}
 
-በ SORA Nexus ውስጥ፣ የውሂብ ቦታ የአውታረ መረብ ማስፈጸሚያ መስመር እና የማስተላለፊያ ካታሎግ አካል ነው። ደንበኛ `client.toml` በመቀየር ብቻ አዲስ የህዝብ ዳታ ቦታ አይፈጥርም። የደንበኛ ማዋቀር ሁለት ነገሮችን ያደርጋል -
+በSORA Nexus ውስጥ የውሂብ ቦታ ካታሎጉ የውሂብ ቦታዎችን ይገልጻል። የመስመር ካታሎጉ መስመሮችን በተለየ ይገልጻል፦ እያንዳንዱ መስመር አንድ የውሂብ ቦታን ይጠቅሳል፣ አንድ የውሂብ ቦታም ብዙ መስመሮች ሊኖሩት ይችላሉ። ደንበኛ `client.toml`ን ብቻ በመለወጥ አዲስ ክፍት የውሂብ ቦታ አይፈጥርም። የደንበኛ ማዋቀር ሁለት ነገሮችን ያደርጋል:
 
-1. ደንበኛውን በቀኝ በኩል ይጠቁማል Torii API የመጨረሻ ነጥብ
-2. ለነጠላ ፕሮቶኮል-መደበኛ መለያው የጎራ እና የውሂብ ቦታ ማዘዋወር አውድ ይመርጣል
+1. ደንበኛውን ወደ ትክክለኛው የTorii መገናኛ ነጥብ ይመራል
+2. ለቀኖናዊ መለያው የአውታረ መረብ አውድና የፊርማ ቁልፍ ይመርጣል
 
-`AccountId` ሁልጊዜ ነጠላ ፕሮቶኮል-መደበኛ እና ጎራ የሌለው ነው። በ`client.toml` ውስጥ ያለው የ`[account].domain` እሴት ማዘዋወር እና ተለዋጭ ስም አውድ ያቀርባል; የመለያ ማንነት አካል አይሆንም። ለአብዛኛዎቹ መተግበሪያዎች፣ በይፋዊ `universal` የውሂብ ቦታ ይጀምሩ። የጎራ አውድ የ`domain.dataspace` ቅጹን ይጠቀማል፣ ለምሳሌ -
+`AccountId` ሁልጊዜ ቀኖናዊና ጎራ የሌለው ነው፣ `client.toml`ም የጎራ ቅንብር የለውም፦ `[account].profile` የአውታረ መረቡን I105 ቅድመ ቅጥያ ብቻ ይመርጣል። የጎራ አውድ የተለዋጭ ስሞችና በጎራ ባለቤትነት ያሉ ነገሮች ነው። ለአብዛኞቹ መተግበሪያዎች በክፍቱ `universal` የውሂብ ቦታ ይጀምሩ። የጎራ አውድ `domain.dataspace` ቅርጽ ይጠቀማል፣ ለምሳሌ:
 
 ```text
 wonderland.universal
 ```
 
-አዲስ ድርጅታዊ የመረጃ ቦታ ካስፈለገዎት፣ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግ እና የማስተላለፊያ ፕሮፖዛል ያዘጋጁ። ከታች [አዲስ የመረጃ ቦታ ያቅርቡ](#_8-provision-a-new-dataspace) ይመልከቱ።
+አዲስ የድርጅት የውሂብ ቦታ ከፈለጉ ከመደበኛ የደንበኛ መለያ ለመመዝገብ ከመሞከር ይልቅ የካታሎግና የማዘዋወር ሀሳብ ያዘጋጁ። ከታች [አዲስ የውሂብ ቦታ ያቋቁሙ](#_8-provision-a-new-dataspace) ይመልከቱ።
 
-## 2. ይፋዊ Torii API የመጨረሻ ነጥብ ያረጋግጡ {#_2-check-the-public-torii-endpoint}
+## 2. ይፋዊ Torii የመጨረሻ ነጥብ ያረጋግጡ {#_2-check-the-public-torii-endpoint}
 
-ምስጠራ ፈራሚን ከማዋቀርዎ በፊት የዒላማው API የመጨረሻ ነጥብ ቀጥታ መሆኑን ያረጋግጡ።
-
-ለ Taira
+የTaira የሙከራ አውታረ መረብ ሁኔታን በ`curl` እና `jq` ይፈትሹ። ለዚህ ምርመራ ቁልፎች ወይም አካባቢያዊ ኖድ አያስፈልጉም።
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -78,15 +75,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '{peers, blocks, txs_approved, queue_size}'
 ```
 
-ለ Minamoto
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq '{peers, blocks, txs_approved, queue_size}'
-```
-
-በኖድ የተጋለጠውን የውሂብ ቦታ እና የማስፈጸሚያ መስመር እይታ ይፈትሹ -
+ኖዱ የሚያቀርበውን የውሂብ ቦታና የመስመር እይታ ይመርምሩ:
 
 ```bash
 curl -fsS https://taira.sora.org/status \
@@ -94,7 +83,7 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | {lane_id, alias, dataspace_id, dataspace_alias, visibility}'
 ```
 
-ለዋና መረብ ከ `https://minamoto.sora.org/status` ጋር ተመሳሳይ ትዕዛዝ ይጠቀሙ።
+Minamotoን ከመጠቀምዎ በፊት የዋናውን አውታረ መረብ አገልግሎት አድራሻ ከኦፕሬተሩ ጋር ያረጋግጡ፤ የTLS ምስክር ወረቀቱ ከአስተናጋጁ ስም ጋር መዛመዱንም ይፈትሹ።
 
 ## Taira MCP ለወኪሎች {#taira-mcp-for-agents}
 
@@ -102,17 +91,21 @@ Taira እንዲሁም ለወኪል ሶፍትዌር ማስፈጸሚያ አካባ�
 
 |ቅንብር|እሴት|
 | --- | --- |
-|MCP API የመጨረሻ ነጥብ|`https://taira.sora.org/v1/mcp`|
+|MCP የመጨረሻ ነጥብ|`https://taira.sora.org/v1/mcp`|
 |የአውታረ መረብ ስርወ|`https://taira.sora.org`|
 |የታቀደ አጠቃቀም|Taira Testnet ያነባል እና በቴስትኔት የገንዘብ ድጋፍ የሚደረግላቸው የመፃፍ ልምምዶች|
-| የምርት አካባቢ አቻ |ዋና መረብ MCP API የመጨረሻ ነጥብ እና የመልቀቂያ መቆጣጠሪያዎች በግልፅ ካልፀደቁ በስተቀር ይህንን ግቤት በ Minamoto አይጠቁሙ|
+| የምርት አካባቢ አቻ |ዋና መረብ MCP የመጨረሻ ነጥብ እና የመልቀቂያ መቆጣጠሪያዎች በግልፅ ካልፀደቁ በስተቀር ይህንን ግቤት በ Minamoto አይጠቁሙ|
 
-የመፈረሚያ ቁሳቁሶችን ከማከልዎ በፊት የድልድዩን ሜታዳታ ያረጋግጡ -
+ድልድዩ ሁኔታ የማያቆዩ JSON-RPC `POST` ጥያቄዎችን ብቻ ይቀበላል። የፊርማ መረጃ ከማከልዎ በፊት የማግኛ ሜታዳታውን ያረጋግጡ:
 
 ```bash
 curl -fsS https://taira.sora.org/v1/mcp \
   -H 'Accept: application/json' \
-  | jq '{protocolVersion, server: .serverInfo.name, tools: .capabilities.tools.count}'
+  -H 'Content-Type: application/json' \
+  -H 'MCP-Protocol-Version: 2026-07-28' \
+  -H 'Mcp-Method: server/discover' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"server/discover","params":{"_meta":{"io.modelcontextprotocol/protocolVersion":"2026-07-28","io.modelcontextprotocol/clientCapabilities":{}}}}' \
+  | jq '{versions: .result.supportedVersions, server: .result._meta["io.modelcontextprotocol/serverInfo"].name, toolset: .result.capabilities.extensions["org.hyperledger.iroha/tools"].toolsetVersion}'
 ```
 
 በወኪሉ ሶፍትዌር ማስፈጸሚያ አካባቢ ውስጥ URL ን እንደ ተጠቃሚ-አካባቢያዊ MCP አገልጋይ ያዋቅሩ። ወኪሉን MCP ውቅረት፣ API ቶከኖች፣ የተላለፉ የማረጋገጫ ራስጌዎች፣ `authority` ወይም `private_key` እሴቶችን ወደዚህ ሰነድ ሪፖ ወይም የመተግበሪያ ሪፖ ውስጥ አያስቀምጡ።
@@ -133,7 +126,7 @@ curl -fsS https://taira.sora.org/v1/mcp \
 
 1. ኮድ ከመጻፉ በፊት ወኪሉ አግባብነት ያላቸውን ሰነዶች፣ SDK ኮድ፣ CLI ትዕዛዝ ወይም MCP የመሳሪያ ንድፍ እንዲመረምር ይጠይቁት።
 2. ወኪሉ መጀመሪያ ትንሹን የደንበኛ መንገድ እንዲጽፍ ያድርጉ የሁኔታ ፍተሻ፣ መለያ ፍለጋ፣ ተለዋጭ ስም መፍታት ወይም ቀሪ ሒሳብ ፍለጋ።
-3. የግብይት-ግንባታ ኮድ ያክሉ ተነባቢ-ብቻ API ጥያቄዎች በ Taira ላይ ከሰሩ በኋላ ብቻ ነው።
+3. የግብይት-ግንባታ ኮድ ያክሉ ተነባቢ-ብቻ ጥያቄዎች በ Taira ላይ ከሰሩ በኋላ ብቻ ነው።
 4. የቀጥታ-አውታረ መረብ ሙከራዎችን መርጠው እንዲገቡ ያድርጉ፣ ለምሳሌ ከ`TAIRA_LIVE=1` በስተጀርባ፣ ስለዚህ መደበኛ የክፍል ሙከራ ሩጫ በቴስትኔት ፈንድ አያወጣም ወይም በአውታረ መረብ ተገኝነት ላይ የተመሰረተ ነው።
 5. ወኪሉ ማንኛውንም ግብይት ከማቅረቡ በፊት የኔትወርክ ሥር፣ ሰንሰለት፣ የፍቃድ ዋና መለያ፣ የመመሪያ ማጠቃለያ፣ የክፍያ ንብረት እና የሚጠበቀው የሁኔታ ለውጥ ሪፖርት እንዲያደርግ ይጠይቁ።
 6. ወደ CI ወይም ዋና መረብ የስራ ፍሰቶች ከማስተዋወቅዎ በፊት ለሚስጥር አያያዝ፣ ባህሪን እንደገና ለሙከራ፣ ለአይደምፖተንሲ እና ውድቅ አያያዝ የመነጨ ኮድ ይገምግሙ።
@@ -171,7 +164,7 @@ say "submit this transaction".
 - እንደ `Committed`፣ `Applied`፣ `Rejected` ወይም `Expired` ያሉ የተርሚናል ሁኔታ
 - ሲገኝ ዝርዝርን ብሎክ ወይም አሳሽ
 - ማረጋገጫ የተነበበ ውጤቶች
-- ውድቅ መልእክት እና ውድቀቱ ፈቃዶች፣ ክፍያዎች፣ ማረጋገጫ፣ የቆየ ሁኔታ ወይም API የመጨረሻ ነጥብ ተገኝነት ይመስላል
+- ውድቅ መልእክት እና ውድቀቱ ፈቃዶች፣ ክፍያዎች፣ ማረጋገጫ፣ የቆየ ሁኔታ ወይም የመጨረሻ ነጥብ ተገኝነት ይመስላል
 
 ምሳሌ የተጠበቀ ጥያቄ -
 
@@ -197,36 +190,15 @@ Taira MCP ን እንደ ይፋዊ የቴስትኔት መቆጣጠሪያ ወለ�
 
 ## አሁን ሊሞክሯቸው የሚችሏቸው የአሻንጉሊት ምሳሌዎች {#toy-examples-you-can-try-now}
 
-እነዚህ ምሳሌዎች ካልተጠቀሱ በስተቀር ተነባቢ-ብቻ ናቸው። ቁልፎችን ከማመንጨትዎ በፊት ይሰራሉ እና በሁለቱም የህዝብ አውታረ መረቦች ላይ ለመስራት ደህና ናቸው።
+እነዚህ ምሳሌዎች የመለያ ቁልፎችን ሳይጠቀሙ ከTaira መረጃ ያነባሉ።
 
-Taira testnet እና Minamoto mainnet healthን ያወዳድሩ -
-
-```bash
-for network in taira minamoto; do
-  root="https://$network.sora.org"
-  printf '\n%s\n' "$network"
-  curl -fsS "$root/status" \
-    -H 'Accept: application/json' \
-    | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
-done
-```
-
-በ Taira የተጋለጡትን ይፋዊ የውሂብ ቦታ ማስፈጸሚያ መስመሮችን ይዘርዝሩ -
+እያንዳንዱን የTaira መስመር ከውሂብ ቦታው እና ከታይነቱ ጋር ዘርዝሩ፦
 
 ```bash
 curl -fsS https://taira.sora.org/status \
   -H 'Accept: application/json' \
   | jq -r '.teu_lane_commit[]
-    | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
-    | @tsv'
-```
-
-የዋና መረብ እይታ በሚፈልጉበት ጊዜ በ Minamoto ላይ ተመሳሳይ ትዕዛዝ ያሂዱ -
-
-```bash
-curl -fsS https://minamoto.sora.org/status \
-  -H 'Accept: application/json' \
-  | jq -r '.teu_lane_commit[]
+    | select(.visibility == "public")
     | [.lane_id, .alias, .dataspace_alias, .visibility, .storage_profile, .block_height]
     | @tsv'
 ```
@@ -235,24 +207,16 @@ curl -fsS https://minamoto.sora.org/status \
 
 ```bash
 node --input-type=module <<'EOF'
-const roots = {
-  taira: 'https://taira.sora.org',
-  minamoto: 'https://minamoto.sora.org',
-};
-
-for (const [name, root] of Object.entries(roots)) {
-  const status = await fetch(`${root}/status`, {
-    headers: { Accept: 'application/json' },
-  }).then((res) => res.json());
-  const publicSpaces = status.teu_lane_commit
-    .filter((lane) => lane.visibility === 'public')
-    .map((lane) => `${lane.dataspace_alias}:${lane.block_height}`)
-    .join(', ');
-
-  console.log(
-    `${name}: ${status.blocks} blocks, ${status.queue_size} queued, public spaces ${publicSpaces}`,
-  );
-}
+const response = await fetch('https://taira.sora.org/status', {
+  headers: { Accept: 'application/json' },
+});
+if (!response.ok) throw new Error(`Taira HTTP ${response.status}`);
+const status = await response.json();
+const publicLanes = status.teu_lane_commit
+  .filter((lane) => lane.visibility === 'public')
+  .map((lane) => `${lane.alias}@${lane.dataspace_alias}:${lane.block_height}`)
+  .join(', ');
+console.log(`Taira: ${status.blocks} blocks, ${status.queue_size} queued, public lanes ${publicLanes}`);
 EOF
 ```
 
@@ -270,10 +234,11 @@ kagami keys --algorithm ed25519 --out-dir ./taira-client-key
 
 ```toml
 chain = "fc56984b-2be7-431d-840e-21514d1883f0"
+# The exact `network_id` from https://taira.sora.org/v1/accounts/capabilities
+network_id = "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774"
 torii_url = "https://taira.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "taira"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -284,12 +249,12 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-ከፍተኛው ደረጃ `chain` ትክክለኛው Taira የግብይት ሰንሰለት መታወቂያ ነው። የ`[account].profile = "taira"` ቅንብር በተናጥል የ Taira I105 ሰንሰለትን ልዩነት ይመርጣል። የሰንሰለት መታወቂያው መለያውን አይመርጥም.
+በላይኛው ደረጃ ያለው `chain` ትክክለኛው የTaira ግብይት ሰንሰለት ID ነው፣ `network_id` ደግሞ እያንዳንዱ ፊርማ የሚያስረው ትክክለኛ የአውታረ መረብ ማንነት ነው። `network_id` ወይም `network_id_file` ከሁለቱ በትክክል አንዱን ያዋቅሩ። `[account].profile = "taira"` ቅንብር የTaira I105 የሰንሰለት መለያያ በተናጠል ይመርጣል። የሰንሰለት ID የመለያውን መገለጫ አይመርጥም።
 
 ተነባቢ-ብቻ ቼክ ያሂዱ -
 
 ```bash
-iroha --config ./taira.client.toml --output-format text ops sumeragi status
+iroha --config ./taira.client.toml ledger domain list --limit 5
 ```
 
 ፈተናዎችን ከመጻፍዎ በፊት ይፋዊውን Taira ምርመራዎችን ያሂዱ -
@@ -298,28 +263,24 @@ iroha --config ./taira.client.toml --output-format text ops sumeragi status
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-ክፍያ የሚጠይቁ የመጻፍ ክዋኔዎችን ከማካሄድዎ በፊት የ Taira መለያውን በሙከራ ገንዘብ አገልግሎቱ ይሙሉ። ቀጥተኛው ሂደት [በ Taira የሙከራ XOR ያግኙ](#_4-get-testnet-xor-on-taira) ውስጥ ነው።
+ክፍያ የሚፈልጉ የሁኔታ ለውጥ ክዋኔዎችን ከማስኬድዎ በፊት የTaira መለያውን በፋውሴት ይሙሉ። ቀድሞ የማዘጋጀት ፋውሴት ሂደቱ በ[በTaira ላይ የሙከራ አውታረ መረብ XOR ማግኘት](#_4-get-testnet-xor-on-taira) ውስጥ አለ።
 
-የቴስትኔት የገንዘብ ድጋፍ አገልግሎት የይገባኛል ጥያቄ ተቀባይነት ካገኘ እና ሂሳቡ የገንዘብ ድጋፍ ከተደረገ በኋላ፣ Taira ካናሪ አማራጭ የጭስ ማውጫ ሙከራ ነው።
+መለያው ከተሞላ በኋላ የተፈረመ log መመሪያ አማራጭ መሠረታዊ የሁኔታ ለውጥ ሙከራ ነው። እያንዳንዱ የሚላክ ግብይት ከፋዩን ይሰይማል፣ CLIም ከመፈረም በፊት ትክክለኛውን ክፍያ ያስላል:
 
 ```bash
-iroha --config ./taira.client.toml taira write-canary \
-  --public-root https://taira.sora.org \
-  --write-config ./taira.canary.client.toml \
-  --json
+iroha --config ./taira.client.toml --fee-payer authority \
+  tx ping --msg "taira smoke test"
 ```
 
-ካናሪው የተፈረመ ፒንግ ያቀርባል፣ ማረጋገጫን ይጠብቃል፣ እና `--write-config` ሲቀርብ የሶፍትዌር ማስፈጸሚያ አካባቢን ምስጠራ ፈራሚ ውቅር ይጽፋል። Taira ይፋዊ የሙከራ መረብ ነው፣ ስለዚህ የወረፋ ሙሌት የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ራሱ እየሰራ ቢሆንም የተፈረመው ፒንግ እንዲወድቅ ሊያደርግ ይችላል። `taira doctor` የተሞላ ወረፋን ሪፖርት ካደረገ ወይም ካናሪ ከተመለሰ `PRTRY:NEXUS_FEE_ADMISSION_REJECTED`፣ እንደ ደንበኛ ውቅር ስህተት ከመቁጠርዎ በፊት ይጠብቁ እና እንደገና ይሞክሩ።
+ትዕዛዙ ማረጋገጫን ይጠብቃል። Taira ክፍት የሙከራ አውታረ መረብ ነው፣ ስለዚህ ፋውሴቱ ራሱ ቢሠራም ወረፋው መሙላት pingን ሊያከሽፍ ይችላል። `taira doctor` የሞላ ወረፋ ከዘገበ ወይም ping `PRTRY:NEXUS_FEE_ADMISSION_REJECTED` ከመለሰ እንደ የደንበኛ ውቅር ስህተት ከመቆጠርዎ በፊት ይጠብቁና እንደገና ይሞክሩ።
 
-ያልተጠበቁ የየመጀመሪያ የስራ ሙከራዎች፣ ካናሪውን በተገደበ የድጋሚ ሙከራ ዑደት ውስጥ ይሸፍኑት -
+ያለ ቀጥታ ክትትል ለሚሠሩ መሠረታዊ ሙከራዎች pingን የተወሰነ ገደብ ባለው የዳግም ሙከራ ዙር ያስኬዱ:
 
 ```bash
 ok=false
 for attempt in 1 2 3 4 5; do
-  iroha --config ./taira.client.toml taira write-canary \
-    --public-root https://taira.sora.org \
-    --write-config ./taira.canary.client.toml \
-    --json && ok=true && break
+  iroha --config ./taira.client.toml --fee-payer authority \
+    tx ping --msg "taira smoke test" && ok=true && break
 
   sleep 60
 done
@@ -331,7 +292,7 @@ test "$ok" = true
 
 ## የ SORA Nexus መለያ መታወቂያ ይፍጠሩ {#generate-a-sora-nexus-account-id}
 
-የ SORA Nexus መለያ መታወቂያ ከመለያው የህዝብ ቁልፍ እና ከዒላማው አውታረ መረብ ቅድመ ቅጥያ የተገኘ ነጠላ ፕሮቶኮል-ስታንዳርድ I105 አድራሻ ነው። የ`[account].domain` እሴት አይደለም በደንበኛ TOML። ተመሳሳይ የህዝብ ቁልፍ በ Taira እና Minamoto ላይ ለተለያዩ መታወቂያዎች ኮድ ያደርጋል፣ እና የምርት ተጠቃሚዎች ለ Minamoto የተለየ የቁልፍ ጥንድ ማመንጨት አለባቸው።
+የSORA Nexus መለያ ID ከመለያው የሕዝብ ቁልፍና ከዒላማ አውታረ መረቡ ቅድመ ቅጥያ የተመነጨ ቀኖናዊ I105 አድራሻ ነው። ያው የሕዝብ ቁልፍ በTaira እና Minamoto ወደ የተለያዩ IDዎች ይቀየራል፣ የእውነተኛ ሥራ አካባቢ ተጠቃሚዎችም ለMinamoto የተለየ ጥንድ ቁልፍ ማመንጨት አለባቸው።
 
 መለያውን የሚቆጣጠረውን የ Ed25519 ቁልፍ ጥንድ ይፍጠሩ ወይም ይጫኑ -
 
@@ -351,7 +312,7 @@ iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
 iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 ```
 
-የ Nexus፣ API ወይም CLI ትዕዛዝ አንድ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያ በሚጠይቅበት ቦታ ሁሉ የተገኘውን የመለያ መታወቂያ ይጠቀሙ፣ ለምሳሌ የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `account_id`፣ ቀሪ ሒሳብ መጠይቆች፣ ጥብቅ የመለያ መስኮች ወይም ተለዋጭ ስም ማሰሪያዎች። የሚዛመደውን የግል ቁልፍ በደንበኛ ውቅረትዎ ውስጥ ያስቀምጡት እና ከ`[account].profile = "taira"` ወይም `[account].profile = "minamoto"` ጋር ተመሳሳይ የህዝብ አውታረ መረብ ይምረጡ።
+የSORA Nexus API ወይም CLI ትዕዛዝ ቀኖናዊ የመለያ ID በጠየቀበት ሁሉ የተገኘውን መለያ ID ይጠቀሙ፣ ለምሳሌ በቀሪ ሒሳብ ጥያቄዎች፣ በጥብቅ የመለያ መስኮች ወይም በተለዋጭ ስም ትስስሮች። ተዛማጁን የግል ቁልፍ በደንበኛ ውቅርዎ ያቆዩ፣ ያንኑ ክፍት አውታረ መረብም በ`[account].profile = "taira"` ወይም `[account].profile = "minamoto"` ይምረጡ።
 
 መታወቂያውን ማመንጨት በራሱ በገንዘብ የተደገፈ በሰንሰለት ላይ መለያ አይፈጥርም። በ Taira ላይ፣ የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ለቴስትኔት የመጻፍ ክዋኔዎች መለያውን መፍጠር እና መደገፍ ይችላል። በ Minamoto ላይ፣ የተፈቀደ የዋና መረብ መሳፈሪያ ወይም የግምጃ ቤት ፍሰት ይጠቀሙ።
 
@@ -372,188 +333,72 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 
 ## 4. በ Taira ላይ ቴስትኔት XOR ያግኙ {#_4-get-testnet-xor-on-taira}
 
-የህዝብ testnet የገንዘብ ድጋፍ አገልግሎትን በቀጥታ ይጠቀሙ። ፍሰቱ የሚከተለው ነው
+በCLI ቀድሞ የማዘጋጀት ፋውሴት ሂደት የሙከራ አውታረ መረብ XOR ይጠይቁ። ፋውሴቱ በ`taira.client.toml` የተዋቀረውን መለያ ይሞላል፣ ገና ከሌለም በመጀመሪያ ይመዘግበዋል። ሂደቱ እንዲህ ነው:
 
-1. ምስጠራ ፈራሚ ይፍጠሩ ወይም ይጫኑ እና ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ Taira መለያ መታወቂያውን ያሰሉ።
-2. የአሁኑን የቴስትኔት የገንዘብ ድጋፍ አገልግሎት እንቆቅልሽ አምጡ።
-3. `difficulty_bits` ከ`0` የሚበልጥ ከሆነ እንቆቅልሹን ይፍቱ።
-4. የቴስትኔት የገንዘብ ድጋፍ አገልግሎት የይገባኛል ጥያቄ ያስገቡ።
-5. ክፍያ የሚከፍሉ የመጻፍ ክዋኔዎችን ከመላክዎ በፊት መለያው ወይም የንብረት ቀሪ ሂሳቡ እስኪታይ ድረስ ይጠብቁ።
+1. ክፍቱን የፋውሴት ፖሊሲ ያንብቡ፦ የፋውሴት ፈቃድ ያለው አካል፣ የክፍያ ንብረት እና መጠን።
+2. ጥያቄውን ያዘጋጁ። CLI የሥራ ማስረጃውን ይፈታል፣ Torii የሚያዘጋጀውንና የሚፈርመውን ትክክለኛ ግብይት ያረጋግጣል፣ ሳይልከውም በግል ጆርናል ማውጫ ያስቀምጠዋል።
+3. የተቀመጠውን ግብይት አንድ ጊዜ ይላኩ።
+4. ክፍያ የሚፈልጉ የሁኔታ ለውጥ ክዋኔዎችን ከመላክዎ በፊት የንብረቱ ቀሪ ሒሳብ እስኪታይ ይጠብቁ።
 
-የህዝብ ቁልፍን በቴስትኔት የገንዘብ ድጋፍ አገልግሎት ወደሚጠበቀው Taira I105 መለያ መታወቂያ ይለውጡ -
-
-```bash
-iroha tools address convert --profile taira <ED25519_PUBLIC_KEY_HEX>
-```
-
-እንቆቅልሹን አምጡ -
+ፖሊሲውን ያንብቡ:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle \
+curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
   -H 'Accept: application/json' \
+  | tee ./taira-faucet-policy.json \
   | jq .
 ```
-
-የቴስትኔት የገንዘብ ድጋፍ አገልግሎት የህዝብ ቴስትኔት አገልግሎት ነው። እንቆቅልሹ ወይም የይገባኛል ጥያቄው API የመጨረሻ ነጥብ `502`፣ ጊዜ ማብቂያ ወይም ሌላ የመግቢያ ደረጃ ስህተት ከተመለሰ ቁልፎችዎን ወይም የደንበኛ ውቅር ከመቀየርዎ በፊት ይጠብቁ እና እንደገና ይሞክሩ።
 
 ምላሹ ይህ ቅርጽ አለው
 
 ```json
 {
-  "algorithm": "scrypt-leading-zero-bits-v1",
-  "difficulty_bits": 8,
-  "anchor_height": 741,
-  "anchor_block_hash_hex": "05d2...",
-  "challenge_salt_hex": null,
-  "scrypt_log_n": 13,
-  "scrypt_r": 8,
-  "scrypt_p": 1,
-  "max_anchor_age_blocks": 6
+  "schema_version": 1,
+  "network_id": "hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774",
+  "network_prefix": 369,
+  "authority": "<TAIRA_FAUCET_AUTHORITY_I105>",
+  "asset_definition_id": "6TEAJqbb8oEPmLncoNiMRbLEK6tw",
+  "amount": "25000"
 }
 ```
 
-`difficulty_bits` `0` ሲሆን የመለያ መታወቂያውን ብቻ ያስገቡ -
+ፖሊሲው ያልተፈረመ የማግኛ ውሂብ ነው። አውቶሜሽን እያንዳንዱን ምላሽ ከማመን ይልቅ የሚጠብቀውን ፈቃድ ያለው አካል፣ የንብረት ትርጉምና መጠን አስቀድሞ መወሰን አለበት። `prepare` ከሰጧቸው እሴቶች የሚለይ የተዘጋጀ ግብይት አይቀበልም።
+
+ጥያቄውን ያዘጋጁና ይላኩ:
 
 ```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{"account_id":"<TAIRA_I105_ACCOUNT_ID>"}' \
-  | tee ./taira-faucet-response.json \
-  | jq .
+export TAIRA_FEE_ASSET="$(
+  jq -er '.asset_definition_id' ./taira-faucet-policy.json
+)"
+
+iroha --config ./taira.client.toml --fee-payer authority \
+  taira account faucet prepare \
+  --journal ./taira-faucet \
+  --issuer "$(jq -er '.authority' ./taira-faucet-policy.json)" \
+  --asset-definition "$TAIRA_FEE_ASSET" \
+  --amount "$(jq -er '.amount' ./taira-faucet-policy.json)"
+
+iroha --config ./taira.client.toml \
+  taira account faucet submit --journal ./taira-faucet
 ```
 
-`difficulty_bits` ከ`0` ሲበልጥ እንቆቅልሹን ይፍቱ እና የመልህቅ ቁመቱን እና ምስጠራ ኖስ እሴትን ያካትቱ
-
-```bash
-curl -fsS https://taira.sora.org/v1/accounts/faucet \
-  -H 'Accept: application/json' \
-  -H 'content-type: application/json' \
-  -d '{
-    "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-    "pow_anchor_height": 741,
-    "pow_nonce_hex": "<NONCE_HEX>"
-  }' \
-  | tee ./taira-faucet-response.json \
-  | jq .
-```
-
-የእንቆቅልሽ ስልተ ቀመር የሚከተለው ነው-
-
-1. ፈተናውን እንደ SHA-256 ይገንቡ -
-   - የ `iroha:accounts:faucet:pow:v2`
-   - የ UTF-8 መለያ መታወቂያ
-   - `anchor_height` እንደ ቢግ-ኢንዲያን `u64`
-   - `anchor_block_hash_hex` እንደ ባይት ተፈትኗል
-   - `challenge_salt_hex` እንደ ባይት ዲኮድ ፣ ሲገኝ
-2. እንደ ትልቅ-ኢንዲያን ባለ 8-ባይት እሴቶች የተመሰጠሩ `u64` ምስጠራ ኖስ እሴቶችን ይሞክሩ።
-3. ለእያንዳንዱ ምስጠራ ኖስ እሴት፣ scryptን በሚከተለው ያሂዱ -
-   - የይለፍ ቃል ባለ 8-ባይት ምስጠራ NONCE እሴት
-   - ጨው የ 32 ባይት ፈተና
-   - `N = 2^scrypt_log_n`
-   - `r = scrypt_r`
-   - `p = scrypt_p`
-   - የውጤት ርዝመት 32 ባይት
-4. አሸናፊው ምስጠራ ኖስ እሴት ቢያንስ `difficulty_bits` ዜሮ ቢት የሚመራ የመጀመሪያው የክሪፕቶግራፊያዊ ዳይጀስት ነው።
-
-የቴስትኔት የገንዘብ ድጋፍ አገልግሎት ምላሽ በገንዘብ የተደገፈውን ንብረት እና ወረፋ ያለው ግብይት ምስጠራ ሃሽ ያካትታል -
-
-```json
-{
-  "account_id": "<TAIRA_I105_ACCOUNT_ID>",
-  "asset_definition_id": "<TAIRA_FEE_ASSET_DEFINITION_ID>",
-  "asset_id": "...",
-  "amount": "<FUNDED_AMOUNT>",
-  "tx_hash_hex": "...",
-  "status": "QUEUED"
-}
-```
-
-ምላሹ በአሁኑ ጊዜ በ HTTP `202 Accepted` ተመልሷል። የእሱ `asset_definition_id` በሕዝብ ቴስትኔት የገንዘብ ድጋፍ አገልግሎት የሚደገፈው የአሁኑ Taira ክፍያ ንብረት ነው። የምሳሌ መታወቂያ ከመቅዳት ይልቅ ከምላሹ ያግኙት። የቴስትኔት የገንዘብ ድጋፍ አገልግሎት `tx_hash_hex` እና `status: "QUEUED"` ሲመለስ ጥያቄውን ተቀብሏል።
+`prepare` የጆርናል ማውጫውን በግል መዳረሻ ይፈጥራል፣ ያለውንም መተካት አይቀበልም፤ ስለዚህ ለእያንዳንዱ ጥያቄ አዲስ ማውጫ ይጠቀሙ። ፋውሴቱ ክፍት የሙከራ አውታረ መረብ አገልግሎት ነው። `submit` `Pending` ካለ፣ ጊዜው ካለቀ ወይም `502` ካገኘ ሌላ ጥያቄ ከማዘጋጀት ይልቅ በዚያው ውቅርና ጆርናል `taira account faucet resume` ያስኪዱ። ያረጀ የሥራ ማስረጃ መልሕቅ `prepare`ን ያከሽፋል፤ በአዲስ የጆርናል ማውጫ እንደገና ያዘጋጁ።
 
 ከዚያ የራስዎን ክፍያ የሚከፍሉ ግብይቶችን ከማስገባትዎ በፊት ለተደገፈው ንብረት ድምጽ ይስጡ -
 
 ```bash
-TAIRA_FEE_ASSET_DEFINITION=$(
-  jq -er '.asset_definition_id' ./taira-faucet-response.json
-)
-
 iroha --config ./taira.client.toml ledger asset get \
-  --definition "$TAIRA_FEE_ASSET_DEFINITION" \
+  --definition "$TAIRA_FEE_ASSET" \
   --account <TAIRA_I105_ACCOUNT_ID>
 ```
 
-የቴስትኔት የገንዘብ ድጋፍ አገልግሎት የይገባኛል ጥያቄ ተቀባይነት ካገኘ ነገር ግን መለያው ወይም ንብረቱ እስካሁን ካልታየ፣ ግብይቱ አሁንም በይፋዊ የቴስትኔት ወረፋ ሂደት ውስጥ ወደ ኋላ ቀርቷል። የመጻፍ ክዋኔዎችን ከመላክዎ በፊት ይጠብቁ እና ለማንበብ እንደገና ይሞክሩ።
-
-ለመሮጥ ዝግጁ የሆነ ቀጥተኛ API ቼክ፣ ይህንን እንደ `taira_faucet_claim.py` ያስቀምጡ እና Taira I105 መለያ መታወቂያውን ያስተላልፉ -
-
-```python
-#!/usr/bin/env python3
-import hashlib
-import json
-import sys
-import urllib.request
-
-
-def has_leading_zero_bits(digest: bytes, bits: int) -> bool:
-    full, rem = divmod(bits, 8)
-    if digest[:full] != b"\0" * full:
-        return False
-    return rem == 0 or digest[full] >> (8 - rem) == 0
-
-
-root = "https://taira.sora.org"
-account_id = sys.argv[1]
-
-puzzle_request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet/puzzle",
-    headers={"Accept": "application/json"},
-)
-
-with urllib.request.urlopen(puzzle_request) as res:
-    puzzle = json.load(res)
-
-claim = {"account_id": account_id}
-difficulty = int(puzzle["difficulty_bits"])
-
-if difficulty > 0:
-    challenge = hashlib.sha256()
-    challenge.update(b"iroha:accounts:faucet:pow:v2")
-    challenge.update(account_id.encode())
-    challenge.update(int(puzzle["anchor_height"]).to_bytes(8, "big"))
-    challenge.update(bytes.fromhex(puzzle["anchor_block_hash_hex"]))
-    if puzzle.get("challenge_salt_hex"):
-        challenge.update(bytes.fromhex(puzzle["challenge_salt_hex"]))
-
-    n = 1 << int(puzzle["scrypt_log_n"])
-    r = int(puzzle["scrypt_r"])
-    p = int(puzzle["scrypt_p"])
-    salt = challenge.digest()
-
-    for nonce in range(1_000_000):
-        nonce_bytes = nonce.to_bytes(8, "big")
-        digest = hashlib.scrypt(nonce_bytes, salt=salt, n=n, r=r, p=p, dklen=32)
-        if has_leading_zero_bits(digest, difficulty):
-            claim["pow_anchor_height"] = puzzle["anchor_height"]
-            claim["pow_nonce_hex"] = nonce_bytes.hex()
-            break
-    else:
-        raise SystemExit("faucet nonce not found")
-
-request = urllib.request.Request(
-    f"{root}/v1/accounts/faucet",
-    data=json.dumps(claim).encode(),
-    headers={"Accept": "application/json", "content-type": "application/json"},
-    method="POST",
-)
-
-with urllib.request.urlopen(request) as res:
-    print(json.dumps(json.load(res), indent=2))
-```
+ጥያቄው ከተተገበረ ግን ንብረቱ ገና ካልታየ ሁኔታን የሚቀይሩ ክዋኔዎችን ከመላክዎ በፊት ይጠብቁና ንባቡን እንደገና ይሞክሩ።
 
 የገንዘብ አገልግሎቱ ለ Taira ሙከራ መረብ ገንዘብ ብቻ ነው። በ Minamoto ፍሰቶች ውስጥ የሙከራ XOR፣ የገንዘብ አገልግሎት መለያዎች ወይም የ Taira የቅድመ-ማስጠንቀቂያ ፈራሚዎችን አይጠቀሙ።
 
 ## 5. የ Minamoto የደንበኛ ውቅር ይፍጠሩ {#_5-create-a-minamoto-client-config}
+
+Minamotoን ከመጠቀምዎ በፊት የዋናውን አውታረ መረብ አገልግሎት አድራሻ ከኦፕሬተሩ ጋር ያረጋግጡ፤ የTLS ምስክር ወረቀቱ ከአስተናጋጁ ስም ጋር መዛመዱንም ይፈትሹ።
 
 ለ Minamoto የተለየ የቁልፍ ጥንድ ይጠቀሙ። ለዋና መረብ Taira ቁልፎችን እንደገና አይጠቀሙ።
 
@@ -561,10 +406,11 @@ with urllib.request.urlopen(request) as res:
 
 ```toml
 chain = "00000000-0000-0000-0000-000000000753"
+# The exact `network_id` from https://minamoto.sora.org/v1/accounts/capabilities
+network_id = "<MINAMOTO_NETWORK_ID>"
 torii_url = "https://minamoto.sora.org/"
 
 [account]
-domain = "wonderland.universal"
 profile = "minamoto"
 public_key = "<ED25519_PUBLIC_KEY_HEX>"
 private_key = "<ED25519_PRIVATE_KEY_HEX>"
@@ -575,7 +421,7 @@ status_timeout_ms = 15000
 nonce = false
 ```
 
-ከፍተኛው ደረጃ `chain` የአሁኑ Nexus የዋና መረብ ሰንሰለት መታወቂያ ነው። `[account].profile = "minamoto"` የ Minamoto I105 ሰንሰለት መለያን ይመርጣል; የ API የመጨረሻ ነጥብ አስተናጋጅ ስም እና የሰንሰለት መታወቂያ በተዘዋዋሪ አይመርጡትም።
+በላይኛው ደረጃ ያለው `chain` የአሁኑ የSORA Nexus ዋና አውታረ መረብ ሰንሰለት ID ነው፣ `network_id` ደግሞ ትክክለኛው የMinamoto አውታረ መረብ ማንነት ነው፤ ከመጀመሪያው የተፈረመ ክዋኔ በፊት ከcapabilities መንገድ ያንብቡት። `[account].profile = "minamoto"` የMinamoto I105 የሰንሰለት መለያያን ይመርጣል፤ የመገናኛ ነጥቡ አስተናጋጅ ስምና የሰንሰለት ID በስውር አይመርጡትም።
 
 የ Minamoto የህዝብ ቁልፍን ከዋና መረብ ቅድመ ቅጥያ ጋር ወደ ነጠላ ፕሮቶኮል-ስታንዳርድ I105 መለያ መታወቂያ ይለውጡ
 
@@ -586,10 +432,10 @@ iroha tools address convert --profile minamoto <ED25519_PUBLIC_KEY_HEX>
 መለያው በዋና መረብ የመሳፈሪያ ወይም የአስተዳደር ፍሰት በኩል እስኪቀርብ እና እስኪደገፍ ድረስ የተነበበ ጎን ቼኮችን ብቻ ያሂዱ -
 
 ```bash
-iroha --config ./minamoto.client.toml --output-format text ops sumeragi status
+iroha --config ./minamoto.client.toml ledger domain list --limit 5
 ```
 
-የ Taira የቴስትኔት የገንዘብ ድጋፍ አገልግሎትን ወይም በ Minamoto ላይ የካናሪ ረዳት አያሂዱ።
+የTaira ፋውሴት ወይም መሠረታዊ ሙከራ ትዕዛዞችን በMinamoto ላይ አያስኪዱ።
 
 ## 6. የ Minamoto መለያን በ XOR ይደግፉ {#_6-fund-a-minamoto-account-with-xor}
 
@@ -599,9 +445,9 @@ Minamoto ክፍያዎች የሚከፈሉት በምርት XOR ነው፣ እና Mi
 
 Taira XOR የ Minamoto ክፍያዎችን አይከፍልም። የሙከራ መረብ ቀሪ ሂሳቦችና የገንዘብ ጥያቄዎች ወደ Minamoto አይተላለፉም።
 
-## 7. አሁን ባለው የውሂብ ቦታ ውስጥ ይስሩ {#_7-work-inside-an-existing-dataspace}
+## 7. በነባር የውሂብ ቦታ ውስጥ ይሥሩ {#_7-work-inside-an-existing-dataspace}
 
-በዳታ ቦታ ውስጥ ላሉ የብሎክቼይን መዝገብ ዕቃዎች ሙሉ ብቁ የሆኑ የጎራ ስሞችን ይጠቀሙ። ለምሳሌ፣ በይፋዊ ዳታ ቦታ ውስጥ ያለ የፕሮጀክት ጎራ የሚከተሉትን መጠቀም አለበት -
+በውሂብ ቦታ ውስጥ ለሚኖሩ የመዝገብ ነገሮች ሙሉ የተገለጹ የጎራ ስሞችን ይጠቀሙ። ለምሳሌ በክፍት የውሂብ ቦታ ያለ የፕሮጀክት ጎራ ይህን መጠቀም አለበት:
 
 ```text
 apps.universal
@@ -615,8 +461,7 @@ iroha --config ./taira.client.toml \
   --intent-file ./taira-apps-domain.intent.json \
   --plan-file ./taira-apps-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-apps-domain.plan.json
 ```
 
@@ -628,11 +473,11 @@ iroha --config ./minamoto.client.toml \
   --intent-file ./minamoto-apps-domain.intent.json \
   --plan-file ./minamoto-apps-domain.plan.json
 
-iroha --config ./minamoto.client.toml \
+iroha --config ./minamoto.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./minamoto-apps-domain.plan.json
 ```
 
-የመለያ ተለዋጭ ስሞች ተመሳሳይ የውሂብ ቦታ ቅጥያ ይጠቀማሉ -
+የመለያ ተለዋጭ ስሞች ያንኑ የውሂብ ቦታ ድህረ ቅጥያ ይጠቀማሉ:
 
 ```text
 alice@apps.universal
@@ -641,9 +486,9 @@ alice@universal
 
 ጥብቅ የመለያ መስኮች አሁንም ነጠላ ፕሮቶኮል-መደበኛ I105 መለያ መታወቂያዎችን ይጠቀማሉ። ተለዋጭ ስሞችን ወደ ነጠላ ፕሮቶኮል-መደበኛ መለያ መታወቂያዎች የሚፈቱ በሰው ሊነበቡ የሚችሉ ማሰሪያዎች አድርገው ይያዙ።
 
-## 8. አዲስ የውሂብ ቦታ ያቅርቡ {#_8-provision-a-new-dataspace}
+## 8. አዲስ የውሂብ ቦታ ያቋቁሙ {#_8-provision-a-new-dataspace}
 
-አዲስ የውሂብ ቦታ ኦፕሬተር እና የአስተዳደር ለውጥ ነው። የህዝብ Torii API የመጨረሻ ነጥብ ትራፊክን ወደ ተዋቀሩ የውሂብ ቦታዎች ማዞር ይችላል፣ ነገር ግን ያልታወቁ የውሂብ ቦታ ተለዋጭ ስሞችን ውድቅ ያደርጋል።
+አዲስ የውሂብ ቦታ የኦፕሬተርና የአስተዳደር ለውጥ ነው። ክፍቱ የTorii መገናኛ ነጥብ ትራፊክን ወደ ተዋቀሩ የውሂብ ቦታዎች ሊመራ ይችላል፣ ያልታወቁ የውሂብ ቦታ ተለዋጭ ስሞችን ግን ይከለክላል።
 
 ለውጥ ከማዘጋጀትዎ በፊት የአሁኑን የቀጥታ ካታሎግ ይያዙ
 
@@ -659,15 +504,15 @@ curl -fsS https://taira.sora.org/status \
 iroha --config ./operator.client.toml app nexus lane-report --summary
 ```
 
-የማስፈጸሚያ ሌይን መታወቂያ፣ የውሂብ ቦታ መታወቂያ፣ አረጋጋጭ ስብስብ፣ የስህተት መቻቻል፣ ቴክኒካል ማኒፌስት፣ የማስተላለፊያ ህጎች እና የአሠራር ባለቤት አንድ ላይ ካልተገመገሙ በስተቀር አዲስ ተለዋጭ ስም አያስተዋውቁ። የሚፈለጉት ፈቃዶች ያለው መደበኛ የተጠቃሚ መለያ ጎራ እና SNS የሊዝ ውል አሁን ባለው የውሂብ ቦታ ውስጥ በተለዋጭ ስም እቅድ አውጪ ማግኘት ይችላል። አዲስ የህዝብ የውሂብ ቦታ በደህና ማከል አይችልም።
+የመስመር ID፣ የውሂብ ቦታ ID፣ የአረጋጋጭ ስብስብ፣ የብልሽት መቋቋም አቅም፣ ማኒፌስት፣ የማዘዋወር ደንቦችና የአሠራር ባለቤት በጋራ ካልተገመገሙ አዲስ ተለዋጭ ስም ወደ ሥራ አያስገቡ። የሚፈለጉት ፈቃዶች ያሉት መደበኛ የተጠቃሚ መለያ በነባር የውሂብ ቦታ ውስጥ ጎራና የSNS ኪራዩን በተለዋጭ ስም ዕቅድ አውጪው ሊያገኝ ይችላል፤ አዲስ ክፍት የውሂብ ቦታ በደህና መጨመር አይችልም።
 
-ለግል ወይም ድርጅታዊ የውሂብ ቦታ፣ የካታሎግ ለውጥን ያዘጋጁ -
+ለግል ወይም ለድርጅት የውሂብ ቦታ እነዚህን የያዘ የካታሎግ ለውጥ ያዘጋጁ:
 
-- ልዩ የውሂብ ቦታ ተለዋጭ ስም እና ቁጥር `id`
+- ልዩ የውሂብ ቦታ ተለዋጭ ስም እና ቁጥራዊ `id`
 - ተዛማጅ የማስፈጸሚያ መስመር ግቤት ወይም ነባር የማስፈጸሚያ መስመር ምደባ
-- የውሂብ ቦታ `fault_tolerance`
+- የውሂብ ቦታው `fault_tolerance`
 - ወደዚያ መሄድ ያለባቸውን መመሪያዎች ወይም የመለያ ወሰን የማስተላለፊያ ህጎች
-- የውሂብ ቦታው UAID ችሎታዎችን ሲያጋልጥ የጠፈር ማውጫ ቴክኒካል ማኒፌስት ወይም ተመጣጣኝ የልቀት ማስረጃ
+- የውሂብ ቦታው የUAID ችሎታዎችን ሲያቀርብ የSpace Directory ማኒፌስት ወይም ተመጣጣኝ የማሰራጨት ማስረጃ
 - ለአረጋጋጭ፣ ተገዢነት፣ የፋይናንስ ግብይት ማጠናቀቂያ እና የክትትል ፖሊሲ የአስተዳደር ማፅደቅ
 
 ሊገመገም የሚችል የውቅረት ቁርጥራጭ ይህን ይመስላል
@@ -684,23 +529,23 @@ metadata = {}
 [[nexus.dataspace_catalog]]
 alias = "payments"
 id = 20
-description = "Payments dataspace"
+description = "Payments data space"
 fault_tolerance = 1
 
 [[nexus.routing_policy.rules]]
 lane = 5
 dataspace = "payments"
 [nexus.routing_policy.rules.matcher]
-account_prefix = "payments."
-description = "Route payments domains to the payments dataspace"
+instruction = "transfer::asset"
+description = "Route asset transfers to the payments data space"
 ```
 
 የኦፕሬተር ተቀባይነት እነዚህን በሮች ማካተት አለበት -
 
-- `iroha3d --sora --config <config.toml> --trace-config` በተፈታው የኖድ ውቅር ላይ ያልፋል
+- `iroha3d --sora --config <config.toml> --check-config` በተፈታው የኖድ ውቅር ላይ ያልፋል
 - የተፈጠረው ወይም የተገመገመው ቴክኒካል ማኒፌስት በምስጠራ ሃሽዎች እና ፊርማዎች ተቀምጧል
 - የየመጀመሪያ የስራ ሙከራዎች ከማንኛውም Minamoto ማስተዋወቂያ በፊት Taira ያልፋሉ
-- የድህረ-ለውጥ `/status` ካታሎግ የታሰበውን የማስፈጸሚያ መስመር እና የውሂብ ቦታ ያሳያል
+- ከለውጡ በኋላ ያለው `/status` ካታሎግ የታሰበውን መስመርና የውሂብ ቦታ ያሳያል
 - `iroha app nexus lane-report --summary` የጠፉ አስፈላጊ ቴክኒካዊ መግለጫዎችን ሪፖርት አያደርግም
 
 ```bash
@@ -709,12 +554,12 @@ curl -fsS https://taira.sora.org/status \
   | jq '.teu_lane_commit[] | select(.dataspace_alias == "payments")'
 ```
 
-ተመሳሳዩን የውሂብ ቦታ ወደ Minamoto ያስተዋውቁት Taira ማሰማራት፣ የየመጀመሪያ የስራ ሙከራዎች፣ የክትትል እና የአስተዳደር ማስረጃዎች ከተጠናቀቁ በኋላ ብቻ ነው።
+ያንኑ የውሂብ ቦታ ወደ Minamoto የሚያስተላልፉት የTaira ስምሪት፣ መሠረታዊ ሙከራዎች፣ ክትትልና የአስተዳደር ማስረጃ ከተጠናቀቁ በኋላ ብቻ ነው።
 
 ## ተዛማጅ ገጾች {#related-pages}
 
 - [Iroha 3 ን ጫን](/am/get-started/install-iroha.md)
 - [Iroha 3 በ CLI በኩል ያሂዱ](/am/get-started/operate-iroha-via-cli.md)
-- [ለግል የውሂብ ቦታ የስፖንሰር ክፍያዎች](/am/get-started/private-dataspace-fee-sponsor.md)
-- [Torii API የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
+- [ለግል የውሂብ ቦታ ክፍያዎችን በስፖንሰር ይሸፍኑ](/am/get-started/private-dataspace-fee-sponsor.md)
+- [Torii የመጨረሻ ነጥቦች](/am/reference/torii-endpoints.md)
 - [የብሎክቼይን ጀነሲስ ማጣቀሻ](/am/reference/genesis.md)

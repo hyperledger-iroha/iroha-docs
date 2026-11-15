@@ -1,9 +1,9 @@
 ---
 translation_locale: dz
 translation_source: /help/integration-issues.md
-translation_source_hash: c5f169e423806fa2a9e9d198971588d1aa0b199a28d64e8b089b9f81727550a5
+translation_source_hash: 2146a236adb3a3b3b896a1992daeecf6713988183ca53e4412f9b616ed2e9085
 translation_status: machine-validated
-translation_engine: human-reviewed
+translation_engine: human-reviewed+reviewed-delta
 ---
 # མཐུན་རྐྱེན་གྱི་དཀའ་ངལ་སེལ་འཐུ་འབད་ {#troubleshooting-integration-issues}
 
@@ -20,7 +20,7 @@ torii_url = "http://127.0.0.1:8080/"
 CLI བརྟག་དཔྱད་ཚུ་གི་དོན་ལུ་ ཌའི་ལོག་གི་ཡིག་སྣོད་དེ་ གསལ་ཏོག་ཏོ་སྦེ་གཏང་དགོ།
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ཡོངས་འབྲེལ་ཆ་རོགས་འདི་ Docker ཡང་ན་ Kubernetes ནང་ལུ་གཡོག་བཀོལ་བ་ཅིན་ མཁོ་སྤྲོད་འབད་མི་བྱ་རིམ་ལས་ ལྷོད་ཚུགས་པའི་ ཧོསིཊི་ཡང་ན་ ཞབས་ཏོག་ཁ་བྱང་འདི་ལག་ལེན་འཐབ། `127.0.0.1` ནང་ཁུལ་གྱི་དོས་ཁང་འདི་གཙོ་བོ་འཕྲུལ་ཆས་མིན།
@@ -44,12 +44,12 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=5' \
 - མཁོ་སྤྲོད་འབད་མི་རིམ་སྒྲིག་ནང་ རྩིས་ཐོའི་མི་མང་ལྡེ་མིག་འདི་ མིང་རྟགས་བཀོད་ནིའི་དོན་ལུ་ལག་ལེན་འཐབ་མི་ སྒེར་གྱི་ལྡེ་མིག་དང་མཐུན་སྒྲིག་མི་འབད།
 - རྩིས་ཐོ་འདི་ རིགས་མཚན་ནང་ ཡང་ན་ སྔོན་འགྲོའི་ཚོང་འབྲེལ་གྱི་ཐོག་ལས་ ཐོ་བཀོད་འབད་དེ་མེདཔ་ཨིན།
 - རྩིས་ཐོ་འདི་ལུ་ རན་ཊའིམ་བདེན་བཤད་འབད་མི་གིས་དགོ་པའི་གནང་བ་ཊོ་ཀེན་ཡང་ན་འགན་ཁུར་མེདཔ་ཨིན།
-- མངའ་ཁོངས་ཨའི་ཌི་ཅིག་ལུ་ `domain.dataspace` བཟུམ་གྱི་ གནད་སྡུད་ས་སྟོང་ཤེས་ཚད་མེདཔ་ཨིན།
+- མངའ་ཁོངས་ངོ་རྟགས་ཅིག་ནང་ `domain.dataspace` བཟུམ་གྱི་ གནད་སྡུད་ས་སྟོང་ཁྱད་པར་བཀོད་མི་མེདཔ།
 
 ཁྱོད་ཀྱིས་ `--output-format text` ལག་ལེན་འཐབ་སྟེ་ CLI བཀའ་རྒྱ་ཚུ་ཉམས་བཅོས་འབད་བའི་སྐབས་ལུ་ འཛོལ་བ་ཚུ་ལྷག་ནི་ལུ་འཇམ་ཏོང་ཏོ་ཨིན།
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml --output-format text ledger transaction ping --msg "hello"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority --output-format text tx ping --msg "hello"
 ```
 
 ## ཞིབ་འཚོལ་འདི་གིས་ གྲུབ་འབྲས་སྟོང་པ་ཅིག་ བཏང་ཨིན། {#queries-return-empty-results}
@@ -64,7 +64,7 @@ cargo run --bin iroha -- --config ./localnet/client.toml --output-format text le
 མངའ་ཁོངས་ཞིབ་དཔྱད་ཚུ་གི་དོན་ལུ་ འདྲི་དཔྱད་རྒྱ་ཆེ་ཤོས་ལས་འགོ་བཙུགས།
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ## འབྱུང་རྐྱེན་དང་མ་མཐུན་པའི་རྒྱུན་ཚུ་ དུས་ཡུན་རིངམོ་སྦེ་མཚམས་འཇོག་འབདཝ་ཨིན། {#event-or-block-streams-stop-early}

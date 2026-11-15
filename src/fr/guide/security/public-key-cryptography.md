@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Cryptographie à clé publique {#public-key-cryptography}
 
 La cryptographie à clé publique utilise une clé publique et une clé privée liées. La clé publique peut être partagée. La clé privée doit rester sous le contrôle du principal autorisé. La sécurité dépend de l'utilisation d'un algorithme pris en charge, de la génération de clés avec un aléa sécurisé et de la protection de la clé privée.

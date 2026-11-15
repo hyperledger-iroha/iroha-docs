@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /help/deployment-issues.md
-translation_source_hash: c220e127bc8081c9b457dfd67101aa44fb80d79c461cc7a7eda99584d74a8f19
+translation_source_hash: 44460ce5888ad3939f2b7d5dbec01d9d5b1ecf22c502dadb6c6f2b9da280e747
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Solução de Problemas de Implantação {#troubleshooting-deployment-issues}
 
 Esta seção oferece dicas de solução de problemas para implantações Iroha 3. Se o problema que você está enfrentando não estiver descrito aqui, entre em contato conosco via [Telegram](https://t.me/hyperledgeriroha).
@@ -15,7 +14,7 @@ Esta seção oferece dicas de solução de problemas para implantações Iroha 3
 Para implantações locais e de teste, prefira artefatos gerados por Kagami em vez de arquivos de pares de rede escritos à mão:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 O diretório gerado contém configurações dos pares de rede, material de gênese, scripts de inicialização e um README para a linha de compilação da Iroha 3.
@@ -39,13 +38,9 @@ cargo run -p irohad --bin iroha3d -- --config ./config.toml --trace-config
 
 ## Docker e Docker Compose {#docker-and-compose}
 
-Gere Compose a partir da saída localnet atual Kagami para que os argumentos de linha de comando e os arquivos de configuração correspondam ao código verificado:
+Siga o guia [Iniciar Iroha 3](/pt/get-started/launch-iroha.md) para compilar e executar quatro validadores no Docker com binários da mesma revisão.
 
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
+No diretório do kit, execute `python3 poc.py logs` para consultar os logs dos validadores.
 
 Se uma implantação do compose iniciar e depois travar, inspecione os logs do daemon para:
 
@@ -54,7 +49,7 @@ Se uma implantação do compose iniciar e depois travar, inspecione os logs do d
 - endereços anunciados P2P que só funcionam dentro da rede do contêiner
 - reutilização de volume local após regenerar o génesis da blockchain
 
-Ao testar um novo bloco gênese de blockchain, remova os antigos volumes Kura antes de reiniciar o conjunto. Manter o armazenamento de blocos antigo com um novo bloco gênese da blockchain fará com que a reprodução falhe.
+Um novo bloco gênese exige que o armazenamento do nó esteja vazio. Use `python3 poc.py down` e `python3 poc.py up` para reiniciar a mesma rede. Mantenha `state/` junto aos quatro volumes do Docker.
 
 ## Kubernetes {#kubernetes}
 
@@ -67,9 +62,9 @@ Para o Kubernetes, trate cada validador como infraestrutura com estado:
 
 Se um pod reiniciar repetidamente, compare a configuração gerada no pod com a prevista em [`peer.template.toml`](/pt/reference/peer-config/index.md#template) e verifique se o par está reproduzindo dados antigos do Kura.
 
-## Perfil de Sora {#sora-profile}
+## Perfil da SORA Nexus {#sora-profile}
 
-Implantações privadas ou locais Iroha 3 que utilizam Nexus, SoraFS ou fluxos de múltiplas faixas devem iniciar o daemon padrão com o perfil Sora habilitado:
+Em uma implantação privada ou local de Iroha 3 que use SORA Nexus, SoraFS ou várias vias, inicie o serviço padrão com esse perfil ativado.
 
 ```bash
 cargo run -p irohad --bin iroha3d -- --config ./config.toml --sora

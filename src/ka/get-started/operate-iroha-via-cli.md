@@ -1,26 +1,24 @@
 ---
 translation_locale: ka
 translation_source: /get-started/operate-iroha-via-cli.md
-translation_source_hash: c070c86b715b36079a7b6a47de2e31144187d7ebc6309f294a346be61a372660
+translation_source_hash: 40714a6cd124d4b0342b0f6ecf321f286e714c0e236afd6fd7834c0cf0ad1165
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # ოპერირება Iroha 3-ის მეშვეობით CLI {#operate-iroha-3-via-cli}
 
-`iroha` ბინარი არის ბრძანების ხაზის კლიენტი Iroha 3. გამოიყენეთ იგი, რათა გამოკითხოთ ბლოკჩეინის რეესტრი- ის მდგომარეობა, წარადგინოთ ტრანზაქციები და შეამოწმოთ ოპერატორის ბოლო წერტილები API.
+`iroha` ბინარული ფაილი Iroha 3-ის ბრძანების ხაზის კლიენტია. გამოიყენეთ რეესტრის მდგომარეობის მოსათხოვნად, ტრანზაქციების გასაგზავნად და ოპერატორის ბოლო წერტილების შესამოწმებლად.
 
 ## 1. წინასწარი პირობები {#_1-prerequisites}
 
-პირველ რიგში დაიწყეთ ადგილობრივი ქსელი:
-
-- [გაშვება Iroha 3](./launch-iroha.md)
-
-ქვემოთ მოცემული მაგალითები წარმოადგენს კლიენტის კონფიგურაციას, რომელიც შეიქმნა [გაშვება Iroha 3](./launch-iroha.md) -ში შექმნილი ლოკალურ ქსელიდან:
+Iroha-ს წყაროს კოდის ასლიდან, დოკუმენტირებულ რევიზიაზე, დააგენერირეთ და გაუშვით ოთხკვანძიანი ლოკალური ქსელი:
 
 ```bash
-./localnet/client.toml
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
+./localnet/start.sh
 ```
+
+ქვემოთ მოცემული მაგალითები იყენებს მის მიერ გენერირებულ კლიენტის კონფიგურაციას, `./localnet/client.toml`.
 
 ## 2. ძირითადი CLI კონფიგურაცია {#_2-basic-cli-setup}
 
@@ -32,16 +30,22 @@ cargo run --bin iroha -- --config ./localnet/client.toml --help
 
 CLI არის ორგანიზებული შემდეგ უმაღლეს დონეზე მმართველი ჯგუფებად:
 
-- `account` ანგარიშზე ორიენტირებული გასწორებისათვის
-- `tx` ტრანზაქციის დონეზე დამხმარე პირებისთვის
+- `account` — ანგარიშების წასაკითხად და შესაცვლელად
+- `explorer` — საერთო ფილტრებისა და გვერდებად დაყოფის მქონე მიმომხილველის ნაკადებისთვის
+- `tx` — ტრანზაქციის მდგომარეობისა და დამხმარე ოპერაციებისთვის
 - `ledger` ბლოკჩეინის რეესტრზე კითხულობს და წერს
+- `trigger` — ტრიგერების წასაკითხად, ჩასაწერად და შესასრულებლად
 - `ops` ოპერატორის დიაგნოსტიკისთვის
 - `app` აპლიკაციისთვის API დამხმარეებისთვის
-- `contract` ხელშეკრულების განხორციელებისა და ტექნიკური ინვოკაციებისთვის.
+- `contract` — კონტრაქტის გამოძახებებისთვის, ხედებისა და ლოკალური გამართვისთვის; განათავსეთ `kagami contract deploy` ან `musubi deploy`-ით
 - `tools` დიაგნოსტიკური და დეველოპერული კომუნალური საშუალებებისათვის
-- `taira` Taira და Nexus ორიენტირებული სამუშაო პროცესებისათვის
+- `dataspace` — მონაცემთა სივრცის განსაზღვრების დასაგეგმად, გამოსაყენებლად და შესამოწმებლად
+- `taira` — Taira დიაგნოსტიკისა და ანგარიშის ჩართვისთვის
+- `offline` — ოფლაინ კოდირებისთვის, ანგარიშებისა და დიაგნოსტიკისთვის
+- `soracloud` — Soracloud აპლიკაციის პლატფორმის დამხმარე საშუალებებისთვის
+- `sccp` — SORA ჯაჭვთაშორისი პროტოკოლის წაკითხვის, გადარიცხვისა და მტკიცებულებებისთვის
 
-`ledger` ჯგუფში ასევე შედის დომენის სპეციფიკური ტრანზაქციების დამხმარეები, როგორიცაა `ledger transaction`.
+ტრანზაქციის გამგზავნ ყოველ ბრძანებას სჭირდება აშკარად მითითებული საკომისიოს გადამხდელი, მაგალითად `--fee-payer authority`; CLI ხელმოწერამდე ზუსტ საკომისიოს ითვლის.
 
 გამოიყენეთ `--output-format text` ოპერატორის მიერ ადამიანისათვის წაკითხული გამონადენი და `--machine` მკაცრი ავტომატიზაციის რეჟიმისთვის.
 
@@ -56,7 +60,7 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 ```
 
-საჯარო დომენების ჩამონათვალი `universal` მონაცემთა სივრცეში:
+ჩამოთვალეთ დომენები, რომლებიც ხილულია არაავთენტიფიცირებული მკითხველისთვის:
 
 ```bash
 curl -fsS 'https://taira.sora.org/v1/domains?limit=10' \
@@ -76,32 +80,30 @@ curl -fsS 'https://taira.sora.org/v1/assets/definitions?limit=10' \
 iroha taira doctor --public-root https://taira.sora.org --json
 ```
 
-`taira.client.toml` მხოლოდ ხელმოწერილი ბრძანებების გამოსაცდელად შექმენით. კონფიგურაციის, ტესტური მონეტების გამცემისა და კანარის ნაკადისთვის იხილეთ [SORA Nexus-ის მონაცემთა სივრცეებთან დაკავშირება](/ka/get-started/sora-nexus-dataspaces.md). სანამ გამცემი ანგარიშს საკომისიო აქტივით არ დააფინანსებს, Taira-ზე ჩაწერის ბრძანებები არ გაუშვათ.
+`taira.client.toml` შექმენით მხოლოდ მაშინ, როცა ხელმოწერილი ბრძანებების შესამოწმებლად მზად ხართ. კონფიგურაციის, სატესტო ტოკენების მიღებისა და საწყისი შემოწმების პროცესისთვის იხილეთ [SORA Nexus-ის მონაცემთა სივრცეებთან დაკავშირება](/ka/get-started/sora-nexus-dataspaces.md). Taira-ზე ჩაწერის ბრძანებები არ გაუშვათ, სანამ ანგარიში სატესტო გამცემი სერვისიდან საკომისიო აქტივით არ დაფინანსდება.
 
-ნებისმიერი საფასურის გადახდისას Taira CLI მაგალითისთვის, შეინახეთ ტესტური მონეტების გამცემის დამხმარე [ტესტნეტს XOR დაუკავშირდით Taira](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) როგორც `taira_faucet_claim.py`, შემდეგ კი მოითხოვეთ ტესტის ქსელი XOR ჯერ:
+Taira CLI-ის საკომისიოს მქონე ნებისმიერი მაგალითისთვის დააფინანსეთ ხელმომწერი გვერდზე [სატესტო XOR-ის მიღება Taira-ზე](/ka/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) აღწერილი მომზადების ეტაპიანი პროცესით, შემდეგ შეამოწმეთ ბალანსი:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-თუ ტესტური მონეტების გამცემის თავსატეხი ან სარჩელის მარშრუტი `502` დაბრუნდება, ელოდეთ და კიდევ ერთხელ შეეცადეთ. ეს არის საჯარო ტესტნეტის ხელმისაწვდომობის საკითხი, არ არის სიგნალი ანგარიშის გასაღებების რეგენერაციისათვის.
+თუ სატესტო ტოკენების გამცემი მარშრუტი `502`-ს აბრუნებს, მოიცადეთ და ხელახლა სცადეთ. ეს საჯარო სატესტო ქსელის ხელმისაწვდომობის პრობლემაა და არა ანგარიშის გასაღებების ხელახლა გენერირების მიზეზი.
 
-მას შემდეგ, რაც ბალანსი ჩანს, მიაწერეთ საფასურის აქტივის მეტადატატი და წერს:
+ბალანსის გამოჩენის შემდეგ ჩაწერები გაგზავნეთ `--fee-payer authority`-ით. CLI ხელმოწერამდე ზუსტ საკომისიოს Taira-ს საკომისიო აქტივში ითვლის:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "hello from faucet-funded taira"
+  --fee-payer authority \
+  tx ping --msg "hello from faucet-funded taira"
 ```
 
 ## 4. საბაზისო ბლოკჩეინის რეესტრი ბრძანებები {#_4-basic-ledger-commands}
@@ -109,7 +111,7 @@ iroha --config ./taira.client.toml \
 ჩამოთვალეთ ყველა დომენი:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./localnet/client.toml ledger domain list --all
 ```
 
 ჩვეულებრივი დომენის შექმნა იყენებს დეკლარაციულ ალიასი პლანერას; `ledger domain` ბრძანებას არ აქვს `register` ქვებრძანება. მომზადეთ ალიასური `AliasSetupPlanRequestV1` განზრახვა `docs.universal` თქვენი SDK ან ინბორდინგის სერვისით, შემდეგ დაგეგმეთ და გამოიყენეთ იგი:
@@ -120,16 +122,16 @@ cargo run --bin iroha -- --config ./localnet/client.toml \
   --intent-file ./docs-domain.intent.json \
   --plan-file ./docs-domain.plan.json
 
-cargo run --bin iroha -- --config ./localnet/client.toml \
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./docs-domain.plan.json
 ```
 
-განზრახვა ამაგრებს მონაცემთა სივრცე ID, კანონიკური მფლობელის ანგარიში, იჯარის ვადით და მიმდინარე საფასური-საკმაყოფილო ფასები დაცვა. დაგეგმავი ადასტურებს ცოცხალი მდგომარეობა და დაბრუნდება ზუსტი ატომური `EnsureAlias` გეგმა წარადგინოს. არ ხელით ასლი დაცვის მნიშვნელობები სხვა ქსელიდან.
+განზრახვა აფიქსირებს მონაცემთა სივრცის ID-ს, კანონიკურ მფლობელ ანგარიშს, იჯარის ვადასა და მიმდინარე ფასის შემოწმების პირობას. დამგეგმავი მოქმედ მდგომარეობას ამოწმებს და დასაგზავნ ზუსტ ატომურ `EnsureAlias` გეგმას აბრუნებს. შემოწმების პირობების მნიშვნელობები სხვა ქსელიდან ხელით არ გადმოიტანოთ.
 
 გადმოაგზავნეთ მარტივი პინგის ტრანზაქცია:
 
 ```bash
-cargo run --bin iroha -- --config ./localnet/client.toml ledger transaction ping --msg "hello from iroha"
+cargo run --bin iroha -- --config ./localnet/client.toml --fee-payer authority tx ping --msg "hello from iroha"
 ```
 
 წაიკითხეთ ბლოკი ახლახანს ან გამოიწერეთ ბლოკის მოვლენები:
@@ -141,10 +143,11 @@ cargo run --bin iroha -- --config ./localnet/client.toml ledger events block
 
 ## 5. ოპერატორის ბრძანებები {#_5-operator-commands}
 
-კონსენსუსის ოპერატორის ბრძანებებს სჭირდება ნებადართული შესრულების გარემოს გასაღები. შეინახეთ იგი `client.toml` და გადაიტანეთ ფაილი მხოლოდ მფლობელისთვის:
+კონსენსუსის ოპერატორის ბრძანებებს დაშვებულ სიაში შეტანილი, შესრულების დროის გასაღები სჭირდება. ის `client.toml`-ში არ შეინახოთ; მხოლოდ მფლობელისთვის ხელმისაწვდომი ფაილი აბსოლუტური გზით გადასცით:
 
 ```bash
-: "${OPERATOR_KEY_FILE:=./secrets/operator.key}"
+# The generated localnet writes its allow-listed operator key here.
+: "${OPERATOR_KEY_FILE:=$PWD/localnet/runtime/operator-signer.key}"
 
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
@@ -161,13 +164,13 @@ cargo run --bin iroha -- \
   --output-format text ops sumeragi diagnostics
 ```
 
-ყველაზე მაღალი და ჩაკეტილი კონსენსუსის კვორუმის სერტიფიკატები:
+დამტკიცებული კონსენსუსის არხები და ამ კვანძის ინსტანციის მდგომარეობა:
 
 ```bash
 cargo run --bin iroha -- \
   --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format text ops sumeragi qc
+  --output-format text ops sumeragi lanes
 ```
 
 ქსელზე კონსენსუსის პარამეტრები:
@@ -182,12 +185,12 @@ cargo run --bin iroha -- \
 ## 6. სად წავიდეთ შემდეგ? {#_6-where-to-go-next}
 
 - [SDK მასწავლებლები](/ka/guide/tutorials/)
-- [Torii API საბოლოო ნიშნები](/ka/reference/torii-endpoints.md)
+- [Torii ბოლო წერტილები](/ka/reference/torii-endpoints.md)
 - [Iroha ბინარებთან მუშაობა](/ka/reference/binaries.md)
-- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_cli/README.md)
+- [CLI README](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_cli/README.md)
 
-წყაროს კოდის სამუშაო ასლიდან Markdown დახმარების სრული სურათის თავიდან შესაქმნელად გაუშვით:
+კოდის სამუშაო ასლიდან სრული Markdown დახმარების ასლის დასაბეჭდად გაუშვით:
 
 ```bash
-cargo run -p iroha_cli --bin iroha -- tools markdown-help > crates/iroha_cli/CommandLineHelp.md
+cargo run -p iroha_cli --bin iroha -- tools markdown-help > iroha-cli-help.md
 ```

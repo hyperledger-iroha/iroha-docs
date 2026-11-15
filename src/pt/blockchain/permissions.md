@@ -1,11 +1,10 @@
 ---
 translation_locale: pt
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Permissões {#permissions}
 
 As contas precisam de tokens de permissão para várias ações em uma blockchain, por exemplo, para emitir ou queimar ativos.
@@ -73,14 +72,20 @@ Após a função ser registrada, Mouse pode concedê-la a Alice:
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Validadores de Permissão {#permission-validators}
 
-As permissões existem para que apenas contas com o token de permissão necessário possam executar uma ação protegida. O executor padrão verifica as permissões durante a execução de instruções, consultas e expressões.
+As permissões existem para que apenas contas com o token de permissão necessário possam executar uma ação protegida. O executor padrão verifica as permissões durante a execução de transações e instruções e durante a validação de consultas.
 
 A superfície padrão do validador está agrupada por área do livro-razão da blockchain:
 
@@ -89,7 +94,7 @@ A superfície padrão do validador está agrupada por área do livro-razão da b
 - ativos, NFTs, e cauções
 - gatilhos
 - funções e permissões
-- executor e ambiente de execução, provas, pontes e módulos SORA/Nexus
+- executor e ambiente de execução, provas, pontes e módulos SORA Nexus
 
 A lista exata de tokens é suportada pela fonte no [Referência de Tokens de Permissão](/pt/reference/permissions.md).
 
@@ -97,7 +102,7 @@ A lista exata de tokens é suportada pela fonte no [Referência de Tokens de Per
 
 As verificações de permissão são impostas pelo executor ativo. O executor padrão fornece os validadores de permissão integrados e definições de token, e uma rede pode mudar a política atualizando o executor que utiliza.
 
-Os validadores retornam um veredicto de validação. Um validador pode permitir uma operação, negá-la com um motivo ou pulá-la se a operação estiver fora do escopo desse validador. O juiz selecionado combina esses veredictos para decidir se a instrução, consulta ou expressão pode prosseguir.
+O executor permite uma operação ou a rejeita com um motivo `ValidationFail`. Uma instrução rejeitada faz com que sua transação seja rejeitada, e uma consulta rejeitada retorna o erro ao chamador.
 
 ## Consultas Suportadas {#supported-queries}
 

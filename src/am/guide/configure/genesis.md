@@ -1,16 +1,15 @@
 ---
 translation_locale: am
 translation_source: /guide/configure/genesis.md
-translation_source_hash: a6b8b2b02e0074e6c90d9aa9337af3e2496a02beb2f57f575dc0780014df04b2
+translation_source_hash: 2a4a43b6ac873cc0c860631e307e52b047ba6a08691bf3e4c5872cc22c81a0bd
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta+reviewed-first-release-source-amendment
 ---
-
 # blockchain ጀነሲስ {#genesis}
 
 Blockchain ጀነሲስ የመጀመሪያውን ሰንሰለት ሁኔታ ይገልጻል። ሊስተካከል የሚችል ምንጭ JSON ቴክኒካል ማኒፌስት ነው፣ እና Iroha 3 ኖድ የተፈረመ Norito የግብይት ፋይል ይጠቀማል።
 
-::: details ነባሪ blockchain ጀነሲስ ቴክኒካዊ አንጸባራቂ
+::: details ነባሪ የጀነሲስ ምንጭ አብነት (defaults/genesis.template.json)
 
 <<< @/snippets/genesis.json
 
@@ -18,25 +17,26 @@ Blockchain ጀነሲስ የመጀመሪያውን ሰንሰለት ሁኔታ ይ�
 
 ## ፋይሎች {#files}
 
-የላይኛው ማከማቻ ነባሪ ቴክኒካል ማኒፌስት በ`defaults/genesis.json` ይልካል። Kagami የመነጩ አውታረ መረቦች የራሳቸውን ቴክኒካል ማኒፌስት ይጽፋሉ እና የተፈረሙ ግብይቶችን ወደ ውፅዓት ማውጫ ይጽፋሉ -
+ዋናው ማከማቻ በ`defaults/genesis.template.json` መደበኛ የምንጭ አብነት ያቀርባል። አብነት ያልተሟላ ነው፤ `kagami genesis materialize` ወደ ማኒፌስት እስኪቀይረው ድረስ ሊረጋገጥ፣ ሊፈረም ወይም በኖድ ሊጠቀም አይችልም። Kagami የፈጠራቸው አውታረ መረቦች የራሳቸውን ማኒፌስትና የተፈረመ ግብይት በውጤት ማውጫው ይጽፋሉ:
 
 ```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
+cargo run --bin kagami -- localnet generate --peers 4 --out-dir ./localnet
 ```
 
 በዚያ ማውጫ ውስጥ ያለው የመነጨው `README.md` ትክክለኛውን ፋይሎች ይመዘግባል እና ለተመረጠው መገለጫ ትዕዛዞችን ያስጀምራል።
 
 ## የአውታረ መረብ አቻ ውቅር {#peer-configuration}
 
-የአውታረ መረብ እኩዮች በ`config.toml` `[genesis]` ክፍል ውስጥ የተፈረመውን የብሎክቼይን ጀነሲስ ግብይት ይጠቁማሉ -
+አቻዎች በ`config.toml` ውስጥ ባለው `[genesis]` ክፍል የተፈረመውን የgenesis ግብይት ይጠቅሳሉ፣ የሚጠበቀውን ሃሽም በተለየ ፋይል ያስቀምጣሉ:
 
 ```toml
 [genesis]
 file = "./genesis.signed.nrt"
 public_key = "ed0120..."
+expected_hash_file = "./genesis.expected_hash"
 ```
 
-የአውታረ መረቡ እኩዮች ሁሉ በተፈረመው የጀነሲስ ግብይትና በጀነሲስ ይፋዊ ቁልፍ ላይ መስማማት አለባቸው።
+በአውታረ መረቡ ያሉ ሁሉም አቻዎች በተፈረመው የgenesis ግብይትና በgenesis ይፋዊ ቁልፍ መስማማት አለባቸው። እያንዳንዱ ጅምር፣ አዲስም ሆነ ዳግም ጅምር፣ የሚጠበቀውን ሃሽ ይፈልጋል፦ ከ`expected_hash_file` ወይም ከውስጠ-መስመር `expected_hash` በትክክል አንዱን ያዋቅሩ። `kagami genesis sign --expected-hash-out` ፋይሉን ይጽፋል።
 
 ## የብሎክቼይን ጀነሲስ መፈረም {#signing-genesis}
 
@@ -46,13 +46,14 @@ public_key = "ed0120..."
 cargo run --bin kagami -- genesis validate ./genesis.json
 cargo run --bin kagami -- genesis sign ./genesis.json \
   --private-key-file "$GENESIS_PRIVATE_KEY_FILE" \
-  --out-file ./genesis.signed.nrt
+  --out-file ./genesis.signed.nrt \
+  --expected-hash-out ./genesis.expected_hash
 ```
 
 `GENESIS_PRIVATE_KEY_FILE` በባለቤት የተያዘ ሁነታ-`0600`፣ ነጠላ-አገናኝ መደበኛ ፋይል አንድ ነጠላ ፕሮቶኮል-ደረጃውን የጠበቀ የግል-ቁልፍ መልቲሃሽ እና የመጨረሻውን አዲስ መስመር የያዘ መሆን አለበት።. Kagami ምሳሌያዊ አገናኞችን አይቀበልም እና በትእዛዝ መስመሩ ላይ ጥሬ የብሎክቼይን ጀነሲስ የግል ቁልፍን በጭራሽ አይቀበልም።.
 
-ለNPoS ወይም Nexus መገለጫዎች፣ በተፈጠረው መገለጫ የሚፈለገውን ቶፖሎጂ እና BLS የይዞታ ማረጋገጫዎችን ያካትቱ። Kagami `localnet`፣ `wizard` እና የመገለጫ ማመንጨት ትዕዛዞች እነዚያን ዝርዝሮች በራስ-ሰር ያስተናግዳሉ።
+እያንዳንዱ የተፈረመ genesis፣ በፈቃድ ላይ የተመሠረተም ሆነ NPoS፣ ለእያንዳንዱ አረጋጋጭ የBLS ባለቤትነት ማረጋገጫ ያለው ትክክለኛ የ`3f + 1` አረጋጋጭ አወቃቀር ማካተት አለበት። የKagami `localnet generate`፣ `wizard` እና `sora-network generate` ትዕዛዞች እነዚህን ዝርዝሮች በራሳቸው ያስተናግዳሉ።
 
 ## የብሎክቼይን ጀነሲስ እንደገና መፈጸም {#recommitting-genesis}
 
-የኔትወርክ አቻ የብሎክቼይን ጀነሲስን የሚያጠናቅቀው ማከማቻው ባዶ ሲሆን ብቻ ነው። አዲስ የብሎክቼይን ጀነሲስ በሚጣል የአካባቢ አውታረመረብ ውስጥ ለመፈተሽ የአውታረ መረብ እኩዮቹን ያቁሙ ፣ የመነጨውን የሁኔታ ማውጫቸውን ያስወግዱ እና ከአዲሱ የተፈረመ የብሎክቼይን ጀነሲስ ይጀምሩ። እያንዳንዱ አረጋጋጭ ተመሳሳይ ፍልሰትን ካላስተባብረ በስተቀር የብሎክቼይን ጀነሲስን በሚሮጥ አውታረመረብ ላይ አይተኩ።
+አዲስ አውታረ መረብ ከራሱ የተፈረመ ጄኔሲስ ይጀምራል። በጊዜያዊ የአካባቢ አውታረ መረብ ውስጥ ሌላ ጄኔሲስ ለመፈተሽ፣ አቻዎቹን ያቁሙ፣ የፈጠሩትን የሁኔታ ማውጫ ይሰርዙ እና ከአዲሱ የተፈረመ ጄኔሲስ ያስጀምሩ። እየሠራ ያለ አውታረ መረብ እንደ ማሻሻያ ዘዴ ጄኔሲሱን ፈጽሞ መተካት የለበትም። የፕሮቶኮል ትርጓሜዎችን ለመለወጥ በአስተዳደር ደንቦች የሚመሩ የምርጫ ሽግግሮች እና ለተመረጡት ትርጓሜዎችና ግዴታዎች የብቃት ማረጋገጫ ያስፈልጋሉ።

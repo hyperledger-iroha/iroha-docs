@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /guide/best-practices/operations.md
-translation_source_hash: de9e8129467b1111a58cee07acf43382d6cf3c352211a1511659ced422b46778
+translation_source_hash: 44df6cc409b8434e5b45286e02500036bb9eda80251f4b6a50205bf4a3de3968
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-first-release-source-amendment
 ---
-
 # Operatsiyalar {#operations}
 
 Operatsion tayyorlik — tasdiqlovchi xostlariga favqulodda kirishga tayanmasdan tarmoqni kuzatish, o‘zgartirish, zaxiralash va tiklay olishdir.
@@ -38,7 +37,7 @@ Buni [Operatsion Xavfsizlik](/uz/guide/security/operational-security.md) ko‘ri
 ## Oʻzgarishlarni boshqarish {#change-management}
 
 - Zanjir ustidagi sozlamalar o‘zgarishlarini ko‘rib chiqishni, oldindan o‘qishni, ruxsat berishni va o‘zgarishdan keyingi tekshiruvni talab qiladigan tranzaksiyalar sifatida ko‘ring.
-- Tarmoq hamkasbi dasturiy ta'minotini yangilashni moslik rejasi va qaytarish qarori nuqtasi bilan amalga oshiring.
+- Tugun dasturining chiqarilishini o‘rnatishdan oldin u tarmoqning haqiqiyligi tasdiqlangan bajarilish muhiti tanlovini va ishga tushish nazorat nuqtasidan keyingi tarixni qo‘llashini tekshiring. Protokol ta’riflarini o‘zgartirish uchun yaroqliligi tekshirilgan, boshqaruv qoidalariga muvofiq tanlov o‘tishi kerak; faollashtirilganidan keyin tiklash uchun mos kelmaydigan eski binar versiyaga qaytish emas, tuzatuvchi o‘tish ishlatiladi.
 - Agar ko'chirish rejasi buni talab qilmasa, bir xil texnik xizmat oynasida tarmoq tengdoshlarining topologiyasini, konsensus vaqtini va ilova ish yukini o'zgartirishdan saqlaning.
 - Operatsion o‘zgarishlar uchun tranzaksiya kriptografik xeshlarini va blok balandliklarini yozib qo‘ying.
 

@@ -1,11 +1,10 @@
 ---
 translation_locale: uz
 translation_source: /help/configuration-issues.md
-translation_source_hash: 4b96a4f740203aace2e8c091ed89156146ba117e23eff1d08f3bbb01de92f24a
+translation_source_hash: cfd86e847651e71d40e8857c0531f9721ef94ea3c65bd80b6f6951081488f39d
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Konfiguratsiya muammolarini bartaraf etish {#troubleshooting-configuration-issues}
 
 Ushbu bo‘lim Iroha 3 konfiguratsiyasi uchun nosozliklarni bartaraf etish bo‘yicha maslahatlarni taqdim etadi. Avvalo [tugmalarni tekshirdi](./overview.md#check-the-keys) qilganingizga ishonch hosil qiling, chunki bu Iroha dagi muammolarning eng keng tarqalgan manbasidir.
@@ -16,27 +15,9 @@ Agar siz duch kelayotgan muammo bu yerda tavsiflanmagan bo'lsa, biz bilan [Teleg
 
 Iroha’ning Docker Compose versiyasidan foydalanganda tugun konteynerlaridan biri `Failed to deserialize raw genesis block` xatosi bilan ishga tushmasligi mumkin. Bu odatda tugun, imzolangan boshlang‘ich tranzaksiya va yaratilgan konfiguratsiya turli Iroha tahrirlari yoki profillaridan olinganini anglatadi.
 
-Muammoni quyidagi qadamlar bilan tekshiring:
+Validator jurnallarini koʻrish uchun toʻplam katalogida `python3 poc.py logs` buyrugʻini bajaring. Docker’da bir xil manba versiyasidan yigʻilgan bajariladigan fayllar bilan toʻrtta validatorni ishga tushirish uchun [Ishga tushurish Iroha 3](/uz/get-started/launch-iroha.md) qoʻllanmasiga amal qiling.
 
-1. Joriy konteynerlarni `docker ps` bilan tekshiring. Yaratilgan profilga qarab, odatda `hyperledger/iroha:dev` konteynerlari ko‘rinadi. Standart Docker Compose profilida to‘rtta tugun konteyneri bor, ammo yaratilgan `docker-compose.yml` boshqacha bo‘lishi mumkin.
-
-2. Loglarni tekshiring va `Failed to deserialize raw genesis block` xatosini qidiring. Agar siz Iroha ni daemon rejimida `docker compose up -d` bilan boshlagan bo'lsangiz, `docker compose logs` buyrug'idan foydalaning.
-
-Bunday muammoni aniqlash usuli Iroha dan foydalanishga bog‘liq. Agar bu oddiy demo bo‘lsa va siz tarmoq tengdosh ma’lumotlarini saqlashingiz shart bo‘lmasa, mos keluvchi localnet yoki Docker Compose paketini Kagami bilan qayta yarating:
-
-```bash
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml
-```
-
-So‘ng eski konteyner holatini olib tashlang va qayta ishlab chiqarilgan `genesis.signed.nrt`, tarmoq tengdosh `config.toml` fayllaridan va `client.toml` dan boshlang.
-
-Agar siz Iroha instansiya maʼlumotlarini tiklamoqchi boʻlsangiz, quyidagilarni bajaring:
-
-1. Birinchi (muvaffaqiyatsiz) tarmoq tengdoshidan ma’lumotlarni nusxalaydigan ikkinchi Iroha tarmoq tengdoshi bilan ulaning.
-2. Yangi tarmoq hamkasbining birinchi tarmoq hamkasbi bilan ma’lumotlarni sinxronlashtirishini kuting.
-3. Yangi tarmoq hamkasbini faol qoldiring.
-4. Faqat muvofiqlashtirilgan migratsiya doirasida birinchi tarmoq ishtirokchisining blockchain boshlang‘ich va konfiguratsiya fayllarini yangilash.
+Oʻsha tarmoqni qayta ishga tushirish uchun avval `python3 poc.py down`, keyin `python3 poc.py up` buyrugʻini bajaring. `state/` katalogini tarmoqning toʻrtta Docker jildi bilan birga saqlang.
 
 ::: info
 
@@ -50,7 +31,7 @@ Agar siz [mijoz konfiguratsiyasi](/uz/guide/configure/client-configuration.md)ga
 
 Agar ilgari multi-hash bilan ishlamagan bo'lsangiz, o'ng tomondagi qism kalit baytlarining olti o'nlik emasligi (har bir uchun ikki belgi) deb hisoblash tabiiydir bayt), balki baytlar ASCII (yoki UTF-8) sifatida kodlangan bo‘lib, va `public_key` va `private_key` instantsiyalarda string literalga `from_hex` ni chaqiring.
 
-Shuningdek, satr literalida `PrivateKey::try_from_str` chaqirish faqat to‘g‘ri kalitni beradi, deb taxmin qilish tabiiydir. Shunday qilib, agar siz kalitdagi bitlar sonini noto‘g‘ri topsangiz, masalan 32 bayt o‘rniga 64, bu xato xabarini keltirib chiqaradi.
+Shuningdek, satr literalini `str::parse::<PrivateKey>()` bilan tahlil qilish faqat to‘g‘ri kalitni beradi, deb taxmin qilish tabiiydir. Shunday qilib, agar siz kalitdagi bitlar sonini noto‘g‘ri ko‘rsatsangiz, masalan 32 bayt o‘rniga 64, bu xato xabarini keltirib chiqaradi, deb kutish mumkin.
 
 Ikkala taxmin ham noto‘g‘ri. Afsuski, xato xabarlari aynan shu turdagi nosozlikni aniqlashda yordam bermaydi.
 
@@ -58,7 +39,7 @@ Qanday tuzatish: `hex_literal` ni ishlating. Bu shuningdek, xunuk belgilar ketma
 
 ::: warning
 
-Hatto `try_from_str` ijrosi ham berilgan satrning haqiqiy `PrivateKey` ekanligini tekshira olmaydi va agar bo'lmasa, ogohlantira olmaydi.
+Hatto `FromStr` ijrosi ham berilgan satrning haqiqiy `PrivateKey` ekanligini tekshira olmaydi va agar bo'lmasa, ogohlantira olmaydi.
 
 U ba'zi aniq xatolarni ushlaydi, masalan, agar satr noto'g'ri belgi o'z ichiga olsa. Biroq, biz ko'p kalit formatlarini qo'llab-quvvatlashni maqsad qilganimiz uchun, u boshqa biror narsani qilolmaydi. Shuningdek, u kalit berilgan hisob uchun to'g'ri shaxsiy kalit ekanligini aytolmaydi, agar siz ko'rsatma yubormasangiz.
 

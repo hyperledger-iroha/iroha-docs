@@ -1,20 +1,21 @@
 ---
 translation_locale: ru
 translation_source: /get-started/install-iroha.md
-translation_source_hash: 613e81510c9de1bf341e545521fc27fa6a5e145ea3bbaab41664e95199ffbf35
+translation_source_hash: b2ba22db6a25e3b67cf18dc6959f95f57bd861b232b1d4a9d881bbe3cdf7844a
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Установите Iroha 3 {#install-iroha-3}
 
 На этой странице рассматривается текущий процесс установки инструментальной цепочки и бинарных файлов Iroha 3 с использованием исходного рабочего пространства `hyperledger-iroha/iroha`.
+
+Для установки непосредственно на хост следуйте приведённым ниже инструкциям по Rust. Чтобы запустить четыре валидатора с помощью Docker, начните с раздела [Запуск Iroha 3](/ru/get-started/launch-iroha.md).
 
 ## 1. Требования {#_1-prerequisites}
 
 Сначала установите это:
 
-- [rustup](https://www.rust-lang.org/tools/install), поэтому закреплённая `rust-toolchain.toml` цепочка инструментов (`1.93.1`) устанавливается автоматически
+- [rustup](https://www.rust-lang.org/tools/install), поэтому закреплённая `rust-toolchain.toml` цепочка инструментов (`1.99.1`) устанавливается автоматически
 - `git`
 - при желании, Docker и Docker Compose для локального быстрого запуска с несколькими узлами
 
@@ -64,7 +65,8 @@ cargo run --bin kagami -- --help
 
 Текущий поток локальной сети с поддержкой исходного кода генерируется Kagami. Он записывает конфигурации сетевых узлов, артефакты генезиса блокчейна, конфигурацию клиента, вспомогательные скрипты и необязательный файл Compose, который соответствует проверенному коду:
 
-- `kagami localnet` для скриптов локальных сетевых пиров
+- `kagami localnet up` для управляемой локальной сети, которую Kagami запускает и контролирует
+- `kagami localnet generate` для создания скриптов запуска нативных локальных узлов
 - `kagami docker` для Docker Compose, сгенерированный из каталога localnet
 
 Продолжить с [Запуск Iroha 3](/ru/get-started/launch-iroha.md).

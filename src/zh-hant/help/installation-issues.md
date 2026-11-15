@@ -5,7 +5,6 @@ translation_source_hash: 1a2519123edc5224e720e23ef3e2bc2a7b4dba38ef87af49216c31c
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # 解決安裝問題 {#troubleshooting-installation-issues}
 
 本節提供 Iroha 3 安裝的故障解決技巧. 如果您遇到的問題沒有在這裡描述,請透過 [電報](https://t.me/hyperledgeriroha)聯絡我們.
@@ -147,7 +146,7 @@ $ rustup toolchain install stable
 
 確保在您的家庭目錄中安裝了 `pip`.要做到這一點,執行`whereis pip`並檢查是否有 `/home/username/.local/bin/pip` 在路徑中.如果沒有,請更新 shell 的 `PATH`變數.
 
-如果問題持續下去,請聯絡我們 [ ](/zh-hant/help/)並報告輸出.
+如果問題仍然存在，請[聯絡我們](/zh-hant/help/)並提供指令輸出。
 
 ```
 python --version

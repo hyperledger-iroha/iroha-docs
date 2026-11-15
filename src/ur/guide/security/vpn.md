@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # مجازی نجی نیٹ ورکس {#virtual-private-networks}
 
 ایک <abbr title="Virtual Private Network">VPN</abbr> نیٹ ورک کنٹرول ہے جو محدود کرتا ہے کہ کون Iroha خدمات تک پہنچ سکتا ہے۔ یہ نجی اور کنسورشیم کی تعیناتی کے لئے سب سے زیادہ مفید ہے جہاں تصدیق کنندہ ، ایپلیکیشن بیک اینڈس ، اور آپریٹرز کو کھلی انٹرنیٹ راستوں کی بجائے نجی پتے پر بات چیت کرنی چاہئے۔

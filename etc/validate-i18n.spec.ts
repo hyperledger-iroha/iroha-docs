@@ -792,7 +792,11 @@ describe('i18n validation', () => {
       'Транзакцияны блок зерттеушісінен оқыңыз.',
       'blockchain explorer rendered as a researcher',
     ],
-    ['Use the generated invoice lot ID.', 'Жасалған шот-фактура топ ID-сін пайдаланыңыз.', 'RWA lot rendered as a generic group'],
+    [
+      'Use the generated invoice lot ID.',
+      'Жасалған шот-фактура топ ID-сін пайдаланыңыз.',
+      'RWA lot rendered as a generic group',
+    ],
     [
       'Record which authority may revoke the key.',
       'Қай принцип кілтті кері қайтара алатынын жазыңыз.',
@@ -1358,6 +1362,47 @@ describe('i18n validation', () => {
     },
   )
 
+  test.each([
+    {
+      locale: portugueseLocale,
+      heading: 'Taxas',
+      localized: 'A cotação lista as isenções de solicitações.',
+      valid: true,
+    },
+    {
+      locale: portugueseLocale,
+      heading: 'Taxas',
+      localized: 'A citação lista as isenções de solicitações.',
+      valid: false,
+    },
+    {
+      locale: testLocale,
+      heading: 'Frais',
+      localized: 'Le devis énumère les exemptions de sollicitations.',
+      valid: true,
+    },
+    {
+      locale: testLocale,
+      heading: 'Frais',
+      localized: 'La citation énumère les exemptions de sollicitations.',
+      valid: false,
+    },
+  ])('checks quote-word boundaries in $locale.key: $localized', async ({ locale, heading, localized, valid }) => {
+    const { sourceRoot, hash } = await fixture('# Fees\n\nThe quote lists claim exemptions.\n')
+    await mkdir(path.join(sourceRoot, locale.path, 'guide'), { recursive: true })
+    await writeFile(
+      path.join(sourceRoot, locale.path, 'guide', 'index.md'),
+      `---\ntranslation_locale: ${locale.key}\ntranslation_source: /guide/index.md\ntranslation_source_hash: ${hash}\ntranslation_status: machine-validated\n---\n# ${heading} {#fees}\n\n${localized}\n`,
+    )
+    const errors = await validateI18n({ sourceRoot, locales: [locale] })
+    if (valid) expect(errors).toEqual([])
+    else {
+      expect(errors).toContain(
+        `${locale.path}/guide/index.md: prose unit 2 contains semantic false friend: fee quote rendered as a literary quotation`,
+      )
+    }
+  })
+
   test('allows a correct Chinese fee quote beside a key reference', async () => {
     const english =
       '# Transactions\n\nThe CLI prepares verifying-key references and submits an ordinary quoted, signed transaction.\n'
@@ -1456,6 +1501,46 @@ describe('i18n validation', () => {
     expect(await validateI18n({ sourceRoot, locales: [japaneseLocale] })).toContain(
       'ja/guide/index.md: prose unit 2 contains semantic false friend: technical commit rendered as an obligation',
     )
+  })
+
+  test.each([
+    [
+      'Public lanes certify transaction batches.',
+      '公開処刑レーンはトランザクションのバッチを認証する。',
+      'software execution rendered as capital punishment',
+    ],
+    [
+      'The software executes instructions.',
+      'ソフトウェアは命令を処刑する。',
+      'software execution rendered as capital punishment',
+    ],
+    [
+      'Each lane incarnation has a fixed committee.',
+      '各レーンの化身には固定された委員会がある。',
+      'protocol incarnation rendered as a spiritual embodiment or rebirth',
+    ],
+  ])('rejects Japanese protocol false friends in %s', async (source, target, finding) => {
+    const { sourceRoot, hash } = await fixture(`# Protocol\n\n${source}\n`)
+    await mkdir(path.join(sourceRoot, 'ja', 'guide'), { recursive: true })
+    await writeFile(
+      path.join(sourceRoot, 'ja', 'guide', 'index.md'),
+      `---\ntranslation_locale: ja\ntranslation_source: /guide/index.md\ntranslation_source_hash: ${hash}\ntranslation_status: machine-validated\n---\n# プロトコル {#protocol}\n\n${target}\n`,
+    )
+    expect(await validateI18n({ sourceRoot, locales: [japaneseLocale] })).toContain(
+      `ja/guide/index.md: prose unit 2 contains semantic false friend: ${finding}`,
+    )
+  })
+
+  test('accepts Japanese execution and lane generation terminology without spiritual or punishment senses', async () => {
+    const { sourceRoot, hash } = await fixture(
+      '# Protocol\n\nEach lane incarnation certifies batches; the software executes instructions.\n',
+    )
+    await mkdir(path.join(sourceRoot, 'ja', 'guide'), { recursive: true })
+    await writeFile(
+      path.join(sourceRoot, 'ja', 'guide', 'index.md'),
+      `---\ntranslation_locale: ja\ntranslation_source: /guide/index.md\ntranslation_source_hash: ${hash}\ntranslation_status: machine-validated\n---\n# プロトコル {#protocol}\n\nレーンの各世代はバッチを認証し、ソフトウェアは命令を実行する。\n`,
+    )
+    expect(await validateI18n({ sourceRoot, locales: [japaneseLocale] })).toEqual([])
   })
 
   test('does not confuse Russian optional wording with an obligation', async () => {
@@ -1853,7 +1938,8 @@ describe('i18n validation', () => {
   })
 
   test('validates translated home-page frontmatter against its aligned source field', async () => {
-    const english = '---\nlayout: home\nfeatures:\n  - title: Reference\n    details: Consult the current binary and blockchain genesis reference pages\n---\n\n# Home\n'
+    const english =
+      '---\nlayout: home\nfeatures:\n  - title: Reference\n    details: Consult the current binary and blockchain genesis reference pages\n---\n\n# Home\n'
     const { sourceRoot, hash } = await fixture(english, 'index.md')
     await mkdir(path.join(sourceRoot, 'am'), { recursive: true })
     await writeFile(
@@ -1910,8 +1996,7 @@ describe('i18n validation', () => {
   })
 
   test('rejects inflected Amharic node, payload, and protocol-body false friends', async () => {
-    const english =
-      '# Recovery\n\nThe node receives payload chunks and recovers the canonical body.\n'
+    const english = '# Recovery\n\nThe node receives payload chunks and recovers the canonical body.\n'
     const { sourceRoot, hash } = await fixture(english)
     await mkdir(path.join(sourceRoot, 'am', 'guide'), { recursive: true })
     await writeFile(

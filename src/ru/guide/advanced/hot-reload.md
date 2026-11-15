@@ -1,14 +1,13 @@
 ---
 translation_locale: ru
 translation_source: /guide/advanced/hot-reload.md
-translation_source_hash: 96505bdba910beb902c399004f5cd24f5e5b0773f01df9cdcfdb49d019830d03
+translation_source_hash: 6edc0185196ab8e77ef8552723e05bf37cca1a088da86e2a43d441d58e779c11
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # Горячая перезагрузка Iroha в контейнере Docker {#hot-reload-iroha-in-a-docker-container}
 
-Используйте горячую перезагрузку только для локальной отладки. Для обычной локальной разработки предпочтительнее пересобирать образ или перезапускать сгенерированный стек Docker Compose из свежего набора Kagami.
+Используйте горячую перезагрузку только для локальной отладки. В руководстве [Запуск Iroha 3](/ru/get-started/launch-iroha.md) описано, как собрать и запустить четыре валидатора в Docker, используя двоичные файлы одной ревизии.
 
 ## Заменить сетевого узла Binary {#replace-the-peer-binary}
 
@@ -25,21 +24,12 @@ docker cp target/x86_64-unknown-linux-musl/release/iroha3d <container>:/usr/loca
 docker restart <container>
 ```
 
-Используйте `docker ps`, чтобы подтвердить имя контейнера. В сгенерированном стеке контейнеры сетевых пиров определяются с помощью `./docker-compose.yml`.
+Найдите контейнер с помощью `docker ps`. Перед заменой демона проверьте путь к нему в вашем образе.
 
 ## Повторно зафиксировать генезис блокчейна в одноразовой сети {#recommit-genesis-in-a-disposable-network}
 
-Сетевой узел завершает генезис блокчейна только тогда, когда его хранилище пусто. Для одноразовой сети Docker остановите стек, удалите сгенерированное состояние, регенерируйте или замените подписанный пакет генезиса блокчейна и запустите снова:
-
-```bash
-docker compose -f ./docker-compose.yml down
-cargo run --bin kagami -- localnet --peers 4 --out-dir ./localnet
-cargo run --bin kagami -- docker --peers 4 --config-dir ./localnet --image hyperledger/iroha:dev --out-file ./docker-compose.yml --force
-docker compose -f ./docker-compose.yml up
-```
-
-Не заменяйте генезис блокчейна в сети, состояние которой должно быть сохранено.
+Для нового генезис-блока требуется пустое хранилище узла. Чтобы перезапустить ту же сеть, выполните `python3 poc.py down` и `python3 poc.py up`. Храните `state/` вместе с четырьмя томами Docker этой сети.
 
 ## Использовать пользовательскую конфигурацию {#use-custom-configuration}
 
-Текущая конфигурация сетевого узла: TOML. Выполните привязку монтирования или скопируйте сгенерированные файлы `config.toml`, `genesis.signed.nrt` и соответствующие ключевые файлы в пути контейнера, ожидаемые изображение, затем перезапустите сетевого узла. Держите сгенерированные файлы вместе; смешивание файлов из разных запусков Kagami может привести к сбоям десериализации или консенсуса.
+Текущая конфигурация сетевого узла: TOML. Kagami записывает по одному `peerN.toml` на каждый валидатор вместе с `genesis.signed.nrt`, `genesis.public_key` и `genesis.expected_hash`; файл Compose, созданный `kagami docker`, монтирует их в контейнер. Сгенерируйте его заново вместо ручного копирования файлов, затем перезапустите сетевой узел. Держите сгенерированные файлы вместе; смешивание файлов из разных запусков Kagami может привести к сбоям десериализации или консенсуса.

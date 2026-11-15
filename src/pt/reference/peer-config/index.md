@@ -5,7 +5,6 @@ translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Configurando Iroha {#configuring-iroha}
 
 A configuração local dos pares de rede é definida em arquivos TOML. Ela difere da configuração na cadeia, alterada por instruções [`SetParameter`](/pt/blockchain/instructions.md#setparameter). O comportamento de produção deve estar representado em um arquivo de configuração ou em um parâmetro na cadeia; variáveis de ambiente não funcionam como sinalizadores de recursos.

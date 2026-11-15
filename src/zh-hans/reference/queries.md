@@ -1,11 +1,10 @@
 ---
 translation_locale: zh-hans
 translation_source: /reference/queries.md
-translation_source_hash: 88dba1142d7b6a452a5f56d56640ceef47a52ca28e296d6d0ee5992b9005c3bb
+translation_source_hash: baa9726c7ce7d14b8dd17e77447ef72233ca9ed779367d9a190aa8dde7da41ac
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # 查询 {#queries}
 
 Iroha 查询可以读取账本状态而不对其进行更改。当前数据模型公开两种主要查询形式：
@@ -57,7 +56,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 | 查询 | 用途 |
 | --- | --- |
 | `FindAssets` | 列出资产余额。 |
-| `FindAssetsDefinitions` | 列出资产定义。 |
+| `FindAssetDefinitions` | 列出资产定义。 |
 | `FindAssetsByAccountId` | 列出某账户持有的资产。 |
 | `FindAssetById` | 按 `AssetId` 查找一个资产余额。 |
 | `FindAssetDefinitionById` | 按 ID 查找一个资产定义。 |
@@ -67,7 +66,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 
 ## 托管与证明记录 {#escrow-and-proof-records}
 
-托管查询用于检查[原生资产托管 ISIs](/zh-hans/blockchain/escrow.md)创建的记录，包括市场托管、通用资产锁定和匿名托管记录。
+托管查询用于检查[原生资产托管 ISIs](/zh-hans/blockchain/escrow.md)创建的记录，包括市场托管、通用资产锁定和条件托管。
 
 | 查询 | 用途 |
 | --- | --- |
@@ -76,29 +75,23 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 | `FindAssetEscrowsBySeller` | 按卖方列出资产托管记录。 |
 | `FindAssetEscrowsByBuyer` | 按买方列出资产托管记录。 |
 | `FindAssetEscrowsByStatus` | 按状态列出资产托管记录。 |
-| `FindAnonymousAssetEscrows` | 列出匿名资产托管记录。 |
-| `FindAnonymousAssetEscrowById` | 按 ID 查找一个匿名资产托管记录。 |
-| `FindAnonymousAssetEscrowsBySeller` | 按卖方列出匿名托管记录。 |
-| `FindAnonymousAssetEscrowsByBuyer` | 按买方列出匿名托管记录。 |
-| `FindAnonymousAssetEscrowsByStatus` | 按状态列出匿名托管记录。 |
 | `FindProofRecordById` | 按 ID 查找一个证明记录。 |
 | `FindProofRecords` | 列出证明记录。 |
 | `FindProofRecordsByBackend` | 列出某证明后端的证明记录。 |
 | `FindProofRecordsByStatus` | 按状态列出证明记录。 |
 
-## Nexus、数据可用性与包 {#nexus-data-availability-and-packages}
+## SORA Nexus、数据可用性与包 {#nexus-data-availability-and-packages}
 
 | 查询 | 用途 |
 | --- | --- |
-| `FindRepoAgreements` | 列出存储在链上的仓库协议。 |
+| `FindRepoAgreements` | 列出存储在链上的回购和逆回购协议。 |
 | `FindTwitterBindingByHash` | 按哈希解析 Twitter 绑定。 |
 | `FindDaPinIntentByTicket` | 按票据查找数据可用性固定意图。 |
 | `FindDaPinIntentByManifest` | 按清单引用查找固定意图。 |
 | `FindDaPinIntentByAlias` | 按别名查找固定意图。 |
 | `FindDaPinIntentByLaneEpochSequence` | 按通道、纪元和序号查找固定意图。 |
-| `FindLaneRelayEnvelopeByRef` | 查找经过验证的通道中继封装。 |
 | `FindSorafsProviderOwner` | 解析 SoraFS 提供商的所有者。 |
-| `FindDataspaceNameOwnerById` | 解析数据空间名称的所有者。 |
+| `FindDataspaceNameOwnerById` | 解析数据空间别名当前有效的 SNS 所有者。 |
 |`FindMusubiExactPackageV1`|阅读一个精确的包装记录及其当前修订.|
 |`FindMusubiExactReleaseV1`|阅读一个准确的释放快照.|
 |`FindMusubiProviderBundleAttestationV1`|阅读一个供应商的档案包证书.|
@@ -118,7 +111,7 @@ Iroha 查询可以读取账本状态而不对其进行更改。当前数据模�
 | `FindActiveTriggerIds` | 列出活动触发器 IDs。 |
 | `FindTriggers` | 列出触发器。 |
 | `FindTriggerById` | 按 ID 查找一个触发器。 |
-| `FindContractManifestByCodeHash` | 按代码哈希查找智能合约清单。 |
+| `FindContractManifestByArtifactId` | 按数据空间工件 ID 查找智能合约清单。 |
 | `FindTransactions` | 列出已完成共识提交的交易。 |
 | `FindBlocks` | 列出区块。 |
 | `FindBlockHeaders` | 列出区块头。 |

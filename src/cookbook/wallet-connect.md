@@ -3,34 +3,39 @@
 ## Outcome
 
 Create an Iroha Connect session in a browser, obtain cryptographic approval
-for one I105 wallet identity, ask that wallet to sign Torii's exact
-asset-transfer scaffold, submit the detached signature, and wait for
+for one I105 wallet identity, ask that wallet to sign Torii's exact unsigned
+asset-transfer payload, submit the detached signature, and wait for
 Applied finality.
 
 ## Prerequisites
 
 - A browser application using `@iroha/iroha-js` and HTTPS.
-- A wallet that implements Iroha Connect v1 and controls a single-key
-  Ed25519 I105 account.
-- The current Taira chain ID and chain discriminant, the wallet's enrolled
-  lower-case Ed25519 public-key hex, an owned transferable asset, and a
-  canonical I105 destination.
-- The fee asset ID returned by the current Taira faucet response. The
+- A wallet that implements Iroha Connect v1, controls a single-key Ed25519
+  I105 account, and grants the `sign_transaction` and `sign_raw` methods.
+- The current Taira network ID, the wallet's enrolled lower-case Ed25519
+  public-key hex, an owned transferable asset, and a canonical I105
+  destination.
+- The fee asset ID published by the current Taira faucet policy. The
   example verifies the live fee quote against that ID; it never embeds a
   copied asset identifier.
-- Connect must be enabled on the selected Torii. Check before showing a QR
-  or deep link:
+- Connect must be enabled on the selected Torii. Read the network ID from
+  the public account capabilities before showing a QR or deep link:
 
 ```bash
 curl -fsS \
   -H 'Accept: application/json' \
-  https://taira.sora.org/v1/connect/status |
-  jq -e '{enabled, sessions_active} | select(.enabled == true)'
+  https://taira.sora.org/v1/accounts/capabilities |
+  jq -er '.network_id'
 ```
 
-If Taira reports Connect disabled or returns `404`/`503`, use a generated
-local network with Connect enabled. An ordinary asset transfer also
-requires the wallet to own enough transferable quantity and fee balance.
+Torii publishes no anonymous Connect status: `GET /v1/connect/status`
+reports one session to its management token, and the aggregate status
+requires an operator signature. When a node disables Connect,
+`registerConnectSession` fails with HTTP `503` and code `connect_disabled`
+(`404` when the build omits Connect), and the example shows no QR code or
+deep link; use a generated local network with Connect enabled. An ordinary
+asset transfer also requires the wallet to own enough transferable quantity
+and fee balance.
 
 ## Steps
 
@@ -49,18 +54,24 @@ referrers, or crash reports.
 ### 2. Create, approve, sign, and submit
 
 This browser module accepts concrete values from your application state.
-The first `POST /v1/assets/transfer` omits signing fields and returns a
-quoted, versioned transaction scaffold. The second adds only the wallet's
-public key and detached signature to the same transfer request.
+The first `POST /v1/assets/transfer` omits signing fields and returns the
+quoted fee intent and the unsigned transaction payload. The second adds only
+the wallet's public key and detached signature to the same transfer request.
+Torii requires a canonical account signature on both requests, so the module
+has the wallet sign them through `createConnectCanonicalRequestAuth`.
 
 ```js
-import { AccountAddress } from '@iroha/iroha-js/address'
+import { buildCanonicalJsonRequest } from '@iroha/iroha-js/canonical-request'
 import {
+  NetworkId,
   createConnectAppSession,
+  createConnectCanonicalRequestAuth,
   createConnectSessionPreview,
   deleteConnectSession,
   registerConnectSession,
+  toHex,
 } from '@iroha/iroha-js/connect-browser'
+import { ToriiBrowserClient } from '@iroha/iroha-js/torii-browser'
 
 const baseUrl = 'https://taira.sora.org'
 const wait = (milliseconds) =>
@@ -71,14 +82,21 @@ const decodeBase64 = (value) =>
 const encodeBase64 = (bytes) =>
   btoa(Array.from(bytes, (byte) => String.fromCharCode(byte)).join(''))
 
-async function postJson(path, body) {
-  const response = await fetch(`${baseUrl}${path}`, {
+async function postSignedJson(path, body, auth, networkId) {
+  const request = await buildCanonicalJsonRequest({
+    nativeIdentity: auth.nativeIdentity,
+    accountId: auth.authAccountId,
+    networkId,
     method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
+    path,
+    baseUrl,
+    body,
+    sign: auth.sign,
+  })
+  const response = await fetch(`${baseUrl}${path}`, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
   })
   if (!response.ok) {
     throw new Error(
@@ -95,6 +113,10 @@ async function waitForApplied(transactionHash) {
     const response = await fetch(url, {
       headers: { Accept: 'application/json' },
     })
+    if (response.status === 404) {
+      await wait(1_000)
+      continue
+    }
     if (!response.ok) {
       throw new Error(`pipeline status: HTTP ${response.status}`)
     }
@@ -110,8 +132,7 @@ async function waitForApplied(transactionHash) {
 }
 
 export async function transferWithWallet({
-  chainId,
-  chainDiscriminant,
+  networkIdLiteral,
   authority,
   publicKeyHex,
   assetDefinitionId,
@@ -122,21 +143,16 @@ export async function transferWithWallet({
   if (!/^[0-9a-f]{64}$/.test(publicKeyHex)) {
     throw new Error('publicKeyHex must be 32-byte lower-case Ed25519 hex')
   }
-  const derivedAuthority = AccountAddress.fromAccount({
-    publicKey: publicKeyHex,
-    algorithm: 'ed25519',
-  }).toI105(chainDiscriminant)
-  if (derivedAuthority !== authority) {
-    throw new Error('enrolled public key does not control authority')
-  }
+  const networkId = NetworkId.parse(networkIdLiteral)
+  const torii = new ToriiBrowserClient(baseUrl, { networkId })
 
   const preview = createConnectSessionPreview({
-    chainId,
+    networkId,
     node: baseUrl,
   })
   const relay = await registerConnectSession(
     baseUrl,
-    preview.sidBase64Url,
+    preview,
     {
       node: baseUrl,
     },
@@ -148,8 +164,10 @@ export async function transferWithWallet({
       baseUrl,
       preview,
       session: relay,
+      inspectAccountIdentity: (accountId, options) =>
+        torii.inspectAccountIdentity(accountId, options),
       permissions: {
-        methods: ['sign_transaction'],
+        methods: ['sign_transaction', 'sign_raw'],
         resources: [assetDefinitionId],
       },
       appMeta: { name: 'Iroha cookbook transfer' },
@@ -166,6 +184,10 @@ export async function transferWithWallet({
     if (approval.accountId !== authority) {
       throw new Error('wallet approved a different I105 account')
     }
+    if (toHex(approval.signingPublicKey) !== publicKeyHex) {
+      throw new Error('enrolled public key does not control authority')
+    }
+    const auth = await createConnectCanonicalRequestAuth(connect)
 
     const transfer = {
       authority,
@@ -175,16 +197,21 @@ export async function transferWithWallet({
       destination,
       fee_payment: {
         payer: 'authority',
-        value: { charge_limits: [] },
+        value: { charge_limits: [], gas_limit: null },
       },
       creation_time_ms: Date.now(),
       transaction_ttl_ms: 120_000,
       memo: 'iroha-cookbook-wallet-connect',
     }
 
-    const prepared = await postJson('/v1/assets/transfer', transfer)
+    const prepared = await postSignedJson(
+      '/v1/assets/transfer',
+      transfer,
+      auth,
+      networkId,
+    )
     if (!prepared.ok || prepared.submitted) {
-      throw new Error('Torii did not return a pending-signature scaffold')
+      throw new Error('Torii did not return an unsigned transaction payload')
     }
     const limits = prepared.intent.fee_payment.value.charge_limits
     if (
@@ -194,22 +221,27 @@ export async function transferWithWallet({
       )
     ) {
       throw new Error(
-        'live fee quote uses an asset other than the faucet response',
+        'live fee quote uses an asset other than the faucet policy asset',
       )
     }
 
     const signature = await connect.signTransaction(
-      decodeBase64(prepared.transaction_scaffold_base64),
+      decodeBase64(prepared.transaction_payload_b64),
     )
     if (signature.length !== 64) {
       throw new Error('wallet returned a non-Ed25519 signature length')
     }
 
-    const submitted = await postJson('/v1/assets/transfer', {
-      ...transfer,
-      public_key_hex: publicKeyHex,
-      signature_base64: encodeBase64(signature),
-    })
+    const submitted = await postSignedJson(
+      '/v1/assets/transfer',
+      {
+        ...transfer,
+        public_key_hex: publicKeyHex,
+        signature_base64: encodeBase64(signature),
+      },
+      auth,
+      networkId,
+    )
     if (!submitted.ok || !submitted.submitted) {
       throw new Error('signed transfer was not accepted')
     }
@@ -267,9 +299,10 @@ fn seal_wallet_signature(
 ```
 
 The repository's `connect_app` and `connect_wallet` examples are protocol
-fixtures: they use deterministic transport keys, expose tokens in output,
-and the wallet fixture returns a dummy signature. Use them to study frames
-only, never as a Taira wallet implementation.
+demonstrations: the app prints the wallet URI, including its token, to
+standard output, and the wallet takes its tokens as command-line arguments
+and signs the requested bytes without decoding or displaying them. Use them
+to study frames only, never as a Taira wallet implementation.
 
 ## Verify
 
@@ -277,11 +310,11 @@ Keep the returned hash and confirm the destination's post-state through the
 public holders endpoint:
 
 ```bash
+HOLDER_FILTER="account_id = \"$DESTINATION_ACCOUNT\" and scope = \"global\""
 curl -fsS -G \
   -H 'Accept: application/json' \
   "https://taira.sora.org/v1/assets/$ASSET_DEFINITION_ID/holders" \
-  --data-urlencode "account_id=$DESTINATION_ACCOUNT" \
-  --data-urlencode 'scope=global' |
+  --data-urlencode "filter=$HOLDER_FILTER" |
   jq .
 ```
 
@@ -291,9 +324,10 @@ transfer. HTTP acceptance or wallet approval alone is not ledger finality.
 
 ## Troubleshooting
 
-- `404`, `503`, or `enabled: false` from Connect status means no relay
-  session can be created on that node. Switch to an enabled localnet; do
-  not fall back to transporting app or management tokens yourself.
+- `503` with code `connect_disabled`, or `404`, from
+  `registerConnectSession` means no relay session can be created on that
+  node. Switch to an enabled localnet; do not fall back to transporting app
+  or management tokens yourself.
 - `USER_DENIED` is a wallet decision. Preserve it as a terminal user
   outcome instead of opening repeated approval prompts.
 - An approval-account mismatch or invalid approval signature must close the
@@ -301,7 +335,7 @@ transfer. HTTP acceptance or wallet approval alone is not ledger finality.
 - `public_key_hex does not control authority` means enrollment data and the
   approved I105 identity disagree. The ephemeral wallet transport key
   cannot be used in this field.
-- A signature or scaffold rejection usually means a request field or live
+- A rejected detached signature usually means a request field or the live
   fee quote changed between prepare and submit. Build a new request; never
   transplant the old signature.
 - An exact replay of an already accepted signed request is idempotent.
@@ -310,11 +344,11 @@ transfer. HTTP acceptance or wallet approval alone is not ledger finality.
 
 ## Source and related docs
 
-- [Browser Connect implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/src/connect.browser.js)
-- [Browser Connect tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/javascript/iroha_js/test/connect.browser.test.js)
-- [Rust app frame example at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_app.rs)
-- [Rust wallet frame example at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/crates/iroha_torii_shared/examples/connect_wallet.rs)
-- [Pinned Torii OpenAPI schema](https://github.com/hyperledger-iroha/iroha/blob/0010c5a70039eac101a4846499ba9ceaf43eb65c/artifacts/openapi/torii.json)
+- [Browser Connect implementation at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/src/connect.browser.js)
+- [Browser Connect tests at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/javascript/iroha_js/test/connect.browser.test.js)
+- [Rust app frame example at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_app.rs)
+- [Rust wallet frame example at the pinned commit](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/crates/iroha_torii_shared/examples/connect_wallet.rs)
+- [Pinned Torii OpenAPI schema](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/artifacts/openapi/torii.json)
 - [SORA Nexus services](/blockchain/sora-nexus-services.md)
 - [Fungible assets](./fungible-assets.md)
 - [Submit and verify transactions](./submit-and-verify-transactions.md)

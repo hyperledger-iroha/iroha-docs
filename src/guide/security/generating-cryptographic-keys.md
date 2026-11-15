@@ -11,8 +11,9 @@ From the Iroha source checkout:
 cargo run --bin kagami -- keys --algorithm ed25519 --out-dir ./client-key
 ```
 
-The parent directory must already exist. The target must be new or already
-owned by the current user, mode `0700`, free of symbolic links, and empty.
+The parent directory must already exist. The target must not exist: Kagami
+refuses even an existing empty directory. It creates the target with mode
+`0700` under owner-only filesystem checks and rejects symbolic links.
 `kagami` writes `public.key` and `private.key` with mode `0600` and does not
 print key material. With `--pop`, it also writes `pop.hex`.
 
@@ -64,10 +65,10 @@ cargo run --bin kagami -- keys --algorithm bls_normal --pop \
 `--pop` is valid only with `bls_normal`; it adds `pop.hex` to the custody
 directory.
 Signed genesis requires a matching PoP for every voting validator. In peer
-configuration, a non-empty `trusted_peers_pop` map selects the validator
-subset; trusted peers omitted from that non-empty map are observers. If the map
-is empty, all BLS-normal trusted peers enter the bootstrap candidate set, with
-voter PoPs still supplied by signed genesis.
+configuration, list each validator's PoP in `trusted_peers_pop`: trusted peers
+without a valid PoP are excluded from the consensus roster, and an empty map
+yields no validators, so a node whose map omits the genesis validators refuses
+to start. Run a sync-only node with `[sumeragi] role = "observer"`.
 
 ## Custody Output
 

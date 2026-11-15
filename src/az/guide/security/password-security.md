@@ -5,7 +5,6 @@ translation_source_hash: 093be5b91700b9a6f85b45dc873c8c29d90397d5c9e3c842a77bfb0
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Şifrə Təhlükəsizliyi {#password-security}
 
 Şifrələr operator konsollarını, gizli anbarları, ehtiyat nüsxələri və yerli açar fayllarını qoruya bilər. Şifrə yalnız bir nəzarət vasitəsidir. Mövcud olduqda təhlükəsiz açar saxlanması, giriş nəzarətləri və çoxfaktorlu identifikasiyadan birlikdə istifadə edin.

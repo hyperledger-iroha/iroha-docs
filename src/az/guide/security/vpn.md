@@ -5,7 +5,6 @@ translation_source_hash: 020591f0d7c5560dfb2e9f3f4537f429cbeba864c3eb022856d42ad
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
-
 # Virtual Özəl Şəbəkələr {#virtual-private-networks}
 
 Bir <abbr title="Virtual Private Network">VPN</abbr> şəbəkə nəzarətidir ki, kimlərin Iroha xidmətlərinə çata biləcəyini məhdudlaşdırır. Bu, əsasən özəl və konsorsium yerləşdirmələrində faydalıdır, burada doğrulayıcılar, tətbiq arxa planları və operatorlar açıq internet marşrutları əvəzinə özəl ünvanlar üzərindən əlaqə qurmalıdırlar.

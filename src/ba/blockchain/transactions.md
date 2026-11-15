@@ -1,11 +1,10 @@
 ---
 translation_locale: ba
 translation_source: /blockchain/transactions.md
-translation_source_hash: 6381e93ada6191d15b11f7359e983e5c3dac49e69323b20da09959d5e04331f9
+translation_source_hash: d9227effcdb4d54ac76f6288ba213de20f2574e1585e13b96a5202c44b69f3be
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # Транзакциялар {#transactions}
 
 Транзакция - блокчейн өҫтөндә эш башҡарыу өсөн ҡул ҡуйылған үтенесе. Башҡара торған файҙалы йөкләмә [ күрһәтмәләренең ](./instructions.md), килешеү саҡырыуы, IVM байткоды йәки иҫбатланған IVM үтәлеше булыуы мөмкин. Хәҙерге килешеү үтәлеше моделе өсөн [Аҡыллы килешеүҙәр](./smart-contracts.md) ҡара.
@@ -16,7 +15,7 @@ translation_engine: nllb-200-ct2
 
 Хосусилыҡты һаҡлаусы активтар хәрәкәте өсөн ҡарағыҙ [Аноним транзакциялар](./anonymous-transactions.md). Аноним операциялар асыҡ иҫәп-хисап балансында үҙгәрештәр урынына һаҡланған активтар, йөкләмәләр, ғәмәлдән сығарыусылар һәм нуль-белем иҫбатлауҙар ҡулланыла.
 
-Һайланған үтә күренмәле башҡарыу эффекттары тураһында иҫбатлау дәлилдәре өсөн ҡарағыҙ [FastPQ](./fastpq.md). FastPQ ғәҙәти транзакция башҡарғандан һуң ғәмәлгә ашырыу шаһиттарын ҡуллана һәм тәьмин ителгән дәүләт күсеүҙәре өсөн детерминистик иҫбатлау партияларын төҙөй.
+Үтәлештең асыҡ һөҙөмтәләренең ҡайһы берҙәре өсөн иҫбаттар тураһында [FastPQ](./fastpq.md) бүлеген ҡарағыҙ. Транзакция ғәҙәттәгесә үтәлгәс, FastPQ уның үтәлеш шаһиттарын ала һәм ул хуплаған хәл күсеүҙәре өсөн детерминистик иҫбат тупланмалары төҙөй.
 
 ## Taira менән һынап ҡарағыҙ. {#try-it-on-taira}
 
@@ -39,32 +38,30 @@ curl -fsS "https://taira.sora.org/v1/explorer/transactions/$TX_HASH" \
   | jq '{hash, block, status, authority, executable}'
 ```
 
-Был һаман да read-only. Transaction ебәреү өсөн ҡул ҡуйылған Norito envelope, дөрөҫ chain ID, fee metadata һәм faucet менән финансланған Taira account кәрәк.
+Был һаман уҡыу өсөн генә. Транзакция ебәреү ҡул ҡуйылған Norito ҡапламаһын, дөрөҫ сылбыр һәм селтәр идентификаторҙарын, аныҡ күрһәтелгән комиссия түләүсене һәм һынау аҡсаһы биреү хеҙмәте аша аҡсаландырылған Taira иҫәбен талап итә.
 
-Taira буйынса түләүле миҫалдар өсөн, [Taira-ла Testnet XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге `taira_faucet_claim.py` faucet ярҙамсыһын ҡулланығыҙ, һуңынан ҡултамға ҡуйыусыны тәүҙә асыҡ faucet аша финанслағыҙ:
+Taira-ла комиссия түләнә торған миҫалдар өсөн [Taira-ла һынау селтәре өсөн XOR алыу](/ba/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) бүлегендәге әҙер һынау аҡсаһы биреү хеҙмәте ағымы аша ҡул ҡуйыусы иҫәбен аҡсаландырығыҙ, һуңынан комиссия активының балансын тикшерегеҙ:
 
 ```bash
 export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-curl -fsS https://taira.sora.org/v1/accounts/faucet/puzzle | jq .
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
+export TAIRA_FEE_ASSET="$(
+  curl -fsS https://taira.sora.org/v1/accounts/faucet/policy \
+    | jq -er '.asset_definition_id'
+)"
 
 iroha --config ./taira.client.toml ledger asset get \
   --definition "$TAIRA_FEE_ASSET" \
   --account "$TAIRA_ACCOUNT_ID"
 ```
 
-Әгәр ҙә faucet табышы йәки талап маршруты `502` кире ҡайтарһа, транзакцияның үҙен дебэглау алдынан көтөп һәм ҡабатлап ҡарағыҙ.
+Һынау аҡсаһы биреү хеҙмәте маршруты `502` ҡайтарһа, транзакцияның үҙен тикшерә башлар алдынан көтөгөҙ һәм ҡабатлап ҡарағыҙ.
 
-Һуңынан транзакцияны тапшырғанда Taira түләү активының метамәғлүмәттәре ҡушыла:
+Һуңынан транзакцияны ебәргәндә комиссия түләүсене һайлағыҙ. `--fee-payer authority` ҡулланылғанда ҡул ҡуйыусы иҫәп түләй, һәм CLI ҡул ҡуйыр алдынан Taira комиссия активында теүәл комиссияны күрһәтә:
 
 ```bash
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
-  ledger transaction ping --msg "faucet-funded taira transaction"
+  --fee-payer authority \
+  tx ping --msg "faucet-funded taira transaction"
 ```
 
 ## Оффлайн транзакциялар {#offline-transactions}
@@ -72,42 +69,40 @@ iroha --config ./taira.client.toml \
 Iroha ике офлайн-транзакция эш ағымдары бар:
 
 - **Оффлайн ҡул ҡуйыу** signing device селтәрҙән өҙөлгән саҡта ғәҙәти ҡул ҡуйылған transaction булдыра. Online client ҡул ҡуйылған envelope-ты Torii-ға ебәрмәйенсә transaction эшкәртелмәй, шуға күрә уға дөрөҫ chain ID, authority, permission, fee һәм transaction lifetime һаман да кәрәк.
-- Кагемуша офлайн аҡсаһы онлайн булған саҡта букмекерҙы өҫтөбөҙгә һала, ике портфель дә офлайнда булғанда ҡабул итеүсе ҡуҙғатып ебәргән букмеке-букмеке тапшырыуҙарын хуплай һәм алыусының интернетҡа ҡайтҡанда килеп сыҡҡан хаттың хәлен ҡайтарып ала.
+- **Kagemusha офлайн аҡсаһы** теркәлгән, аппарат менән һаҡланған янсыҡҡа ул селтәргә тоташҡан саҡта ҡиммәт йөкләй, ике янсыҡ та офлайн булғанда улар араһында түләүҙәрҙе тәьмин итә һәм янсыҡ яңынан селтәргә тоташҡас ҡалған ҡиммәтте реестр иҫәбенә сығара.
 
-Torii Кагемушаның бөтә йәшәү циклын `/v1/offline/*` аҫтында асыҡлай:
+Torii Kagemusha өсөн бер үҙгәртеү маршрутын — `POST /v1/kagemusha/enrollment` — тәҡдим итә. Ул иҫәп аша аутентификацияланған `application/x-norito` теркәү кадрҙарын ҡабул итә һәм кэшта һаҡларға ярамаған шәхси яуаптар ҡайтара. `/v1/kagemusha/{scheme}/wallets/{wallet}/` эсендәге иҫәп ҡултамғаһы менән эшләгән SDK уҡыу маршруттары Load квитанцияларын һәм һуңғылыҡ дәлилдәрен ҡайтара; улар `/openapi.json` исемлегенә индерелмәгән. Йәшәү циклының реестр яғында `KagemushaWalletLedgerV1` инструкцияһын йөрөткән ғәҙәти ҡул ҡуйылған транзакциялар ҡулланыла:
 
-|Метод һәм маҡсат |Маҡсат |
+| Ғәмәл | Маҡсат |
 | --- | --- |
-|`GET /v1/offline/readiness` |`asset_definition_id` өсөн Kagemusha әҙерлеген баһалау |
-|`POST /v1/offline/receiver-lineage` |Ҡул ҡуйылған ҡабул итеүсе ғаризаһы өсөн иҫбатлаулы актив теркәлеү ырыуыны хәл итергә |
-|`POST /v1/offline/top-up` |Ҡул ҡуйылған онлайн-оффлайн өҫтәмә операцияһын тапшырығыҙ |
-|`POST /v1/offline/redeem` |Ҡул ҡуйылған офлайн түләтеү операцияһын тапшырығыҙ |
-|`GET /v1/offline/operations/{operation_id}` |Өҫтәмә йәки түләтеүҙең канон статусын уҡығыҙ |
-
-Оффлайн операция төҙөгәнсе активтың әҙерлеген тикшерегеҙ:
-
-```bash
-curl -fsS --get https://taira.sora.org/v1/offline/readiness \
-  --data-urlencode 'asset_definition_id=<canonical_asset_definition_id>' \
-  | jq '{ready, blockers, artifact_set}'
-```
-
-Readiness wallet-ты active bridge ABI 21 һәм authenticated V4 artifact set менән бәйләй. Lineage, top-up һәм redemption request-тары typed `application/x-norito` archive ҡуллана. Top-up һәм redemption operation resource-ҡа күрһәткән `Location` header менән `202 Accepted` ҡайтара; эсендәге нулдән айырмалы operation ID idempotency key бирә.
+| `Activate` | Теркәлгән янсыҡты әүҙемләштереү; башланғыс көйләүҙең натив тикшереүе мотлаҡ |
+| `IssueLoad` | Түләүсенән аҡса алыу һәм янсыҡтың киләһе Load яҙмаһын атомар рәүештә теркәү |
+| `Unload` | Тулы Unload талабын уға бәйләнгән иҫәпкә иң күбе бер тапҡыр түләү |
+| `ClaimFee` | Тулы комиссия талабын уның беркетелгән алыусыһына түләү |
+| `Abandon` | Ҡулланылмаған теркәүҙән баш тартыу |
 
 Типтик ағымы:
 
-1. Әгәр `ready` ялған йәки ниндәй ҙә булһа блоктар ҡулланылған икән, әҙерлек һәм туҡтатыу тураһында һорағыҙ.
-2. Тип менән яҙыу Swift йәки JVM аҡса янсығы каноник өҫтәмә архив төҙөү, уны тапшырыу һәм инеү нотаһы торошон һәм эш итеүҙе һаҡларға ID Операция һуңғы хәлгә килеп еткәнсе.
-3. Әгәр кәрәк булһа, ҡабул итеүсе теркәлеү ырыуы хәл итегеҙ, һәр бер-береһе менән тапшырыуҙы локаль рәүештә төҙөгөҙ һәм тикшерегеҙ һәм күсереүҙе таныр алдынан шифрланған яҙма торошон дауам итегеҙ.
-4. Ҡабул итеүсе интернетта булғанда, каноник азатлыҡ архивын төҙөгөҙ, уны тапшырығыҙ һәм уның операцион ресурсын йомғаҡлау өсөн һорау алығыҙ.
+1. Типлаштырылған Swift йә Android янсығы аша `/v1/kagemusha/enrollment` ҡулланып янсыҡты теркәгеҙ, һуңынан уны әүҙемләштерегеҙ.
+2. `IssueLoad` транзакцияһын ебәрегеҙ. Башҡарыу көтөлгән киләһе Load тәртип һанын һәм нулгә тигеҙ булмаған һорау идентификаторын тикшерә, шуға күрә иҫкергән йә үҙгәртелгән ҡабатлау уңышһыҙ була. Яуап юғалһа, икенсе Load-ҡа ҡул ҡуйыу урынына тәүге Load квитанцияһын уҡығыҙ.
+3. Янсыҡтар офлайн булғанда улар араһында түләүҙәрҙе урында алмашығыҙ һәм тикшерегеҙ; һәр күсереүҙе раҫлар алдынан янсыҡ торошон ышаныслы һаҡлауға яҙығыҙ.
+4. Янсыҡ яңынан селтәргә тоташҡас, уның Unload талабын ебәрегеҙ һәм һуңғылыҡты көтөгөҙ.
 
-Note state online lifecycle аша ҡайтҡанға тиклем ledger ҡаршылыҡлы offline handoff-ты күрә алмай. Шуға күрә wallet һәм operator policy ҡиммәт лимиттарын, expiry-ҙы, ҡабул ителгән issuer-ҙарҙы, оҙайлы local storage-ты һәм reconciliation window-ҙарын enforced итергә тейеш.
+Kagemusha релизға әҙер тип раҫланмаған: ысын аҡса менән эшсе селтәрҙә сифатлау, шулай уҡ физик ҡоролмаларҙа телефонды теркәү, әүҙемләштереү һәм түләү әле лә асыҡ мәсьәлә булып ҡала.
+
+Офлайн тапшырылған ҡиммәт тураһындағы яҙманың хәле онлайн эш барышына әйләнеп ҡайтмайынса, реестр бер-береһенә ҡаршы булған тапшырыуҙарҙы күрә алмай. Шуға күрә янсыҡ һәм оператор ҡағиҙәләре ҡиммәт сиктәрен, ғәмәлдә булыу ваҡытын, рөхсәт ителгән эмитенттарҙы, урындағы ышаныслы һаҡлауҙы һәм яраштырыу өсөн ваҡыт аралыҡтарын контролдә тоторға тейеш.
 
 Бында яңы транзакция булдырыу миҫалы `Grant` Инструкция. был транзакцияла Mouse Alice-ға билдәләнгән роль бирә (`role_id`Тейешле. [тулы миҫал](./permissions.md#register-a-new-role).
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```

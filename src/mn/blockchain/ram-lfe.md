@@ -1,11 +1,10 @@
 ---
 translation_locale: mn
 translation_source: /blockchain/ram-lfe.md
-translation_source_hash: 66436bfdcdfea9bcd52834436dc8b6abe9812549583e6bfca06cbe73d5f75d35
+translation_source_hash: c08b67e5a58fea2012fdba7bbfcb88dd9bc329b7a549e7d40011a5f4fb0ef68c
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # RAM-LFE {#ram-lfe}
 
 RAM-LFE гэдэг нь Random-Access Machine Laconic Function Evaluation гэсэн үгийн товчлол юм. Iroha-д энэ нь нийтэд ил бодлого нь блокчейн дээр хадгалагддаг боловч үнэлэгчийн логик, нууц эсвэл боловсруулаагүй оролтыг дэлхийн төлөвт бичих ёсгүй программуудад зориулсан ерөнхий далд функцийн давхарга юм. Үүнийг хувийн утасны дугаар эсвэл имэйлээр хайх зэрэг SORA Nexus-ийн танигчийн урсгалд ашигладаг бөгөөд зангилааны профайл аппликейшнд зориулсан маршрутуудыг идэвхжүүлсэн үед Torii-ийн программ гүйцэтгэх ерөнхий туслах байдлаар мөн ашиглаж болно.
@@ -764,6 +763,5 @@ Torii-ийн process доторх RAM-LFE гүйцэтгэх орчныг `torii
 
 ## Холбогдох сэдвүүд {#related-topics}
 
-- [Хувийн өгөгдлийн сангийн ивээн тэтгэгчийн төлбөр](/mn/get-started/private-dataspace-fee-sponsor.md#_4-register-phone-and-email-privately-with-fhe)
 - [Torii API төгөлдөрүүд](/mn/reference/torii-endpoints.md#app-and-sora-route-families)
 - [Нэргүй гүйлгээ](/mn/blockchain/anonymous-transactions.md)

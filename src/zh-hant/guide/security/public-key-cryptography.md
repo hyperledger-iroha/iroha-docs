@@ -5,7 +5,6 @@ translation_source_hash: 3d317c00e75525d70f6cb9ef7f8eeec6911e2f124af8052cd2fc719
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+codex-semantic-review
 ---
-
 # 公開金鑰密碼學 {#public-key-cryptography}
 
 公開金鑰密碼學使用彼此對應的公鑰與私鑰。公鑰可以分享；私鑰則必須始終由許可權主體控制。安全性取決於使用受支援的演演算法、以安全的隨機來源產生金鑰，以及妥善保護私鑰。

@@ -1,16 +1,11 @@
 # Queries
 
-Iroha queries read ledger state without mutating it. The current data model
-exposes two broad query shapes:
+Iroha queries read ledger state without mutating it. The current data model exposes two broad query shapes:
 
 - **singular queries**, which return one object or one value
-- **iterable queries**, which return a stream or collection and can be combined
-  with filtering, sorting, projection, and pagination where the query type
-  supports it
+- **iterable queries**, which return a stream or collection and can be combined with filtering, sorting, projection, and pagination where the query type supports it
 
-Use SDK typed builders or the CLI instead of constructing query envelopes by
-hand. The names below are the current query types exposed by
-`iroha_data_model::query`.
+Use SDK typed builders or the CLI instead of constructing query envelopes by hand. The names below are the current query types exposed by `iroha_data_model::query`.
 
 ## Runtime and Configuration
 
@@ -54,7 +49,7 @@ hand. The names below are the current query types exposed by
 | Query | Purpose |
 | --- | --- |
 | `FindAssets` | List asset balances. |
-| `FindAssetsDefinitions` | List asset definitions. |
+| `FindAssetDefinitions` | List asset definitions. |
 | `FindAssetsByAccountId` | List assets held by an account. |
 | `FindAssetById` | Find one asset balance by `AssetId`. |
 | `FindAssetDefinitionById` | Find one asset definition by ID. |
@@ -64,9 +59,7 @@ hand. The names below are the current query types exposed by
 
 ## Escrow and Proof Records
 
-Escrow queries inspect the records created by
-[native asset escrow ISIs](/blockchain/escrow.md), including marketplace
-escrows, generic asset locks, and anonymous escrow records.
+Escrow queries inspect the records created by [native asset escrow ISIs](/blockchain/escrow.md), including marketplace escrows, generic asset locks, and conditional escrows.
 
 | Query | Purpose |
 | --- | --- |
@@ -75,29 +68,23 @@ escrows, generic asset locks, and anonymous escrow records.
 | `FindAssetEscrowsBySeller` | List asset escrows by seller. |
 | `FindAssetEscrowsByBuyer` | List asset escrows by buyer. |
 | `FindAssetEscrowsByStatus` | List asset escrows by status. |
-| `FindAnonymousAssetEscrows` | List anonymous asset escrow records. |
-| `FindAnonymousAssetEscrowById` | Find one anonymous asset escrow by ID. |
-| `FindAnonymousAssetEscrowsBySeller` | List anonymous escrows by seller. |
-| `FindAnonymousAssetEscrowsByBuyer` | List anonymous escrows by buyer. |
-| `FindAnonymousAssetEscrowsByStatus` | List anonymous escrows by status. |
 | `FindProofRecordById` | Find one proof record by ID. |
 | `FindProofRecords` | List proof records. |
 | `FindProofRecordsByBackend` | List proof records for a proof backend. |
 | `FindProofRecordsByStatus` | List proof records by status. |
 
-## Nexus, Data Availability, and Packages
+## SORA Nexus, Data Availability, and Packages {#nexus-data-availability-and-packages}
 
 | Query | Purpose |
 | --- | --- |
-| `FindRepoAgreements` | List repository agreements stored on-chain. |
+| `FindRepoAgreements` | List repo and reverse-repo agreements stored on-chain. |
 | `FindTwitterBindingByHash` | Resolve a Twitter binding by hash. |
 | `FindDaPinIntentByTicket` | Find a data-availability pin intent by ticket. |
 | `FindDaPinIntentByManifest` | Find a pin intent by manifest reference. |
 | `FindDaPinIntentByAlias` | Find a pin intent by alias. |
 | `FindDaPinIntentByLaneEpochSequence` | Find a pin intent by lane, epoch, and sequence. |
-| `FindLaneRelayEnvelopeByRef` | Find a verified lane-relay envelope. |
 | `FindSorafsProviderOwner` | Resolve the owner of a SoraFS provider. |
-| `FindDataspaceNameOwnerById` | Resolve a dataspace-name owner. |
+| `FindDataspaceNameOwnerById` | Resolve the active SNS owner of a data space alias. |
 | `FindMusubiExactPackageV1` | Read one exact package record and its current revisions. |
 | `FindMusubiExactReleaseV1` | Read one exact release snapshot. |
 | `FindMusubiProviderBundleAttestationV1` | Read one provider's archive-bundle attestation. |
@@ -117,14 +104,11 @@ escrows, generic asset locks, and anonymous escrow records.
 | `FindActiveTriggerIds` | List active trigger IDs. |
 | `FindTriggers` | List triggers. |
 | `FindTriggerById` | Find one trigger by ID. |
-| `FindContractManifestByCodeHash` | Find a smart-contract manifest by code hash. |
+| `FindContractManifestByArtifactId` | Find a smart-contract manifest by its data space artifact ID. |
 | `FindTransactions` | List committed transactions. |
 | `FindBlocks` | List blocks. |
 | `FindBlockHeaders` | List block headers. |
 
 ## Filtering and Pagination
 
-Iterable queries can expose predicate and selector support. Use query-specific
-typed filters from the SDK so the filter input matches the query output type.
-For large result sets, use query parameters such as cursor and limit instead
-of fetching every row at once.
+Iterable queries can expose predicate and selector support. Use query-specific typed filters from the SDK so the filter input matches the query output type. For large result sets, use query parameters such as cursor and limit instead of fetching every row at once.

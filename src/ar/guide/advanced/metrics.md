@@ -1,11 +1,10 @@
 ---
 translation_locale: ar
 translation_source: /guide/advanced/metrics.md
-translation_source_hash: fc62efbb6100308bb7a929e18c9c8b6860372abd6d0009616ea63d7c77b6b1eb
+translation_source_hash: ad2bc9f8c53169d8161f7a2f23b1e660ebd24cf03cf8e05f4b00bbd27b7b11fe
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # الأداء والمؤشرات {#performance-and-metrics}
 
 يعتمد أداء Iroha على حجم العمل، وتوبولوجيا المصدق، وظروف الشبكة، وإعدادات التوافق. لذلك، فإن رقم TPS الفردي يكون مفيدًا فقط عندما يكون مرتبطًا بتشغيل معيار بتهيئة ثابتة.
@@ -24,8 +23,8 @@ translation_engine: bing-translator-llm
 ابدأ بعرض بيانات النقطة الزمنية للنود العامة ومسح Prometheus، ثم استخدم CLI لحالة التوافق المصادق عليها بواسطة المشغل. يجب أن يكون مفتاح المشغل مسموحًا به من قبل النود المستهدف ويتم تحميله فقط في بيئة تنفيذ البرمجيات:
 
 ```bash
-export TORII=http://127.0.0.1:8180
-export OPERATOR_KEY_FILE=./secrets/operator.key
+export TORII=http://127.0.0.1:8080
+export OPERATOR_KEY_FILE="$PWD/localnet/runtime/operator-signer.key"
 
 curl -s -H 'Accept: application/json' "$TORII/status" | jq .
 curl -s "$TORII/metrics" > metrics.prom
@@ -38,7 +37,7 @@ iroha --config ./localnet/client.toml \
   --output-format json ops sumeragi diagnostics
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
-  --output-format json ops sumeragi qc
+  --output-format json ops sumeragi lanes
 iroha --config ./localnet/client.toml \
   --operator-private-key-file "$OPERATOR_KEY_FILE" \
   --output-format json ops sumeragi params
@@ -53,7 +52,7 @@ curl -fsS -H 'Accept: application/json' "$TAIRA/status" \
   | jq '{blocks, txs_approved, txs_rejected, queue_size, peers}'
 
 curl -fsS "$TAIRA/v1/time/now" \
-  | jq '{now_ms, offset_ms}'
+  | jq '{now, offset_ms}'
 ```
 
 لا تستخدم ملاحظات الشبكة التجريبية العامة كأرقام لسعة الإنتاج لنشر خاص بك.
@@ -131,16 +130,9 @@ iroha --config ./localnet/client.toml \
 
 ### حدود المرشح والدخول {#candidate-and-ingress-bounds}
 
-تحدد الحدود المحلية للعقدة Sumeragi كمية العمل المرشح وعمليات الاسترداد التي يمكن للمحقق الاحتفاظ بها:
+يأتي حجم الكتل وحدود المعاملات من التكوين الأولي الموقّع ومعاملات السلسلة المثبتة. تغطي إعدادات `[sumeragi]` المحلية للعقدة دور المشاركة وحفظ مفاتيح التوقيع ومسارات سجلات السلامة والتجاوزات المحلية الموثقة للمهلة والمزامنة.
 
-- `sumeragi.block.max_transactions`
-- `sumeragi.block.max_payload_bytes`
-- `sumeragi.block.proposal_queue_scan_multiplier`
-- `sumeragi.queues.commands`
-- `sumeragi.queues.bodies` و `sumeragi.queues.body_bytes`
-- `sumeragi.queues.body_source_bytes`، `sumeragi.queues.chunks`، و`sumeragi.queues.ready_bodies`
-
-الحدود الصغيرة جدًا تخلق ضغطًا على قائمة الانتظار أو استعادة الحمولة؛ الحدود الكبيرة جدًا تزيد من الذاكرة المحتفظ بها وكمية العمل المتاحة لشبكة مسيئة نظير. قارن عرض بيانات التشخيص اللحظي مع ذاكرة العملية، ومعالجة الرسائل، وقياسات الجسم المفقود قبل تغيير حد واحد في كل مرة:
+تتحكم حدود إدخال الشبكة وطابور المعاملات في العمل المحتفظ به محليًا. قارن لقطة التشخيصات بذاكرة العملية ومقاييس معالجة الرسائل والأجسام المفقودة قبل تغيير أي حد تشغيلي. أبقِ معاملات السلسلة الموقّعة ثابتة عند مقارنة تشغيلات الشبكة نفسها:
 
 ```bash
 iroha --config ./localnet/client.toml \
@@ -195,13 +187,13 @@ iroha --config ./localnet/client.toml \
 | --- | --- | --- |
 |معدل النقل المقبول| `sum(rate(txs{type="accepted"}[5m]))` |يجب أن يحقق أو يتجاوز الهدف TPS في الحالة المستقرة|
 |الرفض| `sum(rate(txs{type="rejected"}[5m]))` |يجب أن يكون قابلاً للتفسير وفقًا لخطة الاختبار|
-|زمن تأخير إنهاء البروتوكول| `histogram_quantile(0.95, sum(rate(commit_time_ms_bucket[5m])) by (le))` |قارن بين p95/p99 وميزانية الكمون|
+| زمن تأخير إنهاء البروتوكول | `histogram_quantile(0.95, sum by (le) (rate(sumeragi_commit_latency_ms_bucket{lane="global"}[5m])))`، `last_commit_time_ms` | قارن بين p95/p99 وميزانية الكمون |
 |عمق الطابور| `queue_size`، `sumeragi_tx_queue_depth` |يجب أن يبقى محدودًا أثناء ذروة التحميل|
 |تشبع الطابور| `sumeragi_tx_queue_saturated` |القيم المستمرة غير الصفرية تعني التحميل الزائد|
-|عرض التغييرات| `view_changes`، `sumeragi_view_change_suggest_total`، `sumeragi_view_change_install_total` |القيم المرتفعة تشير إلى مشاكل في التوقيت أو البنية أو الحمولة أو الشبكة|
-|الرسائل المفقودة| `dropped_messages`، `sumeragi_consensus_message_handling_total` |السقوط أثناء التحميل عادة يفسر ارتفاع فترات التأخير|
-|الحمولة واسترداد DA| `sumeragi_missing_block_requests`، `sumeragi_missing_block_oldest_ms`، `sumeragi_missing_block_fetch_total`، `sumeragi_da_gate_block_total`، `sumeragi_da_gate_satisfied_total` |تشير الطلبات المستمرة أو تقدم العمر أو تكرار بوابات DA إلى مشاكل في الحصول على الجسم أو الجزء|
-|نصاب إتمام الإجماع| `sumeragi_commit_signatures_counted`، `sumeragi_commit_signatures_required` |يجب أن تصل التواقيع التي تم عدها إلى النصاب المطلوب بسرعة|
+|عرض التغييرات| `view_changes`، `sumeragi_view_changes_total`، `sumeragi_timeout_votes_total` |القيم المرتفعة تشير إلى مشاكل في التوقيت أو البنية أو الحمولة أو الشبكة|
+|الرسائل المفقودة| `sumeragi_dropped_total`، `p2p_queue_dropped_total` |السقوط أثناء التحميل عادة يفسر ارتفاع فترات التأخير|
+| جلب الحمولة واللحاق بالركب | `sumeragi_fetch_requests_total{kind="body"}`، `sumeragi_fetch_requests_total{kind="sync"}` | تشير عمليات جلب الأجسام أو المزامنة المستمرة إلى مشكلات في الحصول على الحمولة أو في اللحاق بالركب |
+| تقدّم الإنهاء | `sumeragi_committed_height`، `sumeragi_applied_height` | يجب أن تتقدم الارتفاعات المصدّقة والمطبّقة معًا |
 
 عندما يكون المقياس موجودًا فقط في `/v1/sumeragi/status`، قم بالتقاط عرض بيانات JSON اللحظي في نفس ملفات التشغيل مثل إخراجات مسح Prometheus.
 
@@ -244,7 +236,7 @@ iroha --config ./localnet/client.toml \
 - عدد المدققين والمراقبين
 - وضع التوافق، إيقاع الكتل الموقعة، وتصميم DA
 - اللجنة الدقيقة `3f + 1`، النصاب، وقائمة المراقبين
-- `sumeragi.block`، `sumeragi.queues`، `sumeragi.limits`، حدود دخول الشبكة، وحدود قائمة انتظار المعاملات
+- معاملات السلسلة الموقّعة وتجاوزات Sumeragi المحلية وحدود إدخال الشبكة وطابور المعاملات
 - ملف تعريف القياس عن بُعد
 - الأجهزة، التخزين، وتفاصيل OS
 - الشبكة RTT، التذبذب، الفقد، وافتراضات عرض النطاق الترددي
@@ -253,7 +245,7 @@ iroha --config ./localnet/client.toml \
 - تم القبول/مرفوض TPS
 - زمن تأخر إنهاء بروتوكول p50/p95/p99
 - عمق الطابور والتشبع
-- عرض التغييرات، الرسائل المفقودة، جلب الكتل المفقودة، وعدادات البوابة DA
+- تغييرات العرض، وأصوات انتهاء المهلة، وحالات الإسقاط في Sumeragi، وعمليات جلب الأجسام والمزامنة
 - CPU، استخدام الذاكرة، القرص، والشبكة لكل مدقق
 
 بدون هذه التفاصيل، يجب اعتبار رقم TPS مجرد معلومات غير رسمية.

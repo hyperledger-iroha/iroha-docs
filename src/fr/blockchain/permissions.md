@@ -1,11 +1,10 @@
 ---
 translation_locale: fr
 translation_source: /blockchain/permissions.md
-translation_source_hash: 1a12b47fa14bb011c9a916e70a1a8b5c083061880e1564a0be861c13cf562a77
+translation_source_hash: 7993d14839218fd3394d52dbcce264bffea32394f54e25dd261cd060c54f1fe1
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-supplemental-naming-link+reviewed-delta
 ---
-
 # Autorisations {#permissions}
 
 Les comptes ont besoin de jetons d'autorisation pour diverses actions sur une blockchain, par exemple pour émettre ou brûler des actifs.
@@ -73,14 +72,20 @@ Après que le rôle est enregistré, Mouse peut le attribuer à Alice :
 
 ```rust
 let grant_role = Grant::account_role(role_id, alice_id);
-let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id)
-    .with_instructions([grant_role])
-    .sign(mouse_private_key);
+// `network_id` is the target network's `NetworkId`; the fee intent is bound
+// into the signature (use the intent returned by a fee quote).
+let grant_role_tx = TransactionBuilder::new(
+    network_id,
+    mouse_id,
+    FeePaymentIntent::authority(Vec::new(), None),
+)
+.with_instructions([grant_role])
+.sign(&mouse_private_key);
 ```
 
 ## Validateurs de permission {#permission-validators}
 
-Les autorisations existent afin que seuls les comptes disposant du jeton d'autorisation requis puissent effectuer une action protégée. L'exécuteur par défaut vérifie les autorisations lors de l'exécution des instructions, des requêtes et des expressions.
+Les autorisations existent afin que seuls les comptes disposant du jeton d'autorisation requis puissent effectuer une action protégée. L'exécuteur par défaut vérifie les autorisations lors de l'exécution des transactions et des instructions, ainsi que lors de la validation des requêtes.
 
 La surface de validation par défaut est regroupée par zone du registre de la blockchain :
 
@@ -89,7 +94,7 @@ La surface de validation par défaut est regroupée par zone du registre de la b
 - actifs, NFTs, et séquestres
 - déclencheurs
 - rôles et autorisations
-- exécuteur et environnement d’exécution, preuves, passerelles et modules SORA/Nexus
+- exécuteur et environnement d’exécution, preuves, passerelles et modules SORA Nexus
 
 La liste exacte des jetons est soutenue par la source dans le [Référence des jetons d'autorisation](/fr/reference/permissions.md).
 
@@ -97,7 +102,7 @@ La liste exacte des jetons est soutenue par la source dans le [Référence des j
 
 Les contrôles d'autorisation sont appliqués par l'exécuteur actif. L'exécuteur par défaut fournit les validateurs de permission intégrés et les définitions de jetons, et un réseau peut modifier la politique en mettant à jour l'exécuteur qu'il utilise.
 
-Les validateurs renvoient un verdict de validation. Un validateur peut autoriser une opération, la refuser avec une raison, ou l'ignorer si l'opération est en dehors de son domaine de compétence. Le juge sélectionné combine ces verdicts pour décider si l'instruction, la requête ou l'expression peut continuer.
+L'exécuteur autorise une opération ou la rejette avec un motif `ValidationFail`. Une instruction rejetée entraîne le rejet de sa transaction, et une requête rejetée renvoie l'erreur à l'appelant.
 
 ## Requêtes prises en charge {#supported-queries}
 

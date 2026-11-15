@@ -54,10 +54,11 @@ PUBLIC_KEY="ea01309060D021340617E9554CCBC2CF3CC3DB922A9BA323ABDF7C271FCC6EF69BE7
 
 :::
 
-### `private_key` <Badge text="required" /> {#param-private-key}
+### `private_key` {#param-private-key}
 
-Private key of the peer. It must match `public_key`; consensus validator
-peers must use BLS-Normal keys.
+Private key of the peer. Configure exactly one of `private_key` or
+`private_key_file`, the path to its owner-only key file. The key must match
+`public_key`; consensus validator peers use BLS-Normal keys.
 
 <param-table type="private-key" env="PRIVATE_KEY" />
 
@@ -142,6 +143,11 @@ TRUSTED_PEERS_POP='[
 :::
 
 ## Genesis {#genesis}
+
+Fresh starts and restarts require exactly one genesis trust-root source:
+`genesis.expected_hash` or `genesis.expected_hash_file`. Generated peer configs
+use the latter, pointing to `genesis.expected_hash` beside the signed block.
+Preserve that binding when copying a generated profile.
 
 ### `genesis.file` {#param-genesis-file}
 
@@ -229,7 +235,7 @@ P2P_PUBLIC_ADDRESS=0.0.0.0:5000
 
 ### `network.block_gossip_size` {#param-network-block-gossip-size}
 
-The amount of blocks that can be sent in a single synchronization message.
+Fanout cap for block-sync gossip: peer samples and block-sync updates.
 
 <param-table type=number default-value=4 />
 
@@ -447,13 +453,6 @@ LOG_LEVEL=INFO
 
 :::
 
-::: tip Runtime update
-
-This parameter is subject to runtime configuration update through Torii
-operator endpoints.
-
-:::
-
 ### `logger.filter` {#param-logger-filter}
 
 Refined log filters in addition to [`logger.level`](#param-logger-level).
@@ -503,13 +502,6 @@ For example, if `logger.level` is set to `INFO` and `logger.filter` is set
 to `iroha_core=debug`, the resulting filter set will be
 `info,iroha_core=debug` (i.e. `info` for all modules, `debug` for
 `iroha_core`).
-
-:::
-
-::: tip Runtime update
-
-This parameter is subject to runtime configuration update through Torii
-operator endpoints.
 
 :::
 
@@ -606,7 +598,7 @@ other artifact count or filename set.
 
 Fast inventories those five names and metadata-binds the payload and Merkle
 files, but does not read, hash, parse, or decode their contents. It builds
-a minimal World/Nexus from the signed manifest, maps the exact Kura hash
+minimal World and SORA Nexus state from the signed manifest, maps the exact Kura hash
 prefix read-only, and leaves the snapshot World, block-hash array,
 transaction history, derived indexes, and durable recovery journals
 unopened. Merkle, canonical and semantic snapshot audits, historical
@@ -749,54 +741,31 @@ transaction_time_to_live_ms = 43_200_000
 
 ## Sumeragi {#sumeragi}
 
-### `sumeragi.debug.force_soft_fork` <Badge type="warning" text="debug" /> {#param-sumeragi-debug-force-soft-fork}
+`[sumeragi]` contains node-local participation, signing custody, safety-record
+paths, and documented timeout and synchronization overrides. Consensus mode,
+committee geometry, quorum, block size, and transaction limits come from
+signed genesis and committed state. Fault injection belongs to the deterministic
+simulator.
 
-Debug-only switch for exercising Sumeragi soft-fork handling paths. Leave
-this disabled outside controlled tests; changing it on a running production
-network can make peers disagree about consensus behavior.
+See [configuration](/guide/configure/overview.md) and the pinned
+[configuration reference](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/references/configuration.md)
+for the supported fields.
 
-<param-table type=bool default-value=false />
+## SORA Nexus Atomic Private Settlement {#nexus-atomic-private-settlement}
 
-::: code-group
+`[nexus.atomic_private_settlement]` configures encrypted sidecar custody on one
+node. It contains exactly two local storage bounds:
 
-```toml [Config File]
-[sumeragi.debug]
-force_soft_fork = true
-```
+- `sidecar_max_records`: maximum retained encrypted settlement records.
+- `sidecar_max_total_bytes`: maximum retained canonical bytes.
 
-:::
+Activation, proof profiles, payment limits, expiry, and auditor policy come
+from committed privacy policy. Node configuration cannot activate or change
+those validity rules.
 
-## Nexus Atomic Private Settlement {#nexus-atomic-private-settlement}
-
-`[nexus.atomic_private_settlement]` governs the separate
-`AtomicPrivateSettlementV1` path. It is disabled by default. Setting
-`enabled = true` also requires an `activation_height`; admission still
-fails closed unless the on-chain capability, notice period, fixed proof
-profile, and pool/audit governance are active.
-
-The main bounds are `max_participants`, `max_expiry_blocks`,
-`audit_timeout_blocks`, `prepare_timeout_blocks`, `commit_timeout_blocks`,
-`max_proof_bytes`, `max_capsule_bytes`, `max_carrier_bytes`,
-`sidecar_retention_blocks`, `sidecar_max_records`, and
-`sidecar_max_total_bytes`. `capsule_padding_classes_bytes` must be a
-strictly increasing subset of the V1 padding classes.
-`permitted_policy_versions` accepts only V1.
-
-`max_capsule_bytes` measures the canonical Norito bytes of the complete
-`PrivateSettlementAuditCapsuleV1`, including AAD, nonce, ciphertext, vector
-framing, and every auditor wrapped-DEK row; it is not a ciphertext-only
-limit. Every enabled padding class must fit the conservative whole-capsule
-envelope for at least `default_min_auditor_approvals` auditors. That
-approval setting is also a governed floor: Torii rejects a newly admitted
-policy with a lower `min_approvals` value and rejects any actual capsule
-over the canonical byte limit.
-
-These settings have no production environment-variable activation bypass.
-See
-[Run Atomic Private Cross-Dataspace Settlement](/get-started/atomic-private-settlement)
-for the complete configuration example and operational requirements. The
-path is not production-qualified until the documented external release
-gates pass.
+See [Run Atomic Private Cross-Data-Space Settlement](/get-started/atomic-private-settlement.md)
+for the custody configuration and operational requirements. Component
+implementation does not establish production qualification.
 
 ## Snapshot {#snapshot}
 
@@ -891,27 +860,9 @@ SNAPSHOT_STORE_DIR="/path/to/storage"
 ## Telemetry {#telemetry}
 
 Telemetry exports peer diagnostics to an external telemetry collector.
-Configure both `telemetry.name` and `telemetry.url` when a peer should
-report to a collector; omit the section when telemetry is not used.
-
-`name` and `url` must be paired.
-
-All `telemetry` section is optional.
-
-### `telemetry.name` {#param-telemetry-name}
-
-The node's name to be displayed on the telemetry.
-
-<param-table type=string />
-
-::: code-group
-
-```toml [Config File]
-[telemetry]
-name = "iroha"
-```
-
-:::
+Configure `telemetry.url` when a peer should report to a collector; omit the
+section when no collector is used. Retry timing is configured in the same
+optional table.
 
 ### `telemetry.url` {#param-telemetry-url}
 

@@ -1,26 +1,25 @@
 ---
 translation_locale: he
 translation_source: /blockchain/domains.md
-translation_source_hash: 5e52579436a181d76c83fa549991e56064ae57349b7109d5c41ec7953e5cbb2e
+translation_source_hash: 26e8efe6c728d0f819b12e7d8257777d3d4ea272f42fabf8aec727467146500f
 translation_status: machine-validated
-translation_engine: nllb-200-ct2
+translation_engine: nllb-200-ct2+reviewed-delta
 ---
-
 # תחומים {#domains}
 
-תחומים נקראים חללי שמות רשומים ב `World`. במודל הנתונים הנוכחי Iroha 3 תחום מוסמך על ידי החלל הנתונים המקור שלו, כך שהזהים הקנוני הוא:
+דומיינים הם מרחבי שמות בעלי שם הרשומים ב־`World`. במודל הנתונים הנוכחי של Iroha 3, דומיין מזוהה יחד עם מרחב הנתונים האב שלו, ולכן המזהה הקנוני הוא:
 
 ```text
 domain.dataspace
 ```
 
-לדוגמה, `payments.universal` שם את תחום ה- `payments` בתוך חלל הנתונים `universal`.
+לדוגמה, `payments.universal` מציין את הדומיין `payments` בתוך מרחב הנתונים `universal`.
 
 ## מבנה {#structure}
 
 `Domain` רשום מכיל:
 
-- `id`: מסלול הנתונים מוסמך `DomainId`
+- `id`: מזהה `DomainId` הכולל את מרחב הנתונים
 - `logo`: אופציונלי `SoraFS` URI עבור הלוגו של תחום.
 - `metadata`: מטא נתונים של ערך מפתח שרירותי.
 - `owned_by`: חשבון הבעלים של הדומיין, בדרך כלל החשבון שהרשם אותו
@@ -39,13 +38,13 @@ cargo run --bin iroha -- --config ./defaults/client.toml \
   --intent-file ./payments-domain.intent.json \
   --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml \
+cargo run --bin iroha -- --config ./defaults/client.toml --fee-payer authority \
   app alias setup apply --plan-file ./payments-domain.plan.json
 
-cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list all
+cargo run --bin iroha -- --config ./defaults/client.toml ledger domain list --all
 ```
 
-ה־intent מזהה את `payments.universal`, את מרחב הנתונים המספרי שלו, את הבעלים הקנוני לפי I105, את תקופת רכישת החכירה ואת כוונת המדיניות/התשלום הנוכחית. נקודת הקצה של המתכנן היא `POST /v1/aliases/setup/plan`; התוכנית המתקבלת קשורה לשרשרת, לסמכות, למצב ול־epoch. הסרת domain עדיין משתמשת ב־[`Unregister`](/he/blockchain/instructions.md#un-register).
+הכוונה מזהה את `payments.universal`, את המזהה המספרי של מרחב הנתונים שלו, את הבעלים הקנוני ב־I105, את תקופת רכישת החכירה ואת תנאי ההגנה של הצעת המדיניות והתשלום הנוכחית. נקודת הקצה של המתכנן היא `POST /v1/aliases/setup/plan`; התוכנית המוחזרת קשורה לשרשרת, לסמכות, למצב ולמועד האחרון. להסרת דומיין עדיין משתמשים ב־[`Unregister`](/he/blockchain/instructions.md#un-register).
 
 יצירת או הסרת תחום דורשת רשות ניהול תחום מתאימה תחת מעודד זמן ההפעלה הפעיל. מטא נתוני תחום ניתן לעדכן עם [`SetKeyValue` ו `RemoveKeyValue`](/he/blockchain/instructions.md#setkeyvalue-removekeyvalue) כאשר לרשות יש רשות לשנות את התחום הזה.
 
@@ -58,7 +57,7 @@ curl -fsS 'https://taira.sora.org/v1/domains?limit=20' \
   | jq -r '.items[].id'
 ```
 
-תאר את קטלוג המסלול הציבורי בחזרה לכינויים של חלקי נתונים:
+מפו את קטלוג הנתיבים הציבורי בחזרה לכינויים של מרחבי הנתונים:
 
 ```bash
 curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
@@ -67,24 +66,17 @@ curl -fsS -H 'Accept: application/json' https://taira.sora.org/status \
     | @tsv'
 ```
 
-השתמש בפקודה הראשונה כאשר אפליקציה צריכה לבדוק אם תחום קיים. השתמש בקאטלוג המסלול כאשר אתה צריך לאשר אם חלל נתונים הוא ציבורי, מוגבל או מאחור במסלול המרכזי.
+השתמשו בפקודה הראשונה כאשר יישום צריך לבדוק אם דומיין קיים. השתמשו בקטלוג הנתיבים כדי לבדוק אילו נתיבים קשורים למרחב נתונים, כולל הנראות הציבורית או המוגבלת של כל נתיב ומצב הסנכרון שלו ביחס לנתיב הליבה.
 
-הגדרת דומיין היא כתיבה בתשלום. לפני שניסיים את זה על Taira, שמור את עוזר faucet מ- [קבלת XOR של רשת הבדיקה ב-Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira) as `taira_faucet_claim.py`, תממן את החותם דרך faucet הציבורית, ותקליף מטא-נתוניםלוגיות:
+הגדרת דומיין היא פעולת כתיבה הכרוכה בעמלה. לפני שמנסים אותה ב־Taira, מַמנו את החותם באמצעות התהליך המוכן של שירות חלוקת כספי הניסוי שב־[קבלת XOR לניסוי ב־Taira](/he/get-started/sora-nexus-dataspaces.md#_4-get-testnet-xor-on-taira), ולאחר מכן החילו את התוכנית עם משלם עמלות מפורש. ה־CLI מציג את העמלה המדויקת לפני החתימה:
 
 ```bash
-export TAIRA_ACCOUNT_ID='<TAIRA_I105_ACCOUNT_ID>'
-export TAIRA_FEE_ASSET=6TEAJqbb8oEPmLncoNiMRbLEK6tw
-
-python3 taira_faucet_claim.py "$TAIRA_ACCOUNT_ID"
-printf '{"gas_asset_id":"%s"}\n' "$TAIRA_FEE_ASSET" > taira.tx-metadata.json
-
 iroha --config ./taira.client.toml \
   app alias setup plan \
   --intent-file ./taira-domain.intent.json \
   --plan-file ./taira-domain.plan.json
 
-iroha --config ./taira.client.toml \
-  --metadata ./taira.tx-metadata.json \
+iroha --config ./taira.client.toml --fee-payer authority \
   app alias setup apply --plan-file ./taira-domain.plan.json
 ```
 

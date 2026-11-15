@@ -5,7 +5,6 @@ translation_source_hash: d40a0298466fdcbd30a9fdff979887b033e069646fcf3e437527d4d
 translation_status: machine-validated
 translation_engine: nllb-200-ct2
 ---
-
 # အဖြစ်အပျက် trigger နမူနာ {#event-trigger-example}
 
 ဤဥပမာသည် Iroha 3 ဒေတာမော်ဒယ်တွင် single protocol-standard domainless account ID များနှင့် projected asset definitions များကို အသုံးပြုသည်။
@@ -49,7 +48,7 @@ Transfer(
 )
 ```
 
-SDK ၏ လက်ရှိရိုက်ကူးထားသော builders များကို နောက်ဆုံး ငွေချေးမှု အသုံးဝင်ဝန်ဆောင်မှုအတွက်အသုံးပြုပါ။ trigger code တွင် hard-coding စာသား ID အဟောင်းများကိုရှောင်ရှားပါ; စီမံခန့်ခွဲနိုင်သော ID ကို တည်ဆောက်မတိုင်မီ single protocol-standard ID များကိုစစ်ဆေးခြင်း သို့မဟုတ် မေးမြန်းခြင်း။
+နောက်ဆုံး transaction payload အတွက် SDK ၏ လက်ရှိ အမျိုးအစားသတ်မှတ်ထားသော builder များကို သုံးပါ။ Trigger ကုဒ်ထဲတွင် စာသား ID အဟောင်းများကို ပုံသေမထည့်ပါနှင့်။ Executable ကို မတည်ဆောက်မီ စံ ID များကို parse လုပ်ပါ သို့မဟုတ် query ဖြင့် ရယူပါ။
 
 ## 4. အဖြစ်အပျက် filter ကို သတ်မှတ်ပါ။ {#_4-define-the-event-filter}
 
@@ -62,7 +61,7 @@ EventFilterBox::Data(
 )
 ```
 
-`AcceptAll` Filter ကို Debug လုပ်ဖို့ အသုံးဝင်ပေမဲ့ လိုက်ဖက်တဲ့ ဖြစ်ရပ်တိုင်းက trigger evaluation ရဲ့ ကုန်ကျစရိတ်ကို ပေးပါတယ်။
+Filter များကို လက်တွေ့ဖြစ်နိုင်သမျှ တိကျစွာ ကန့်သတ်ပါ။ `AcceptAll` filter သည် ပြဿနာရှာဖွေရန် အသုံးဝင်သော်လည်း ကိုက်ညီသော ဖြစ်ရပ်တိုင်းအတွက် trigger အကဲဖြတ်လုပ်ဆောင်မှု ကုန်ကျစရိတ် ဖြစ်စေသည်။
 
 ## (၅) trigger ကို မှတ်ပုံတင်ပါ။ {#_5-register-the-trigger}
 
@@ -84,6 +83,6 @@ Block တစ်ခုကို လုပ်ဆောင်တဲ့အခါ:
 1. ပုံမှန် ငွေပေးချေမှု ညွှန်ကြားချက်တွေကို အရင်လုပ်ပါ။
 2. အဲဒီ ညွှန်ကြားချက်တွေကနေ ထုတ်တဲ့ အချက်အလက်တွေကို စုစည်းပါတယ်။
 3. ဒီဖြစ်ရပ်တွေနဲ့ ဆင်တူတဲ့ စစ်ဆေးချက်ရှိတဲ့ trigger တွေကို အစီအစဉ်ချထားပါတယ်။
-4. trigger-produced effects တွေကို block execution software processing workflow မှာ ထိန်းချုပ်ထားပြီး Restricted recursive trigger execution ကို မပြုလုပ်ဘဲ ပြုပြင်ပေးပါတယ်။
+4. Trigger ကြောင့် ဖြစ်ပေါ်သော အကျိုးသက်ရောက်မှုများကို ဘလော့ခ်လုပ်ဆောင်မှု အဆင့်ဆင့်အတွင်း ကိုင်တွယ်ပြီး အကန့်အသတ်မရှိ trigger ကို ထပ်ဆင့်ပြန်ခေါ်လုပ်ဆောင်ခြင်းကို ခွင့်မပြုပါ။
 
 trigger တစ်ခုမှာ `Repeats::Exactly(n)` ကိုသုံးတယ်ဆိုရင် count ပြီးသွားတဲ့အခါ trigger အသစ်တစ်ခုကို မှတ်တမ်းတင်ပြီး အလားတူ ပြုမူမှုကို ထပ်လုပ်ဖို့လိုပါတယ်။

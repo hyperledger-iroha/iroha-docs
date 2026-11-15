@@ -1,11 +1,10 @@
 ---
 translation_locale: es
 translation_source: /reference/iroha3d-cli.md
-translation_source_hash: bf4a63b05a149f0c935190b63cdb838b0a0265e99baedfc9b5bf00a9e621b108
+translation_source_hash: 846370e45fe0e0d605016d6722b1d50c39981f954c7d9040b87fc385eb12ac68
 translation_status: machine-validated
-translation_engine: bing-translator-llm
+translation_engine: bing-translator-llm+reviewed-delta
 ---
-
 # `iroha3d` CLI {#iroha3d-cli}
 
 `iroha3d` es el daemon de par de red estándar Iroha 3. El paquete Cargo se llama `irohad`, así que invoque el binario desde una copia de trabajo del código fuente con:
@@ -22,7 +21,7 @@ iroha3d_taira --sora \
   --check-config
 ```
 
-Use el formulario operado por el operador del perfil canónico Taira; la plantilla registrada aún contiene marcadores de posición de implementación. No sustituya los ajustes genéricos Nexus o de producción SoraFS al probar contra Taira.
+Utilice la versión del perfil canónico de Taira preparada por el operador; la plantilla incluida en el repositorio aún contiene marcadores de posición del despliegue. No la sustituya por la configuración genérica de SORA Nexus o la de producción de SoraFS al realizar pruebas en Taira.
 
 ## `--config` {#arg-config}
 
@@ -41,14 +40,39 @@ Manifiesto técnico opcional del génesis de la blockchain JSON utilizado para l
 
 Valide la configuración resuelta y el material génesis de blockchain disponible, luego salga sin vincular los sockets de red.
 
-## Sellos de calificación de Kagemusha {#kagemusha-qualification-seals}
+## `--json` {#arg-json}
 
-Estas opciones de ruta de archivo requieren `--check-config` y realizan la calificación completa de Kagemusha antes de escribir un sello canónico:
+- **Tipo:** indicador
+- **Requiere:** `--check-config`
 
-- `--write-kagemusha-catalog-qualification-seal <PATH>` califica el catálogo.
-- `--write-kagemusha-validator-qualification-seal <PATH>` califica al validador local en relación con la reserva de promoción firmada configurada.
+Imprime los valores de compatibilidad de esta compilación y configuración como un único objeto JSON de Norito, en lugar de la línea `Ready` o `Pending`.
 
-Las dos opciones de sello entran en conflicto entre sí.
+## `--check-storage` {#arg-check-storage}
+
+- **Tipo:** indicador
+- **En conflicto con:** `--check-config`
+
+Inspecciona en modo de solo lectura el almacén Kura y la instantánea más reciente del nodo detenido con los decodificadores de esta compilación, imprime el resultado como un único objeto JSON de Norito y termina con un código distinto de cero si falla. La comprobación toma el bloqueo de la raíz del almacén Kura, por lo que rechaza un almacén que pertenezca a un nodo en ejecución. Nunca modifica el almacén ni abre secretos exclusivos de la ejecución.
+
+## `--check-replay` {#arg-check-replay}
+
+- **Tipo:** indicador
+- **En conflicto con:** `--check-config`, `--check-storage`
+
+Reejecuta una copia del almacén del nodo detenido con esta compilación e imprime el resultado como un único objeto JSON de Norito. El comando copia los bloques a un directorio temporal, restaura allí la instantánea más reciente o vuelve a ejecutar el génesis firmado y reejecuta todos los bloques posteriores. Termina con un código distinto de cero si un bloque no reproduce su resultado certificado o falta el cuerpo de un bloque necesario; nunca escribe en el almacén ni abre secretos exclusivos de la ejecución.
+
+## `--require-genesis-inrou-deployment-authority` {#arg-require-genesis-inrou-deployment-authority}
+
+- **Tipo:** ID de cuenta
+- **Requiere:** `--check-config`
+
+Durante la validación sin conexión, exige que esta cuenta registrada conserve la autoridad de despliegue de SoraCloud después de ejecutar el génesis firmado exacto.
+
+## `--sumeragi-assert-fresh-key` {#arg-sumeragi-assert-fresh-key}
+
+- **Tipo:** indicador
+
+Afirma, solo para este arranque, que las claves de consenso del nodo nunca han firmado para esta cadena. Sumeragi conserva un registro de seguridad por clave y no firma nada sin él hasta tener pruebas de que el registro no se ha perdido. Proporcione este indicador una sola vez, en el primer arranque de una clave nueva, y nunca después de una pérdida de datos.
 
 ## `--trace-config` {#arg-trace-config}
 
@@ -83,7 +107,7 @@ Anular el idioma del sistema usado para los mensajes del demonio.
 - Tipo: bandera
 - Entorno: `IROHA_SORA_PROFILE`
 
-Habilite el perfil Sora Nexus utilizado por SoraFS, el apretón de manos SoraNet y el consenso de múltiples carriles. El lanzador Taira siempre se invoca con esta bandera.
+Habilita el perfil de SORA Nexus utilizado por SoraFS, la negociación de SoraNet y el consenso de múltiples carriles. El lanzador de Taira siempre se invoca con este indicador.
 
 ## FastPQ anula {#fastpq-overrides}
 
@@ -105,7 +129,7 @@ iroha3d --fastpq-execution-mode gpu \
 
 ## Ayuda generada {#generated-help}
 
-El resumen de opciones anterior se verifica contra las definiciones de argumentos actuales `iroha3d`. La vista de datos de ayuda generada y registrada en el sistema no se muestra intencionalmente mientras su estado de procedencia esté pendiente. Para inspeccionar la ayuda exacta para su verificación, ejecute:
+El resumen anterior de opciones sigue las definiciones de argumentos de `iroha3d` en el commit fijado de Iroha. Para consultar la ayuda exacta de su copia del código, ejecute:
 
 ```shell
 cargo run --locked -p irohad --bin iroha3d -- --help
