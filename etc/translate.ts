@@ -1893,8 +1893,6 @@ const CURATED_EXACT_TRANSLATIONS: Readonly<Record<string, Readonly<Record<string
       '- Проверьте процедуры восстановления учётных записей до запуска в промышленной среде.',
     'When a Python helper is not available, feed canonical data-model `InstructionBox` JSON into `Instruction.from_json`. This is the recommended path for `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, peer/role/NFT registration, and non-trigger unregister variants until those helpers are typed.':
       'Если вспомогательной функции Python нет, передайте канонический JSON модели данных `InstructionBox` в `Instruction.from_json`. Это рекомендуемый способ для `Grant`, `Revoke`, `SetParameter`, `Log`, `Custom`, `Upgrade`, регистрации пиров, ролей и NFT, а также вариантов отмены регистрации, не связанных с триггерами, пока эти вспомогательные функции не получат типизированный интерфейс.',
-    '- a single-delta Poseidon digest, when present, must match the transcript preimage':
-      '- дайджест Poseidon с одной дельтой, если он присутствует, должен совпадать с прообразом транскрипта',
     '| `GET /v1/identifiers/receipts/{receipt_hash}` | Look up a persisted identifier claim by receipt hash for audit and support tooling. |':
       '| `GET /v1/identifiers/receipts/{receipt_hash}` | Найти сохранённое утверждение об идентификаторе по хэшу подтверждения для аудита и средств поддержки. |',
     '| [Connect to Taira](./connect-to-taira.md)                             | Write-ready  | A funded I105 signer, live fee asset, and applied canary transaction |':

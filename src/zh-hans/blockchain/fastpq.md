@@ -1,17 +1,17 @@
 ---
 translation_locale: zh-hans
 translation_source: /blockchain/fastpq.md
-translation_source_hash: 8f0684c96205d4cbc6a4f913ac57a7ff1aa6fec944e28d70def2663a56fb2ab7
+translation_source_hash: 98c258ab99bcc7d7d51b69ddd26e39b19ef4eb14d53001825f3737144d68f0e5
 translation_status: machine-validated
 translation_engine: nllb-200-ct2+reviewed-delta
 ---
 # FastPQ {#fastpq}
 
-FastPQ 是 Iroha 对选定的执行效果的 STARK 证明路径.它不取代正常的交易执行或共识.通过 ISI,IVM 和 Sumeragi 进行正常运行; FastPQ 消耗了确定性执行证明,并将支持的效果转化为证明批次.
+FastPQ 是 Iroha 针对选定执行效果的 STARK 证明路径。它不会取代常规的交易执行或共识。交易仍照常经由 ISI、IVM 和 Sumeragi 执行；FastPQ 随后依据区块执行所捕获的源记录，证明受支持的效果。
 
 当前的主机集成有两条主要路径：
 
-- 在区块执行期间记录的透明数值资产转移
+- 已最终确定区块中的数值资产效果，由节点的证明器通道证明
 - SORA Nexus AXT 证明封装，其 `fastpq_binding` 携带 FastPQ 绑定
 
 ## 转移证人的路径 {#transfer-witness-path}
@@ -23,199 +23,141 @@ FastPQ 是 Iroha 对选定的执行效果的 STARK 证明路径.它不取代正�
 - 作为批量哈希所使用的交易入口点哈希
 - 从提交账户中获取的授权主体信息
 - 一个多尔塔转录的Poseidon摘要
+- 发送者和接收者余额的稀疏 Merkle 更新见证
 
 批量转移使用多个海域的转录. 在这种情况下,一个海域的波西登摘要是缺失的.
 
-在区块完成时, Iroha 将这些转录按输入点哈希组分.执行证人然后携带原始转录捆绑和为检测器准备的 FastPQ 过渡批次.
+区块执行会按发出转录的执行调用对转录进行分组，并将其与区块的 FastPQ 源记录一起保存。在 AXT 转移陈述中，每个转移增量都会变为两个状态转换行：
 
-每个转移三角形变成两个过渡行:
+| 行 | 键 | 前值 | 后值 |
+| --------------- | --------------------------------------------------------------------- | ----------------------- | ---------------------- |
+| 发送者借记 | 对应资产定义和来源账户的 `FastpqBalanceKeyV1` | 发送者变更前余额 | 发送者变更后余额 |
+| 接收者贷记 | 对应资产定义和目标账户的 `FastpqBalanceKeyV1` | 接收者变更前余额 | 接收者变更后余额 |
 
-|排列|关键形状|预估值|后值|
-| --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-|发送人借款|`asset/<asset-definition>/<source-account>`|之前的发送人余额|之后的发送人余额|
-|收件人信贷|`asset/<asset-definition>/<destination-account>`|之前的收件人余额|接收者余额之后|
+每个键都是 `FastpqBalanceKeyV1` 的规范 Norito 帧，由 `transfer_balance_key` 根据带类型的资产定义和无域账户构建。账户别名和显示形式绝不会作为键材料。
 
-数值将正常化为整数目击单位.如果不能在选定的十分数尺度中表示为非负的 `u64`,则对 FastPQ 批量来说,一个值被拒绝
+## 执行效果 {#execution-effects}
+
+证明器通道证明完整的执行效果陈述。每个陈述按执行顺序涵盖一个执行条目的全部数量效果：
+
+| 效果 | 更新的值 | 规则 |
+| -------- | ------------------------------ | ------------------------------------------------------------------- |
+| 转移 | 来源余额和目标余额 | 金额在同一资产的两个余额之间转移 |
+| 铸造 | 余额和供应量 | 两者增加相同的非零数量 |
+| 销毁 | 余额和供应量 | 两者减少相同的数量 |
+| 退役 | 供应量和生命周期 | 供应量保持为零，资产的存在值由 1 变为 0 |
+
+供应量绝不会低于任一余额。每个键由域分隔标签 `iroha:fastpq:execution-quantity-key:v1`、一个 NUL 字节，以及 `FastpqExecutionQuantityKeyV1` 余额键、供应量键或生命周期键的 Norito 编码组成。角色授予、角色撤销及其他操作不会被证明。
+
+执行效果陈述和 AXT 转移陈述中的值是按资产小数位数表示的精确非负整数单位（`FastpqQuantityUnits`），因此不受 `u64` 的限制。陈述构建会拒绝小数位数不匹配、负差值以及任何算术或排序上的不一致；它绝不会修复公开值。
 
 ## 公共输入 {#public-inputs}
 
-每个 FastPQ 过渡批量都包含了将证明绑定到区块和执行环境的公开输入:
+每个 FastPQ 陈述都携带公共输入，用于将证明绑定到区块和执行上下文：
 
 |输入|这意味着|
-| ------------- | --------------------------------------------------------------- |
-| `dsid` | 以小端序字节编码的数据空间标识符 |
-|`slot`|区块创建时间转换为纳秒.|
-|`old_root`|来自执行证人的父母状态根源|
-|`new_root`|从执行证人中得到的后状态根源|
-|`perm_root`|西顿对活跃角色许可的承诺|
-|`tx_set_hash`|按顺序的交易和时间触发入口点 hashs|
+| ------------- | ------------------------------------------------------------------------------------ |
+| `dsid` | 数据空间标识符：其 `u64` 值按小端序排列，后接八个零字节 |
+| `slot` | 以纳秒表示的区块创建时间，精度为毫秒 |
+| `old_root` | 应用陈述前，所涉键的稀疏 Merkle 树的根 |
+| `new_root` | 应用陈述后，所涉键的稀疏 Merkle 树的根 |
+| `perm_root` | 对执行状态中角色权限表的承诺 |
+| `tx_set_hash` | 对区块内按区块顺序排列的交易传输编码的承诺 |
 
-主机对这些批次使用首个发布版本中唯一的参数集 `fastpq-state-transition-stark-v1`。
+`old_root` 和 `new_root` 仅涵盖陈述所涉及的键。它们不是持久化的世界状态根。
+
+`perm_root` 是 Iroha 的 32 字节 `Hash`，其输入为域分隔标签 `fastpq:v1:permission-table:blake2b-256`、以小端序 `u64` 表示的条目数，以及排序后的各条目。每个条目由角色 ID 的哈希、该角色某项权限的哈希，以及该权限以小端序 `u64` 表示的纪元组成。若表为空，该值为 32 个零字节。这仅是角色与权限上下文；它不证明账户成员资格或授权。
+
+`tx_set_hash` 是 Iroha 的 `Hash`，其输入为域分隔标签 `iroha:axt:ordered-transaction-wire-set:v1`、一个 NUL 字节、交易数量，以及按区块顺序排列的每笔交易的传输编码长度及其完整传输编码字节。数量和长度均为小端序 `u64` 值。交易不会被排序或去重，签名保留在原像中。
+
+Iroha 的 `Hash` 是将最后一个字节的最低位置为 1 的 Blake2b-256。陈述还携带一个排序哈希，以及其完整的规范行和源事实；证明会绑定上述所有内容。
 
 ## 证明协议 {#proof-protocol}
 
-规范转账工件是基于 Goldilocks 域及其 4 次扩域的掩码 DEEP 证明。其精确关系、转录和查询几何结构在固定版本的 [FastPQ DEEP 协议契约](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_deep_protocol_contract.md)中定义。
+规范 FastPQ 工件是基于 Goldilocks 域及其 4 次扩域的掩码 DEEP 证明。其精确关系、转录和查询几何结构在固定版本的 [FastPQ DEEP 协议契约](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_deep_protocol_contract.md)中定义。
 
-## 箴言所检查的内容 {#what-the-prover-checks}
+调用方选择普通陈述或 AXT 陈述以及资源限制，但不选择电路、验证密钥、查询数量或转录内部细节。普通路径为 `offline_compact::prove_quantity_ordinary_artifact`；AXT 路径为 `offline_compact::prove_quantity_axt_artifact`，`prove_axt_bound_batch` 会将其封装，用于已绑定的批次。透明的 `Prover`、`Proof` 和重放 `verify` API 仅存在于测试和 `dev-tools` 构建中。
 
-在构建跟踪之前, FastPQ 检测器通过过渡键,操作级别和插入序来定制批量顺序.传输行还需要转录元数据.具有转录行但没有转录的批量是无效的.
+## 证明检查的内容 {#what-the-proof-checks}
 
-转移记录时,检查人员的检查包括:
+在进行任何私有处理之前，生产者会先准备公开陈述。它会检查账户、金额、数值、出现次数、稳定的键顺序和键分配，并拒绝公开事实不一致的陈述。随后，密封关系会针对每个分段中的一次效果或转移出现，证明两次完整的 32 层稀疏 Merkle 更新。默认限制允许每个工件最多包含两个分段。
 
-- 发送者余额不得发生下溢
-- `sender_after` 必须等于 `sender_before - amount`
-- `receiver_after` 必须等于 `receiver_before + amount`
-- 转录必须涵盖分批中的每一行转移
-- 一个多尔塔波西登摘要,当存在时,必须与转录前图相匹配
-- 条件是稀疏的Merkle证明必须被解码为版本 1;缺失的路径由确定性合成证明填充
+每条迹有 65,536 行。生产者对 301 个私有列生成承诺，验证器则独立重建 41 个公开列。新的密码学熵会对迹列、商多项式以及一个独立承诺的组合多项式进行掩码。商的除法必须能够整除。生产者在返回工件之前，会先验证自己的工件。
 
-追踪包含转移,铸造,销毁,角色授予,角色撤销,元数据集和权限搜索行的选择列. 数字操作行还载有签名的分数,每个资产的分数以及供应计数.
+公开陈述中的值不会被隐藏。某个操作出现在传输格式中，并不意味着它会被接受：只有上文列出的效果具备证明关系，而 AXT 陈述只接受有见证的转移。
 
 ## 经验者林 {#prover-lane}
 
-`iroha3d`在启动时启动 FastPQ 检查路径,如果可以初始化检查后端.该路径是一个带有界限的队列的背景任务.一个区块生成执行证人之后,提交路径会提交包含区块哈希,高度,视图和证人的检查路程.
+除非 Kura 以 `init_mode = "fast"` 启动，否则 `iroha3d` 会在节点启动期间、Torii 开始接受提交之前，启动一个 FastPQ 证明器工作器。工作器在后台初始化其后端，因此即使初始化失败，启动过程也会继续；此时该通道保持禁用。
 
-如果通道没有运行或排队满,工作将被跳过,正常的区块处理继续.这意味着背景检查通道不是一个交易录取或共识门.它是一个已经执行的状态上的证明生产路径.
+工作器会轮询节点的已最终确定状态和 Kura 存储。对于每个已最终确定的区块，它会获取经过认证的源（若源未存储，则重放原生执行），并使用普通路径逐一证明该区块的完整陈述。重启后，它会依据固定的已签名创世区块重建经过认证的前缀。它将每个工件存入 Kura 有上限的 FastPQ 存储区。已存储的工件仅是一份通告：在继续之前，生产者会认证源并再次验证该工件。
 
-通道构建一个具有:
-
-```text
-parameter = "fastpq-state-transition-stark-v1"
-execution_mode = cpu | gpu
-poseidon_mode = cpu | gpu
-```
-
-两个设置均默认为 `cpu`。选择 `gpu` 是显式的 fail-closed 请求：如果未编译 GPU 支持，或所请求的 GPU 后端未通过预检，证明器通道将保持禁用。首个版本没有 `auto` 值，也不会从请求的 GPU 模式回退到 CPU。
+证明生成仅在节点本地进行。它不是交易准入或共识的关卡：执行、提交和最终性都不会等待证明。可重试的失败会将该工作留待之后的尝试，并且每个进程只运行一个生产者。
 
 ## 验证 {#verification}
 
-FastPQ 证明验证重建了规范批量承诺,并重复了公开转录.验证器检查了协议版本,参数设置版本,重播限制,追踪承诺,公开输入,采样的Merkle打开口,AIR 打开口和 FRI 查询链.
+验证器依据从其自身经过认证的陈述中推导出的预期来检查工件，绝不依据被检查的工件本身。验证过程在限制范围内对每个分段只解码一次，在域外点处只对 AIR 求值一次，依据已承诺的根认证每个已打开的行、商叶节点和 FRI 纤维以及完整的 FRI 末层，并执行最多 385 次折叠检查。它不会构建任何私有见证、迹或完整的低度扩展。
 
-默认重播限制包括:
+验证成功即确立了与调用方预期的一致性。它不授予任何执行权限、源最终性、重放准入或 AXT 支出授权。
+
+来自 `offline_compact::VerificationLimits` 的默认限制（普通路径也使用这些限制）：
 
 |限制|默认方式|
-| ------------------ | ------: |
-|过渡行|     256 |
-|批量有效载荷大小|256 KiB |
-|FRI 层|      16 |
-|查询开放时间|     128 |
+| ------------------------------- | ------------: |
+| 每个工件的分段数 | 2 |
+| 工件传输编码字节数 | 1 MiB |
+| 子证明帧 | 500,084 字节 |
+| 所有分段合计的陈述字节数 | 512 KiB |
+| 每个分段的查询数 | 77 |
+| 所有分段合计的查询数 | 154 |
+
+节点通道还会用 `zk.fastpq.proof_sidecar_max_bytes` 和 Kura 的 FastPQ 对象上限进一步限制工件传输编码字节数。在解码之前，AXT 证明数据块最多可容纳 2 MiB，其内嵌的 FastPQ 有效载荷最多 1 MiB。
 
 ## SORA Nexus AXT 证明封装 {#sora-nexus-axt-proof-envelopes}
 
 SORA Nexus AXT 证明封装可以嵌入 `AxtFastpqBinding`。AXT 封装的区块校验、IVM 主机的 AXT 封装检查以及 `RegisterVerifiedFeeSponsorVaultAllocation` 都要求封装中存在 `fastpq_binding`，会将其与预期声明进行核对，并对封装及其内嵌证明调用 FastPQ 验证器。缺少绑定或验证失败都会导致该操作被拒绝。
 
-### AXT 绑定数学 {#axt-binding-math}
+验证器只接受有见证的转移声明，即 `tx_predicate` 和 `value_conservation`。`authorization` 和 `compliance` 声明类型只是不透明地承载效果，不具备转移关系，验证会拒绝它们。区块校验也会拒绝携带远程支出的封装，IVM 主机则拒绝独立的 `AXT_VERIFY_DS_PROOF` 准入。在能够认证已最终确定的源根、交易集合和发行方授权之前，这两者都保持不可用。
 
-对于 SORA Nexus AXT 封装，证明重放前会先规范化 `AxtFastpqBinding`。空的 `parameter`、`verifier_id` 或 `verifier_version` 值会被拒绝；验证器 ID 必须为 `fastpq`，版本必须为 `v1`，而仍在维护的 AXT 流程使用 `fastpq-state-transition-stark-v1`。声明类型会去除首尾空白并转换为小写。
+### AXT 绑定 {#axt-binding}
 
-AXT FastPQ 公共输入是确定性字节哈希:
+对于 SORA Nexus AXT 封装，`AxtFastpqBinding` 会在证明和验证之前进行规范化：
+
+- `parameter`、`source_dataspace`、`source_receipt_id` 和 `verified_effect_type` 会去除首尾空白，且不得为空
+- `source_tx_commitment`、`claim_digest`、`witness_commitment` 和 `policy_commitment` 会转换为小写，且必须是 32 字节的十六进制编码
+- `verifier_id` 必须为 `fastpq`，`verifier_version` 必须为 `v1`
+- `claim_type` 会去除首尾空白并转换为小写，且必须是上述四种声明类型之一
+- `target_dsids` 必须非空且严格升序
+- `remote_spend_intent_commitments` 必须严格升序，且不超过首个发布版本的上限
+
+验证要求严格的规范形式；它不会代替调用方对绑定进行规范化。
+
+绑定附加到区块执行已捕获的批次上；它不会创建状态转换。该批次必须包含至少一个状态转换，并指明绑定的参数集 `fastpq-state-transition-stark-v1`。其 `entry_hash` 元数据必须等于 `source_tx_commitment`，其公共 `dsid` 必须编码绑定的 `source_dsid`。转移声明必须携带至少一个转移转录，且每个转录的批次哈希都必须等于 `source_tx_commitment`。
+
+随后，绑定过程会将与证明绑定的元数据写入批次：规范绑定、其四个摘要、`source_receipt_id`、`target_dsids`、`verified_effect_type`、非空的 `corridor`、非零的清单根、可选的 DA 承诺、可选的非零承诺金额，以及到期槽位（为零表示不会到期）。最后，它会对绑定和不含封印的批次添加一个封印：
 
 $$
-\operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
-$$
-
-$$
-\operatorname{slot}=\operatorname{le64}(\operatorname{source\_tx\_commitment}[0..8])
-$$
-
-$$
-\operatorname{old\_root} =
+\operatorname{seal} =
 \operatorname{Hash}(
-\texttt{fastpq-json:old\_root}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{policy\_commitment}\|
-\operatorname{effect\_type}
+\texttt{fastpq:axt:batch-seal:v1}\|
+E(\operatorname{binding})\|
+E(\operatorname{batch})
 )
 $$
 
+其中 $E$ 表示规范 Norito 编码。在绑定之后更改批次、绑定或与证明绑定的值，会导致验证失败。验证器还会将封装的数据空间、清单根、DA 承诺、承诺金额和到期时间与证明绑定的值进行比较。
+
+经过验证的封装会报告其已证明的 `old_root`、`new_root` 和 `tx_set_hash`，以及一个陈述摘要。该摘要涵盖以小端序 `u64` 表示的封装数据空间、其清单根、DA 承诺（如存在）、绑定以及陈述：
+
 $$
-\operatorname{new\_root} =
+\operatorname{statement\_digest} =
 \operatorname{Hash}(
-\texttt{fastpq-json:new\_root}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}\|
-\operatorname{effect\_type}
-)
-$$
-
-$$
-\operatorname{perm\_root} =
-\operatorname{Hash}(
-\texttt{fastpq-json:perm\_root}\|
-\operatorname{policy\_commitment}\|
-\operatorname{verifier\_id}\|
-\operatorname{verifier\_version}
-)
-$$
-
-$$
-\operatorname{tx\_set\_hash} =
-\operatorname{Hash}(
-\texttt{fastpq-json:tx\_set\_hash}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}\|
-\operatorname{witness\_commitment}
-)
-$$
-
-AXT 过渡键是:
-
-$$
-\operatorname{key}(\operatorname{prefix},x,y)=
-\operatorname{prefix}\|\texttt{/}\|x\|\texttt{/}\|y
-$$
-
-在 `authorization` 索赔中插入了授予资金的行:
-
-$$
-\operatorname{role\_id}=\operatorname{claim\_digest}
-$$
-
-$$
-\operatorname{permission\_id}=\operatorname{witness\_commitment}
-$$
-
-$$
-\operatorname{epoch}=
-\operatorname{le64}(\operatorname{policy\_commitment}[0..8])
-$$
-
-以及绑定授权策略的元数据行。`compliance` 声明插入两行元数据：一行对应策略，另一行对应目标数据空间。
-
-对于 `tx_predicate` 和 `value_conservation`,当结合物包含正源或目的量时,使用明确效果数值.否则代码将获得有限的确定性数值:
-
-$$
-\operatorname{bounded}(d,\min,\operatorname{span})
-=
-\min + (\operatorname{le64}(d[0..8])\bmod\max(\operatorname{span},1))
-$$
-
-然后使用相同的转移方程:
-
-$$
-\operatorname{sender\_after}=\operatorname{sender\_before}-a
-$$
-
-$$
-\operatorname{receiver\_after}=\operatorname{receiver\_before}+a
-$$
-
-合成发送者和接收者账户ID由关键种子生成:
-
-$$
-\operatorname{seed}=
-\operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
-$$
-
-转让批量哈希是:
-
-$$
-\operatorname{batch\_hash} =
-\operatorname{Hash}(
-\operatorname{label}\|
-\operatorname{corridor}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}
+\texttt{fastpq:axt:statement:v1}\|
+\operatorname{le64}(\operatorname{dsid})\|
+\operatorname{manifest\_root}\|
+\operatorname{da\_commitment}\|
+E(\operatorname{binding})\|
+E(\operatorname{statement})
 )
 $$
 
@@ -228,7 +170,19 @@ $$
 
 ## 参数组件 {#parameter-sets}
 
-首个发布版本恰好只有一个规范参数集：`fastpq-state-transition-stark-v1`。它的目标是在 Goldilocks 域及其 4 次扩域（`X^4 - 7`）上提供 128 位安全性，并使用 `2^16` 的迹大小、`2^19` 的 LDE 大小、FRI 元数 2、扩展因子 8、最多 17 次归约以及 136 次查询。
+首个发布版本恰好只有一个参数集：`fastpq-state-transition-stark-v1`。批次和 AXT 绑定都会指明该参数集，AXT 证明会拒绝任何其他名称。DEEP 协议契约固定了已发布工件的几何结构：
+
+| 项目 | 值 |
+| -------------------------- | ----------------------------------------------------- |
+| 域 | Goldilocks `p = 2^64 - 2^32 + 1`，扩域 `u^4 - 7` |
+| 迹行数 | 65,536 |
+| 求值行数 | 8,388,608（扩展因子 128） |
+| FRI 折叠元数 | `[16, 16, 8, 8, 4]` |
+| 查询 | 77 个不同位置 |
+| 研磨 | 无 |
+| 承诺与转录 | SHA3-256 和 SHAKE256 |
+
+目前尚无生产环境资格认定。针对该构造的可靠性、隐藏性和 Fiat-Shamir 的独立审查尚未完成，固定版本的 [生产就绪记录](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_production_readiness.md) 也未提出任何按工作量归一化的安全性主张。
 
 ## 配置 {#configuration}
 
@@ -238,6 +192,8 @@ FastPQ 配置嵌入`zk.fastpq`下方.
 [zk.fastpq]
 execution_mode = "cpu"
 poseidon_mode = "cpu"
+proof_sidecar_queue_cap = 1024
+proof_sidecar_max_retries = 16
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -251,9 +207,20 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
+
+[zk.fastpq.producer]
+poll_interval_ms = 1000
+step_timeout_ms = 30000
+max_native_steps = 16
+max_source_entries = 65536
+max_source_statements = 16384
 ```
 
-同样的执行和远程测量标签可以在 `iroha3d` 中取消:
+两种模式都只接受 `cpu` 或 `gpu`，默认值为 `cpu`。将任一模式设为 `gpu` 后，证明哈希计算就必须使用设备：在 macOS 上为 Metal，在其他平台上为 CUDA。如果未编译 GPU 支持，或设备未通过预检，证明器通道将保持禁用；它绝不会回退到 CPU。设备负责批量执行 Merkle 叶节点和下层父节点的哈希计算；转录、有序的上层树和迹运算仍在 CPU 上进行。设置 `poseidon_mode = "gpu"` 时，如果另一项预检通过，节点还会在 GPU 上批量计算转录的 Poseidon 摘要；否则在 CPU 上计算。
+
+`proof_sidecar_max_bytes` 限制节点持久化并验证的已编码工件大小，默认值为证明器的最大证明帧。`producer` 表约束每次证明尝试：其轮询间隔、时间预算、原生重放步数（1 到 64），以及在分配之前接受的源条目和陈述。`metal_queue_fanout` 接受 1 到 4。
+
+模式和遥测标签设置也可以通过 `iroha3d` 覆盖：
 
 ```shell
 iroha3d --fastpq-execution-mode gpu
@@ -263,32 +230,26 @@ iroha3d --fastpq-chip-family m4
 iroha3d --fastpq-gpu-kind integrated
 ```
 
-环境变量也支持配置字段. FastPQ 特定的变量包括:
-
-- `FASTPQ_EXECUTION_MODE`
-- `FASTPQ_POSEIDON_MODE`
-- `FASTPQ_DEVICE_CLASS`
-- `FASTPQ_CHIP_FAMILY`
-- `FASTPQ_GPU_KIND`
-- `FASTPQ_METAL_QUEUE_FANOUT`
-- `FASTPQ_METAL_COLUMN_THRESHOLD`
-- `FASTPQ_METAL_MAX_IN_FLIGHT`
-- `FASTPQ_METAL_THREADGROUP`
-- `FASTPQ_METAL_TRACE`
-- `FASTPQ_DEBUG_METAL_ENUM`
+`iroha3d` 在读取配置文件时会忽略环境变量，因此请在 TOML 中或使用上述选项设置这些值。
 
 ## 计量 {#metrics}
 
-在启用远程测量时, FastPQ 将对后端选择和金属运行时行为进行出口:
+启用遥测后，FastPQ 会导出有关后端选择、证明持久化和 Metal 运行时行为的指标：
 
 |计量|这意味着|
-| --------------------------------- | --------------------------------------------------------------------------- |
+| ----------------------------------- | --------------------------------------------------------------------------- |
 |`fastpq_execution_mode_total`|根据后端和设备标签的要求和解决执行模式 |
 |`fastpq_poseidon_pipeline_total`|索取和解决了Poseidon管道的路径|
+| `fastpq_gpu_disable_total` | 按加速器、原因和设备标签统计的 GPU 加速器禁用事件 |
+| `fastpq_gpu_parity_failure_total` | 按加速器、原因和设备标签统计的抽样 GPU 一致性校验失败 |
+| `fastpq_proof_sidecar_queue_depth` | 排队中的 FastPQ 证明辅助记录附件 |
+| `fastpq_proof_sidecar_events_total` | 按事件统计的证明辅助记录持久化事件 |
 |`fastpq_metal_queue_depth`|Metal 队列限制、最大并发数、调度数量和采样窗口|
 |`fastpq_metal_queue_ratio`|金属队列繁忙和重叠比例 |
 |`fastpq_zero_fill_duration_ms`|为金属运行提供零填充持续时间 |
 |`fastpq_zero_fill_bandwidth_gbps`|产生的零填充带宽|
+
+模式、GPU、Metal 队列和零填充指标需要 `extended` 或 `full` 遥测配置级别，并且在 Kura 以 `init_mode = "fast"` 启动时不会导出。Metal 队列和零填充指标还需要 macOS 上的 `fastpq-gpu` 构建。
 
 在 [ 性能和指标](/zh-hans/guide/advanced/metrics.md)中列出的共识和队列信号中使用一般的绩效分类.
 
@@ -297,6 +258,10 @@ iroha3d --fastpq-gpu-kind integrated
 - [节点授权类型快照数据模型方案](/zh-hans/reference/data-model-schema.md)
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
+- `FastpqPublicTransferStatementV1`
+- `FastpqBalanceKeyV1`
+- `FastpqExecutionQuantityKeyV1`
 - `TransferTranscript`
 - `AxtFastpqBinding`
+- `AxtProofEnvelope`
 - [`iroha3d` FastPQ 的选项](/zh-hans/reference/iroha3d-cli.md#fastpq-overrides)

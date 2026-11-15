@@ -2,13 +2,13 @@
 
 FastPQ is Iroha's STARK proof path for selected execution effects. It does
 not replace normal transaction execution or consensus. Transactions still
-run through ISI, IVM, and Sumeragi as usual; FastPQ consumes the
-deterministic execution witness and turns supported effects into proof
-batches.
+run through ISI, IVM, and Sumeragi as usual; FastPQ proves supported
+effects afterwards, from the source record that block execution captured.
 
 The current host integration has two main paths:
 
-- transparent numeric asset transfers recorded during block execution
+- numeric asset effects of finalized blocks, proved by the node's prover
+  lane
 - SORA Nexus AXT proof envelopes whose `fastpq_binding` carries a FastPQ
   binding
 
@@ -22,113 +22,168 @@ the instruction mutates balances. The transcript records:
 - the transaction entrypoint hash used as the batch hash
 - an authority digest derived from the submitting account
 - a Poseidon digest for single-delta transcripts
+- sparse-Merkle update witnesses for the sender and receiver balances
 
 Batch transfers use one transcript with multiple deltas. In that case the
 single-delta Poseidon digest is absent.
 
-At block finalization, Iroha groups these transcripts by entrypoint hash.
-The execution witness then carries both the original transcript bundles and
-the FastPQ transition batches prepared for the prover.
+Block execution groups the transcripts by the execution call that emitted
+them and keeps them with the block's FastPQ source record. In an AXT
+transfer statement, each transfer delta becomes two transition rows:
 
-Each transfer delta becomes two transition rows:
+| Row             | Key                                                                   | Pre-value               | Post-value             |
+| --------------- | --------------------------------------------------------------------- | ----------------------- | ---------------------- |
+| Sender debit    | `FastpqBalanceKeyV1` for the asset definition and source account      | sender balance before   | sender balance after   |
+| Receiver credit | `FastpqBalanceKeyV1` for the asset definition and destination account | receiver balance before | receiver balance after |
 
-| Row             | Key shape                                        | Pre-value               | Post-value             |
-| --------------- | ------------------------------------------------ | ----------------------- | ---------------------- |
-| Sender debit    | `asset/<asset-definition>/<source-account>`      | sender balance before   | sender balance after   |
-| Receiver credit | `asset/<asset-definition>/<destination-account>` | receiver balance before | receiver balance after |
+Each key is the canonical Norito frame of `FastpqBalanceKeyV1`, built by
+`transfer_balance_key` from the typed asset definition and the domainless
+account. Account aliases and display forms are never key material.
 
-Numeric values are normalized into integer witness units. A value is
-rejected for FastPQ batching if it cannot be represented as a non-negative
-`u64` at the selected decimal scale.
+## Execution Effects
+
+The prover lane proves complete execution-effect statements. Each statement
+covers every quantity effect of one execution entry, in execution order:
+
+| Effect   | Updated values                 | Rule                                                                |
+| -------- | ------------------------------ | ------------------------------------------------------------------- |
+| Transfer | source and destination balance | the amount moves between two balances of one asset                  |
+| Mint     | balance and supply             | both increase by the same non-zero amount                           |
+| Burn     | balance and supply             | both decrease by the same amount                                    |
+| Retire   | supply and lifecycle           | supply stays zero and the asset's presence changes from one to zero |
+
+Supply never falls below a balance. Each key is the domain
+`iroha:fastpq:execution-quantity-key:v1`, a NUL byte, and the Norito
+encoding of a `FastpqExecutionQuantityKeyV1` balance, supply, or lifecycle
+key. Role grants, role revokes, and other operations are not proved.
+
+Values in execution-effect and AXT transfer statements are exact
+non-negative integer units at the asset's decimal scale
+(`FastpqQuantityUnits`), so they are not limited to `u64`. Statement
+construction rejects a scale mismatch, a negative difference, and any
+arithmetic or ordering inconsistency; it never repairs a public value.
 
 ## Public Inputs
 
-Every FastPQ transition batch carries public inputs that bind the proof to
-the block and execution context:
+Every FastPQ statement carries public inputs that bind the proof to the
+block and execution context:
 
-| Input         | Meaning                                                         |
-| ------------- | --------------------------------------------------------------- |
-| `dsid`        | Data space identifier encoded as little-endian bytes             |
-| `slot`        | Block creation time converted to nanoseconds                    |
-| `old_root`    | Parent state root derived from the execution witness            |
-| `new_root`    | Post-state root derived from the execution witness              |
-| `perm_root`   | Poseidon commitment over active role permissions                |
-| `tx_set_hash` | Hash over sorted transaction and time-trigger entrypoint hashes |
+| Input         | Meaning                                                                              |
+| ------------- | ------------------------------------------------------------------------------------ |
+| `dsid`        | Data space identifier: its `u64` value in little-endian order, then eight zero bytes |
+| `slot`        | Block creation time in nanoseconds, at millisecond precision                         |
+| `old_root`    | Root of the touched-key sparse Merkle tree before the statement                      |
+| `new_root`    | Root of the touched-key sparse Merkle tree after the statement                       |
+| `perm_root`   | Commitment to the role-permission table of the executing state                       |
+| `tx_set_hash` | Commitment to the block's transaction wires in block order                           |
 
-The host uses the sole first-release parameter set,
-`fastpq-state-transition-stark-v1`, for these batches.
+`old_root` and `new_root` cover only the keys that the statement touches.
+They are not the persisted world state root.
+
+`perm_root` is Iroha's 32-byte `Hash` over the domain
+`fastpq:v1:permission-table:blake2b-256`, the entry count as a
+little-endian `u64`, and the sorted entries. Each entry is the hash of a
+role ID, the hash of one of its permissions, and that permission's epoch as
+a little-endian `u64`. An empty table commits to 32 zero bytes. This is
+role and permission context only; it does not prove account membership or
+authorization.
+
+`tx_set_hash` is Iroha's `Hash` over the domain
+`iroha:axt:ordered-transaction-wire-set:v1`, a NUL byte, the transaction
+count, and, for each transaction in block order, its wire length and its
+complete wire bytes. The count and lengths are little-endian `u64` values.
+Transactions are not sorted or deduplicated, and signatures stay in the
+preimage.
+
+Iroha's `Hash` is Blake2b-256 with the lowest bit of the final byte set to
+one. A statement also carries an ordering hash and its complete canonical
+rows and source facts; the proof binds all of them.
 
 ## Proof Protocol
 
-Canonical transfer artifacts are masked DEEP proofs over the Goldilocks
-field with a degree-4 extension. Their exact relation, transcript, and query
+Canonical FastPQ artifacts are masked DEEP proofs over the Goldilocks field
+with a degree-4 extension. Their exact relation, transcript, and query
 geometry are defined in the pinned
 [FastPQ DEEP protocol contract](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_deep_protocol_contract.md).
 
-## What The Prover Checks
+Callers choose an ordinary or AXT statement and resource limits. They do
+not choose circuits, verifying keys, query counts, or transcript internals.
+The ordinary route is `offline_compact::prove_quantity_ordinary_artifact`;
+the AXT route is `offline_compact::prove_quantity_axt_artifact`, which
+`prove_axt_bound_batch` wraps for bound batches. The transparent `Prover`,
+`Proof`, and replay `verify` API exists only in tests and `dev-tools`
+builds.
 
-Before building the trace, the FastPQ prover canonicalizes the batch order
-by transition key, operation rank, and insertion order. Transfer rows also
-require transcript metadata. A batch with transfer rows but no transfer
-transcripts is invalid.
+## What The Proof Checks
 
-For transfer transcripts, the prover-side checks include:
+Before any private work, the producer prepares the public statement. It
+checks accounts, amounts, values, occurrence counts, stable key order, and
+key allocation, and it rejects a statement whose public facts disagree. The
+sealed relation then proves the two complete 32-level sparse-Merkle updates
+of one effect or transfer occurrence per segment. The default limits allow
+at most two segments per artifact.
 
-- the sender balance must not underflow
-- `sender_after` must equal `sender_before - amount`
-- `receiver_after` must equal `receiver_before + amount`
-- the transcript must cover every transfer row in the batch
-- a single-delta Poseidon digest, when present, must match the transcript
-  preimage
-- provided sparse-Merkle proofs must decode as version 1; missing paths are
-  filled with deterministic synthetic proofs
+Each trace has 65,536 rows. The producer commits 301 private columns and
+the verifier reconstructs 41 public columns independently. Fresh
+cryptographic entropy masks the trace columns, the quotient, and an
+independently committed composition polynomial. Quotient division must be
+exact. The producer verifies its own artifact before returning it.
 
-The trace contains selector columns for transfer, mint, burn, role grant,
-role revoke, metadata set, and permission lookup rows. Numeric operation
-rows also carry signed deltas, running per-asset deltas, and supply
-counters.
+Public statement values are not hidden. An operation's presence in the wire
+format does not admit it: only the effects listed above have relations, and
+AXT statements admit only witnessed transfers.
 
 ## Prover Lane
 
-`iroha3d` starts the FastPQ prover lane at startup if the prover backend can
-be initialized. The lane is a background task with a bounded queue. After a
-block produces an execution witness, the commit path submits a prover job
-containing the block hash, height, view, and witness.
+`iroha3d` starts one FastPQ prover worker during node startup, before Torii
+accepts submissions, unless Kura starts with `init_mode = "fast"`. The
+worker initializes its backend in the background, so startup continues if
+initialization fails; the lane then stays disabled.
 
-If the lane is not running or the queue is full, the job is skipped and
-normal block processing continues. This means the background prover lane is
-not a transaction admission or consensus gate. It is a proof-production
-path over state that has already been executed.
+The worker polls the node's finalized state and Kura storage. For each
+finalized block it obtains the authenticated source, replaying native
+execution when the source is not stored, and proves the block's complete
+statements one at a time with the ordinary route. After a restart it
+rebuilds the authenticated prefix from the pinned signed genesis. It stores
+each artifact in Kura's bounded FastPQ store. A stored artifact is only an
+advertisement: before moving on, the producer authenticates the source and
+verifies the artifact again.
 
-The lane constructs a prover with:
-
-```text
-parameter = "fastpq-state-transition-stark-v1"
-execution_mode = cpu | gpu
-poseidon_mode = cpu | gpu
-```
-
-Both settings default to `cpu`. Selecting `gpu` is an explicit,
-fail-closed request: if GPU support is not compiled or a requested GPU
-backend fails preflight, the prover lane remains disabled. The first
-release has no `auto` value and does not fall back from a requested GPU
-mode to CPU.
+Proof production is node-local. It is not a transaction-admission or
+consensus gate: execution, commit, and finality do not wait for a proof. A
+retryable failure leaves the work for a later attempt, and one producer
+runs per process.
 
 ## Verification
 
-FastPQ proof verification rebuilds the canonical batch commitment and
-replays the public transcript. The verifier checks the protocol version,
-parameter-set version, replay limits, trace commitment, public inputs,
-sampled Merkle openings, AIR openings, and FRI query chain.
+A verifier checks an artifact against expectations that it derives from its
+own authenticated statement, never from the artifact being checked.
+Verification decodes each segment once under bounds, evaluates the AIR once
+at the out-of-domain point, authenticates every opened row, quotient leaf,
+and FRI fiber and the complete FRI terminal against the committed roots,
+and performs at most 385 fold checks. It builds no private witness, trace,
+or full low-degree extension.
 
-Default replay limits include:
+Success establishes consistency with the caller's expectations. It grants
+no execution authority, source finality, replay admission, or AXT spend
+authorization.
 
-| Limit              | Default |
-| ------------------ | ------: |
-| Transition rows    |     256 |
-| Batch payload size | 256 KiB |
-| FRI layers         |      16 |
-| Query openings     |     128 |
+Default limits from `offline_compact::VerificationLimits`, which the
+ordinary route also uses:
+
+| Limit                           |       Default |
+| ------------------------------- | ------------: |
+| Segments per artifact           |             2 |
+| Artifact wire bytes             |         1 MiB |
+| Child proof frame               | 500,084 bytes |
+| Statement bytes across segments |       512 KiB |
+| Queries per segment             |            77 |
+| Queries across segments         |           154 |
+
+The node lane further caps artifact wire bytes at
+`zk.fastpq.proof_sidecar_max_bytes` and Kura's FastPQ object limit. Before
+decoding, an AXT proof blob may hold at most 2 MiB and its embedded FastPQ
+payload at most 1 MiB.
 
 ## SORA Nexus AXT Proof Envelopes
 
@@ -139,125 +194,77 @@ validation of AXT envelopes, the IVM host's AXT envelope checks, and
 verifier on the envelope and its embedded proof. A missing binding or a
 failed verification rejects the operation.
 
-### AXT Binding Math
+The verifier accepts only witnessed transfer claims, `tx_predicate` and
+`value_conservation`. The `authorization` and `compliance` claim types are
+opaque effect carriers with no transfer relation, and verification rejects
+them. Block validation also rejects envelopes that carry remote spends, and
+the IVM host rejects standalone `AXT_VERIFY_DS_PROOF` admission. Both stay
+unavailable until finalized source roots, the transaction set, and issuer
+authorization can be authenticated.
 
-For SORA Nexus AXT envelopes, `AxtFastpqBinding` is canonicalized before proof
-replay. Empty `parameter`, `verifier_id`, or `verifier_version` values are
-rejected; the verifier ID must be `fastpq` and the version `v1`, and maintained
-AXT flows use `fastpq-state-transition-stark-v1`. Claim type is trimmed and
-lowercased.
+### AXT Binding
 
-The AXT FastPQ public inputs are deterministic byte hashes:
+For SORA Nexus AXT envelopes, `AxtFastpqBinding` is canonicalized before
+proving and verification:
+
+- `parameter`, `source_dataspace`, `source_receipt_id`, and
+  `verified_effect_type` are trimmed and must not be empty
+- `source_tx_commitment`, `claim_digest`, `witness_commitment`, and
+  `policy_commitment` are lowercased and must be hex encodings of 32 bytes
+- `verifier_id` must be `fastpq` and `verifier_version` must be `v1`
+- `claim_type` is trimmed and lowercased and must name one of the four
+  claim types above
+- `target_dsids` must be non-empty and strictly ascending
+- `remote_spend_intent_commitments` must be strictly ascending and within
+  the first-release limit
+
+Verification requires the exact canonical form; it does not normalize a
+binding on the caller's behalf.
+
+The binding attaches to a batch that block execution already captured; it
+does not create transitions. The batch must contain at least one state
+transition and name the binding's parameter set,
+`fastpq-state-transition-stark-v1`. Its `entry_hash` metadata must equal
+`source_tx_commitment`, and its public `dsid` must encode the binding's
+`source_dsid`. A transfer claim must carry at least one transfer
+transcript, and the batch hash of every transcript must equal
+`source_tx_commitment`.
+
+Binding then writes proof-bound metadata into the batch: the canonical
+binding, its four digests, `source_receipt_id`, `target_dsids`,
+`verified_effect_type`, a non-empty `corridor`, the non-zero manifest root,
+the optional DA commitment, an optional non-zero committed amount, and the
+expiry slot, where zero means no expiry. Last, it adds a seal over the
+binding and the batch without the seal:
 
 $$
-\operatorname{dsid}=\operatorname{dsid\_bytes}(\operatorname{source\_dsid})
-$$
-
-$$
-\operatorname{slot}=\operatorname{le64}(\operatorname{source\_tx\_commitment}[0..8])
-$$
-
-$$
-\operatorname{old\_root} =
+\operatorname{seal} =
 \operatorname{Hash}(
-\texttt{fastpq-json:old\_root}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{policy\_commitment}\|
-\operatorname{effect\_type}
+\texttt{fastpq:axt:batch-seal:v1}\|
+E(\operatorname{binding})\|
+E(\operatorname{batch})
 )
 $$
 
+Here $E$ is the canonical Norito encoding. Changing the batch, the binding,
+or a proof-bound value after binding makes verification fail. The verifier
+also compares the envelope's data space, manifest root, DA commitment,
+committed amount, and expiry with the proof-bound values.
+
+A verified envelope reports its proven `old_root`, `new_root`, and
+`tx_set_hash`, and a statement digest. The digest covers the envelope's
+data space as a little-endian `u64`, its manifest root, the DA commitment
+when present, the binding, and the statement:
+
 $$
-\operatorname{new\_root} =
+\operatorname{statement\_digest} =
 \operatorname{Hash}(
-\texttt{fastpq-json:new\_root}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}\|
-\operatorname{effect\_type}
-)
-$$
-
-$$
-\operatorname{perm\_root} =
-\operatorname{Hash}(
-\texttt{fastpq-json:perm\_root}\|
-\operatorname{policy\_commitment}\|
-\operatorname{verifier\_id}\|
-\operatorname{verifier\_version}
-)
-$$
-
-$$
-\operatorname{tx\_set\_hash} =
-\operatorname{Hash}(
-\texttt{fastpq-json:tx\_set\_hash}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}\|
-\operatorname{witness\_commitment}
-)
-$$
-
-AXT transition keys are:
-
-$$
-\operatorname{key}(\operatorname{prefix},x,y)=
-\operatorname{prefix}\|\texttt{/}\|x\|\texttt{/}\|y
-$$
-
-The `authorization` claim inserts a role-grant row:
-
-$$
-\operatorname{role\_id}=\operatorname{claim\_digest}
-$$
-
-$$
-\operatorname{permission\_id}=\operatorname{witness\_commitment}
-$$
-
-$$
-\operatorname{epoch}=
-\operatorname{le64}(\operatorname{policy\_commitment}[0..8])
-$$
-
-and a metadata row binding the authorization policy. The `compliance` claim
-inserts two metadata rows: one for policy and one for target data spaces.
-
-For `tx_predicate` and `value_conservation`, an explicit effect amount is
-used when the binding contains a positive source or destination amount.
-Otherwise the code derives a bounded deterministic amount:
-
-$$
-\operatorname{bounded}(d,\min,\operatorname{span})
-=
-\min + (\operatorname{le64}(d[0..8])\bmod\max(\operatorname{span},1))
-$$
-
-Then the same transfer equations are used:
-
-$$
-\operatorname{sender\_after}=\operatorname{sender\_before}-a
-$$
-
-$$
-\operatorname{receiver\_after}=\operatorname{receiver\_before}+a
-$$
-
-The synthetic sender and receiver account ids are generated from key seeds:
-
-$$
-\operatorname{seed}=
-\operatorname{Hash}(\operatorname{label}\|\operatorname{entropy})[0..32]
-$$
-
-The transfer batch hash is:
-
-$$
-\operatorname{batch\_hash} =
-\operatorname{Hash}(
-\operatorname{label}\|
-\operatorname{corridor}\|
-\operatorname{source\_tx\_commitment}\|
-\operatorname{claim\_digest}
+\texttt{fastpq:axt:statement:v1}\|
+\operatorname{le64}(\operatorname{dsid})\|
+\operatorname{manifest\_root}\|
+\operatorname{da\_commitment}\|
+E(\operatorname{binding})\|
+E(\operatorname{statement})
 )
 $$
 
@@ -271,11 +278,25 @@ $$
 
 ## Parameter Sets
 
-The first release has exactly one canonical parameter set,
-`fastpq-state-transition-stark-v1`. It targets 128-bit security over the
-Goldilocks field with a degree-4 extension (`X^4 - 7`), and uses trace size
-`2^16`, LDE size `2^19`, FRI arity 2, blowup 8, at most 17 reductions, and
-136 queries.
+The first release has exactly one parameter set,
+`fastpq-state-transition-stark-v1`. Batches and AXT bindings name it, and
+AXT proving rejects any other name. The DEEP protocol contract fixes the
+released artifact geometry:
+
+| Item                       | Value                                                 |
+| -------------------------- | ----------------------------------------------------- |
+| Field                      | Goldilocks `p = 2^64 - 2^32 + 1`, extension `u^4 - 7` |
+| Trace rows                 | 65,536                                                |
+| Evaluation rows            | 8,388,608 (blowup 128)                                |
+| FRI folding arities        | `[16, 16, 8, 8, 4]`                                   |
+| Queries                    | 77 distinct positions                                 |
+| Grinding                   | none                                                  |
+| Commitments and transcript | SHA3-256 and SHAKE256                                 |
+
+Production qualification is unavailable. Independent soundness, hiding, and
+Fiat-Shamir reviews of this construction are outstanding, and the pinned
+[production readiness record](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_production_readiness.md)
+makes no work-normalized security claim.
 
 ## Configuration
 
@@ -285,6 +306,8 @@ FastPQ configuration is nested under `zk.fastpq`.
 [zk.fastpq]
 execution_mode = "cpu"
 poseidon_mode = "cpu"
+proof_sidecar_queue_cap = 1024
+proof_sidecar_max_retries = 16
 
 # Optional telemetry labels.
 device_class = "apple-m4"
@@ -298,9 +321,32 @@ metal_max_in_flight = 5
 metal_threadgroup_width = 128
 metal_trace = false
 metal_debug_enum = false
+
+[zk.fastpq.producer]
+poll_interval_ms = 1000
+step_timeout_ms = 30000
+max_native_steps = 16
+max_source_entries = 65536
+max_source_statements = 16384
 ```
 
-The same execution and telemetry labels can be overridden from `iroha3d`:
+Both modes accept only `cpu` or `gpu` and default to `cpu`. Setting either
+one to `gpu` makes proof hashing require a device: Metal on macOS and CUDA
+elsewhere. If GPU support is not compiled in or the device fails preflight,
+the prover lane stays disabled; it never falls back to CPU. The device runs
+bulk Merkle leaf and lower-parent hashing; the transcript, ordered upper
+tree, and trace arithmetic stay on the CPU. With `poseidon_mode = "gpu"`,
+the node also batches transcript Poseidon digests on the GPU when a
+separate preflight passes; otherwise it computes them on the CPU.
+
+`proof_sidecar_max_bytes` caps the encoded artifact that the node persists
+and verifies, and defaults to the prover's maximum proof frame. The
+`producer` table bounds each proving attempt: its poll interval, its time
+budget, the native replay steps (1 to 64), and the source entries and
+statements admitted before allocation. `metal_queue_fanout` accepts 1 to 4.
+
+The mode and telemetry-label settings can also be overridden from
+`iroha3d`:
 
 ```shell
 iroha3d --fastpq-execution-mode gpu
@@ -310,44 +356,45 @@ iroha3d --fastpq-chip-family m4
 iroha3d --fastpq-gpu-kind integrated
 ```
 
-Environment variables are also supported for the configuration fields. The
-FastPQ-specific variables include:
-
-- `FASTPQ_EXECUTION_MODE`
-- `FASTPQ_POSEIDON_MODE`
-- `FASTPQ_DEVICE_CLASS`
-- `FASTPQ_CHIP_FAMILY`
-- `FASTPQ_GPU_KIND`
-- `FASTPQ_METAL_QUEUE_FANOUT`
-- `FASTPQ_METAL_COLUMN_THRESHOLD`
-- `FASTPQ_METAL_MAX_IN_FLIGHT`
-- `FASTPQ_METAL_THREADGROUP`
-- `FASTPQ_METAL_TRACE`
-- `FASTPQ_DEBUG_METAL_ENUM`
+`iroha3d` ignores environment variables when it reads a configuration file,
+so set these values in TOML or with the options above.
 
 ## Metrics
 
-When telemetry is enabled, FastPQ exports metrics for backend selection and
-Metal runtime behavior:
+When telemetry is enabled, FastPQ exports metrics for backend selection,
+proof persistence, and Metal runtime behavior:
 
-| Metric                            | Meaning                                                                     |
-| --------------------------------- | --------------------------------------------------------------------------- |
-| `fastpq_execution_mode_total`     | Requested and resolved execution mode by backend and device labels          |
-| `fastpq_poseidon_pipeline_total`  | Requested and resolved Poseidon pipeline path                               |
-| `fastpq_metal_queue_depth`        | Metal queue limit, max in-flight count, dispatch count, and sampling window |
-| `fastpq_metal_queue_ratio`        | Metal queue busy and overlap ratios                                         |
-| `fastpq_zero_fill_duration_ms`    | Host zero-fill duration for Metal runs                                      |
-| `fastpq_zero_fill_bandwidth_gbps` | Derived zero-fill bandwidth                                                 |
+| Metric                              | Meaning                                                                     |
+| ----------------------------------- | --------------------------------------------------------------------------- |
+| `fastpq_execution_mode_total`       | Requested and resolved execution mode by backend and device labels          |
+| `fastpq_poseidon_pipeline_total`    | Requested and resolved Poseidon pipeline path                               |
+| `fastpq_gpu_disable_total`          | GPU accelerator disable events by accelerator, reason, and device labels    |
+| `fastpq_gpu_parity_failure_total`   | Sampled GPU parity failures by accelerator, reason, and device labels       |
+| `fastpq_proof_sidecar_queue_depth`  | Queued FastPQ proof sidecar attachments                                     |
+| `fastpq_proof_sidecar_events_total` | Proof sidecar persistence events by event                                   |
+| `fastpq_metal_queue_depth`          | Metal queue limit, max in-flight count, dispatch count, and sampling window |
+| `fastpq_metal_queue_ratio`          | Metal queue busy and overlap ratios                                         |
+| `fastpq_zero_fill_duration_ms`      | Host zero-fill duration for Metal runs                                      |
+| `fastpq_zero_fill_bandwidth_gbps`   | Derived zero-fill bandwidth                                                 |
+
+The mode, GPU, Metal queue, and zero-fill metrics need the `extended` or
+`full` telemetry profile and are not exported when Kura starts with
+`init_mode = "fast"`. The Metal queue and zero-fill metrics also need a
+`fastpq-gpu` build on macOS.
 
 For general performance triage, use these with the consensus and queue
 signals listed in [Performance and Metrics](/guide/advanced/metrics.md).
 
 ## Related Reference
 
-- [Data Model Schema](/reference/data-model-schema.md) for the node-authoritative
-  type snapshot
+- [Data Model Schema](/reference/data-model-schema.md) for the
+  node-authoritative type snapshot
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
+- `FastpqPublicTransferStatementV1`
+- `FastpqBalanceKeyV1`
+- `FastpqExecutionQuantityKeyV1`
 - `TransferTranscript`
 - `AxtFastpqBinding`
+- `AxtProofEnvelope`
 - [`iroha3d` FastPQ options](/reference/iroha3d-cli.md#fastpq-overrides)
