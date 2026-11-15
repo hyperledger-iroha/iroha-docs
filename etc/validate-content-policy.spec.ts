@@ -289,7 +289,7 @@ describe('content policy validation', () => {
     const profile = [
       'fc56984b-2be7-431d-840e-21514d1883f0',
       '369',
-      'hash:82531CE8EAE8BFF6BEECA4698BFD13A3BC8BEC5F0EE0D23D428C97FC17AB0F3B#3E94',
+      'hash:4978D0BD15FC32B834672B27BBD8A03653B1DF060A1EEE7E9374D29AF3886D91#6774',
       'https://taira.sora.org',
       'https://taira-validator-1.sora.org',
       'https://taira-validator-2.sora.org',

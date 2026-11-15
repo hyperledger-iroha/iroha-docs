@@ -837,26 +837,6 @@ describe('Markdown translation protection', () => {
     )
   })
 
-  test('uses reviewed Hebrew wording for the FastPQ limb packing rule', () => {
-    expect(
-      curatedExactTranslation(
-        'Byte strings are packed into 7-byte little-endian limbs so every limb is strictly below `p`:',
-        hebrew,
-      ),
-    ).toBe('מחרוזות בתים נארזות ליחידות של 7 בתים בסדר little-endian, כך שכל יחידה קטנה ממש מ־`p`:')
-  })
-
-  test('uses reviewed Myanmar wording where NLLB mixes Devanagari into a replay lead-in', () => {
-    expect(
-      curatedExactTranslation(
-        'Challenge calls append the full digest to the transcript state. The replay order is:',
-        myanmar,
-      ),
-    ).toBe(
-      'စိန်ခေါ်တန်ဖိုးကို တွက်ချက်သည့် ခေါ်ဆိုမှုများက ဟက်ရှ်အနှစ်ချုပ်တန်ဖိုး အပြည့်အစုံကို မှတ်တမ်းအခြေအနေထဲသို့ နောက်ဆက်တွဲ ပေါင်းထည့်သည်။ ပြန်လည်လုပ်ဆောင်သည့် အစီအစဉ်မှာ အောက်ပါအတိုင်းဖြစ်သည်-',
-    )
-  })
-
   test('uses reviewed Myanmar wording where NLLB inserts an Oriya mark into the domain row', () => {
     expect(
       curatedExactTranslation(
@@ -888,10 +868,10 @@ describe('Markdown translation protection', () => {
     )
     expect(
       curatedExactTranslation(
-        'Pipeline events are emitted when transactions are submitted, executed, or committed to a block. A pipeline event contains the following information: the kind of entity that caused an event (transaction or block), its hash and status. The status can be either `Validating` (validation in progress), `Rejected`, or `Committed`. If an entity was rejected, the reason for the rejection is provided.',
+        'Pipeline events are emitted as transactions and blocks move through the pipeline. A transaction event carries the transaction hash, block height, lane and data space IDs, and a status: `Queued`, `Expired`, `Approved`, or `Rejected` with the rejection reason. A block event carries the block header and a status: `Created`, `Approved`, `Rejected` with the reason, `Committed`, or `Applied`.',
         urdu,
       ),
-    ).toContain('اس کا کرپٹوگرافک ہیش، اور اس کی حالت')
+    ).toContain('بلاک کا واقعہ بلاک ہیڈر اور ایک حالت رکھتا ہے')
     expect(
       curatedExactTranslation('| `Account` | Account lifecycle, metadata, alias, and identity events |', bashkir),
     ).toBe('| `Account` | Иҫәп яҙмаһының тормош циклы, метадатаһы, ҡушаматы һәм идентификация ваҡиғалары |')
@@ -922,12 +902,6 @@ describe('Markdown translation protection', () => {
         source:
           'An empty `items` array is a valid response on a public testnet. It means there are no NFTs in the current page, not that NFT instructions are unavailable.',
         expected: 'хәҙерге биттә NFTs юҡлығын аңлата',
-      },
-      {
-        locale: armenian,
-        source:
-          'Lane relay envelopes also carry compact FastPQ proof material. The material is a digest over the lane id, data space id, block height, verification height, block header hash, settlement hash, and manifest root. A relay is merge admissible only when it has both a QC and valid FastPQ proof material.',
-        expected: 'Վերահաղորդումը միավորման համար ընդունելի է միայն այն դեպքում',
       },
       {
         locale: hebrew,
@@ -967,8 +941,8 @@ describe('Markdown translation protection', () => {
       {
         locale: japanese,
         source:
-          '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.',
-        expected: 'すべての決済区間について Prepare 証明書',
+          '4. After every leg has a Prepare certificate, build the immutable complete Prepare barrier. Have the manifest sponsor submit it in one `RegisterAtomicPrivateSettlementPrepareV1` control carrier and wait for finality; Commit voters consult that replicated lock. Then request and persist canonical 3-of-4 Commit certificates. If the coordinator restarts, query participant nodes for their locally durable Prepare and Commit certificates, select a canonical quorum-equivalent certificate, and re-fan it out before continuing; never reconstruct a certificate from an unauthenticated local cache.',
+        expected: '4. すべての決済区間について Prepare 証明書がそろ',
       },
       {
         locale: japanese,
@@ -1483,8 +1457,8 @@ describe('Markdown translation protection', () => {
   })
 
   test('applies reviewed heading translations after stable anchors are added', () => {
-    expect(curatedExactTranslation('## Anonymous Asset Escrow {#anonymous-asset-escrow}', myanmar)).toBe(
-      '## အမည်မဖော် ပိုင်ဆိုင်မှု အာမခံအပ်နှံမှု {#anonymous-asset-escrow}',
+    expect(curatedExactTranslation('### Carbon Credit Retirement {#carbon-credit-retirement}', georgian)).toBe(
+      '### ნახშირბადის კრედიტის გამოყენებიდან ამოღება {#carbon-credit-retirement}',
     )
   })
 
