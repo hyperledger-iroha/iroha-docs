@@ -14,18 +14,18 @@ FastPQ 是 Iroha 针对选定执行效果的 STARK 证明路径。它不会取�
 - 已最终确定区块中的数值资产效果，由节点的证明器通道证明
 - SORA Nexus AXT 证明封装，其 `fastpq_binding` 携带 FastPQ 绑定
 
-## 转移证人的路径 {#transfer-witness-path}
+## 转移见证路径 {#transfer-witness-path}
 
-当指令突变余额时,透明的数值转移会产生结构化转移记录. 转录记录:
+当指令修改余额时，透明的数值转移会创建一个结构化的转移转录。该转录记录：
 
 - 来源账户,目的地账户,资产定义和金额
 - 转移前和后的发送者和接收者的余额
-- 作为批量哈希所使用的交易入口点哈希
-- 从提交账户中获取的授权主体信息
-- 一个多尔塔转录的Poseidon摘要
+- 用作批次哈希的交易入口点哈希
+- 由提交账户派生的授权主体摘要
+- 用于单增量转录的 Poseidon 摘要
 - 发送者和接收者余额的稀疏 Merkle 更新见证
 
-批量转移使用多个海域的转录. 在这种情况下,一个海域的波西登摘要是缺失的.
+批量转移使用一个包含多个增量的转录。在这种情况下，不存在单增量 Poseidon 摘要。
 
 区块执行会按发出转录的执行调用对转录进行分组，并将其与区块的 FastPQ 源记录一起保存。在 AXT 转移陈述中，每个转移增量都会变为两个状态转换行：
 
@@ -55,7 +55,7 @@ FastPQ 是 Iroha 针对选定执行效果的 STARK 证明路径。它不会取�
 
 每个 FastPQ 陈述都携带公共输入，用于将证明绑定到区块和执行上下文：
 
-|输入|这意味着|
+|输入|含义|
 | ------------- | ------------------------------------------------------------------------------------ |
 | `dsid` | 数据空间标识符：其 `u64` 值按小端序排列，后接八个零字节 |
 | `slot` | 以纳秒表示的区块创建时间，精度为毫秒 |
@@ -86,7 +86,7 @@ Iroha 的 `Hash` 是将最后一个字节的最低位置为 1 的 Blake2b-256。
 
 公开陈述中的值不会被隐藏。某个操作出现在传输格式中，并不意味着它会被接受：只有上文列出的效果具备证明关系，而 AXT 陈述只接受有见证的转移。
 
-## 经验者林 {#prover-lane}
+## 证明器通道 {#prover-lane}
 
 除非 Kura 以 `init_mode = "fast"` 启动，否则 `iroha3d` 会在节点启动期间、Torii 开始接受提交之前，启动一个 FastPQ 证明器工作器。工作器在后台初始化其后端，因此即使初始化失败，启动过程也会继续；此时该通道保持禁用。
 
@@ -102,7 +102,7 @@ Iroha 的 `Hash` 是将最后一个字节的最低位置为 1 的 Blake2b-256。
 
 来自 `offline_compact::VerificationLimits` 的默认限制（普通路径也使用这些限制）：
 
-|限制|默认方式|
+|限制|默认值|
 | ------------------------------- | ------------: |
 | 每个工件的分段数 | 2 |
 | 工件传输编码字节数 | 1 MiB |
@@ -161,14 +161,14 @@ E(\operatorname{statement})
 )
 $$
 
-AXT 批量清单摘要是对规范绑定的 Norito 编码计算出的 SHA-256：
+AXT 批次清单摘要是对规范绑定的 Norito 编码计算出的 SHA-256：
 
 $$
 \operatorname{manifest\_digest} =
 \operatorname{SHA256}(E(\operatorname{canonical\_binding}))
 $$
 
-## 参数组件 {#parameter-sets}
+## 参数集 {#parameter-sets}
 
 首个发布版本恰好只有一个参数集：`fastpq-state-transition-stark-v1`。批次和 AXT 绑定都会指明该参数集，AXT 证明会拒绝任何其他名称。DEEP 协议契约固定了已发布工件的几何结构：
 
@@ -186,7 +186,7 @@ $$
 
 ## 配置 {#configuration}
 
-FastPQ 配置嵌入`zk.fastpq`下方.
+FastPQ 配置嵌套在 `zk.fastpq` 之下。
 
 ```toml
 [zk.fastpq]
@@ -232,30 +232,30 @@ iroha3d --fastpq-gpu-kind integrated
 
 `iroha3d` 在读取配置文件时会忽略环境变量，因此请在 TOML 中或使用上述选项设置这些值。
 
-## 计量 {#metrics}
+## 指标 {#metrics}
 
 启用遥测后，FastPQ 会导出有关后端选择、证明持久化和 Metal 运行时行为的指标：
 
-|计量|这意味着|
+|指标|含义|
 | ----------------------------------- | --------------------------------------------------------------------------- |
-|`fastpq_execution_mode_total`|根据后端和设备标签的要求和解决执行模式 |
-|`fastpq_poseidon_pipeline_total`|索取和解决了Poseidon管道的路径|
+|`fastpq_execution_mode_total`|按后端和设备标签统计的请求执行模式与解析后的执行模式 |
+|`fastpq_poseidon_pipeline_total`|请求的与解析后的 Poseidon 管道路径|
 | `fastpq_gpu_disable_total` | 按加速器、原因和设备标签统计的 GPU 加速器禁用事件 |
 | `fastpq_gpu_parity_failure_total` | 按加速器、原因和设备标签统计的抽样 GPU 一致性校验失败 |
 | `fastpq_proof_sidecar_queue_depth` | 排队中的 FastPQ 证明辅助记录附件 |
 | `fastpq_proof_sidecar_events_total` | 按事件统计的证明辅助记录持久化事件 |
 |`fastpq_metal_queue_depth`|Metal 队列限制、最大并发数、调度数量和采样窗口|
-|`fastpq_metal_queue_ratio`|金属队列繁忙和重叠比例 |
-|`fastpq_zero_fill_duration_ms`|为金属运行提供零填充持续时间 |
-|`fastpq_zero_fill_bandwidth_gbps`|产生的零填充带宽|
+|`fastpq_metal_queue_ratio`|Metal 队列的繁忙比例和重叠比例 |
+|`fastpq_zero_fill_duration_ms`|Metal 运行的主机零填充持续时间 |
+|`fastpq_zero_fill_bandwidth_gbps`|推导出的零填充带宽|
 
 模式、GPU、Metal 队列和零填充指标需要 `extended` 或 `full` 遥测配置级别，并且在 Kura 以 `init_mode = "fast"` 启动时不会导出。Metal 队列和零填充指标还需要 macOS 上的 `fastpq-gpu` 构建。
 
-在 [ 性能和指标](/zh-hans/guide/advanced/metrics.md)中列出的共识和队列信号中使用一般的绩效分类.
+进行一般性能问题的初步排查时，请将这些指标与[性能和指标](/zh-hans/guide/advanced/metrics.md)中列出的共识和队列信号结合使用。
 
 ## 相关参考 {#related-reference}
 
-- [节点授权类型快照数据模型方案](/zh-hans/reference/data-model-schema.md)
+- [数据模型方案](/zh-hans/reference/data-model-schema.md)，提供以节点为准的类型快照
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `FastpqPublicTransferStatementV1`

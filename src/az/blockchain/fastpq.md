@@ -11,17 +11,17 @@ FastPQ seçilmiş icra təsirləri üçün Iroha-nın STARK sübut yoludur. O, a
 
 Cari host inteqrasiyasının iki əsas yolu var:
 
-- qovşağın sübutçu zolağının sübut etdiyi, yekunlaşdırılmış blokların rəqəmsal aktiv təsirləri
+- qovşağın sübutçu zolağının sübut etdiyi, yekunlaşdırılmış blokların ədədi aktiv təsirləri
 - `fastpq_binding` sahəsi FastPQ bağlaması daşıyan SORA Nexus AXT sübut zərfləri
 
-## Şahid Transferi Yolu {#transfer-witness-path}
+## Köçürmə şahidi yolu {#transfer-witness-path}
 
 Şəffaf ədədi köçürmələr, təlimat balansları dəyişdirdikdə strukturlaşdırılmış köçürmə transkripti yaradır. Transkript aşağıdakıları qeyd edir:
 
 - mənbə hesabı, təyinat hesabı, aktiv təsviri və məbləğ
 - köçürmədən əvvəl və sonra göndərən və alan balansları
-- toplu kriptoqrafik xəş kimi istifadə olunan əməliyyat giriş nöqtəsi kriptoqrafik xəş
-- tələb edən hesabdan götürülmüş icazə əsaslı kriptoqrafik xülasə dəyəri
+- partiya xəşi kimi istifadə olunan əməliyyat giriş nöqtəsi xəşi
+- təqdim edən hesabdan götürülmüş səlahiyyət xülasəsi
 - tək-delta transkriptlər üçün Poseidon kriptoqrafik xülasə dəyəri
 - göndərən və alan balansları üçün seyrək Merkle yeniləmə şahidləri
 
@@ -86,7 +86,7 @@ Hər iz 65,536 sətirdən ibarətdir. İstehsalçı 301 məxfi sütunu öhdəliy
 
 İctimai bəyanat dəyərləri gizlədilmir. Əməliyyatın ötürmə formatında mövcud olması onun qəbul edilməsi demək deyil: münasibətlər yalnız yuxarıda sadalanan təsirlər üçün mövcuddur və AXT bəyanatları yalnız şahidi olan köçürmələri qəbul edir.
 
-## Təsdiq yürütmə zolağı {#prover-lane}
+## Sübutçu zolağı {#prover-lane}
 
 Kura `init_mode = "fast"` ilə başlamırsa, `iroha3d` qovşağın işə salınması zamanı, Torii təqdimatları qəbul etməyə başlamazdan əvvəl bir FastPQ sübutçu işçisini işə salır. İşçi öz arxa ucunu fonda inisializasiya edir, buna görə inisializasiya uğursuz olsa belə işəsalma davam edir; bu halda zolaq deaktiv qalır.
 
@@ -94,7 +94,7 @@ Kura `init_mode = "fast"` ilə başlamırsa, `iroha3d` qovşağın işə salınm
 
 Sübut istehsalı qovşağın daxilində lokal aparılır. O, əməliyyat qəbulu və ya konsensus qapısı deyil: icra, blokun təsdiqlənməsi və yekunluq sübutu gözləmir. Təkrarlana bilən uğursuzluq işi sonrakı cəhdə saxlayır və hər prosesdə bir istehsalçı işləyir.
 
-## Təsdiqləmə {#verification}
+## Yoxlama {#verification}
 
 Yoxlayıcı artefaktı öz autentifikasiya olunmuş bəyanatından çıxardığı gözləntilərlə tutuşdurur; bu gözləntilər heç vaxt yoxlanılan artefaktın özündən götürülmür. Yoxlama hər seqmenti məhdudiyyətlər daxilində bir dəfə dekodlaşdırır, AIR-i domendən kənar nöqtədə bir dəfə qiymətləndirir, hər açılmış sətri, qismət yarpağını və FRI lifini, eləcə də tam FRI terminalını öhdəliyə götürülmüş köklərə qarşı autentifikasiya edir və ən çoxu 385 qatlama yoxlaması aparır. O, heç bir məxfi şahid, iz və ya tam aşağı dərəcəli genişlənmə qurmur.
 
@@ -102,7 +102,7 @@ Uğurlu yoxlama çağıranın gözləntiləri ilə uyğunluğu təsdiqləyir. O,
 
 Adi marşrutun da istifadə etdiyi `offline_compact::VerificationLimits` standart limitləri:
 
-|Hədd|Varsayılan|
+|Hədd|Standart|
 | ------------------------------- | ------------: |
 | Artefakt başına seqmentlər | 2 |
 | Artefaktın ötürmə baytları | 1 MiB |
@@ -161,7 +161,7 @@ E(\operatorname{statement})
 )
 $$
 
-AXT seriyası texniki manifestin kriptoqrafik xülasə dəyəri SHA-256-dir, tək protokol-standart bağlamanın Norito kodlaması üzrə:
+AXT partiya manifestinin xülasəsi kanonik bağlamanın Norito kodlaması üzərində hesablanan SHA-256 dəyəridir:
 
 $$
 \operatorname{manifest\_digest} =
@@ -238,16 +238,16 @@ Telemetriya aktiv olduqda FastPQ arxa uc seçimi, sübutların saxlanması və M
 
 |Metrik|Mənası|
 | ----------------------------------- | --------------------------------------------------------------------------- |
-| `fastpq_execution_mode_total`     |Arxa plan və cihaz etiketləri tərəfindən tələb olunan və həll edilmiş icra rejimi|
-| `fastpq_poseidon_pipeline_total` |Tələb olunan və həll olunan Poseidon proqram təminatı emal iş prosesi yolu|
+| `fastpq_execution_mode_total`     |Arxa uc və cihaz etiketləri üzrə tələb olunan və müəyyən edilmiş icra rejimi|
+| `fastpq_poseidon_pipeline_total` |Tələb olunan və müəyyən edilmiş Poseidon konveyeri yolu|
 | `fastpq_gpu_disable_total` | Sürətləndirici, səbəb və cihaz etiketləri üzrə GPU sürətləndiricisinin deaktiv edilməsi hadisələri |
 | `fastpq_gpu_parity_failure_total` | Sürətləndirici, səbəb və cihaz etiketləri üzrə nümunə kimi götürülmüş GPU uyğunluq xətaları |
 | `fastpq_proof_sidecar_queue_depth` | Növbədə gözləyən FastPQ sübut əlavəsi qoşmaları |
 | `fastpq_proof_sidecar_events_total` | Hadisə növü üzrə sübut əlavəsinin saxlanması hadisələri |
-| `fastpq_metal_queue_depth`        |Metal növbə limiti, maksimum uçuşda olan say, göndəriş sayı və nümunə götürmə pəncərəsi|
+| `fastpq_metal_queue_depth`        |Metal növbə limiti, eyni vaxtda icrada olan işlərin maksimum sayı, göndəriş sayı və nümunə götürmə pəncərəsi|
 | `fastpq_metal_queue_ratio`        |Metal növbəsi məşğul və örtüşmə nisbətləri|
-| `fastpq_zero_fill_duration_ms`    |Metal işləri üçün ev sahibi sıfır-doldurma müddəti|
-| `fastpq_zero_fill_bandwidth_gbps` |Törədilmiş sıfır-doldurulmuş bant genişliyi|
+| `fastpq_zero_fill_duration_ms`    |Metal işləri üçün hostda sıfır-doldurma müddəti|
+| `fastpq_zero_fill_bandwidth_gbps` |Törəmə sıfır-doldurma bant genişliyi|
 
 Rejim, GPU, Metal növbəsi və sıfır-doldurma metrikləri `extended` və ya `full` telemetriya profilini tələb edir və Kura `init_mode = "fast"` ilə başladıqda ixrac edilmir. Metal növbəsi və sıfır-doldurma metrikləri həmçinin macOS-da `fastpq-gpu` yığımını tələb edir.
 
@@ -255,7 +255,7 @@ Rejim, GPU, Metal növbəsi və sıfır-doldurma metrikləri `extended` və ya `
 
 ## Əlaqəli İstinad {#related-reference}
 
-- [Məlumat Modeli SXeması](/az/reference/data-model-schema.md) node-səlahiyyətli tipli nöqtə-vaxt məlumat baxışı üçün
+- qovşağın səlahiyyətli mənbə olduğu tiplərin anlıq görüntüsü üçün [Məlumat Modeli Sxeması](/az/reference/data-model-schema.md)
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `FastpqPublicTransferStatementV1`

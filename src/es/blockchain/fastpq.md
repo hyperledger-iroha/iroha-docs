@@ -14,18 +14,18 @@ La integración actual del host tiene dos caminos principales:
 - efectos sobre activos numéricos de bloques finalizados, probados por el carril del probador del nodo
 - sobres de prueba AXT de SORA Nexus cuyo `fastpq_binding` contiene una vinculación de FastPQ
 
-## Ruta de transferencia de testigos {#transfer-witness-path}
+## Ruta del testigo de transferencia {#transfer-witness-path}
 
 Las transferencias numéricas transparentes crean una transcripción de transferencia estructurada cuando la instrucción altera los saldos. La transcripción registra:
 
 - la cuenta de origen, la cuenta de destino, la definición del activo y el monto
 - saldos del remitente y del receptor antes y después de la transferencia
 - el hash criptográfico del punto de entrada de la transacción utilizado como el hash criptográfico del lote
-- un valor de resumen criptográfico principal de autorización derivado de la cuenta que envía
+- un resumen de autoridad derivado de la cuenta que envía la transacción
 - un resumen Poseidon para transcripciones de delta único
 - testigos de actualización del árbol de Merkle disperso para los saldos del remitente y del receptor
 
-Las transferencias por lotes usan una transcripción con múltiples deltas. En ese caso, el valor del digestio criptográfico Poseidon de un solo delta está ausente.
+Las transferencias por lotes usan una transcripción con múltiples deltas. En ese caso, el resumen Poseidon de delta único está ausente.
 
 La ejecución del bloque agrupa las transcripciones según la llamada de ejecución que las emitió y las conserva junto con el registro de origen FastPQ del bloque. En un enunciado de transferencia AXT, cada delta de transferencia se convierte en dos filas de transición:
 
@@ -86,7 +86,7 @@ Cada traza tiene 65,536 filas. El productor compromete 301 columnas privadas y e
 
 Los valores del enunciado público no se ocultan. Que una operación esté presente en el formato de transmisión no la admite: solo los efectos enumerados arriba tienen relaciones, y los enunciados AXT solo admiten transferencias con testigo.
 
-## Carril de ejecución del verificador {#prover-lane}
+## Carril del probador {#prover-lane}
 
 `iroha3d` inicia un trabajador del probador FastPQ durante el arranque del nodo, antes de que Torii acepte envíos, salvo que Kura se inicie con `init_mode = "fast"`. El trabajador inicializa su backend en segundo plano, por lo que el arranque continúa si la inicialización falla; en ese caso, el carril queda deshabilitado.
 
@@ -244,8 +244,8 @@ Cuando la telemetría está habilitada, FastPQ exporta métricas sobre la selecc
 | `fastpq_gpu_parity_failure_total` | Fallos de paridad de GPU muestreados por acelerador, motivo y etiquetas de dispositivo |
 | `fastpq_proof_sidecar_queue_depth` | Adjuntos sidecar de pruebas FastPQ en cola |
 | `fastpq_proof_sidecar_events_total` | Eventos de persistencia del sidecar de pruebas por evento |
-| `fastpq_metal_queue_depth`        |Límite de cola de metal, recuento máximo en curso, recuento de envío y ventana de muestreo|
-| `fastpq_metal_queue_ratio`        |Cola de metal ocupada y ratios de superposición|
+| `fastpq_metal_queue_depth`        |Límite de cola de Metal, recuento máximo en curso, recuento de envío y ventana de muestreo|
+| `fastpq_metal_queue_ratio`        |Ratios de ocupación y de superposición de la cola de Metal|
 | `fastpq_zero_fill_duration_ms`    |Duración de llenado con ceros en el host para ejecuciones de Metal|
 | `fastpq_zero_fill_bandwidth_gbps` |Ancho de banda derivado con relleno de ceros|
 
@@ -255,7 +255,7 @@ Para la evaluación general del rendimiento, utilice estos con las señales de c
 
 ## Referencia relacionada {#related-reference}
 
-- [Esquema del Modelo de Datos](/es/reference/data-model-schema.md) para la vista de datos de tipo nodo-autoritativo en un momento determinado
+- [Esquema del Modelo de Datos](/es/reference/data-model-schema.md) para la instantánea de tipos autoritativa del nodo
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `FastpqPublicTransferStatementV1`
@@ -264,4 +264,4 @@ Para la evaluación general del rendimiento, utilice estos con las señales de c
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `AxtProofEnvelope`
-- [`iroha3d` FastPQ opciones](/es/reference/iroha3d-cli.md#fastpq-overrides)
+- [Opciones FastPQ de `iroha3d`](/es/reference/iroha3d-cli.md#fastpq-overrides)

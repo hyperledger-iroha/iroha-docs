@@ -14,18 +14,18 @@ L'intégration actuelle de l'hôte comporte deux axes principaux :
 - les effets sur les actifs numériques des blocs finalisés, prouvés par la voie d'exécution du prouveur du nœud
 - les enveloppes de preuve AXT de SORA Nexus dont le `fastpq_binding` contient une liaison FastPQ
 
-## Transférer le chemin du témoin {#transfer-witness-path}
+## Chemin du témoin de transfert {#transfer-witness-path}
 
 Les transferts numériques transparents créent une transcription de transfert structurée lorsque l'instruction modifie les soldes. La transcription enregistre :
 
 - le compte source, le compte de destination, la définition de l'actif et le montant
 - soldes de l'expéditeur et du destinataire avant et après le transfert
 - le hachage cryptographique du point d'entrée de la transaction utilisé comme hachage cryptographique du lot
-- une valeur de résumé cryptographique principale d'autorisation dérivée du compte soumetteur
-- une valeur de résumé cryptographique Poseidon pour des transcriptions à delta unique
+- un condensé d'autorité dérivé du compte soumetteur
+- un condensé Poseidon pour les transcriptions à delta unique
 - les témoins de mise à jour de l'arbre de Merkle clairsemé pour les soldes de l'expéditeur et du destinataire
 
-Les transferts par lots utilisent une seule transcription avec plusieurs deltas. Dans ce cas, la valeur de digest cryptographique Poseidon à delta unique est absente.
+Les transferts par lots utilisent une seule transcription avec plusieurs deltas. Dans ce cas, le condensé Poseidon à delta unique est absent.
 
 L'exécution du bloc regroupe les transcriptions selon l'appel d'exécution qui les a émises et les conserve avec l'enregistrement source FastPQ du bloc. Dans un énoncé de transfert AXT, chaque delta de transfert devient deux lignes de transition :
 
@@ -102,7 +102,7 @@ Le succès établit la cohérence avec les attentes de l'appelant. Il n'accorde 
 
 Limites par défaut de `offline_compact::VerificationLimits`, que la route ordinaire utilise également :
 
-|Limiter|Par défaut|
+|Limite|Par défaut|
 | ------------------------------- | ------------: |
 | Segments par artefact | 2 |
 | Octets de transmission de l'artefact | 1 MiB |
@@ -244,8 +244,8 @@ Lorsque la télémétrie est activée, FastPQ exporte des métriques sur la sél
 | `fastpq_gpu_parity_failure_total` | Échecs de parité GPU échantillonnés par accélérateur, motif et étiquettes de périphérique |
 | `fastpq_proof_sidecar_queue_depth` | Pièces jointes sidecar de preuves FastPQ en file d'attente |
 | `fastpq_proof_sidecar_events_total` | Événements de persistance du sidecar de preuves par événement |
-| `fastpq_metal_queue_depth`        |Limite de file d'attente Metal, nombre maximum en vol, nombre de dispatch, et fenêtre d'échantillonnage|
-|`fastpq_metal_queue_ratio`        |Queue métallique ratios d'occupation et de chevauchement|
+| `fastpq_metal_queue_depth`        |Limite de file d'attente Metal, nombre maximum en cours, nombre d'envois, et fenêtre d'échantillonnage|
+|`fastpq_metal_queue_ratio`        |Ratios d'occupation et de chevauchement de la file d'attente Metal|
 | `fastpq_zero_fill_duration_ms`    |Durée de remplissage à zéro de l’hôte pour les exécutions Metal|
 | `fastpq_zero_fill_bandwidth_gbps` |Bande passante à remplissage de zéros dérivée|
 
@@ -255,7 +255,7 @@ Pour le triage de performance général, utilisez ceux-ci avec les signaux de co
 
 ## Référence Connexe {#related-reference}
 
-- [Schéma du modèle de données](/fr/reference/data-model-schema.md) pour la vue de données ponctuelle de type nœud-autoritaire
+- [Schéma du modèle de données](/fr/reference/data-model-schema.md) pour l'instantané des types du nœud, qui fait autorité
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `FastpqPublicTransferStatementV1`

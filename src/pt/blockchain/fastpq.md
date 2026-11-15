@@ -21,7 +21,7 @@ Transferências numéricas transparentes criam uma transcrição de transferênc
 - a conta de origem, a conta de destino, a definição do ativo e o valor
 - saldos do remetente e do destinatário antes e depois da transferência
 - o hash criptográfico do ponto de entrada da transação usado como o hash criptográfico do lote
-- um valor principal de resumo criptográfico de autorização derivado da conta que está enviando
+- um resumo de autoridade derivado da conta que envia a transação
 - um valor de resumo criptográfico Poseidon para transcrições de delta único
 - testemunhas de atualização da árvore de Merkle esparsa para os saldos do remetente e do destinatário
 
@@ -86,7 +86,7 @@ Cada traço tem 65,536 linhas. O produtor compromete 301 colunas privadas e o ve
 
 Os valores do enunciado público não são ocultados. A presença de uma operação no formato de transmissão não a admite: apenas os efeitos listados acima têm relações, e os enunciados AXT admitem apenas transferências com testemunha.
 
-## Prover pista de execução {#prover-lane}
+## Faixa de execução do provador {#prover-lane}
 
 `iroha3d` inicia um processo de trabalho do provador FastPQ durante a inicialização do nó, antes que o Torii aceite envios, a menos que o Kura inicie com `init_mode = "fast"`. O processo de trabalho inicializa seu backend em segundo plano, de modo que a inicialização do nó continua se essa inicialização falhar; nesse caso, a faixa de execução permanece desativada.
 
@@ -161,7 +161,7 @@ E(\operatorname{statement})
 )
 $$
 
-O valor do resumo criptográfico do manifesto técnico do lote AXT é SHA-256 sobre a codificação Norito da vinculação canônica:
+O valor do resumo criptográfico do manifesto técnico do lote AXT é SHA-256 sobre a codificação Norito do vínculo canônico:
 
 $$
 \operatorname{manifest\_digest} =
@@ -244,8 +244,8 @@ Quando a telemetria está ativada, o FastPQ exporta métricas de seleção de ba
 | `fastpq_gpu_parity_failure_total` | Falhas de paridade de GPU amostradas por acelerador, motivo e rótulos de dispositivo |
 | `fastpq_proof_sidecar_queue_depth` | Anexos sidecar de provas FastPQ na fila |
 | `fastpq_proof_sidecar_events_total` | Eventos de persistência do sidecar de provas por evento |
-| `fastpq_metal_queue_depth`        |Limite de fila de metal, contagem máxima em voo, contagem de despacho e janela de amostragem|
-| `fastpq_metal_queue_ratio`        |Fila de metal ocupada e taxas de sobreposição|
+| `fastpq_metal_queue_depth`        |Limite da fila do Metal, contagem máxima em andamento, contagem de despacho e janela de amostragem|
+| `fastpq_metal_queue_ratio`        |Taxas de ocupação e de sobreposição da fila do Metal|
 | `fastpq_zero_fill_duration_ms`    |Duração de preenchimento com zeros do host para execuções Metal|
 | `fastpq_zero_fill_bandwidth_gbps` |Largura de banda derivada com preenchimento de zeros|
 
@@ -255,7 +255,7 @@ Para a triagem geral de desempenho, use estes com os sinais de consenso e de fil
 
 ## Referência Relacionada {#related-reference}
 
-- [Esquema do Modelo de Dados](/pt/reference/data-model-schema.md) para a visualização de dados ponto no tempo do tipo autoritativo do nó
+- [Esquema do Modelo de Dados](/pt/reference/data-model-schema.md) para o instantâneo de tipos autoritativo do nó
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `FastpqPublicTransferStatementV1`
@@ -264,4 +264,4 @@ Para a triagem geral de desempenho, use estes com os sinais de consenso e de fil
 - `TransferTranscript`
 - `AxtFastpqBinding`
 - `AxtProofEnvelope`
-- [`iroha3d` FastPQ opções](/pt/reference/iroha3d-cli.md#fastpq-overrides)
+- [Opções FastPQ do `iroha3d`](/pt/reference/iroha3d-cli.md#fastpq-overrides)

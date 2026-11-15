@@ -14,18 +14,18 @@ FastPQ 是 Iroha 針對選定執行效果的 STARK 證明路徑。它不會取�
 - 已最終確定區塊中的數值資產效果，由節點的證明器通道證明
 - SORA Nexus AXT 證明封裝，其 `fastpq_binding` 攜帶 FastPQ 綁定
 
-## 轉移證人的路徑 {#transfer-witness-path}
+## 轉移見證路徑 {#transfer-witness-path}
 
-當指令突變餘額時,透明的數值轉移會產生結構化轉移記錄. 轉錄記錄:
+當指令修改餘額時，透明的數值轉移會建立一份結構化的轉移轉錄。該轉錄會記錄：
 
 - 來源帳戶,目的地帳戶,資產定義和金額
 - 轉移前和後的傳送者和接收者的餘額
 - 作為批次雜湊所使用的交易入口點雜湊
-- 從提交帳戶中獲取的授權主體資訊
-- 一個多爾塔轉錄的Poseidon摘要
+- 由提交帳戶衍生的授權主體摘要
+- 用於單一增量轉錄的 Poseidon 摘要
 - 傳送者與接收者餘額的稀疏 Merkle 更新見證
 
-批次轉移使用多個海域的轉錄. 在這種情況下,一個海域的波西登摘要是缺失的.
+批次轉移使用一份包含多個增量的轉錄。在此情況下，不會有單一增量的 Poseidon 摘要。
 
 區塊執行會依發出轉錄的執行呼叫將轉錄分組，並與區塊的 FastPQ 來源紀錄一併保存。在 AXT 轉移陳述中，每個轉移增量都會成為兩個狀態轉換列：
 
@@ -55,7 +55,7 @@ FastPQ 是 Iroha 針對選定執行效果的 STARK 證明路徑。它不會取�
 
 每個 FastPQ 陳述都帶有公共輸入，將證明綁定至區塊與執行情境：
 
-|輸入|這意味著|
+|輸入|含義|
 | ------------- | ------------------------------------------------------------------------------------ |
 | `dsid` | 資料空間識別碼：其 `u64` 值以小端序排列，後接八個零位元組 |
 | `slot` | 以奈秒表示的區塊建立時間，精度為毫秒 |
@@ -86,7 +86,7 @@ Iroha 的 `Hash` 是將最後一個位元組的最低位元設為 1 的 Blake2b-
 
 公開陳述中的值不會被隱藏。某個操作出現在傳輸格式中，並不代表它會被接受：只有上述列出的效果具備證明關係，而 AXT 陳述僅接受具見證的轉移。
 
-## 經驗者林 {#prover-lane}
+## 證明器通道 {#prover-lane}
 
 除非 Kura 以 `init_mode = "fast"` 啟動，否則 `iroha3d` 會在節點啟動期間、Torii 開始接受提交之前，啟動一個 FastPQ 證明器工作器。工作器會在背景初始化其後端，因此即使初始化失敗，啟動仍會繼續；此時該通道會維持停用。
 
@@ -102,7 +102,7 @@ Iroha 的 `Hash` 是將最後一個位元組的最低位元設為 1 的 Blake2b-
 
 來自 `offline_compact::VerificationLimits` 的預設限制（一般途徑也使用這些限制）：
 
-|限制|預設方式|
+|限制|預設值|
 | ------------------------------- | ------------: |
 | 每個產物的區段數 | 2 |
 | 產物傳輸編碼位元組數 | 1 MiB |
@@ -161,14 +161,14 @@ E(\operatorname{statement})
 )
 $$
 
-AXT 批次資訊清單摘要是對規範綁定的 Norito 編碼計算出的 SHA-256：
+AXT 批次資訊清單摘要是對標準綁定的 Norito 編碼計算出的 SHA-256：
 
 $$
 \operatorname{manifest\_digest} =
 \operatorname{SHA256}(E(\operatorname{canonical\_binding}))
 $$
 
-## 引數元件 {#parameter-sets}
+## 參數集 {#parameter-sets}
 
 首個發布版本恰好只有一個參數集：`fastpq-state-transition-stark-v1`。批次與 AXT 綁定都會指明此參數集，AXT 證明則會拒絕任何其他名稱。DEEP 協定契約固定了已發布產物的幾何結構：
 
@@ -184,9 +184,9 @@ $$
 
 目前尚無正式環境的資格認定。針對此構造的健全性、隱藏性與 Fiat-Shamir 獨立審查尚未完成，而固定版本的 [正式環境就緒紀錄](https://github.com/hyperledger-iroha/iroha/blob/c8c872461e92f04325c350cdd952f4276e96f9dc/specs/fastpq_production_readiness.md) 並未提出任何以工作量正規化的安全性主張。
 
-## 配置 {#configuration}
+## 設定 {#configuration}
 
-FastPQ 配置嵌入`zk.fastpq`下方.
+FastPQ 設定以巢狀方式置於 `zk.fastpq` 之下。
 
 ```toml
 [zk.fastpq]
@@ -232,30 +232,30 @@ iroha3d --fastpq-gpu-kind integrated
 
 `iroha3d` 在讀取設定檔時會忽略環境變數，因此請在 TOML 中或使用上述選項設定這些值。
 
-## 計量 {#metrics}
+## 指標 {#metrics}
 
 啟用遙測後，FastPQ 會匯出有關後端選擇、證明持久保存與 Metal 執行階段行為的指標：
 
-|計量|這意味著|
+|指標|含義|
 | ----------------------------------- | --------------------------------------------------------------------------- |
-|`fastpq_execution_mode_total`|根據後端和裝置標籤的要求和解決執行模式 |
-|`fastpq_poseidon_pipeline_total`|索取和解決了Poseidon管道的路徑|
+|`fastpq_execution_mode_total`|依後端與裝置標籤統計的請求執行模式與解析後的執行模式 |
+|`fastpq_poseidon_pipeline_total`|請求的與解析後的 Poseidon 管線路徑|
 | `fastpq_gpu_disable_total` | 依加速器、原因與裝置標籤統計的 GPU 加速器停用事件 |
 | `fastpq_gpu_parity_failure_total` | 依加速器、原因與裝置標籤統計的取樣 GPU 一致性檢查失敗 |
 | `fastpq_proof_sidecar_queue_depth` | 佇列中的 FastPQ 證明輔助紀錄附件 |
 | `fastpq_proof_sidecar_events_total` | 依事件統計的證明輔助紀錄持久保存事件 |
 |`fastpq_metal_queue_depth`|Metal 佇列限制、最大並行數、派送數量和取樣視窗|
-|`fastpq_metal_queue_ratio`|金屬佇列繁忙和重疊比例 |
-|`fastpq_zero_fill_duration_ms`|為金屬執行提供零填充持續時間 |
-|`fastpq_zero_fill_bandwidth_gbps`|產生的零填充頻寬|
+|`fastpq_metal_queue_ratio`|Metal 佇列的忙碌比例與重疊比例 |
+|`fastpq_zero_fill_duration_ms`|Metal 執行的主機零填充持續時間 |
+|`fastpq_zero_fill_bandwidth_gbps`|推導出的零填充頻寬|
 
 模式、GPU、Metal 佇列與零填充指標需要 `extended` 或 `full` 遙測設定檔，且在 Kura 以 `init_mode = "fast"` 啟動時不會匯出。Metal 佇列與零填充指標還需要 macOS 上的 `fastpq-gpu` 建置。
 
-在 [ 效能和指標](/zh-hant/guide/advanced/metrics.md)中列出的共識和佇列訊號中使用一般的績效分類.
+進行一般效能問題的初步排查時，請將這些指標與[效能和指標](/zh-hant/guide/advanced/metrics.md)中列出的共識與佇列訊號搭配使用。
 
 ## 相關參考 {#related-reference}
 
-- [節點授權型別快照資料模型方案](/zh-hant/reference/data-model-schema.md)
+- [資料模型方案](/zh-hant/reference/data-model-schema.md)，提供以節點為準的型別快照
 - `FastpqTransitionBatch`
 - `FastpqPublicInputs`
 - `FastpqPublicTransferStatementV1`
