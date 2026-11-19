@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/torii-endpoints.md
-translation_source_hash: f04e5e78329996d70926c4fd5dc034d41605d0a82fffd6460f67b252269480d9
+translation_source_hash: 5488f984f376f362260684d935fa03b92a2e54e79d4baf3d2fa7decd36104e3b
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -40,6 +40,8 @@ Para detalles del formato, negociación de contenido, indicadores de diseño, ha
 | `GET /v1/node/capabilities`      | JSON           |Capacidad del nodo y metadatos del modelo de datos|
 | `GET /v1/time/now`               | JSON           |Vista de datos de punto en el tiempo del reloj de pared del nodo|
 | `GET /v1/time/status`            | JSON           |Estado de sincronización de tiempo|
+| `GET /v1/configuration`          | JSON           |Configuración actual del nodo visible para el cliente|
+| `POST /v1/configuration`         | JSON           |Actualizar el subconjunto de configuración actualizable por el cliente|
 
 Para una solicitud SSE, anuncie la transmisión nativa más una alternativa escrita:
 
@@ -52,6 +54,18 @@ Torii primero negocia una representación JSON o Norito en la capa de solicitud,
 `/openapi.json` es el contrato generado para las rutas representadas en el esquema, no un inventario completo de sondeo operativo. El documento actual omite `/livez` y `/readyz`, y su descripción de `/health` puede retrasar al manejador de disponibilidad. Genera clientes de ruta a partir del documento en vivo, pero valida la vigencia y la disponibilidad directamente contra el nodo en ejecución y los controladores fijados. La superficie exacta todavía depende de la compilación funciones y configuración de ejecución del software. Use el [Torii API consola](/es/reference/torii-api-console.md) para cargar ese documento en vivo, probar rutas JSON, copiar solicitudes curl y generar código cliente a partir del esquema actual.
 
 Cada operación respaldada por catálogo OpenAPI incluye un objeto `x-iroha-route-auth`. Las herramientas respaldadas por catálogo MCP exponen el mismo contrato que `_meta["iroha/routeAuth"]`. Ambas proyecciones llevan `schemaVersion`, `stableRouteId`, `authentication` y `admission`. Trate la versión `1` como un contrato exacto: rechace un `schemaVersion` no compatible en lugar de adivinar cómo deberían interpretarse sus etiquetas de autenticación o admisión. Los metadatos de la ruta describen el límite de la solicitud; no reemplazan las credenciales requeridas por ese límite.
+
+### Lecturas y actualizaciones de configuración {#configuration-reads-and-updates}
+
+`GET /v1/configuration` devuelve la configuración del nodo visible para el cliente. `POST /v1/configuration` aplica una actualización de configuración en tiempo de ejecución y devuelve `202 Accepted`. Las actualizaciones de configuración no están controladas por un parámetro de activación dedicado: la ruta POST se ejecuta detrás de la política de acceso de Torii (validación de token API cuando los tokens se aplican, además de limitación de velocidad), y el cuerpo de la actualización está restringido a un subconjunto fijo de la configuración:
+
+- nivel y filtro del registrador
+- ACL de red P2P y ajustes de red seleccionados
+- anulaciones del handshake de SoraNet
+- ajustes de transporte
+- precios de cómputo
+
+Todos los demás ajustes deben cambiarse en el archivo de configuración del par o, para los parámetros en cadena, a través de una instrucción `SetParameter`. Consulte [Configurando Iroha](/es/reference/peer-config/index.md#runtime-configuration-updates).
 
 ## Probar rutas en vivo Taira {#try-live-taira-routes}
 
