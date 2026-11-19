@@ -1,7 +1,7 @@
 ---
 translation_locale: es
 translation_source: /reference/peer-config/index.md
-translation_source_hash: dd44f8f12cc456d6f37e1ceb3e82cf4a979e80115c75e28dcb1fe4f29469aaf4
+translation_source_hash: d324c15a4ecd3f07b976fae5d291241d4d22f6e3a213cd5ee917a58f19328408
 translation_status: machine-validated
 translation_engine: bing-translator-llm
 ---
@@ -62,6 +62,10 @@ max_content_len = 2048
 :::
 
 La configuración resultante será `chain` de `a.toml`, `max_content_len` de `b.toml`, y `torii.address` de `config.toml` (sobrescribe `b.toml`).
+
+## Actualizaciones de configuración en tiempo de ejecución {#runtime-configuration-updates}
+
+Un par en ejecución expone su configuración visible para el cliente a través de Torii: `GET /v1/configuration` la lee, y `POST /v1/configuration` la actualiza en tiempo de ejecución y devuelve `202 Accepted`. La ruta POST está protegida por la política de acceso de Torii, y solo un subconjunto fijo de la configuración puede cambiarse de esta manera: nivel y filtro del registrador, la ACL de red P2P y ajustes de red seleccionados, anulaciones del handshake de SoraNet, ajustes de transporte y precios de cómputo. Todos los demás parámetros deben cambiarse en el archivo de configuración o, para los parámetros en cadena, a través de una instrucción [`SetParameter`](/es/blockchain/instructions.md#setparameter). Consulte [Torii API puntos finales](/es/reference/torii-endpoints.md#configuration-reads-and-updates) para los detalles a nivel de ruta.
 
 ## Solución de problemas {#troubleshooting}
 

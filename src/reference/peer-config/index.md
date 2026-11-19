@@ -61,6 +61,20 @@ max_content_len = 2048
 The resulting configuration will be `chain` from `a.toml`, `max_content_len` from `b.toml`, and `torii.address` from
 `config.toml` (overwrites `b.toml`).
 
+## Runtime configuration updates
+
+A running peer exposes its client-visible configuration through Torii:
+`GET /v1/configuration` reads it, and `POST /v1/configuration` updates it
+at runtime and returns `202 Accepted`. The POST route is guarded by the
+Torii access policy, and only a fixed subset of the configuration can be
+changed this way: logger level and filter, the P2P network ACL and
+selected network settings, SoraNet handshake overrides, transport
+settings, and compute pricing. Every other parameter must be changed in
+the configuration file or, for on-chain parameters, through a
+[`SetParameter`](/blockchain/instructions.md#setparameter) instruction.
+See [Torii Endpoints](/reference/torii-endpoints.md#configuration-reads-and-updates)
+for the route-level details.
+
 ## Troubleshooting
 
 Pass [`--trace-config`](../iroha3d-cli#arg-trace-config) CLI flag to see a trace of how configuration is read and parsed.

@@ -34,6 +34,8 @@ Norito RPC guidance, see the [Norito reference](/reference/norito.md).
 | `GET /v1/node/capabilities`      | JSON           | Node capability and data-model metadata                          |
 | `GET /v1/time/now`               | JSON           | Node wall-clock snapshot                                         |
 | `GET /v1/time/status`            | JSON           | Time synchronization status                                      |
+| `GET /v1/configuration`          | JSON           | Current client-visible node configuration                        |
+| `POST /v1/configuration`         | JSON           | Update the client-updatable configuration subset                 |
 
 For an SSE request, advertise the native stream plus a typed fallback:
 
@@ -66,6 +68,26 @@ exact contract: reject an unsupported `schemaVersion` instead of guessing
 how its authentication or admission labels should be interpreted. The route
 metadata describes the request boundary; it does not replace the
 credentials required by that boundary.
+
+### Configuration Reads and Updates
+
+`GET /v1/configuration` returns the client-visible node configuration.
+`POST /v1/configuration` applies a runtime configuration update and
+returns `202 Accepted`. Configuration updates are not gated by a
+dedicated opt-in parameter: the POST route runs behind the Torii access
+policy (API-token validation when tokens are enforced, plus rate
+limiting), and the update body is restricted to a fixed subset of the
+configuration:
+
+- logger level and filter
+- P2P network ACL and selected network settings
+- SoraNet handshake overrides
+- transport settings
+- compute pricing
+
+Every other setting must be changed in the peer configuration file or,
+for on-chain parameters, through a `SetParameter` instruction. See
+[Configuring Iroha](/reference/peer-config/index.md#runtime-configuration-updates).
 
 ## Try Live Taira Routes
 
